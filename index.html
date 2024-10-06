@@ -1,0 +1,383 @@
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+	<style>
+		/* Sticky Navigation */
+#sticky-nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #333;
+    z-index: 1000;
+    box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease;
+}
+
+#sticky-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+#sticky-nav ul li {
+    display: inline-block;
+    margin-right: 15px;
+}
+
+#sticky-nav ul li a {
+    color: white;
+    padding: 15px 20px;
+    text-decoration: none;
+    display: inline-block;
+    font-weight: bold;
+}
+
+#sticky-nav ul li a:hover {
+    background-color: #575757;
+    color: white;
+    border-radius: 5px;
+}
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+#sticky-nav.scrolled {
+    background-color: rgba(51, 51, 51, 0.9);
+}
+
+/* Spacing for sections */
+section {
+    padding: 100px 0;
+}
+
+#home {
+    padding-top: 150px; /* Add some top padding to account for sticky navbar */
+}
+
+html {
+    scroll-behavior: smooth;
+}
+/* Skills Section */
+#skills {
+    background-color: #f7f7f7;
+    padding: 100px 0;
+    text-align: center;
+}
+
+#skills .features {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+}
+
+#skills .features article {
+    flex-basis: calc(33% - 30px);
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+#skills .features article:hover {
+    transform: translateY(-10px);
+}
+
+#skills .features article .icon {
+    font-size: 40px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+#skills .features article h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+#skills .features article p {
+    font-size: 1em;
+    color: #666;
+    line-height: 1.6;
+}
+
+/* Specific Styling for Icons */
+#skills .features article .icon.fa-database {
+    color: #27ae60;
+}
+
+#skills .features article .icon.fa-chart-line {
+    color: #2980b9;
+}
+
+#skills .features article .icon.fa-code {
+    color: #e67e22;
+}
+
+#skills .features article .icon.fa-lock {
+    color: #c0392b;
+}
+
+#skills .features article .icon.fa-project-diagram {
+    color: #8e44ad;
+}
+
+#skills .features article .icon.fa-file-excel {
+    color: #27ae60; /* Green to match Excel theme */
+}
+
+
+
+
+
+
+
+	</style>
+	
+<html>
+	<head>
+		<title>Gautam The Analyst Portfolio</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+		<!-- Sticky Navigation -->
+		<nav id="sticky-nav">
+			<ul>
+				<li><a href="#Home" class="nav-link">Home</a></li>
+				<li><a href="#About" class="nav-link">About</a></li>
+				<li><a href="#Projects" class="nav-link">Projects</a></li>
+			    <li><a href="#skills" class="nav-link">skills</a></li>
+				<li><a href="#Contact" class="nav-link">Contact</a></li>
+			</ul>
+		</nav>
+		<!-- Wrapper -->
+			<div id="wrapper" class="fade-in">
+				<section id="Home" class="Home ">
+				<!-- Intro -->
+				<section id="About" class="About ">
+					<div id="intro">
+						<h1>Gautam The Analyst Portfolio <br />
+						</h1>
+						<p>  Skilled  Analyst with expertise in SQL, Power BI, Python, and risk management, delivering data-driven insights to optimize business performance across various industries. I specialize in analyzing and visualizing large datasets, building dynamic dashboards, and streamlining processes to drive strategic growth. My experience includes real-time analytics, loan data analysis, and transforming raw data into actionable business intelligence to support informed decision-making and operational efficiency.</a> 
+						
+						<ul class="actions">
+							<li><a href="#header" class="button icon solid solo fa-arrow-down scrolly">Continue</a></li>
+						</ul>
+					</div>
+				</section>
+
+			</section>
+
+				<!-- Header -->
+					<header id="header">
+						<a href="index.html" class="logo">Gautam The Analyst</a>
+					</header>
+
+				<!-- Nav -->
+					<nav id="nav">
+						<ul class="links">
+							<li class="active"><a href="index.html">  Projects</a></li>
+							
+						</ul>
+						<ul class="icons">
+														<li><a href="https://www.linkedin.com/in/gautam-reddy-359594261/" class="icon brands alt fa-linkedin"><span class="label">LinkedIn</span></a></li>
+							<li><a href="https://github.com/" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Featured Post -->
+						<section id="Projects" class="Projects ">
+							<article class="post featured">
+								<header class="major">
+
+									<h2><a href="#">Sales Data analysis in SQL<br />
+									</a></h2>
+									<p>
+										In this project, we utilized SQL Server to analyze sales data, revealing insights on cost per box sold, top-performing teams, best-selling products, and regional trends to drive data-driven decisions on individual and overall performance.</p>
+								</header>
+								<a href="https://github.com/reddygautam98/Sales-data-analysis" class="image main"> <img src="assets/Sales.jpg" alt="Sales Analysis">
+								</a>
+								<ul class="actions special">
+									<li><a href="https://github.com/reddygautam98/Sales-data-analysis" class="button large">View Project</a></li>
+								</ul>
+							</article>
+
+						<!-- Posts -->
+							<section id="Projects" class="Projects ">
+								<article>
+									<header>
+										
+										<h2><a href="#">Hr-data-analysis in SQL<br />
+										</a></h2>
+									</header>
+									<a href="https://github.com/reddygautam98/Hr-data-analysis" class="image fit"><img src="assets/363429418-6a7a05db-5670-41b2-a255-73a32b632705.jpg" alt="dashboard">
+									</a>
+									<p>This HR Data Analysis project leverages Power BI and SQL to analyze key metrics like employee performance, turnover, and tenure. Interactive dashboards offer insights to inform strategic HR decisions, helping to identify trends and improve workforce management. The repository includes the Power BI file, SQL queries, and detailed documentation.</p>
+									<ul class="actions special">
+										<li><a href="https://github.com/reddygautam98/Hr-data-analysis" class="button">View Project</a></li>
+									</ul>
+								</article>
+								<article>
+									<header>
+										
+										<h2><a href="#">Business_Insights_Report  Analysis in Power BI (Data Visualization)<br />
+										</a></h2>
+									</header>
+									<a href="https://github.com/reddygautam98/Business_Insights_Report" class="image fit"><img src="assets/Screenshot 2024-08-26 162350.jpg" alt="dashboard" >  </a>
+									<p>This Data Visualization Project creates a real-time analytics dashboard for Business Analysts, integrating live data to track KPIs, analyze trends, and provide actionable insights for informed decision-making.</p>
+									<ul class="actions special">
+										<li><a href="https://github.com/reddygautam98/Business_Insights_Report" class="button">View Project</a></li>
+									</ul>
+								</article>
+								<article>
+									<header>
+										
+										<h2><a href="#">Sales-Forecasting-Report Analysis in Power BI<br />
+										</a></h2>
+									</header>
+									<a href="https://github.com/reddygautam98/Sales-Forecasting-Report" class="image fit"><img src="assets/362616815-cfd07f0f-45cb-4e3a-9b24-0d85e5b785d7.jpg" alt="dashboard">
+									</a>
+									<p>This project develops a real-time analytics dashboard using Power BI, SQL, DAX, and Python to monitor sales, profit trends, and shipment efficiency, providing actionable insights for strategic decisions.</p>
+									<ul class="actions special">
+										<li><a href="https://github.com/reddygautam98/Sales-Forecasting-Report" class="button">View Project</a></li>
+									</ul>
+								</article>
+								<article>
+									<header>
+										
+										<h2><a href="#">Loan data Analysis in SQL <br />
+										</a></h2>
+									</header>
+									<a href="https://github.com/reddygautam98/loandataanalytics" class="image fit"><img src="assets/Screenshot 2024-08-13 040946.jpg" alt="dashboard" >
+									</a>
+									<p>This project conducts a comprehensive analysis of a financial loan dataset utilizing SQL to extract insights on loan distribution, performance metrics, and borrower behavior, aiming to optimize risk models and inform lending strategies.</p>
+									<ul class="actions special">
+										<li><a href="https://github.com/reddygautam98/loandataanalytics" class="button">View Project </a></li>
+									</ul>
+								</article>
+							</section>
+								
+
+<!-- Skills Section -->
+<section id="skills" class="skills">
+    <div class="inner">
+        <header class="major">
+            <h2>Skills</h2>
+        </header>
+        <div class="features">
+            <article>
+                <span class="icon solid fa-database"></span>
+                <div class="content">
+                    <h3>SQL & Database Management</h3>
+                    <p>Proficient in writing complex SQL queries, database management, data extraction, and optimization to deliver data-driven insights.</p>
+                </div>
+            </article>
+            <article>
+                <span class="icon solid fa-chart-line"></span>
+                <div class="content">
+                    <h3>Power BI & Data Visualization</h3>
+                    <p>Skilled in developing interactive dashboards, reports, and visualizations using Power BI to support business decisions.</p>
+                </div>
+            </article>
+            <article>
+                <span class="icon solid fa-code"></span>
+                <div class="content">
+                    <h3>Python Programming</h3>
+                    <p>Experienced in using Python for data analysis, statistical modeling, and automation to streamline processes and solve business challenges.</p>
+                </div>
+            </article>
+            <article>
+                <span class="icon solid fa-lock"></span>
+                <div class="content">
+                    <h3>Risk Management & Analysis</h3>
+                    <p>Expert in assessing risks, conducting due diligence, and ensuring compliance with regulatory standards for optimized risk management.</p>
+                </div>
+            </article>
+            <article>
+                <span class="icon solid fa-project-diagram"></span>
+                <div class="content">
+                    <h3>Project Management & BI Solutions</h3>
+                    <p>Efficient in managing BI solutions, tracking KPIs, and leading projects from inception to execution, ensuring data integrity and operational success.</p>
+                </div>
+            </article>
+            <article>
+                <span class="icon solid fa-file-excel"></span>
+                <div class="content">
+                    <h3>Excel & Data Analysis</h3>
+                    <p>Advanced proficiency in Excel for data analysis, including pivot tables, VLOOKUPs, macros, and VBA to automate workflows and generate insights.</p>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
+
+
+
+
+						
+
+				
+
+
+						<section id="Contact"class="split Contact">
+							<h2>Contact</h2>
+							<section class="alt">
+								<h3>Location</h3>
+								<p>Bengaluru(560037), india <br />
+								</p>
+							</section>
+							<section>
+								<h3>Phone</h3>
+								<p><a href="#">🇮🇳 +917483670901</a></p>
+							</section>
+							<section>
+								<h3>Email</h3>
+								<p><a href="#">trkr725@gmail.com</a></p>
+							</section>
+							<section>
+								<h3>Social</h3>
+								<ul class="icons alt">
+									
+									
+									<li><a href="https://www.linkedin.com/in/gautam-reddy-359594261/" class="icon brands alt fa-linkedin"><span class="label">LinkedIn</span></a></li>
+
+									<li><a href="https://github.com/" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
+								</ul>
+							</section>
+						</section>
+					</footer>
+
+
+				
+
+				<!-- Copyright -->
+					<div id="copyright">
+						<ul><li>&copy; Untitled</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
