@@ -22,6 +22,8 @@ GitHub Pages is static. The form validates required fields then opens the visito
 ## Before publishing
 Confirm reddygautam98@gmail.com and the LinkedIn URL are your preferred public contact routes. Keep project claims aligned with your repositories and resume. Do not add invented testimonials, prices or client outcomes.
 
-
-## Project snapshots
-The Projects section uses real screenshots already stored in `assets/` for Sales Data Analysis, HR Data Analysis, Business Insights Report, Sales Forecasting Report (sales/shipment dashboard snapshot), and Loan Data Analytics. Each screenshot has descriptive alt text, lazy loading, and a link to open the full-size image. Other projects keep their illustrative cards until a relevant project screenshot is available.
+## Project snapshots and preview labels
+- Real repository screenshots are shown for Sales Data Analysis, HR Data Analysis, Business Insights Report, Sales Forecasting Report, Loan Data Analytics, and ClinChat-style RAG App.
+- The Business Insights Report and ClinChat screenshots are embedded in their project READMEs and loaded from GitHub's user-attachment image URLs.
+- GameZone Business Intelligence, Excel Dashboard Analysis, and MetaLayer do not currently expose a matching screenshot in their tracked repository files. Their cards use labelled illustrative previews rather than passing them off as real application screenshots.
+- Images include descriptive alt text, lazy loading, and links to open the larger image.
