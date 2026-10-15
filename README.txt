@@ -31,3 +31,7 @@ Confirm reddygautam98@gmail.com and the LinkedIn URL are your preferred public c
 
 ## Business Analyst sample artifacts
 The live portfolio includes a "BA Samples" navigation link and a sample-artifacts section. The `samples/` folder includes a fictional PayTrack case study with BRD, FRD, user stories, RTM/test/UAT plan, workshop MoM/RAID, CSV templates, SVG diagrams and Mermaid source. An editable Figma design contains reconciliation overview and exception case-detail wireframes.
+
+
+## Homepage positioning update
+The homepage hero now leads with the client problem-to-delivery journey and features direct calls to discuss a project or explore the BA sample artifacts. The BA sample showcase covers BRD/FRD, user stories, RTM/testing/UAT, workshop MoM/RAID, diagrams, and editable Figma wireframes.
