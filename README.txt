@@ -27,3 +27,7 @@ Confirm reddygautam98@gmail.com and the LinkedIn URL are your preferred public c
 - The Business Insights Report and ClinChat screenshots are embedded in their project READMEs and loaded from GitHub's user-attachment image URLs.
 - GameZone Business Intelligence, Excel Dashboard Analysis, and MetaLayer do not currently expose matching screenshots of the running project in their tracked files. Their visual cards use custom SVG diagrams stored in `assets/project-previews/`, clearly labelled as illustrative previews.
 - All nine project cards have visual previews, descriptive alt text, lazy loading, and links to open the full-size image or diagram.
+
+
+## Business Analyst sample artifacts
+The live portfolio includes a "BA Samples" navigation link and a sample-artifacts section. The `samples/` folder includes a fictional PayTrack case study with BRD, FRD, user stories, RTM/test/UAT plan, workshop MoM/RAID, CSV templates, SVG diagrams and Mermaid source. An editable Figma design contains reconciliation overview and exception case-detail wireframes.
