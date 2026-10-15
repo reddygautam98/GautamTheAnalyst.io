@@ -161,3 +161,23 @@ html[data-theme="dark"] ::selection{background:#704329;color:#fff}
 @media(max-width:1100px){.theme-toggle-label{display:none}.theme-toggle{padding:8px 9px}}
 @media(max-width:720px){.theme-toggle-label{display:inline}.theme-toggle{width:100%;justify-content:center}}
 @media(prefers-reduced-motion:reduce){.theme-toggle{transition:none}}
+
+/* Dark mode backgrounds for the full-width homepage sections */
+html[data-theme="dark"] .services-section,
+html[data-theme="dark"] .engagement-section,
+html[data-theme="dark"] .sample-section{background:linear-gradient(180deg,#0b1220 0%,#0d1727 100%)}
+html[data-theme="dark"] .service-footnote{background:#172438;border-color:#304057;color:#c9d5e5}
+html[data-theme="dark"] .sample-card h3,
+html[data-theme="dark"] .benefit-card strong{color:#edf2fb}
+html[data-theme="dark"] .art-caption{color:#e0e8f4}
+html[data-theme="dark"] .project-art:not(.project-snapshot){background:linear-gradient(135deg,#19263a,#111b2a)}
+html[data-theme="dark"] .mini-kpi,
+html[data-theme="dark"] .risk-circles i,
+html[data-theme="dark"] .game-grid span,
+html[data-theme="dark"] .game-grid b,
+html[data-theme="dark"] .sheet-grid b,
+html[data-theme="dark"] .sheet-grid i,
+html[data-theme="dark"] .rag-network b{background:#1a293d;border-color:#34465e;color:#dce6f4}
+html[data-theme="dark"] .mini-bars i{filter:saturate(.85) brightness(.9)}
+html[data-theme="dark"] .etl-flow i{background:#1a293d;border-color:#34465e;color:#dce6f4}
+html[data-theme="dark"] .orbit-tag span{color:#ffae7a}
