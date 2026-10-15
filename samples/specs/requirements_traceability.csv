@@ -1,0 +1,9 @@
+Requirement ID,Requirement,Story ID,Test ID,Priority,Status
+FR-001,Search transactions by approved references,US-001,TC-001; TC-002,Must,Sample / Not Run
+FR-002,Validate search date range,US-001,TC-003,Must,Sample / Not Run
+FR-003,Show internal and gateway details,US-002,TC-004,Must,Sample / Not Run
+FR-005,Create exception from mismatch,US-002,TC-005,Must,Sample / Not Run
+FR-006,Assign case and preserve audit,US-003,TC-006,Must,Sample / Not Run
+FR-008,Require resolution type and note,US-004,TC-007; TC-008,Must,Sample / Not Run
+FR-009,Show audit history,US-005,TC-009,Must,Sample / Not Run
+FR-010,Filter exception queue,US-001,TC-010,Should,Sample / Not Run
