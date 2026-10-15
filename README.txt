@@ -21,3 +21,7 @@ GitHub Pages is static. The form validates required fields then opens the visito
 
 ## Before publishing
 Confirm reddygautam98@gmail.com and the LinkedIn URL are your preferred public contact routes. Keep project claims aligned with your repositories and resume. Do not add invented testimonials, prices or client outcomes.
+
+
+## Project snapshots
+The Projects section uses real screenshots already stored in `assets/` for Sales Data Analysis, HR Data Analysis, Business Insights Report, Sales Forecasting Report (sales/shipment dashboard snapshot), and Loan Data Analytics. Each screenshot has descriptive alt text, lazy loading, and a link to open the full-size image. Other projects keep their illustrative cards until a relevant project screenshot is available.
