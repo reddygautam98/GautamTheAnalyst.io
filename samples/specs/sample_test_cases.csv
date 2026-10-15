@@ -1,0 +1,11 @@
+Test ID,Related Requirement,Scenario,Preconditions,Steps,Expected Result,Priority,Status
+TC-001,FR-001,Search known payment ID,Seeded sample payment exists,Enter ID and search,Matching payment shown with current status,High,Not Run
+TC-002,FR-001,No matching reference,Reference absent from test data,Search absent reference,Clear empty state and no stale records,Medium,Not Run
+TC-003,FR-002,Invalid date range,Search screen available,Set end date before start date and submit,Validation blocks submission,Medium,Not Run
+TC-004,FR-003,Review payment detail,Record with internal and gateway values exists,Open payment detail,Relevant values and statuses displayed,High,Not Run
+TC-005,FR-005,Create mismatch exception,Configured mismatch records are loaded,Run reconciliation for sample records,Reason-coded reviewable case created per dedupe rules,High,Not Run
+TC-006,FR-006,Assign case,Authorized test user and open case exist,Assign case to a valid owner,Owner updates and audit event is created,High,Not Run
+TC-007,FR-008,Resolve without note,Open case and authorized role exist,Select resolution type but leave note empty,Validation shown and case stays open,High,Not Run
+TC-008,FR-008,Resolve with valid details,Open case and authorized role exist,Enter type and note then confirm,Status updates with audit entry,High,Not Run
+TC-009,FR-009,Review audit history,Case has recorded events,Open audit history,Chronological actor/action/time entries appear,Medium,Not Run
+TC-010,FR-010,Filter queue,More than one sample case exists,Filter by status and owner,Only matches show; summary follows same filters,Medium,Not Run
