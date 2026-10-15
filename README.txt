@@ -35,3 +35,9 @@ The live portfolio includes a "BA Samples" navigation link and a sample-artifact
 
 ## Homepage positioning update
 The homepage hero now leads with the client problem-to-delivery journey and features direct calls to discuss a project or explore the BA sample artifacts. The BA sample showcase covers BRD/FRD, user stories, RTM/testing/UAT, workshop MoM/RAID, diagrams, and editable Figma wireframes.
+
+
+## Theme switch
+- A light/dark theme control is available in the main navigation and BA Samples gallery.
+- Theme choice is persisted in localStorage and shared across pages; when no choice is saved, the browser's color-scheme preference is used.
+- The control has keyboard focus styling and aria-pressed state.
