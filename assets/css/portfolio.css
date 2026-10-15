@@ -108,3 +108,56 @@
 .benefit-card small{display:block;color:#687386;font-size:11px;line-height:1.55;margin-top:6px}
 @media(max-width:1000px){.benefits-section{grid-template-columns:repeat(3,minmax(0,1fr));padding-left:25px;padding-right:25px;gap:8px}.benefit-card,.benefit-card:first-child,.benefit-card:last-child{border:1px solid var(--line);border-radius:13px}}
 @media(max-width:640px){.benefits-section{grid-template-columns:repeat(2,minmax(0,1fr));padding:0 18px 28px;gap:9px}.benefit-card{padding:14px 12px;gap:9px}.benefit-card strong{font-size:13px}.benefit-card small{font-size:10px}.benefit-card:last-child:nth-child(odd){grid-column:1/-1}}
+
+
+/* Accessible light/dark theme support */
+html[data-theme="dark"]{color-scheme:dark;--ink:#edf2fb;--muted:#adbacd;--line:#2b394d;--orange:#ff995e;--orange2:#ffb17e;--green:#66c4a1;--blue:#8db9ed;--pale:#0b1220;--white:#121e30;--navy:#07101d}
+html[data-theme="dark"] body{background:#0b1220;color:var(--ink)}
+html[data-theme="dark"] .site-header{background:rgba(11,18,32,.92);border-color:#29384c}
+.theme-toggle{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:35px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);font:800 10px/1.2 Inter,system-ui,sans-serif;white-space:nowrap;cursor:pointer;transition:background .18s,border-color .18s,color .18s}
+.theme-toggle:hover{border-color:var(--orange)}
+.theme-toggle-icon{font-size:15px;line-height:1}
+.theme-toggle:focus-visible{outline:3px solid rgba(233,121,50,.45);outline-offset:3px}
+html[data-theme="dark"] .theme-toggle{background:#182437;color:#edf2fb;border-color:#35455c}
+html[data-theme="dark"] .nav-links{color:#c3cede}
+html[data-theme="dark"] .nav-links>a:not(.btn):hover,html[data-theme="dark"] .nav-links>a.active{color:var(--orange)}
+html[data-theme="dark"] .hero{background:radial-gradient(circle at 86% 28%,rgba(233,121,50,.14),transparent 27%),linear-gradient(180deg,#0b1220 0%,#0d1727 100%)}
+html[data-theme="dark"] .hero-gridline{opacity:.25;background-image:linear-gradient(#5c6e851a 1px,transparent 1px),linear-gradient(90deg,#5c6e851a 1px,transparent 1px)}
+html[data-theme="dark"] .availability{border-color:#4e392a;background:#241d1a;color:#ffd0ad}
+html[data-theme="dark"] .hero-pills span,html[data-theme="dark"] .tags span{background:#172438;border-color:#2e3e54;color:#d1dbea}
+html[data-theme="dark"] .hero-note{color:#95a4b9}
+html[data-theme="dark"] .hero-note b{color:#d5deeb}
+html[data-theme="dark"] .orbit-grid{background:radial-gradient(ellipse,#222b3b 0%,#101a2a 53%,transparent 73%)}
+html[data-theme="dark"] .orbit-ring{border-color:#9b653b77;box-shadow:0 0 0 24px #f49b4d08,0 0 0 54px #f49b4d05}
+html[data-theme="dark"] .orbit-core{background:linear-gradient(145deg,#263449,#172438);border-color:#3c4e66;color:#eff4fc;box-shadow:0 30px 65px #0008}
+html[data-theme="dark"] .orbit-tag,html[data-theme="dark"] .floating-stat{background:#152238e8;border-color:#334158;color:#eaf0f8;box-shadow:0 15px 35px #0004}
+html[data-theme="dark"] .floating-stat small{color:#a7b3c5}
+html[data-theme="dark"] .benefits-section{background:#0d1727}
+html[data-theme="dark"] .benefit-card,html[data-theme="dark"] .sample-card,html[data-theme="dark"] .sample-footer-cta{background:#121e30;border-color:#2b394d;box-shadow:0 12px 26px #0003}
+html[data-theme="dark"] .benefit-icon,html[data-theme="dark"] .sample-number{background:#35261e;border-color:#61412c;color:#ffb17e}
+html[data-theme="dark"] .benefit-card small,html[data-theme="dark"] .sample-card p,html[data-theme="dark"] .sample-footer-cta p span{color:#adbacd}
+html[data-theme="dark"] .project-section,html[data-theme="dark"] .experience-section{background:#0d1727}
+html[data-theme="dark"] .expertise-section,html[data-theme="dark"] .contact-section{background:#0b1220}
+html[data-theme="dark"] .project-card,html[data-theme="dark"] .service-card,html[data-theme="dark"] .expertise-card,html[data-theme="dark"] .experience-card,html[data-theme="dark"] .contact-info-card,html[data-theme="dark"] .contact-form-card,html[data-theme="dark"] .engagement-grid article{background:#121e30;border-color:#2b394d;color:#edf2fb;box-shadow:0 12px 28px #0003}
+html[data-theme="dark"] .section-heading p,html[data-theme="dark"] .project-body p,html[data-theme="dark"] .service-card p,html[data-theme="dark"] .expertise-card p,html[data-theme="dark"] .experience-item p,html[data-theme="dark"] .contact-intro p{color:#adbacd}
+html[data-theme="dark"] .project-meta{color:#97a6bb}
+html[data-theme="dark"] .project-body .tags span{background:#172438;border-color:#2e3e54;color:#cbd6e5}
+html[data-theme="dark"] .project-link{color:#d1dbea;border-color:#2b394d}
+html[data-theme="dark"] .service-card ul li,html[data-theme="dark"] .contact-trust,html[data-theme="dark"] .contact-method{color:#dce5f2}
+html[data-theme="dark"] .service-card .tags span{background:#172438;color:#cbd6e5;border-color:#2e3e54}
+html[data-theme="dark"] .contact-method,html[data-theme="dark"] .contact-trust{background:#172438;border-color:#304057}
+html[data-theme="dark"] .contact-method-icon{background:#34251d;border-color:#60412b}
+html[data-theme="dark"] input,html[data-theme="dark"] select,html[data-theme="dark"] textarea,html[data-theme="dark"] .filter-btn{background:#0d1727;border-color:#35445b;color:#edf2fb}
+html[data-theme="dark"] input::placeholder,html[data-theme="dark"] textarea::placeholder{color:#8292a8}
+html[data-theme="dark"] .filter-btn.active,html[data-theme="dark"] .filter-btn:hover{background:var(--orange);color:#171b22;border-color:var(--orange)}
+html[data-theme="dark"] .sample-notice{background:#302317;border-color:#6c482f;color:#ffd0a8}
+html[data-theme="dark"] .sample-link{color:#ffb17e}
+html[data-theme="dark"] .site-footer{background:#080f1b;border-color:#29384c}
+html[data-theme="dark"] .footer-inner p,html[data-theme="dark"] .footer-inner>span{color:#8f9fb4}
+html[data-theme="dark"] .btn-secondary{background:#172438;border-color:#34445a;color:#edf2fb}
+html[data-theme="dark"] .section-dark{background:#070e18;color:#edf2fb}
+html[data-theme="dark"] .skip-link{background:#182437;color:#fff}
+html[data-theme="dark"] ::selection{background:#704329;color:#fff}
+@media(max-width:1100px){.theme-toggle-label{display:none}.theme-toggle{padding:8px 9px}}
+@media(max-width:720px){.theme-toggle-label{display:inline}.theme-toggle{width:100%;justify-content:center}}
+@media(prefers-reduced-motion:reduce){.theme-toggle{transition:none}}
