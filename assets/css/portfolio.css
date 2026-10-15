@@ -16,3 +16,52 @@
 @media(max-width:720px){.nav-wrap{min-height:70px;padding:0 18px;flex-wrap:wrap}.menu-toggle{display:block}.nav-links{display:none;order:4;width:100%;padding:5px 0 16px;flex-direction:column;align-items:stretch;gap:5px}.nav-links.open{display:flex}.nav-links>a:not(.btn){padding:9px 4px}.nav-cta{width:100%}.hero{grid-template-columns:1fr;padding:54px 22px 35px;gap:15px}.hero h1{font-size:clamp(39px,10vw,58px);letter-spacing:-2px}.hero-orbit{min-height:330px}.orbit-ring{width:265px;height:265px}.ring-b{width:220px;height:220px}.orbit-core{width:125px;height:125px}.tag-a{left:6%;top:6%}.tag-b{right:0;top:17%}.tag-c{left:0;bottom:15%}.tag-d{right:3%;bottom:7%}.stat-a{top:0;right:20%}.stat-b{left:24%;bottom:0}.section{padding:58px 22px}.section-heading{display:block}.section-heading p{margin-top:12px}.project-grid{grid-template-columns:1fr}.project-body p{min-height:0}.expertise-grid{grid-template-columns:1fr}.expertise-card p{min-height:0}.contact-card{display:block;padding:25px}.contact-actions{margin-top:25px}.footer-inner{align-items:flex-start;flex-direction:column;padding:25px 22px}}
 @media(max-width:440px){.metrics-section{padding:0 14px 25px;gap:9px}.metric-card{padding:12px;gap:8px}.metric-icon{width:35px;height:35px;font-size:15px}.metric-card strong{font-size:17px}.metric-card small{font-size:8px}.hero-orbit{min-height:290px}.orbit-ring{width:230px;height:230px}.ring-b{width:190px;height:190px}.orbit-tag{font-size:9px;padding:8px}.floating-stat{padding:8px}.floating-stat b{font-size:10px}.floating-stat small{font-size:7px}.filter-row{gap:5px}.filter-btn{font-size:9px;padding:7px 9px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important}}
+/* Client acquisition: service catalogue, clear engagement steps, and project enquiry */
+.services-section{max-width:none;background:linear-gradient(180deg,#fff 0%,#f7f8fb 100%);position:relative;overflow:hidden}
+.services-section>.section-heading,.services-grid,.service-footnote,.engagement-section>.section-heading,.engagement-grid{max-width:var(--max);margin-left:auto;margin-right:auto}
+.services-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.service-card{background:rgba(255,255,255,.93);border:1px solid var(--line);border-radius:18px;padding:23px;box-shadow:0 12px 30px #24395107;display:flex;flex-direction:column;transition:transform .22s,box-shadow .22s,border-color .22s}
+.service-card:hover{transform:translateY(-5px);border-color:#efc3a0;box-shadow:0 20px 40px #24395112}
+.service-icon{display:grid;place-items:center;width:43px;height:43px;border-radius:13px;color:var(--orange);background:#fff0e5;border:1px solid #f3dcc8;font-size:20px;margin-bottom:16px}
+.service-label{font-size:8px;letter-spacing:1.3px;font-weight:900;color:#b96a35}
+.service-card h3{font-size:17px;line-height:1.3;margin:8px 0}
+.service-card p{font-size:12px;color:var(--muted);margin:0 0 10px}
+.service-card ul{list-style:none;padding:0;margin:5px 0 20px;display:grid;gap:8px}
+.service-card li{font-size:11px;color:#536074;padding-left:17px;position:relative}
+.service-card li:before{content:"✓";position:absolute;left:0;color:var(--green);font-weight:900}
+.service-cta{display:flex;align-items:center;justify-content:space-between;margin-top:auto;border-top:1px solid #edf0f4;padding-top:14px;font-size:11px;font-weight:800;color:#39475b}
+.service-cta b{color:var(--orange);font-size:15px}
+.service-footnote{display:flex;align-items:flex-start;gap:13px;padding:20px 22px;margin-top:20px;background:#fffaf5;border:1px solid #f0dfd0;border-radius:14px;color:#7a624e}
+.service-footnote>span{font-size:20px;color:var(--orange)}.service-footnote p{font-size:12px;margin:0}.service-footnote strong{color:#5d4634}
+.engagement-section{max-width:none;background:#f4f7fa}
+.engagement-section>.section-heading,.engagement-grid{max-width:var(--max)}
+.engagement-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.engagement-grid article{padding:20px;background:#fff;border:1px solid var(--line);border-radius:15px;box-shadow:0 9px 23px #24395106}
+.engagement-grid article>span{display:grid;place-items:center;width:33px;height:33px;background:#fff0e5;color:var(--orange);border:1px solid #f3dcc8;border-radius:10px;font-size:10px;font-weight:900}
+.engagement-grid h3{font-size:14px;margin:13px 0 6px}.engagement-grid p{font-size:11px;color:var(--muted);margin:0}
+.contact-section{max-width:none;background:#fff}
+.contact-section>.section-heading,.contact-layout{max-width:var(--max);margin-left:auto;margin-right:auto}
+.contact-layout{display:grid;grid-template-columns:.8fr 1.2fr;gap:18px;align-items:start}
+.contact-info-card,.contact-form-card{border:1px solid var(--line);border-radius:20px;background:#fff;box-shadow:0 14px 35px #23374f09;padding:25px}
+.contact-intro{padding-bottom:19px;border-bottom:1px solid #edf0f4}
+.contact-big-icon{display:grid;place-items:center;width:47px;height:47px;border-radius:14px;color:white;background:linear-gradient(135deg,#ffb16c,#e9742e);font-size:23px;box-shadow:0 10px 20px #e9783224}
+.contact-intro h3,.form-heading h3{font-size:20px;letter-spacing:-.5px;margin:15px 0 6px}
+.contact-intro p,.form-heading p{font-size:12px;color:var(--muted);margin:0}
+.direct-contact{display:flex;align-items:center;gap:12px;padding:15px 0;border-bottom:1px solid #edf0f4}
+.contact-method-icon{display:grid;place-items:center;flex:0 0 38px;width:38px;height:38px;border-radius:12px;background:#fff2e7;border:1px solid #f2dfce;color:var(--orange);font-weight:900}
+.direct-contact>span:nth-child(2){display:grid;gap:1px;flex:1;min-width:0}.direct-contact small{font-size:8px;color:#929baa;letter-spacing:1.2px;font-weight:900}.direct-contact b{font-size:11px;overflow-wrap:anywhere}.direct-contact>strong{color:var(--orange)}
+.contact-trust{display:flex;gap:10px;margin-top:18px;padding:13px;background:#f0faf6;border:1px solid #d6eee5;border-radius:12px}
+.contact-trust>span{color:var(--green);font-weight:900}.contact-trust p{font-size:11px;margin:0;color:#53675f}.contact-trust small{color:#657d73}
+.privacy-note{font-size:10px;color:#929baa;margin:15px 0 0}
+.form-heading{margin-bottom:19px}.form-heading .eyebrow{display:block}
+#project-enquiry-form{display:grid;gap:13px}
+#project-enquiry-form label{display:grid;gap:6px;font-size:11px;font-weight:750;color:#465267}
+#project-enquiry-form label>span{color:var(--orange)}#project-enquiry-form label small{display:inline;color:#9099a7;font-weight:500}
+#project-enquiry-form input,#project-enquiry-form textarea,#project-enquiry-form select{width:100%;min-width:0;border:1px solid #dfe4eb;background:#fbfcfe;color:var(--ink);border-radius:10px;padding:12px 13px;font:inherit;font-size:12px;outline:none}
+#project-enquiry-form textarea{min-height:125px;resize:vertical}
+#project-enquiry-form input:focus,#project-enquiry-form textarea:focus,#project-enquiry-form select:focus{border-color:#e9955b;box-shadow:0 0 0 3px #e9955b20;background:#fff}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-submit{width:100%;border:0;margin-top:3px}.form-disclaimer,.form-status{font-size:10px;color:#8b95a3;margin:0}
+.form-status:not(:empty){padding:10px;border-radius:8px;background:#f0faf6;color:#28795f}
+@media(max-width:900px){.services-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.engagement-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.contact-layout{grid-template-columns:1fr}}
+@media(max-width:560px){.services-grid,.engagement-grid{grid-template-columns:1fr}.contact-info-card,.contact-form-card{padding:19px}.form-row{grid-template-columns:1fr}}
