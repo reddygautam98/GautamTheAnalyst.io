@@ -1,0 +1,43 @@
+erDiagram
+    PAYMENT_TRANSACTION ||--o{ GATEWAY_EVENT : receives
+    PAYMENT_TRANSACTION ||--o{ RECONCILIATION_RESULT : has
+    PAYMENT_TRANSACTION ||--o{ EXCEPTION_CASE : may_create
+    PAYMENT_TRANSACTION ||--o{ AUDIT_EVENT : records
+    EXCEPTION_CASE ||--o{ AUDIT_EVENT : tracks
+    PAYMENT_TRANSACTION {
+        string paymentId PK
+        string merchantReference UK
+        decimal amount
+        string currency
+        string status
+        datetime createdAt
+    }
+    GATEWAY_EVENT {
+        string eventId PK
+        string paymentId FK
+        string gatewayReference
+        string eventType
+        datetime receivedAt
+    }
+    RECONCILIATION_RESULT {
+        string resultId PK
+        string paymentId FK
+        string matchStatus
+        string mismatchCode
+        datetime comparedAt
+    }
+    EXCEPTION_CASE {
+        string caseId PK
+        string paymentId FK
+        string caseStatus
+        string assignedTo
+        datetime updatedAt
+    }
+    AUDIT_EVENT {
+        string auditId PK
+        string paymentId FK
+        string caseId FK
+        string actor
+        string action
+        datetime createdAt
+    }
