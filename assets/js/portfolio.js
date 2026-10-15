@@ -1,4 +1,28 @@
 (function(){
+
+  // Light/dark color theme, persisted across portfolio pages.
+  const themeButton = document.querySelector('#theme-toggle');
+  const themeMeta = document.querySelector('meta[name="theme-color"]');
+  const safeThemeRead = () => { try { return localStorage.getItem('gta-theme'); } catch (_) { return null; } };
+  const applyTheme = (theme, persist = false) => {
+    const current = theme === 'dark' ? 'dark' : 'light';
+    document.documentElement.dataset.theme = current;
+    if (persist) { try { localStorage.setItem('gta-theme', current); } catch (_) {} }
+    if (themeButton) {
+      const isDark = current === 'dark';
+      themeButton.setAttribute('aria-pressed', String(isDark));
+      themeButton.setAttribute('aria-label', `Switch to ${isDark ? 'light' : 'dark'} theme`);
+      themeButton.setAttribute('title', `Switch to ${isDark ? 'light' : 'dark'} theme`);
+      const icon = themeButton.querySelector('.theme-toggle-icon');
+      const label = themeButton.querySelector('.theme-toggle-label');
+      if (icon) icon.textContent = isDark ? '☀' : '☾';
+      if (label) label.textContent = isDark ? 'Light theme' : 'Dark theme';
+    }
+    if (themeMeta) themeMeta.setAttribute('content', current === 'dark' ? '#0b1220' : '#fbfcfe');
+  };
+  applyTheme(document.documentElement.dataset.theme || safeThemeRead() || 'light');
+  themeButton?.addEventListener('click', () => applyTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark', true));
+
  const toggle=document.querySelector('.menu-toggle');const nav=document.querySelector('.nav-links');
  if(toggle&&nav){toggle.addEventListener('click',()=>{const open=nav.classList.toggle('open');toggle.setAttribute('aria-expanded',String(open));});nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{nav.classList.remove('open');toggle.setAttribute('aria-expanded','false')}));}
  const buttons=document.querySelectorAll('.filter-btn');const cards=document.querySelectorAll('.project-card');
