@@ -65,3 +65,14 @@
 .form-status:not(:empty){padding:10px;border-radius:8px;background:#f0faf6;color:#28795f}
 @media(max-width:900px){.services-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.engagement-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.contact-layout{grid-template-columns:1fr}}
 @media(max-width:560px){.services-grid,.engagement-grid{grid-template-columns:1fr}.contact-info-card,.contact-form-card{padding:19px}.form-row{grid-template-columns:1fr}}
+
+
+/* Real project screenshots */
+.project-art.project-snapshot{height:178px;padding:0;background:#edf0f5;isolation:isolate}
+.project-art.project-snapshot:before{display:none}
+.project-snapshot .snapshot-open{display:block;width:100%;height:100%;overflow:hidden}
+.project-snapshot .snapshot-open img{display:block;width:100%;height:100%;object-fit:cover;object-position:center}
+.project-snapshot-contained .snapshot-open img{object-fit:contain;background:#4b2f70}
+.project-snapshot .snapshot-label{position:absolute;left:10px;bottom:10px;max-width:calc(100% - 20px);padding:5px 8px;border:1px solid #ffffff70;border-radius:7px;background:#101827c9;color:#fff;font-size:8px;font-weight:800;letter-spacing:.35px;line-height:1.35;pointer-events:none}
+.project-snapshot .snapshot-open:focus-visible{outline:3px solid #ea7932;outline-offset:-3px}
+@media(prefers-reduced-motion:reduce){.project-snapshot .snapshot-open img{transition:none}}
