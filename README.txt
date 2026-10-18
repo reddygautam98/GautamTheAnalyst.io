@@ -1,34 +1,28 @@
 GAUTAM THE ANALYST — WEBSITE SOURCE
 ===================================
 
-This repository contains the current custom multi-page portfolio. Legacy HTML5 UP / Massively template files and dependencies have been removed.
+CANONICAL PUBLISHED SOURCE
+The live GitHub Pages site is published from the `docs/` folder on the `main` branch. All runnable website HTML, shared CSS/JavaScript, project previews, sample-artifact gallery, diagrams and CSV resources are kept together there. Root-level duplicate HTML/CSS/JavaScript and the original HTML5 UP/Massively template dependencies have been removed to avoid competing copies of the site.
 
-MAIN PAGES
-- index.html: client-focused home page, services teaser, selected projects, BA Samples and engagement process.
-- about.html: professional profile and working principles.
-- services.html: client services, deliverables and engagement process.
-- projects.html: nine project cards with consistent screenshots/illustrative labels.
-- resume.html: professional experience, responsibilities, skills, education and certifications. Resume download and employer-duration ranges are omitted.
-- contact.html: direct contact methods and project inquiry form.
-- samples/index.html: BA sample artifacts gallery.
+PUBLISHED PAGES
+- `docs/index.html` — client-focused home page with services, selected work, BA Samples and engagement process.
+- `docs/about.html` — professional profile and working principles.
+- `docs/services.html` — service scopes and deliverables.
+- `docs/projects.html` — nine project examples with accurately labelled screenshots/illustrations.
+- `docs/resume.html` — professional experience, skills, education and certifications; no resume-download button or employer-duration ranges.
+- `docs/contact.html` — direct contact details and project enquiry form.
+- `docs/samples/index.html` — BA sample artifacts gallery.
+- `docs/assets/css/portfolio.css` — responsive visual system, light/dark theme and restrained diagram backgrounds.
+- `docs/assets/js/portfolio.js` — persisted theme, mobile navigation, project filters, service preselection and mailto enquiry draft behavior.
 
-SHARED SOURCE
-- assets/css/portfolio.css: responsive site styling, light/dark theme styles, project visuals and restrained diagram backgrounds.
-- assets/js/portfolio.js: theme persistence, mobile navigation, project filters, service preselection and email draft generation.
-- assets/project-previews/: clearly labelled illustrative SVG visuals.
-- assets/*.jpg: dashboard images used by project cards.
-- samples/docs/: Markdown document sources for the fictional PayTrack BRD, FRD, user stories, RTM/UAT plan and discovery workshop log.
-- samples/diagrams/: SVG diagram previews and editable Mermaid source.
-- samples/specs/: CSV examples for traceability, test cases and user stories.
+ROOT-LEVEL IMAGE FILES
+The root `assets/*.jpg` files are retained as stable public image sources for project screenshots; they are not old website code. The deployed site has the assets it needs under `docs/assets/`.
 
-THEME
-The light/dark toggle is shared across the pages and saves the user's selection in browser localStorage. If no choice has been saved, the initial theme follows the device preference where supported.
+BA SAMPLE ARTIFACTS
+The `docs/samples/` folder contains fictional PayTrack BRD/FRD, user stories, RTM/test/UAT plan, workshop MoM/RAID, SVG diagrams, Mermaid source files, and CSV templates. PayTrack is illustrative. Sample names/values are fictional and test cases are marked Not Run.
 
 CONTACT FORM
-The static form validates required fields and prepares a mailto draft addressed to reddygautam98@gmail.com. It does not store or auto-send visitor data; the visitor must review and send the email.
+The static enquiry form prepares an email addressed to `reddygautam98@gmail.com`. It does not store enquiries or auto-send; the visitor must review and send the email draft.
 
-SAMPLE CONTENT
-PayTrack is a fictional portfolio case study. Names, references, amounts and scenarios are illustrative. Test cases are marked Not Run. Do not present the artifacts as actual client work, production behavior or executed test evidence.
-
-PUBLISHING
-GitHub Pages should publish from the main branch and repository root. Keep relative paths intact. After the commit, allow Pages to rebuild and check the live URL, then test light/dark themes, mobile navigation, project filters and the enquiry form in a real browser.
+DEPLOYMENT
+GitHub Pages source is `main /docs`. The `.nojekyll` marker is included to publish this static HTML/CSS/JavaScript site without relying on legacy template conversion. After publishing, test the live URL, light/dark toggle, mobile navigation, project filters and enquiry flow in a real browser.
