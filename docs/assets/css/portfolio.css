@@ -200,12 +200,14 @@ html[data-theme="dark"] .btn-primary{color:#21150d}
 /* Restrained diagram artwork: hero and BA Samples gallery only */
 .hero,.sample-section{position:relative;isolation:isolate;overflow:hidden}
 .hero:after,.sample-section:before{
- content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.045;mix-blend-mode:multiply;
+ content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.035;mix-blend-mode:multiply;
  background-image:url("../project-previews/gamezone-bi.svg"),url("../project-previews/workbook-analysis.svg"),url("../project-previews/metlayer-etl.svg"),url("../../samples/diagrams/Payment_Reconciliation_Process.svg"),url("../../samples/diagrams/Payment_Conceptual_Architecture.svg"),url("../../samples/diagrams/Payment_Data_Model_ERD.svg"),url("../../samples/diagrams/Payment_API_Sequence.svg");
- background-repeat:no-repeat;background-size:220px auto,220px auto,220px auto,270px auto,270px auto,260px auto,270px auto;
+ background-repeat:no-repeat;background-size:180px auto,180px auto,180px auto,230px auto,230px auto,220px auto,230px auto;
  background-position:0% 3%,46% 0%,100% 10%,0% 100%,35% 100%,68% 100%,100% 95%;
 }
-.hero-inner,.hero-gridline,.hero-orbit,.sample-section>.section-heading,.sample-section>.sample-notice,.sample-section>.sample-grid,.sample-section>.sample-footer-cta{position:relative;z-index:1}
+.hero-inner,.hero-orbit,.sample-section>.section-heading,.sample-section>.sample-notice,.sample-section>.sample-grid,.sample-section>.sample-footer-cta{position:relative;z-index:1}
+/* Important: keep this decorative grid out of the hero's CSS grid flow. */
+.hero-gridline{position:absolute;inset:0;z-index:0;pointer-events:none}
 html[data-theme="dark"] .hero:after,html[data-theme="dark"] .sample-section:before{mix-blend-mode:screen;filter:invert(.92) hue-rotate(180deg) saturate(.65);opacity:.075}
 @media(max-width:720px){
  .hero:after,.sample-section:before{opacity:.025;background-size:150px auto,150px auto,150px auto,190px auto,190px auto,180px auto,190px auto;background-position:0% 0%,50% 0%,100% 2%,0% 100%,35% 100%,68% 100%,100% 100%}
