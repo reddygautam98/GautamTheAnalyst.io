@@ -26,3 +26,9 @@ The static enquiry form prepares an email addressed to `reddygautam98@gmail.com`
 
 DEPLOYMENT
 GitHub Pages source is `main /docs`. The `.nojekyll` marker is included to publish this static HTML/CSS/JavaScript site without relying on legacy template conversion. After publishing, test the live URL, light/dark toggle, mobile navigation, project filters and enquiry flow in a real browser.
+
+
+## Changes ported from the Futuristic v2 package
+The live site includes a progressive enhancement layer in `docs/assets/css/site-enhancements.css` and `docs/assets/js/site-enhancements.js`. It adds a keyboard command palette, typed hero focus line, scroll reveals, reduced-motion-aware hero tilt, toolkit tickers, an interactive PayTrack traceability explorer, project search/live count, resume metric count-up, contact draft terminal/copy buttons, subtle cursor lighting, selected animated borders and a failed-preview fallback.
+
+See `docs/WEBSITE_CHANGE_CHECKLIST.md` for implementation status and a manual browser-QA checklist. The implementation retains the current brand and site content rather than replacing it with a pixel-identical copy of the ZIP stylesheet. The manual browser QA items remain unchecked until tested on the published website.
