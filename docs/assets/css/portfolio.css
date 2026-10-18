@@ -328,3 +328,15 @@ html[data-theme="light"] .sample-link,html[data-theme="light"] .service-footnote
 @media(max-width:720px){
   .brand-mark.brand-mark-image{flex-basis:36px;width:36px;height:36px}
 }
+
+
+/* Recruiter pathway: visible but secondary to the project enquiry CTA. */
+.hero-recruiter-link{display:inline-flex;margin-top:13px;font-size:11px;line-height:1.5;font-weight:750;color:#8b4a2b;text-decoration:underline;text-underline-offset:3px}
+.hero-recruiter-link:hover{color:#b94d18}
+html[data-theme="dark"] .hero-recruiter-link{color:#ffc08b}
+html[data-theme="dark"] .hero-recruiter-link:hover{color:#fff}
+.experience-bullets{display:grid;gap:10px;margin:12px 0 0;padding-left:19px;color:var(--muted);font-size:12px;line-height:1.72}
+.experience-bullets li::marker{color:var(--orange)}
+.experience-bullets strong{color:var(--ink);font-weight:800}
+html[data-theme="dark"] .experience-bullets{color:#b8c5d8}
+html[data-theme="dark"] .experience-bullets strong{color:#eef3fb}
