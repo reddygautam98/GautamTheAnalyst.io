@@ -21,6 +21,35 @@ body{position:relative;isolation:isolate}
 .hero>.wrap,.section>.wrap{position:relative;z-index:1}
 html[data-theme="dark"] .hero:after,html[data-theme="dark"] .section:before{mix-blend-mode:screen;filter:invert(.92) hue-rotate(180deg) saturate(.65);opacity:.11}
 @media(max-width:720px){.hero:after,.section:before{opacity:.045;background-size:150px auto,150px auto,150px auto,190px auto,190px auto,190px auto,190px auto;background-position:0% 0%,50% 0%,100% 2%,0% 100%,35% 100%,68% 100%,100% 100%}}
+
+/* Master contrast fix: every gallery surface now has a matching dark palette. */
+html[data-theme="light"]{color-scheme:light;--ink:#151b2b;--muted:#5f6b7d;--line:#dfe5ed;--orange:#a94818;--pale:#f5f7fb}
+html[data-theme="light"] body{background:#fbfcfe;color:#151b2b}
+html[data-theme="light"] header{background:rgba(255,255,255,.96);border-color:#dfe5ed}
+html[data-theme="light"] .hero{background:radial-gradient(ellipse at 85% 10%,#ffead9 0%,transparent 35%),linear-gradient(180deg,#fff,#f7f8fb)}
+html[data-theme="light"] .card,html[data-theme="light"] .diagram,html[data-theme="light"] .figma{background:#fff;border-color:#dfe5ed;color:#151b2b}
+html[data-theme="light"] .card h3,html[data-theme="light"] .diagram h3,html[data-theme="light"] .figma h3{color:#151b2b}
+html[data-theme="light"] .card p,html[data-theme="light"] .diagram p,html[data-theme="light"] .figma p,html[data-theme="light"] .lead{color:#5f6b7d}
+html[data-theme="dark"]{color-scheme:dark;--ink:#eef3fb;--muted:#b8c5d8;--line:#304158;--orange:#ffad78;--pale:#101a2a}
+html[data-theme="dark"] body{background:#0b1220;color:#eef3fb}
+html[data-theme="dark"] header{background:rgba(11,18,32,.97);border-color:#2b394d}
+html[data-theme="dark"] header .brand{color:#eef3fb}
+html[data-theme="dark"] header span[style]{color:#aebbd0!important}
+html[data-theme="dark"] .hero{background:radial-gradient(ellipse at 80% 8%,rgba(229,121,50,.13) 0%,transparent 35%),linear-gradient(180deg,#0b1220,#0d1727)}
+html[data-theme="dark"] .hero h1,html[data-theme="dark"] .section h2,html[data-theme="dark"] .card h3,html[data-theme="dark"] .diagram h3,html[data-theme="dark"] .figma h3{color:#eef3fb}
+html[data-theme="dark"] .hero p,html[data-theme="dark"] .lead,html[data-theme="dark"] .card p,html[data-theme="dark"] .diagram p,html[data-theme="dark"] .figma p{color:#b8c5d8}
+html[data-theme="dark"] .card,html[data-theme="dark"] .diagram,html[data-theme="dark"] .figma{background:#121f32;border-color:#304158;color:#eef3fb;box-shadow:0 12px 28px rgba(0,0,0,.2)}
+html[data-theme="dark"] .card .num{background:#30251f;color:#ffbd8e;border-color:#614632}
+html[data-theme="dark"] .tag{background:#172438;border-color:#35455c;color:#dbe5f2}
+html[data-theme="dark"] .notice{background:#30251f;border-color:#755039;border-left-color:#ffad78;color:#ffdbbf}
+html[data-theme="dark"] .diagram img{border-color:#304158;background:#0d1727}
+html[data-theme="dark"] .figma .button:not(.primary){background:#172438;border-color:#3a4b63;color:#eef3fb}
+html[data-theme="dark"] .button.primary{background:#ffad78;border-color:#ffad78;color:#21170f}
+html[data-theme="dark"] footer{border-color:#2b394d;color:#aebbd0}
+html[data-theme="dark"] footer a{color:#dbe5f2}
+html[data-theme="dark"] .theme-toggle{background:#172438;color:#eef3fb;border-color:#3a4b63}
+html[data-theme="dark"] .hero:after,html[data-theme="dark"] .section:before{mix-blend-mode:screen;filter:invert(.92) hue-rotate(180deg) saturate(.45);opacity:.045}
+@media(max-width:720px){html[data-theme="dark"] .hero:after,html[data-theme="dark"] .section:before{opacity:.02}}
 </style></head><body><header><div class="wrap"><a class="brand" href="../index.html"><span>G</span> Gautam The Analyst</a><span style="color:#7b8492;font-size:12px;margin-left:16px">BUSINESS · DATA · TECHNOLOGY</span><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to dark theme" aria-pressed="false" title="Switch color theme"><span class="theme-toggle-icon" aria-hidden="true">☾</span><span class="theme-toggle-label">Dark theme</span></button></div></header><main>
 <section class="hero"><div class="wrap"><span class="eyebrow">BUSINESS ANALYSIS PORTFOLIO</span><h1>Sample documents that show how I work.</h1><p>Explore a connected set of analysis artifacts for a fictional payment reconciliation product—from business goals and functional requirements through UI wireframes, traceability and UAT planning.</p><div class="notice"><strong>Illustrative case study only.</strong> PayTrack, all people/merchant names, references and numbers are fictional. These documents are not client work, production evidence or executed-test results.</div></div></section>
 <section class="section"><div class="wrap"><h2>Requirements & delivery documents</h2><p class="lead">Open the editable Markdown source or download structured CSV files.</p><div class="cards">
