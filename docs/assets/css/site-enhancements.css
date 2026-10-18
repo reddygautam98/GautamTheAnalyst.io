@@ -118,3 +118,17 @@ html[data-theme="dark"] .trace-chain{background:rgba(56,191,224,.08);border-colo
 html[data-theme="dark"] .contact-terminal{border-color:#304158;background:#08111f}
 html[data-theme="dark"] .contact-terminal-bar{border-color:#304158;background:#111c2c}
 html[data-theme="dark"] .copy-action{background:#172438;border-color:#35455c;color:#dbe5f2}
+
+
+/* Soft cursor spotlights and animated gradient borders from the Futuristic v2 visual language. */
+@property --fx-border-angle{syntax:"<angle>";initial-value:0deg;inherits:false}
+@keyframes fx-border-rotate{to{--fx-border-angle:360deg}}
+.fx-spotlight{position:relative;isolation:isolate;--fx-spot-x:50%;--fx-spot-y:0%}
+.fx-spotlight::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;border-radius:inherit;opacity:.65;background:radial-gradient(330px circle at var(--fx-spot-x) var(--fx-spot-y),rgba(56,191,224,.10),transparent 62%)}
+html[data-theme="dark"] .fx-spotlight::before{background:radial-gradient(330px circle at var(--fx-spot-x) var(--fx-spot-y),rgba(99,216,239,.09),transparent 62%)}
+.fx-gradient-border{position:relative;isolation:isolate}
+.fx-gradient-border::after{content:"";position:absolute;inset:-1px;padding:1px;border-radius:inherit;pointer-events:none;z-index:3;background:conic-gradient(from var(--fx-border-angle),transparent 0deg,rgba(56,191,224,.55) 78deg,rgba(133,119,223,.42) 165deg,rgba(200,92,34,.42) 250deg,transparent 330deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:fx-border-rotate 18s linear infinite;opacity:.48}
+.preview-fallback{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:190px;padding:22px;text-align:center;background:linear-gradient(140deg,rgba(56,191,224,.09),rgba(133,119,223,.08));color:var(--muted);font-size:12px}
+.preview-fallback strong{color:var(--ink);font-size:13px}
+.preview-fallback a{color:var(--fx-cyan);font-weight:800;text-decoration:underline;text-underline-offset:3px}
+@media(prefers-reduced-motion:reduce){.fx-gradient-border::after{animation:none;opacity:.25}}
