@@ -15,6 +15,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/portfolio.css">
+<link rel="stylesheet" href="assets/css/site-enhancements.css">
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
@@ -61,6 +62,7 @@
       <div class="availability"><span class="status-dot" aria-hidden="true"></span> BUSINESS ANALYST · 4+ YEARS · REQUIREMENTS · INTEGRATION · DATA & UAT</div>
       <h1>Business Analyst turning requirements into <span class="gradient-text">delivery-ready outcomes.</span></h1>
       <p class="hero-copy">I translate stakeholder needs into BRD/FRD, user stories, API and data requirements, and UAT-ready acceptance criteria—then help technical teams deliver and validate the right outcome.</p>
+      <p class="typed-line"><b aria-hidden="true">›</b> focus: <span class="typed" data-words="requirements teams can verify|SQL &amp; Python analysis|API field mappings &amp; flows|UAT traceability &amp; handover|data-backed decisions" aria-label="Requirements, data analysis, integration flows and UAT"></span></p>
       <div class="hero-pills">
         <span>BRD / FRD</span>
         <span>User Stories & Acceptance</span>
@@ -72,7 +74,8 @@
         <a class="btn btn-primary" href="contact.html#project-enquiry">Discuss your project ↗</a>
         <a class="btn btn-secondary" href="samples/index.html">Explore BA sample artifacts</a>
       </div>
-      <div class="hero-note"><b>Scope first</b><i>·</i><b>Evidence-led</b><i>·</i><b>Clear acceptance & handover</b></div>\n      <a class="hero-recruiter-link" href="resume.html#experience">Hiring for a Business Analyst? Review my experience ↗</a>
+      <div class="hero-note"><b>Scope first</b><i>·</i><b>Evidence-led</b><i>·</i><b>Clear acceptance & handover</b></div>
+      <a class="hero-recruiter-link" href="resume.html#experience">Hiring for a Business Analyst? Review my experience ↗</a>
     </div>
     <div class="hero-orbit" role="img" aria-label="Illustration connecting discovery, requirements, data and validation">
       <div class="orbit-grid" aria-hidden="true"></div>
@@ -95,6 +98,8 @@
     <article class="benefit-card"><span class="benefit-icon" aria-hidden="true">04</span><div><strong>Structured validation</strong><small>Traceability, UAT scenarios and defect follow-up</small></div></article>
     <article class="benefit-card"><span class="benefit-icon" aria-hidden="true">05</span><div><strong>Practical handover</strong><small>Decisions, assumptions and clear next steps</small></div></article>
   </section>
+
+  <div class="toolkit-ticker" role="region" aria-label="Business analysis toolkit"><div class="toolkit-ticker-track"><div class="toolkit-ticker-set"><span>SQL</span><span>Python</span><span>Power BI</span><span>DAX</span><span>Power Query</span><span>Advanced Excel</span><span>Jira</span><span>Confluence</span><span>REST API requirements</span><span>BRD / FRD</span><span>User stories</span><span>BDD acceptance criteria</span><span>RTM</span><span>UAT</span><span>Figma diagrams</span></div><div class="toolkit-ticker-set" aria-hidden="true"><span>SQL</span><span>Python</span><span>Power BI</span><span>DAX</span><span>Power Query</span><span>Advanced Excel</span><span>Jira</span><span>Confluence</span><span>REST API requirements</span><span>BRD / FRD</span><span>User stories</span><span>BDD acceptance criteria</span><span>RTM</span><span>UAT</span><span>Figma diagrams</span></div></div></div>
 
   <section class="section services-section">
     <div class="section-heading">
@@ -127,7 +132,18 @@
     <div class="service-footnote"><span>Need a narrower scope or a combination of services?</span> <a href="contact.html#project-enquiry">Describe the challenge ↗</a></div>
   </section>
 
-  <section class="section project-section">
+  <section class="section lifecycle-explorer" id="lifecycle">
+<div class="section-heading"><div><span class="eyebrow">FROM BUSINESS NEED TO TEST RESULT</span><h2>One traceable path from <span class="gradient-text">problem to proof.</span></h2></div><p>Explore the stages and the work products that keep business, engineering and QA aligned. This is an illustrative view of the fictional PayTrack sample.</p></div>
+<div class="lifecycle-grid">
+<div class="lifecycle-steps" role="group" aria-label="Business analysis lifecycle steps">
+<button class="lifecycle-step" type="button" data-lifecycle-step="0" data-title="Discover the business need" data-summary="Understand the problem, users, current process, constraints and decision owners before selecting a solution." data-outputs="Problem statement|Stakeholder map|AS-IS process|Assumptions & RAID" data-chain="Problem|Stakeholders|Current state" data-note="Discovery outputs should be confirmed with the relevant stakeholders before the scope is baselined." aria-pressed="true"><span class="lifecycle-step-index">01</span><span><strong>Discover</strong><small>Problem, people and constraints</small></span></button>
+<button class="lifecycle-step" type="button" data-lifecycle-step="1" data-title="Define build-ready requirements" data-summary="Translate agreed business outcomes into functional behavior, business rules, user stories and testable acceptance criteria." data-outputs="BRD / FRD|Business rules|User stories|Acceptance criteria" data-chain="BR-02|FR-007|US-04|TC-005" data-note="Example chain from the fictional PayTrack traceability CSV. The linked test case is marked Not Run." aria-pressed="false"><span class="lifecycle-step-index">02</span><span><strong>Define</strong><small>Requirements and acceptance</small></span></button>
+<button class="lifecycle-step" type="button" data-lifecycle-step="2" data-title="Connect requirements to validation" data-summary="Keep the requirement, functional detail, story and test scenario linked so reviewers can verify the intended behavior." data-outputs="RTM|Test scenarios|UAT outcomes|Defect follow-up" data-chain="BR-02|FR-007|US-04|TC-005" data-note="Traceability demonstrates coverage; it does not imply that the illustrative test case has been executed." aria-pressed="false"><span class="lifecycle-step-index">03</span><span><strong>Validate</strong><small>RTM, testing and UAT</small></span></button>
+<button class="lifecycle-step" type="button" data-lifecycle-step="3" data-title="Hand over decisions and next steps" data-summary="Close the loop with accepted changes, unresolved questions, dependencies, risks, evidence and agreed next steps." data-outputs="Decision log|Open questions|Change traceability|Handover notes" data-chain="Evidence|Decision|Next step" data-note="The handover should make ownership, assumptions and remaining limitations explicit." aria-pressed="false"><span class="lifecycle-step-index">04</span><span><strong>Hand over</strong><small>Decisions and next actions</small></span></button>
+</div>
+<article class="lifecycle-detail" id="lifecycle-detail" aria-live="polite"><span class="eyebrow">SELECTED WORK PRODUCT</span><h3 id="lifecycle-detail-title">Discover the business need</h3><p id="lifecycle-detail-summary">Understand the problem, users, current process, constraints and decision owners before selecting a solution.</p><div class="lifecycle-output" id="lifecycle-detail-outputs"><span>Problem statement</span><span>Stakeholder map</span><span>AS-IS process</span><span>Assumptions & RAID</span></div><div class="trace-chain" id="lifecycle-detail-chain"><span>Problem</span><b aria-hidden="true">→</b><span>Stakeholders</span><b aria-hidden="true">→</b><span>Current state</span></div><p class="trace-note" id="lifecycle-detail-note">Discovery outputs should be confirmed with the relevant stakeholders before the scope is baselined.</p></article>
+</div></section>
+<section class="section project-section">
     <div class="section-heading">
       <div><span class="eyebrow">SELECTED WORK</span><h2>Practical analysis. <span class="gradient-text">Visible work.</span></h2></div>
       <p>Explore personal projects and prototypes. Each preview links to its repository or source image; illustrative visuals are labelled clearly.</p>
@@ -198,5 +214,6 @@
   </div>
 </footer>
 <script src="assets/js/portfolio.js" defer></script>
+<script src="assets/js/site-enhancements.js" defer></script>
 </body>
 </html>
