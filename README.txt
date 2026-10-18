@@ -41,3 +41,10 @@ The homepage hero now leads with the client problem-to-delivery journey and feat
 - A light/dark theme control is available in the main navigation and BA Samples gallery.
 - Theme choice is persisted in localStorage and shared across pages; when no choice is saved, the browser's color-scheme preference is used.
 - The control has keyboard focus styling and aria-pressed state.
+
+
+## Work-sample diagram backgrounds
+- The homepage hero and selected content sections use low-opacity background artwork composed from the real project-preview diagrams and the BA sample diagrams.
+- The BA Samples gallery also has a subtle diagram background and now displays an API sequence SVG alongside its Mermaid source.
+- Diagram artwork sits behind the content, is reduced on small screens, and uses a dark-theme-adjusted treatment so text remains readable.
+- The original SVG/PNG/Mermaid files remain separate and can still be opened or downloaded as sample artifacts.
