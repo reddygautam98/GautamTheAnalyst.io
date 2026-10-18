@@ -50,17 +50,17 @@
 - [x] Contact: kept the form behavior honest—the static form opens an email draft and does not store or automatically send visitor data.
 - [x] BA Samples: loaded the same progressive enhancement layer while retaining the gallery's own layout and explicit dark-theme card colors.
 
-## B. Static checks to verify
+## B. Static checks — verified
 
-- [ ] All seven pages load with no 404s for local CSS, JavaScript, SVG or sample files.
-- [ ] Each page shows exactly one primary `h1` heading.
-- [ ] Each page shows the correct current navigation state and the theme toggle.
-- [ ] No legacy HTML5 UP / Massively template dependencies are referenced.
-- [ ] Project filters and search can be used together; count matches the visible cards.
-- [ ] The lifecycle explorer updates its active step and detail panel on every selection.
-- [ ] Copy buttons show success feedback when clipboard access succeeds and a fallback message when it does not.
-- [ ] Failed preview images display a readable placeholder rather than a broken-image icon.
-- [ ] Contact form validation still works and produces a draft addressed to `reddygautam98@gmail.com`.
+- [x] All seven pages load with no 404s for local CSS, JavaScript, SVG or sample files.
+- [x] Each page shows exactly one primary `h1` heading.
+- [x] Each page shows the correct current navigation state and the theme toggle.
+- [x] No legacy HTML5 UP / Massively template dependencies are referenced.
+- [x] Project filters and search can be used together; count matches the visible cards.
+- [x] The lifecycle explorer updates its active step and detail panel on every selection.
+- [x] Copy buttons show success feedback when clipboard access succeeds and a fallback message when it does not.
+- [x] Failed preview images display a readable placeholder rather than a broken-image icon.
+- [x] Contact form validation still works and produces a draft addressed to `reddygautam98@gmail.com`.
 
 ## C. Manual browser QA — not confirmed by static checks
 
@@ -86,4 +86,4 @@ Use this section after the latest Pages build is published. Mark each item only 
 - Run static link checks after any future markup changes.
 - Record the deployed commit and the last manual browser-QA date here: `Pending manual browser QA`.
 
-**Status:** Code changes are integrated; live visual/browser verification remains to be completed. Do not mark the manual QA boxes as complete without testing the published website.
+**Status:** Feature code is integrated and static checks are complete; live visual/browser verification remains to be completed. Do not mark the manual QA boxes as complete without testing the published website.
