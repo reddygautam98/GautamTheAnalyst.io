@@ -211,11 +211,11 @@
     img.addEventListener('error',()=>{
       if(img.dataset.fallbackHandled)return;
       img.dataset.fallbackHandled='true';
-      const holder=img.closest('.project-snapshot,.snapshot-open,.diagram')||img.parentElement;
+      const link=img.closest('a.snapshot-open');
       const fallback=document.createElement('div');
       fallback.className='preview-fallback';
       fallback.innerHTML='<strong>Preview unavailable</strong><span>The source image could not be loaded.</span>';
-      img.replaceWith(fallback);
+      if(link)link.replaceWith(fallback);else img.replaceWith(fallback);
     },{once:true});
   });
 
