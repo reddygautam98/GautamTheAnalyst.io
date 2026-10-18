@@ -210,3 +210,38 @@ html[data-theme="dark"] .hero:after,html[data-theme="dark"] .sample-section:befo
 @media(max-width:720px){
  .hero:after,.sample-section:before{opacity:.025;background-size:150px auto,150px auto,150px auto,190px auto,190px auto,180px auto,190px auto;background-position:0% 0%,50% 0%,100% 2%,0% 100%,35% 100%,68% 100%,100% 100%}
 }
+
+
+/* Dedicated page layout and consistency polish */
+.skip-link{position:absolute;left:-9999px;top:8px;z-index:9999;padding:10px 14px;border-radius:8px;background:#172033;color:#fff}
+.skip-link:focus{left:12px}
+.section-heading h1{font-size:clamp(32px,4vw,48px);letter-spacing:-1.8px;line-height:1.12;margin:8px 0}
+.container{max-width:var(--max);margin:0 auto}
+.center-cta{padding:32px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(135deg,#fff8f0,#f8faff);text-align:center}
+.center-cta h2{font-size:clamp(27px,3vw,38px);letter-spacing:-1.2px;margin:7px 0 12px}
+.center-cta p{max-width:680px;margin:0 auto 20px;color:var(--muted);font-size:13px}
+.page-grid-two,.page-grid-three{display:grid;gap:16px}
+.page-grid-two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.page-grid-three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.detail-card{padding:24px;border:1px solid var(--line);border-radius:16px;background:#fff;box-shadow:0 10px 25px #24395108}
+.detail-card h2{font-size:21px;line-height:1.2;letter-spacing:-.5px;margin:10px 0}
+.detail-card h3{font-size:16px;margin:10px 0 5px}
+.detail-card p{font-size:12px;color:var(--muted);margin:7px 0}
+.detail-kicker{color:var(--orange);font-size:9px;font-weight:900;letter-spacing:1.2px;text-transform:uppercase}
+.project-note{max-width:var(--max);margin:22px auto 0;padding:14px 16px;border-left:3px solid var(--orange);border-radius:0 10px 10px 0;background:#fff8f1;color:#775239;font-size:11px;line-height:1.7}
+.contact-method{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid #edf0f4;text-decoration:none}
+.contact-method>span:nth-child(2){display:grid;gap:2px;flex:1;min-width:0}
+.contact-method small{font-size:8px;color:#929baa;letter-spacing:1.1px;font-weight:900;text-transform:uppercase}
+.contact-method strong{font-size:11px;overflow-wrap:anywhere}
+.contact-method>strong:last-child{color:var(--orange)}
+.contact-intro h2,.form-heading h2{font-size:24px;letter-spacing:-.8px;line-height:1.2;margin:13px 0 8px}
+.contact-intro p,.form-heading p{font-size:12px;color:var(--muted);margin:0 0 15px}
+.privacy-note{font-size:10px;line-height:1.6;color:var(--muted);margin:14px 0 0}
+.project-section .project-grid{padding-bottom:2px}
+@media(max-width:720px){.page-grid-two,.page-grid-three{grid-template-columns:1fr}.center-cta{padding:24px 18px}.section-heading h1{font-size:clamp(30px,8vw,40px)}}
+html[data-theme="dark"] .center-cta,html[data-theme="dark"] .detail-card{background:#121e30;border-color:#2b394d;box-shadow:0 12px 28px #0003}
+html[data-theme="dark"] .detail-card p,html[data-theme="dark"] .center-cta p{color:#adbacd}
+html[data-theme="dark"] .project-note{background:#302317;border-color:#e97833;color:#ffd0a8}
+html[data-theme="dark"] .contact-method{border-color:#2b394d;color:#edf2fb}
+html[data-theme="dark"] .contact-method small{color:#9cabbe}
+html[data-theme="dark"] .skip-link{background:#182437;color:#fff}
