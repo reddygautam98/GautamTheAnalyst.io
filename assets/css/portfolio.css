@@ -245,3 +245,6 @@ html[data-theme="dark"] .project-note{background:#302317;border-color:#e97833;co
 html[data-theme="dark"] .contact-method{border-color:#2b394d;color:#edf2fb}
 html[data-theme="dark"] .contact-method small{color:#9cabbe}
 html[data-theme="dark"] .skip-link{background:#182437;color:#fff}
+
+/* Avoid a duplicate header CTA occupying a whole row on small screens. */
+@media(max-width:720px){.nav-wrap>.nav-cta{display:none}}
