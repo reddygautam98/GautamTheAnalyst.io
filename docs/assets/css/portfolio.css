@@ -250,3 +250,55 @@ html[data-theme="dark"] .skip-link{background:#182437;color:#fff}
 
 /* Avoid a duplicate header CTA occupying a whole row on small screens. */
 @media(max-width:720px){.nav-wrap>.nav-cta{display:none}}
+
+
+/* MASTER THEME CONTRAST PASS — all six pages */
+html[data-theme="light"]{color-scheme:light;--ink:#151b2b;--muted:#5f6b7d;--line:#dfe5ed;--orange:#c85c22;--orange2:#f3a269;--pale:#f5f7fb;--white:#fff;--navy:#111a2b}
+html[data-theme="light"] body{background:#fbfcfe;color:var(--ink)}
+html[data-theme="dark"]{color-scheme:dark;--ink:#eef3fb;--muted:#b8c5d8;--line:#304158;--orange:#ffad78;--orange2:#ffc08b;--pale:#101a2a;--white:#121f32;--navy:#08111f}
+html[data-theme="dark"] body{background:#0b1220;color:var(--ink)}
+html[data-theme="dark"] .site-header{background:rgba(11,18,32,.96);border-color:#2b394d}
+html[data-theme="dark"] .brand small{color:#a7b5c8}
+html[data-theme="dark"] .nav-links{color:#c7d2e1}
+html[data-theme="dark"] .nav-links>a:not(.btn):hover,html[data-theme="dark"] .nav-links>a.active{color:#ffad78}
+html[data-theme="dark"] .menu-toggle{background:#172438;color:#eef3fb;border-color:#35455c}
+html[data-theme="dark"] .btn-secondary{background:#172438;border-color:#3a4b63;color:#eef3fb}
+html[data-theme="dark"] .btn-primary{background:linear-gradient(110deg,#f18a48,#ffb071);border-color:#f18a48;color:#20160e}
+html[data-theme="dark"] .hero{background:radial-gradient(ellipse at 75% 20%,rgba(229,121,50,.12),transparent 34%),linear-gradient(180deg,#0b1220 0%,#0d1727 100%)}
+html[data-theme="dark"] .hero:before{background:radial-gradient(circle,rgba(223,125,61,.13),transparent 70%)}
+html[data-theme="dark"] .hero-gridline{opacity:.18}
+html[data-theme="dark"] .availability{background:#221b18;border-color:#5a3b2a;color:#ffd2b2}
+html[data-theme="dark"] .hero-pills span,html[data-theme="dark"] .tags span{background:#172438;border-color:#35455c;color:#dbe5f2}
+html[data-theme="dark"] .hero-note{color:#aebcd0}
+html[data-theme="dark"] .hero-note b{color:#e1e9f4}
+html[data-theme="dark"] .orbit-grid{background:radial-gradient(ellipse,#1a2a3f 0%,#101a2a 55%,transparent 75%)}
+html[data-theme="dark"] .orbit-core{background:linear-gradient(145deg,#26364c,#162338);border-color:#40546d;color:#f0f5fc}
+html[data-theme="dark"] .orbit-tag,html[data-theme="dark"] .floating-stat{background:#152238f2;border-color:#34465e;color:#edf3fb}
+html[data-theme="dark"] .floating-stat small{color:#b4c0d1}
+html[data-theme="dark"] .project-section,html[data-theme="dark"] .expertise-section,html[data-theme="dark"] .experience-section,html[data-theme="dark"] .engagement-section,html[data-theme="dark"] .services-section,html[data-theme="dark"] .contact-section,html[data-theme="dark"] .section-white,html[data-theme="dark"] .benefits-section,html[data-theme="dark"] .sample-section{background:#0d1727}
+html[data-theme="dark"] .section-white{background:#0d1727!important}
+html[data-theme="dark"] .center-cta,html[data-theme="dark"] .detail-card,html[data-theme="dark"] .metric-card,html[data-theme="dark"] .project-card,html[data-theme="dark"] .service-card,html[data-theme="dark"] .expertise-card,html[data-theme="dark"] .experience-card,html[data-theme="dark"] .contact-info-card,html[data-theme="dark"] .contact-form-card,html[data-theme="dark"] .engagement-grid article,html[data-theme="dark"] .sample-card,html[data-theme="dark"] .sample-footer-cta,html[data-theme="dark"] .benefit-card{background:#121f32;border-color:#304158;color:#eef3fb;box-shadow:0 12px 30px rgba(0,0,0,.18)}
+html[data-theme="dark"] .service-card,html[data-theme="dark"] .expertise-card{background:linear-gradient(145deg,#142136,#101a2a)}
+html[data-theme="dark"] .project-art:not(.project-snapshot){background:linear-gradient(135deg,#19283e,#111c2c)}
+html[data-theme="dark"] .project-art:before{opacity:.18}
+html[data-theme="dark"] .project-meta,html[data-theme="dark"] .project-body p,html[data-theme="dark"] .section-heading p,html[data-theme="dark"] .service-card p,html[data-theme="dark"] .expertise-card p,html[data-theme="dark"] .experience-item p,html[data-theme="dark"] .contact-intro p,html[data-theme="dark"] .detail-card p,html[data-theme="dark"] .center-cta p,html[data-theme="dark"] .benefit-card small,html[data-theme="dark"] .sample-card p,html[data-theme="dark"] .sample-footer-cta p span,html[data-theme="dark"] .engagement-grid article p{color:#b8c5d8}
+html[data-theme="dark"] .sample-card h3,html[data-theme="dark"] .benefit-card strong,html[data-theme="dark"] .section-heading h1,html[data-theme="dark"] .section-heading h2,html[data-theme="dark"] .service-card h3,html[data-theme="dark"] .expertise-card h3,html[data-theme="dark"] .experience-item h3,html[data-theme="dark"] .detail-card h2,html[data-theme="dark"] .detail-card h3,html[data-theme="dark"] .center-cta h2,html[data-theme="dark"] .form-heading h2,html[data-theme="dark"] .contact-intro h2{color:#eef3fb}
+html[data-theme="dark"] .eyebrow{color:#ffad78}
+html[data-theme="dark"] .service-label{color:#ffb17e}
+html[data-theme="dark"] .service-icon,html[data-theme="dark"] .contact-method-icon,html[data-theme="dark"] .benefit-icon,html[data-theme="dark"] .sample-number,html[data-theme="dark"] .engagement-grid article>span{background:#30251f;border-color:#614632;color:#ffbd8e}
+html[data-theme="dark"] .service-footnote{background:#172438;border-color:#304158;color:#d3ddec}
+html[data-theme="dark"] .service-footnote a,html[data-theme="dark"] .sample-link{color:#ffbd8e}
+html[data-theme="dark"] .project-note,html[data-theme="dark"] .sample-notice{background:#30251f;border-color:#755039;color:#ffdbbf}
+html[data-theme="dark"] .contact-method,html[data-theme="dark"] .contact-trust{background:#172438;border-color:#304158;color:#e0e9f5}
+html[data-theme="dark"] .contact-method small{color:#aebbd0}
+html[data-theme="dark"] #project-enquiry-form label{color:#dbe5f2}
+html[data-theme="dark"] #project-enquiry-form label small{color:#aebbd0}
+html[data-theme="dark"] #project-enquiry-form input,html[data-theme="dark"] #project-enquiry-form textarea,html[data-theme="dark"] #project-enquiry-form select{background:#0d1727;color:#eef3fb;border-color:#3a4c64}
+html[data-theme="dark"] #project-enquiry-form input::placeholder,html[data-theme="dark"] #project-enquiry-form textarea::placeholder{color:#9caec4;opacity:1}
+html[data-theme="dark"] #project-enquiry-form input:focus,html[data-theme="dark"] #project-enquiry-form textarea:focus,html[data-theme="dark"] #project-enquiry-form select:focus{background:#101d30;border-color:#ffad78;box-shadow:0 0 0 3px rgba(255,173,120,.18)}
+html[data-theme="dark"] .form-disclaimer,html[data-theme="dark"] .privacy-note{color:#aebbd0}
+html[data-theme="dark"] .form-status:not(:empty){background:#15372f;color:#c9f5e5}
+html[data-theme="dark"] .site-footer{background:#080f1b;border-color:#2b394d}
+html[data-theme="dark"] .footer-inner p,html[data-theme="dark"] .footer-inner>span{color:#a7b5c8}
+html[data-theme="dark"] .theme-toggle{background:#172438;color:#eef3fb;border-color:#3a4b63}
+html[data-theme="dark"] a:focus-visible,html[data-theme="dark"] button:focus-visible,html[data-theme="dark"] input:focus-visible,html[data-theme="dark"] select:focus-visible,html[data-theme="dark"] textarea:focus-visible{outline:3px solid rgba(255,173,120,.72);outline-offset:3px}
