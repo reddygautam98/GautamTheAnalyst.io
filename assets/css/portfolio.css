@@ -206,7 +206,7 @@ html[data-theme="dark"] .btn-primary{color:#21150d}
   background-position:0% 14%,48% 3%,100% 13%,3% 98%,38% 98%,72% 98%,100% 98%;
 }
 .hero-inner{z-index:2}.hero-orbit{z-index:1}
-.project-section:before,.services-section:before,.sample-section:before,.expertise-section:before,.experience-section:before,.engagement-section:before{
+.project-section:before,.services-section:before,.sample-section:before,.expertise-section:before,.experience-section:before,.engagement-section:before,.contact-section:before{
   content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.06;mix-blend-mode:multiply;
   background-image:url("../../samples/diagrams/Payment_Reconciliation_Process.svg"),url("../../samples/diagrams/Payment_Conceptual_Architecture.svg"),url("../../samples/diagrams/Payment_Data_Model_ERD.svg"),url("../../samples/diagrams/Payment_API_Sequence.svg");
   background-repeat:no-repeat;background-size:330px auto,340px auto,320px auto,350px auto;
@@ -217,9 +217,10 @@ html[data-theme="dark"] .btn-primary{color:#21150d}
 .sample-section>.section-heading,.sample-section>.sample-notice,.sample-section>.sample-grid,.sample-section>.sample-footer-cta,
 .expertise-section>.section-heading,.expertise-section>.expertise-grid,
 .experience-section>.section-heading,.experience-section>.experience-card,
-.engagement-section>.section-heading,.engagement-section>.engagement-grid{position:relative;z-index:1}
-html[data-theme="dark"] .hero:after,html[data-theme="dark"] .project-section:before,html[data-theme="dark"] .services-section:before,html[data-theme="dark"] .sample-section:before,html[data-theme="dark"] .expertise-section:before,html[data-theme="dark"] .experience-section:before,html[data-theme="dark"] .engagement-section:before{mix-blend-mode:screen;filter:invert(.92) hue-rotate(180deg) saturate(.65);opacity:.12}
+.engagement-section>.section-heading,.engagement-section>.engagement-grid,
+.contact-section>.section-heading,.contact-section>.contact-layout{position:relative;z-index:1}
+html[data-theme="dark"] .hero:after,html[data-theme="dark"] .project-section:before,html[data-theme="dark"] .services-section:before,html[data-theme="dark"] .sample-section:before,html[data-theme="dark"] .expertise-section:before,html[data-theme="dark"] .experience-section:before,html[data-theme="dark"] .engagement-section:before,html[data-theme="dark"] .contact-section:before{mix-blend-mode:screen;filter:invert(.92) hue-rotate(180deg) saturate(.65);opacity:.12}
 @media(max-width:720px){
   .hero:after{opacity:.07;background-size:175px auto,175px auto,175px auto,200px auto,200px auto,200px auto,200px auto;background-position:0% 2%,70% 0%,100% 27%,0% 95%,34% 100%,68% 100%,100% 95%}
-  .project-section:before,.services-section:before,.sample-section:before,.expertise-section:before,.experience-section:before,.engagement-section:before{opacity:.04;background-size:170px auto,175px auto,170px auto,180px auto}
+  .project-section:before,.services-section:before,.sample-section:before,.expertise-section:before,.experience-section:before,.engagement-section:before,.contact-section:before{opacity:.04;background-size:170px auto,175px auto,170px auto,180px auto}
 }
