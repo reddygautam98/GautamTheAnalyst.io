@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">Gautam The Analyst brand mark</title>
+  <desc id="desc">Orange rounded square with a white rising bar chart and connected data points.</desc>
+  <defs>
+    <linearGradient id="orange" x1="7" y1="5" x2="57" y2="60" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFB77D"/>
+      <stop offset=".52" stop-color="#ED8648"/>
+      <stop offset="1" stop-color="#C85C22"/>
+    </linearGradient>
+    <linearGradient id="shine" x1="12" y1="8" x2="47" y2="42" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fff" stop-opacity=".25"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect x="2" y="2" width="60" height="60" rx="17" fill="url(#orange)"/>
+  <path d="M19 44.5V35M29 44.5V29M39 44.5V22.5" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="5.5"/>
+  <path d="M17 25.5 28.5 19.5 38.5 22 48 12.5" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+  <path d="M41.5 12.5H48V19" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+  <circle cx="17" cy="25.5" r="3" fill="#fff"/>
+  <circle cx="28.5" cy="19.5" r="3" fill="#fff"/>
+  <circle cx="38.5" cy="22" r="3" fill="#fff"/>
+  <rect x="2" y="2" width="60" height="60" rx="17" fill="url(#shine)"/>
+</svg>
