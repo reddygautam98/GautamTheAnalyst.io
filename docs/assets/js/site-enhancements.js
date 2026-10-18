@@ -194,6 +194,31 @@
     }else animateCounters();
   }
 
+
+  /* 10) Restrained cursor spotlights, rotated borders, and resilient project previews. */
+  const spotlightTargets=$('.service-card,.project-card,.sample-card,.sample-feature-card,.lifecycle-detail,.contact-info-card,.contact-form-card,.detail-card');
+  spotlightTargets.forEach(el=>{
+    el.classList.add('fx-spotlight');
+    el.addEventListener('pointermove',e=>{
+      if(!finePointer||reduced)return;
+      const r=el.getBoundingClientRect();
+      el.style.setProperty('--fx-spot-x',Math.max(0,Math.min(100,(e.clientX-r.left)/r.width*100))+'%');
+      el.style.setProperty('--fx-spot-y',Math.max(0,Math.min(100,(e.clientY-r.top)/r.height*100))+'%');
+    });
+  });
+  $('.lifecycle-detail,.contact-form-card,.sample-feature-card').forEach(el=>el.classList.add('fx-gradient-border'));
+  $('img').forEach(img=>{
+    img.addEventListener('error',()=>{
+      if(img.dataset.fallbackHandled)return;
+      img.dataset.fallbackHandled='true';
+      const holder=img.closest('.project-snapshot,.snapshot-open,.diagram')||img.parentElement;
+      const fallback=document.createElement('div');
+      fallback.className='preview-fallback';
+      fallback.innerHTML='<strong>Preview unavailable</strong><span>The source image could not be loaded.</span>';
+      img.replaceWith(fallback);
+    },{once:true});
+  });
+
   /* 9) Safe page-year update; no external services or stored form data. */
   const year=$('#year');if(year)year.textContent=new Date().getFullYear();
 })();
