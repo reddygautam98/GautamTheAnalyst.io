@@ -366,3 +366,31 @@ html[data-theme="light"] .case-study-section{background:linear-gradient(180deg,#
 @media(prefers-reduced-motion:reduce){
   body.has-mobile-dock .dots a:before{transition:none}
 }
+
+
+
+/* Print stylesheet for the resume page. It lets visitors save a clean PDF
+   through the browser's native Print > Save as PDF flow. */
+@media print{
+  @page{size:A4;margin:13mm}
+  html,body{background:#fff!important;color:#172033!important;scroll-behavior:auto!important}
+  body{font-size:10pt!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .site-header,.site-footer,.skip-link,.resume-download-bar,.page-quicknav,
+  .fx3d-universe,.fx3d-floor,.fx3d-toolkit-section,.toolkit-ticker,.command-trigger,
+  .dots,.mq,.mega-word,.hero-recruiter-link{display:none!important}
+  .section,.metrics-section{max-width:none!important;margin:0!important;padding:6mm 0!important}
+  .metrics-section{grid-template-columns:repeat(4,minmax(0,1fr))!important;padding:0 0 5mm!important}
+  .metric-card,.experience-card,.experience-item,.expertise-card,.detail-card,.center-cta{
+    background:#fff!important;color:#172033!important;box-shadow:none!important;
+    break-inside:avoid;border-color:#d8dee8!important;
+  }
+  .experience-section,.expertise-section,.section-white,.project-section,.benefits-section{
+    background:#fff!important;
+  }
+  .experience-bullets,.experience-item p,.section-heading p,.detail-card p{color:#364152!important}
+  .experience-bullets strong,.experience-item h3,.section-heading h1,.section-heading h2,
+  .detail-card h2,.detail-card h3{color:#172033!important}
+  a{color:#172033!important;text-decoration:none!important}
+  button{display:none!important}
+  .experience-label,.eyebrow,.detail-kicker{color:#a94818!important}
+}
