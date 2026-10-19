@@ -13,7 +13,7 @@
   const navLinks=$$('.nav-links a').filter(a=>a.href);
   const commandItems=[
     {title:'Home',hint:'Page',href:base+'index.html'},
-    {title:'Services',hint:'Page',href:base+'services.html'},
+    {title:'Capabilities',hint:'Page',href:base+'services.html'},
     {title:'Projects',hint:'Page',href:base+'projects.html'},
     {title:'BA Samples',hint:'Documents & diagrams',href:base+'samples/index.html'},
     {title:'About',hint:'Page',href:base+'about.html'},
