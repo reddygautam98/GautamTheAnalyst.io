@@ -13,7 +13,7 @@
   const navLinks=$$('.nav-links a').filter(a=>a.href);
   const commandItems=[
     {title:'Home',hint:'Page',href:base+'index.html'},
-    {title:'Services',hint:'Page',href:base+'services.html'},
+    {title:'Capabilities',hint:'Page',href:base+'services.html'},
     {title:'Projects',hint:'Page',href:base+'projects.html'},
     {title:'BA Samples',hint:'Documents & diagrams',href:base+'samples/index.html'},
     {title:'About',hint:'Page',href:base+'about.html'},
@@ -365,4 +365,70 @@
     $$('.kinetic-word').forEach(span=>{span.style.opacity='1';span.style.transform='none';});
     $$('.case').forEach(card=>{card.style.transform='none';card.style.filter='none';});
   }
+ 
+  /* Floating utility dock: Resume, Email and transparent JD keyword comparison. */
+  if(!$('.gta-utility-dock')){
+    const onResume=/\/resume\.html$/.test(location.pathname);
+    const dock=document.createElement('nav');
+    dock.className='gta-utility-dock';
+    dock.setAttribute('aria-label','Quick actions');
+    dock.innerHTML=
+      '<a class="gta-dock-resume" href="'+(onResume?base+'assets/Gautam_Reddy_Business_Analyst_Resume.pdf':base+'resume.html')+'" '+(onResume?'download':'')+'>'+(onResume?'Download PDF':'Resume')+'</a>'+
+      '<a class="gta-dock-email" href="mailto:reddygautam98@gmail.com">Email</a>'+
+      '<button class="gta-dock-fit" type="button" aria-expanded="false" aria-controls="gta-jd-panel">JD fit check</button>';
+    document.body.appendChild(dock);
+
+    const panel=document.createElement('section');
+    panel.className='gta-jd-panel';
+    panel.id='gta-jd-panel';
+    panel.hidden=true;
+    panel.setAttribute('aria-labelledby','gta-jd-title');
+    panel.innerHTML=
+      '<div class="gta-jd-head"><h2 id="gta-jd-title">Compare a job description</h2>'+
+      '<button class="gta-jd-close" type="button" aria-label="Close job description checker">Close</button></div>'+
+      '<label for="gta-jd-text">Paste job-description text</label>'+
+      '<textarea id="gta-jd-text" rows="5" placeholder="Paste the responsibilities and required skills..."></textarea>'+
+      '<button class="gta-jd-run" type="button">Check keyword matches</button>'+
+      '<div class="gta-jd-results" role="status" aria-live="polite"></div>'+
+      '<p class="gta-jd-note">This is a simple keyword comparison against the portfolio content, not an ATS score or a hiring prediction.</p>';
+    document.body.appendChild(panel);
+
+    const fitBtn=$('.gta-dock-fit',dock);
+    const closeBtn=$('.gta-jd-close',panel);
+    const input=$('#gta-jd-text',panel);
+    const result=$('.gta-jd-results',panel);
+    const covered=[
+      'SQL','Python','pandas','Power BI','DAX','Power Query','Excel','Jira','Confluence',
+      'BRD','FRD','user stories','acceptance criteria','RTM','UAT','Agile','Scrum',
+      'API requirements','payment gateway','settlement','reconciliation','stakeholder',
+      'workshop','regression','change request','RACI','gap analysis','data mapping',
+      'AWS Redshift','ETL','data quality','requirements engineering'
+    ];
+    const learning=['ISO 20022','SWIFT','MT/MX','NEFT','RTGS','IMPS','UPI'];
+    const showPanel=show=>{
+      panel.hidden=!show;
+      fitBtn.setAttribute('aria-expanded',String(show));
+      if(show) input.focus();
+    };
+    fitBtn.addEventListener('click',()=>showPanel(panel.hidden));
+    closeBtn.addEventListener('click',()=>{showPanel(false);fitBtn.focus();});
+    document.addEventListener('keydown',e=>{
+      if(e.key==='Escape'&&!panel.hidden){showPanel(false);fitBtn.focus();}
+    });
+    $('.gta-jd-run',panel).addEventListener('click',()=>{
+      const jd=input.value.toLowerCase().trim();
+      if(jd.length<20){
+        result.textContent='Paste at least a short paragraph from the job description to compare keywords.';
+        return;
+      }
+      const matched=covered.filter(k=>jd.includes(k.toLowerCase()));
+      const payment=learning.filter(k=>jd.includes(k.toLowerCase()));
+      const chips=(arr,cls)=>arr.length?arr.map(k=>'<span class="'+cls+'"></span>').join(''):'';
+      const list=(arr,cls)=>arr.length?'<div class="gta-jd-chips">'+arr.map(k=>'<span class="'+cls+'">'+k.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</span>').join('')+'</div>':'<p>None of these terms were found.</p>';
+      result.innerHTML='<div class="gta-jd-group"><strong>Keywords found in the portfolio</strong>'+list(matched,'gta-jd-match')+'</div>'+
+        '<div class="gta-jd-group"><strong>Related payment topics listed as learning artifacts</strong>'+list(payment,'gta-jd-learning')+'</div>'+
+        '<p class="gta-jd-count">'+matched.length+' profile keywords and '+payment.length+' payment-learning terms matched.</p>';
+    });
+  }
+
 })();
