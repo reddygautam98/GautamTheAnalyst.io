@@ -1,0 +1,18 @@
+flowchart LR
+  start([Payment received]) --> capture[Capture transaction]
+  capture --> validate[Validate required fields]
+  validate --> valid{Fields valid?}
+  valid -->|No| reject[Reject with reason]
+  valid -->|Yes| match[Match gateway and internal records]
+  match --> found{Match found?}
+  found -->|Yes| reconcile[Mark reconciled]
+  found -->|No| exception[Create exception case]
+  exception --> review[Operations reviews case]
+  review --> action{Resolution available?}
+  action -->|Yes| resolve[Record resolution]
+  action -->|No| escalate[Escalate to operations lead]
+  resolve --> audit[Write audit event]
+  escalate --> audit
+  reconcile --> audit
+  reject --> audit
+  audit --> finish([Status available to user])

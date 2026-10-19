@@ -1,0 +1,16 @@
+﻿Test Case ID,Scenario,Precondition,Steps Summary,Expected Result,Traceability,Execution Status
+TC-001,Overview metrics,Valid authorised user and sample dataset,Open overview for date window,Counts and trend reflect the selected time window; source/job status visible.,BR-01 / FR-002,Not Run
+TC-002,Transaction details,Transaction has internal and gateway fields,Open transaction detail,"Required source values, statuses, timestamps and reconciliation status display.",BR-01 / FR-004,Not Run
+TC-003,Exact match,"Reference, amount and currency align",Run reconciliation,Record marked matched; no exception created.,BR-02 / FR-005,Not Run
+TC-004,Amount mismatch,"Same agreed reference, different amount",Run reconciliation,Record unmatched; amount-mismatch reason and compared values visible.,BR-02 / FR-006,Not Run
+TC-005,Duplicate event replay,Previously processed event ID supplied again,Replay event,Existing transaction remains unique; duplicate event handled according to policy.,BR-02 / FR-007,Not Run
+TC-006,Assign case and audit,Analyst has assignment permission,Assign case to queue/user,"Owner updates; audit event records actor, timestamp and change.",BR-03 / BR-04,Not Run
+TC-007,Resolve missing reason,Case open; required resolution reason omitted,Submit resolution,Submission blocked; validation is visible; case status unchanged.,BR-03 / FR-010,Not Run
+TC-008,Approved resolution,Authorised user; valid resolution data,Submit valid permitted resolution,Status follows configured path; resolution details and audit event persist.,BR-03 / BR-04,Not Run
+TC-009,Reopen case,Resolved case; user has reopen permission,"Reopen with no reason, then with reason",First attempt rejected; second succeeds with audit event if policy permits.,BR-04 / FR-012,Not Run
+TC-010,Read-only access,User has read-only role,Attempt assignment/resolution,Server denies mutation; record remains unchanged.,BR-05 / FR-001,Not Run
+TC-011,Restricted field masking,Field is configured as restricted,Open record and export view,Restricted field is masked/omitted consistently based on policy.,"BR-05 / FR-001, FR-014",Not Run
+TC-012,Search by reference,Known permitted record exists,Search merchant or gateway reference,Matching record(s) return; invalid/no-result state is handled safely.,BR-06 / FR-003,Not Run
+TC-013,Filter queue,Cases exist across statuses/reasons/owners,Apply multiple filters,Rows and counts match all applied filters; clear filters resets view.,BR-06 / FR-013,Not Run
+TC-014,Export filter and permissions,Authorised exporter; filtered result set,Export rows,Only permitted filtered fields/records included; error displayed if export fails.,BR-07 / FR-014,Not Run
+TC-015,Ingestion failure visibility,One source job has failed,Open operations status,"Failure status, last successful run and safe error summary are displayed.",BR-08 / FR-015,Not Run
