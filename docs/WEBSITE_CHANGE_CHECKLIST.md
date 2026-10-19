@@ -142,3 +142,36 @@ Use this section after the latest Pages build is published. Mark each item only 
 - [ ] Check performance, tab-visibility behavior, and layout at 360–430 px widths.
 
 **Release status:** v4 code changes are integrated in this branch and static checks passed. Merge/deployment and hands-on browser QA must be confirmed separately.
+
+
+## Portfolio v6 final issues — 2026-10-19
+
+### Implemented in this branch
+- [x] Consistent **Capabilities** navigation label across Home, About, Capabilities, Projects, Resume, Contact and BA Samples.
+- [x] Updated the command-palette entry to say **Capabilities** as well.
+- [x] Reworded all six service CTAs to **Ask about this capability**.
+- [x] Updated Contact copy to cover role enquiries and professional collaboration; removed “freelance” wording from the Contact page and added full-time, contract and collaboration choices to the enquiry form.
+- [x] Added the **Payments extras** area to BA Samples with links to the payment-rails learning notes and ISO 20022 mapping CSV. Both referenced files are present in the repository.
+- [x] Added docs/PROFILE_COPY.md with revised LinkedIn and Naukri headline/About/summary drafts. The external LinkedIn/Naukri accounts are not edited by a website commit.
+- [x] Added the mobile bottom section dock, safe-area spacing and responsive home-hero sizing for narrow viewports.
+- [x] Removed the dead resume-PDF asset URL and replaced it with a **Print / Save as PDF** button wired to the browser print dialog; added a resume-friendly print stylesheet. This avoids a broken link and lets visitors save the resume view as a PDF, although a standalone PDF file is not stored in the website repository.
+
+### Static validation for v6 fixes
+- [x] All seven HTML pages keep a single primary h1.
+- [x] The enhancement and portfolio JavaScript parse without syntax errors.
+- [x] Enhancement CSS braces are balanced; responsive and reduced-motion styles remain present.
+- [x] No visible navigation anchor points to services.html with the old **Services** label.
+- [x] No “freelance” wording remains in Contact.
+- [x] The six capability cards use the expected CTA wording.
+- [x] Payments extras links resolve to the two repository files.
+- [x] Resume page has no dead PDF download URL and exposes the print/save action.
+
+### Still requires browser confirmation
+- [ ] Check the home hero and floating bottom dock at 360 px, 390 px and 430 px widths, including browser safe-area insets.
+- [ ] Check the desktop hero/orbit, card hover effects and page-specific layouts visually.
+- [ ] Test the grid/list project switch with search, filters and count together.
+- [ ] Test the Contact role/collaboration choices and verify the email draft content.
+- [ ] Click **Print / Save as PDF** and confirm the printable resume has no clipped content or unnecessary blank pages.
+- [ ] Verify saved theme preference and reduced-motion behavior in a real browser.
+
+**Release note:** Source changes are staged in feature/portfolio-v6-final-fixes-20261019. Do not treat manual browser QA as complete until the published website is tested.
