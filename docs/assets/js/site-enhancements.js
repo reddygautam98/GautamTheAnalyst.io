@@ -302,6 +302,7 @@
       const nav=document.createElement('nav');nav.className='dots';nav.setAttribute('aria-label','Section navigation');
       targets.forEach(([id,label],i)=>{const a=document.createElement('a');a.href='#'+id;a.setAttribute('aria-label',label);if(i===0)a.classList.add('on');const span=document.createElement('span');span.textContent=label;a.append(span);nav.append(a);});
       document.body.append(nav);
+      document.body.classList.add('has-mobile-dock');
       if('IntersectionObserver'in window){
         const observer=new IntersectionObserver(entries=>{
           entries.forEach(entry=>{if(entry.isIntersecting)$$('.dots a',nav).forEach(a=>a.classList.toggle('on',a.hash==='#'+entry.target.id));});
