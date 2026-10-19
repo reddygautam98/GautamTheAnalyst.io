@@ -228,3 +228,141 @@
   document.head.appendChild(fx3dScript);
 
 })();
+
+
+/* Portfolio patterns 2026 (v4). No new libraries; all controls remain keyboard reachable. */
+(function(){
+  'use strict';
+  const $=(s,c=document)=>c.querySelector(s), $$=(s,c=document)=>Array.from(c.querySelectorAll(s));
+  const reduce=!!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  const fine=!!(window.matchMedia&&window.matchMedia('(hover: hover) and (pointer: fine)').matches);
+
+  /* Giant wordmark shared by every page footer; add only once. */
+  const footer=$('footer.site-footer')||$('footer');
+  if(footer&&!$('.mega-word',footer)){
+    const word=document.createElement('div');
+    word.className='mega-word';word.setAttribute('aria-hidden','true');word.textContent='GAUTAM · THE ANALYST';
+    footer.insertBefore(word,footer.firstChild);
+  }
+
+  /* Kinetic, word-by-word headline entrance. Preserve inline accent spans and normal spacing. */
+  if(!reduce){
+    let wordIndex=0;
+    const skipTags=new Set(['SCRIPT','STYLE','SVG','PATH','BUTTON','INPUT','TEXTAREA','SELECT','CODE','KBD']);
+    const makeKinetic=(heading)=>{
+      if(heading.dataset.kineticReady==='1')return;
+      heading.dataset.kineticReady='1';
+      const walker=document.createTreeWalker(heading,NodeFilter.SHOW_TEXT,{
+        acceptNode(node){
+          if(!node.nodeValue||!node.nodeValue.trim())return NodeFilter.FILTER_REJECT;
+          let el=node.parentElement;
+          while(el&&el!==heading){if(skipTags.has(el.tagName)||el.closest('.typed,.toolkit-ticker,.visually-hidden'))return NodeFilter.FILTER_REJECT;el=el.parentElement;}
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      });
+      const nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);
+      nodes.forEach(node=>{
+        const parts=node.nodeValue.split(/(\s+)/);if(!parts.some(x=>x.trim()))return;
+        const frag=document.createDocumentFragment();
+        parts.forEach(part=>{
+          if(/^\s+$/.test(part)||!part){frag.append(document.createTextNode(part));return;}
+          const span=document.createElement('span');span.className='kinetic-word';span.style.setProperty('--p26-i',Math.min(wordIndex++,16));span.textContent=part;frag.append(span);
+        });
+        node.parentNode.replaceChild(frag,node);
+      });
+    };
+    $$('h1,.section-heading h2').forEach(makeKinetic);
+  }
+
+  /* Subtle magnetic movement on primary CTA buttons. */
+  if(fine&&!reduce){
+    $$('.btn-primary').forEach(btn=>{
+      btn.classList.add('magnetic');
+      btn.addEventListener('pointermove',e=>{
+        const r=btn.getBoundingClientRect(),dx=(e.clientX-r.left-r.width/2)/Math.max(1,r.width/2),dy=(e.clientY-r.top-r.height/2)/Math.max(1,r.height/2);
+        btn.style.setProperty('--p26-mx',(dx*4).toFixed(1)+'px');
+        btn.style.setProperty('--p26-my',(dy*3).toFixed(1)+'px');
+      },{passive:true});
+      btn.addEventListener('pointerleave',()=>{btn.style.setProperty('--p26-mx','0px');btn.style.setProperty('--p26-my','0px');});
+    });
+  }
+
+  /* Home-only scroll-synced marquee and section position indicator. */
+  const isHome=!!$('#home');
+  if(isHome){
+    if(!$('.mq')){
+      const marquee=document.createElement('div');marquee.className='mq';marquee.setAttribute('aria-hidden','true');
+      marquee.innerHTML='<div class="mq-row"><span>BUSINESS ANALYSIS</span><b>·</b><span>DATA-DRIVEN DELIVERY</span><i>·</i><span>REQUIREMENTS TO RESULTS</span><b>·</b><span>BUSINESS ANALYSIS</span><i>·</i></div>';
+      (footer||$('main')).before(marquee);
+    }
+    const targets=[
+      ['home','Start'],['proof','Evidence'],['lifecycle','Lifecycle'],['case-studies','Case studies'],['ba-samples','BA samples'],['process','Handover'],['contact','Contact']
+    ].filter(([id])=>$('#'+id));
+    if(targets.length>1&&!$('.dots')){
+      const nav=document.createElement('nav');nav.className='dots';nav.setAttribute('aria-label','Section navigation');
+      targets.forEach(([id,label],i)=>{const a=document.createElement('a');a.href='#'+id;a.setAttribute('aria-label',label);if(i===0)a.classList.add('on');const span=document.createElement('span');span.textContent=label;a.append(span);nav.append(a);});
+      document.body.append(nav);
+      if('IntersectionObserver'in window){
+        const observer=new IntersectionObserver(entries=>{
+          entries.forEach(entry=>{if(entry.isIntersecting)$$('.dots a',nav).forEach(a=>a.classList.toggle('on',a.hash==='#'+entry.target.id));});
+        },{rootMargin:'-38% 0px -48% 0px',threshold:0});
+        targets.forEach(([id])=>observer.observe($('#'+id)));
+      }
+    }
+  }
+
+  /* Build a view switch next to the existing search; preserve the current filter/search logic. */
+  const tools=$('.project-tools'),projectGrid=$('#project-grid');
+  if(tools&&projectGrid&&!$('.view-toggle',tools)){
+    const toggle=document.createElement('div');toggle.className='view-toggle';toggle.setAttribute('role','group');toggle.setAttribute('aria-label','Project layout');
+    toggle.innerHTML='<button type="button" class="vt" data-view="grid" aria-pressed="true">▦ Grid</button><button type="button" class="vt" data-view="list" aria-pressed="false">☰ List</button>';
+    const search=$('.project-search-wrap',tools);tools.insertBefore(toggle,search||tools.firstChild);
+    toggle.addEventListener('click',e=>{
+      const button=e.target.closest('button[data-view]');if(!button)return;
+      const list=button.dataset.view==='list';projectGrid.classList.toggle('list',list);
+      $$('button[data-view]',toggle).forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
+    });
+  }
+
+  /* Sticky resume snapshot is generated from existing verified resume metrics. */
+  const experienceCard=$('.experience-section .experience-card');
+  if(experienceCard&&!$('.resume-evidence-layout')){
+    const layout=document.createElement('div');layout.className='resume-evidence-layout';
+    const aside=document.createElement('aside');aside.className='resume-snapshot-2026';
+    aside.innerHTML='<span class="detail-kicker">DELIVERY SNAPSHOT</span><h3>Business Analyst</h3><p>Requirements, data analysis, API integration, Agile delivery and UAT coordination.</p><div class="chip-cloud"><span>BRD / FRD</span><span>User stories</span><span>RTM</span><span>SQL</span><span>Power BI</span><span>UAT</span></div><div class="resume-snapshot-stats"><span><b>100K+</b>records analyzed</span><span><b>350+</b>test cases</span><span><b>2</b>integrations</span><span><b>20+</b>workshops</span></div><p style="margin-top:14px"><a href="contact.html#project-enquiry">Discuss a role or project ↗</a></p>';
+    const parent=experienceCard.parentNode;parent.insertBefore(layout,experienceCard);layout.append(aside,experienceCard);
+  }
+
+  /* Progress-fill the scroll-told process; add depth to the sticky case stack. */
+  let raf=0;
+  const paintScrollPatterns=()=>{
+    raf=0;
+    $$('.process-grid').forEach(grid=>{
+      const r=grid.getBoundingClientRect(),h=Math.max(1,r.height);
+      const p=Math.max(0,Math.min(1,(innerHeight*.86-r.top)/(h+innerHeight*.24)));
+      grid.style.setProperty('--p',p.toFixed(3));
+    });
+    if(!reduce)$$('.case-stack .case').forEach((card,i)=>{
+      const r=card.getBoundingClientRect();
+      if(r.top<112){
+        const depth=Math.max(0,Math.min(1,(112-r.top)/Math.max(140,r.height)));
+        const scale=Math.max(.91,1-(i*.018)-(depth*.025));
+        card.style.setProperty('--case-depth',depth.toFixed(3));
+        card.style.transform='scale('+scale.toFixed(3)+')';
+        card.style.filter='saturate('+(1-depth*.1).toFixed(3)+')';
+      }else{card.style.transform='';card.style.filter='';}
+    });
+    const row=$('.mq-row');
+    if(row&&!reduce){const max=Math.max(1,document.documentElement.scrollHeight-innerHeight);row.style.transform='translate3d('+(-Math.min(.4,scrollY/max*.4)*100).toFixed(2)+'%,0,0)';}
+  };
+  const requestScrollPaint=()=>{if(!raf)raf=requestAnimationFrame(paintScrollPatterns);};
+  addEventListener('scroll',requestScrollPaint,{passive:true});
+  addEventListener('resize',requestScrollPaint,{passive:true});
+  requestScrollPaint();
+
+  /* Reduced-motion users still get all content and static layout, not animation. */
+  if(reduce){
+    $$('.kinetic-word').forEach(span=>{span.style.opacity='1';span.style.transform='none';});
+    $$('.case').forEach(card=>{card.style.transform='none';card.style.filter='none';});
+  }
+})();
