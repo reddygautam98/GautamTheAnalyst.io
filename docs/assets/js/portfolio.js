@@ -1,48 +1,83 @@
-(function(){
+/* Gautam The Analyst — 2026 portfolio patterns (kinetic type, magnetic buttons, scroll-spy, marquee, case stack, view toggle) */
+(() => {
+  'use strict';
+  const $ = (s, c = document) => c.querySelector(s);
+  const $$ = (s, c = document) => Array.from(c.querySelectorAll(s));
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 
-  // Light/dark color theme, persisted across portfolio pages.
-  const themeButton = document.querySelector('#theme-toggle');
-  const themeMeta = document.querySelector('meta[name="theme-color"]');
-  const safeThemeRead = () => { try { return localStorage.getItem('gta-theme'); } catch (_) { return null; } };
-  const applyTheme = (theme, persist = false) => {
-    const current = theme === 'dark' ? 'dark' : 'light';
-    document.documentElement.dataset.theme = current;
-    if (persist) { try { localStorage.setItem('gta-theme', current); } catch (_) {} }
-    if (themeButton) {
-      const isDark = current === 'dark';
-      themeButton.setAttribute('aria-pressed', String(isDark));
-      themeButton.setAttribute('aria-label', `Switch to ${isDark ? 'light' : 'dark'} theme`);
-      themeButton.setAttribute('title', `Switch to ${isDark ? 'light' : 'dark'} theme`);
-      const icon = themeButton.querySelector('.theme-toggle-icon');
-      const label = themeButton.querySelector('.theme-toggle-label');
-      if (icon) icon.textContent = isDark ? '☀' : '☾';
-      if (label) label.textContent = isDark ? 'Light theme' : 'Dark theme';
-    }
-    if (themeMeta) themeMeta.setAttribute('content', current === 'dark' ? '#05070d' : '#f3f6fc');
+  /* kinetic headlines: words rise out of a mask */
+  let wi = 0;
+  const split = (node, inAccent) => {
+    Array.from(node.childNodes).forEach(n => {
+      if (n.nodeType === 3) {
+        const frag = document.createDocumentFragment();
+        n.textContent.split(/(\s+)/).forEach(part => {
+          if (!part) return;
+          if (/^\s+$/.test(part)) { frag.append(' '); return; }
+          const w = document.createElement('span'); w.className = 'kw' + (inAccent ? ' acc' : ''); w.style.setProperty('--w', Math.min(wi++, 14));
+          const i = document.createElement('i'); i.textContent = part; w.append(i); frag.append(w);
+        });
+        n.replaceWith(frag);
+      } else if (n.nodeType === 1 && !n.classList.contains('kw')) split(n, inAccent || n.classList.contains('accent'));
+    });
   };
-  applyTheme(document.documentElement.dataset.theme || safeThemeRead() || 'light');
-  themeButton?.addEventListener('click', () => applyTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark', true));
-
- const toggle=document.querySelector('.menu-toggle');const nav=document.querySelector('.nav-links');
- if(toggle&&nav){toggle.addEventListener('click',()=>{const open=nav.classList.toggle('open');toggle.setAttribute('aria-expanded',String(open));});nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{nav.classList.remove('open');toggle.setAttribute('aria-expanded','false')}));}
- const buttons=document.querySelectorAll('.filter-btn');const cards=document.querySelectorAll('.project-card');
- buttons.forEach(button=>button.addEventListener('click',()=>{buttons.forEach(b=>{b.classList.remove('active');b.setAttribute('aria-pressed','false')});button.classList.add('active');button.setAttribute('aria-pressed','true');const category=(button.dataset.filter||'all').toLowerCase();cards.forEach(card=>{const cardCategory=(card.dataset.category||'').toLowerCase();card.hidden=category!=='all'&&cardCategory!==category;});}));
- if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches&&window.matchMedia('(pointer:fine)').matches){document.querySelectorAll('.project-card').forEach(card=>{card.addEventListener('pointermove',e=>{const r=card.getBoundingClientRect();const x=(e.clientX-r.left)/r.width-.5;const y=(e.clientY-r.top)/r.height-.5;card.style.transform='translateY(-4px) rotateY('+(x*3)+'deg) rotateX('+(-y*2)+'deg)';});card.addEventListener('pointerleave',()=>card.style.transform='');});}
- const serviceSelect=document.getElementById('service-interest');
- if(serviceSelect){
-  const requestedService=new URLSearchParams(window.location.search).get('service');
-  const normalize=value=>(value||'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
-  if(requestedService){
-   const query=normalize(requestedService);
-   const options=[...serviceSelect.options];
-   const match=options.find(option=>option.value && (normalize(option.text)===query || normalize(option.text).includes(query) || query.includes(normalize(option.text))));
-   if(match) serviceSelect.value=match.value || match.text;
+  if (!reduce) {
+    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('go'); io.unobserve(e.target); } }), { threshold: .3 });
+    $$('main h1, main h2').forEach(h => {
+      if (h.closest('.bt-stat')) return;
+      wi = 0; const label = h.textContent.trim().replace(/\s+/g, ' ');
+      split(h, false); h.setAttribute('aria-label', label); $$('.kw', h).forEach(k => k.setAttribute('aria-hidden', 'true'));
+      h.classList.add('kinetic'); io.observe(h);
+    });
   }
- }
- document.querySelectorAll('[data-service]').forEach(link=>link.addEventListener('click',()=>{if(serviceSelect){const wanted=link.dataset.service.toLowerCase();const options=[...serviceSelect.options];let found=options.find(option=>wanted.includes('business analysis')&&option.text.toLowerCase().startsWith('business analysis'));if(!found&&wanted.includes('data analytics'))found=options.find(option=>option.text.toLowerCase().startsWith('data analytics'));if(!found&&wanted.includes('sql'))found=options.find(option=>option.text.toLowerCase().startsWith('sql analysis'));if(!found&&wanted.includes('data engineering'))found=options.find(option=>option.text.toLowerCase().startsWith('data engineering'));if(!found&&wanted.includes('ai'))found=options.find(option=>option.text.toLowerCase().startsWith('ai and rag'));if(!found&&wanted.includes('uat'))found=options.find(option=>option.text.toLowerCase().startsWith('uat'));if(found)serviceSelect.value=found.value;}}));
- const form=document.getElementById('project-enquiry-form');
- if(form){form.addEventListener('submit',event=>{event.preventDefault();const data=new FormData(form);const get=name=>(data.get(name)||'Not provided').toString().trim();const subject='Project enquiry: '+get('service');const body=['Hello Gautam,','','I would like to discuss a project with you.','','Name: '+get('name'),'Work email: '+get('email'),'Company / organisation: '+get('company'),'Service: '+get('service'),'Preferred engagement: '+get('engagement'),'Desired timeline: '+get('timeline'),'Reference link: '+get('reference'),'','Project summary:',get('summary'),'','Please let me know the next steps.'].join('\n');const status=document.getElementById('form-status');status.textContent='Opening your email application with the project brief. Review it and press Send to contact Gautam.';window.location.href='mailto:reddygautam98@gmail.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);});}
- const year=document.getElementById('year');if(year)year.textContent=new Date().getFullYear();
- const sections=document.querySelectorAll('main section[id]');const links=document.querySelectorAll('.nav-links a[href^="#"]');
- if('IntersectionObserver'in window){const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){links.forEach(link=>link.classList.toggle('active',link.getAttribute('href')==='#'+entry.target.id));}}),{rootMargin:'-35% 0px -55% 0px'});sections.forEach(section=>observer.observe(section));}
+
+  /* magnetic primary buttons */
+  if (fine && !reduce) $$('.btn-primary').forEach(b => {
+    b.addEventListener('pointermove', e => { const r = b.getBoundingClientRect(); b.style.setProperty('--tx', ((e.clientX - r.left - r.width / 2) * .22).toFixed(1) + 'px'); b.style.setProperty('--ty', ((e.clientY - r.top - r.height / 2) * .3).toFixed(1) + 'px'); });
+    b.addEventListener('pointerleave', () => { b.style.setProperty('--tx', '0px'); b.style.setProperty('--ty', '0px'); });
+  });
+
+  /* scroll-spy dots (home) */
+  if ($('main#home')) {
+    const map = [['home', 'Intro'], ['proof', 'Proof'], ['services', 'Services'], ['lifecycle', 'Process'], ['toolkit', 'Toolkit'], ['projects', 'Work'], ['ba-samples', 'Samples'], ['about', 'About'], ['contact', 'Contact']].filter(([id]) => $('#' + id));
+    const nav = document.createElement('nav'); nav.className = 'dots'; nav.setAttribute('aria-label', 'Page sections');
+    nav.innerHTML = map.map(([id, l]) => `<a href="#${id}" aria-label="${l}"><span>${l}</span></a>`).join(''); document.body.append(nav);
+    const links = $$('a', nav);
+    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) links.forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + e.target.id)); }), { rootMargin: '-45% 0px -50% 0px' });
+    map.forEach(([id]) => io.observe($('#' + id)));
+  }
+
+  /* giant scroll-linked marquee above the footer */
+  const page = (location.pathname.split('/').pop() || 'index').replace('.html', '') || 'index';
+  const words = { index: ['REQUIREMENTS', 'DATA', 'API FLOWS', 'UAT', 'HANDOVER'], about: ['CLEAR SCOPE', 'EVIDENCE', 'TRACEABLE', 'PLAIN LANGUAGE'], services: ['DISCOVER', 'DEFINE', 'VALIDATE', 'HAND OVER'], projects: ['SQL', 'POWER BI', 'ETL', 'RAG', 'FORECASTING'], resume: ['BRD/FRD', 'BDD', 'RTM', 'AGILE', 'UAT'], contact: ["LET'S TALK", 'SCOPE IT', 'SHIP IT'] }[page];
+  const footer = $('.site-footer');
+  if (words && footer) {
+    const mq = document.createElement('div'); mq.className = 'mq'; mq.setAttribute('aria-hidden', 'true');
+    const row = (cls) => `<div class="mq-row ${cls}">${[...words, ...words, ...words].map((w, i) => (i % 2 ? `<b>${w}</b>` : `<span>${w}</span>`) + '<i>✦</i>').join('')}</div>`;
+    mq.innerHTML = row('a') + row('b'); footer.before(mq);
+    const [a, b] = $$('.mq-row', mq);
+    if (!reduce) {
+      let t = false; const upd = () => { t = false; const r = mq.getBoundingClientRect(), p = (innerHeight - r.top); a.style.transform = `translateX(${-p * .35 - 200}px)`; b.style.transform = `translateX(${p * .35 - 1800}px)`; };
+      addEventListener('scroll', () => { if (!t) { t = true; requestAnimationFrame(upd); } }, { passive: true }); upd();
+    }
+  }
+
+  /* process line fill + sticky case-stack depth */
+  const dark = $$('.section-dark .process-grid');
+  const cases = $$('.case');
+  const onScroll = () => {
+    dark.forEach(g => { const r = g.getBoundingClientRect(); g.style.setProperty('--p', clamp((innerHeight * .6 - r.top) / r.height, 0, 1).toFixed(3)); });
+    if (!reduce && innerWidth > 760) cases.forEach((c, i) => {
+      const n = cases[i + 1]; if (!n) return;
+      const top = parseFloat(getComputedStyle(c).top) || 100, gap = n.getBoundingClientRect().top - top, p = clamp(1 - gap / c.offsetHeight, 0, 1);
+      c.style.transform = `scale(${(1 - p * .06).toFixed(4)})`; c.style.filter = `brightness(${(1 - p * .4).toFixed(3)})`;
+    });
+  };
+  let tk = false; addEventListener('scroll', () => { if (!tk) { tk = true; requestAnimationFrame(() => { tk = false; onScroll(); }); } }, { passive: true }); onScroll();
+
+  /* projects: grid / list */
+  const grid = $('.project-grid');
+  $$('.vt').forEach(b => b.addEventListener('click', () => { $$('.vt').forEach(x => x.setAttribute('aria-pressed', String(x === b))); grid?.classList.toggle('list', b.dataset.view === 'list'); }));
 })();

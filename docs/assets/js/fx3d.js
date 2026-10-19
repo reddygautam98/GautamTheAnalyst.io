@@ -1,69 +1,185 @@
-/* Lightweight 3D visual layer for Gautam The Analyst. No third-party library required. */
-(()=>{'use strict';
-const root=document.documentElement,$=(s,c=document)=>c.querySelector(s),$$=(s,c=document)=>Array.from(c.querySelectorAll(s));
-const reduce=!!(matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches);
-const fine=!!(matchMedia&&matchMedia('(hover: hover) and (pointer: fine)').matches);
-const ptr={x:0,y:0};addEventListener('pointermove',e=>{ptr.x=e.clientX/Math.max(1,innerWidth)*2-1;ptr.y=e.clientY/Math.max(1,innerHeight)*2-1},{passive:true});
-const page=(location.pathname.split('/').pop()||'index.html').toLowerCase();
-const shape=({'about.html':'torus','services.html':'lattice','projects.html':'icosa','resume.html':'torus','contact.html':'lattice'})[page]||'sphere';
-function background(){
- if($('.fx3d-background'))return;
- const host=document.createElement('div');host.className='fx3d-background';host.setAttribute('aria-hidden','true');
- const canvas=document.createElement('canvas');canvas.className='fx3d-starfield';host.append(canvas);
- for(let i=1;i<=3;i++){const o=document.createElement('i');o.className='fx3d-orb fx3d-orb-'+i;host.append(o);}
- for(let i=1;i<=2;i++){const c=document.createElement('i');c.className='fx3d-cube fx3d-cube-'+i;host.append(c);}
- document.body.prepend(host);const ctx=canvas.getContext('2d');if(!ctx)return;
- let w=1,h=1,dpr=1,stars=[],raf=0,visible=true,shot=null,nextShot=0,frameNo=0;
- function resize(){w=innerWidth||1;h=innerHeight||1;dpr=Math.min(devicePixelRatio||1,1.5);canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);stars=Array.from({length:Math.min(120,Math.round(w*h/8500))},()=>({x:Math.random()*w,y:Math.random()*h,z:.2+Math.random()*.8,r:.4+Math.random()*1.15,p:Math.random()*6.28}));draw(performance.now(),true);}
- function draw(t,once=false){ctx.clearRect(0,0,w,h);const dark=root.dataset.theme!=='light';
-  for(const s of stars){const dx=reduce?0:ptr.x*7*s.z+Math.sin(t*.00025+s.p)*2;ctx.globalAlpha=(dark?.15:.08)+s.z*(dark?.48:.25);ctx.fillStyle=s.z>.7?(dark?'#b9f4ff':'#277da0'):(dark?'#dbe8ff':'#64748b');ctx.beginPath();ctx.arc((s.x+dx+w)%w,s.y+(reduce?0:Math.sin(t*.0003+s.p)*2),s.r*s.z,0,Math.PI*2);ctx.fill();}
-  if(!reduce&&!once){if(!shot&&t>nextShot){shot={x:Math.random()*w*.7,y:Math.random()*h*.5,len:50+Math.random()*75,age:0};nextShot=t+4300+Math.random()*5000;}if(shot){shot.age+=16;ctx.globalAlpha=Math.max(0,1-shot.age/420);const g=ctx.createLinearGradient(shot.x,shot.y,shot.x+shot.len,shot.y+shot.len*.3);g.addColorStop(0,'rgba(56,225,255,0)');g.addColorStop(.7,dark?'rgba(56,225,255,.8)':'rgba(31,125,155,.55)');g.addColorStop(1,'rgba(255,122,53,0)');ctx.strokeStyle=g;ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(shot.x,shot.y);ctx.lineTo(shot.x+shot.len,shot.y+shot.len*.3);ctx.stroke();shot.x+=2.4;shot.y+=.7;if(shot.age>420)shot=null;}}
-  ctx.globalAlpha=1;if(!reduce&&!once)raf=requestAnimationFrame(draw);else raf=0;
- }
- const start=()=>{if(!raf&&visible&&!document.hidden&&!reduce)raf=requestAnimationFrame(draw)},stop=()=>{if(raf)cancelAnimationFrame(raf);raf=0};
- addEventListener('resize',resize,{passive:true});addEventListener('scroll',()=>{if(!reduce)root.style.setProperty('--fx3d-hue',Math.min(24,scrollY*.012)+'deg')},{passive:true});
- document.addEventListener('visibilitychange',()=>document.hidden?stop():start());
- if('IntersectionObserver'in window)new IntersectionObserver(([e])=>{visible=e.isIntersecting;visible?start():stop()}).observe(host);
- addEventListener('gta-theme',()=>draw(performance.now(),true));resize();if(!reduce)start();
-}
-function makeMesh(kind){
- const p=[],edges=[],seen=new Set(),link=(a,b)=>{const k=a<b?a+':'+b:b+':'+a;if(!seen.has(k)){seen.add(k);edges.push([a,b]);}};
- if(kind==='torus'){const U=20,V=9,R=.68,r=.28;for(let u=0;u<U;u++)for(let v=0;v<V;v++){let a=u/U*6.283,b=v/V*6.283;p.push([(R+r*Math.cos(b))*Math.cos(a),r*Math.sin(b),(R+r*Math.cos(b))*Math.sin(a)]);}const id=(u,v)=>(u%U)*V+(v%V);for(let u=0;u<U;u++)for(let v=0;v<V;v++){link(id(u,v),id(u+1,v));link(id(u,v),id(u,v+1));}}
- else if(kind==='lattice'){const N=3,id=(x,y,z)=>(x*N+y)*N+z;for(let x=0;x<N;x++)for(let y=0;y<N;y++)for(let z=0;z<N;z++)p.push([(x-1)*.65,(y-1)*.65,(z-1)*.65]);for(let x=0;x<N;x++)for(let y=0;y<N;y++)for(let z=0;z<N;z++){if(x<N-1)link(id(x,y,z),id(x+1,y,z));if(y<N-1)link(id(x,y,z),id(x,y+1,z));if(z<N-1)link(id(x,y,z),id(x,y,z+1));}}
- else if(kind==='icosa'){const q=(1+Math.sqrt(5))/2,raw=[[-1,q,0],[1,q,0],[-1,-q,0],[1,-q,0],[0,-1,q],[0,1,q],[0,-1,-q],[0,1,-q],[q,0,-1],[q,0,1],[-q,0,-1],[-q,0,1]];raw.forEach(a=>{let l=Math.hypot(...a);p.push(a.map(v=>v/l));});p.forEach((a,i)=>p.forEach((b,j)=>{if(j>i&&Math.hypot(a[0]-b[0],a[1]-b[1],a[2]-b[2])<1.07)link(i,j);}));}
- else{const R=9,S=18;for(let r=0;r<R;r++){const lat=(r/(R-1)-.5)*Math.PI;for(let s=0;s<S;s++){const lon=s/S*6.283;p.push([Math.cos(lat)*Math.cos(lon),Math.sin(lat),Math.cos(lat)*Math.sin(lon)]);}}const id=(r,s)=>r*S+s%S;for(let r=0;r<R;r++)for(let s=0;s<S;s++){link(id(r,s),id(r,s+1));if(r<R-1)link(id(r,s),id(r+1,s));}}
- return {p,edges};
-}
-function solid(canvas,kind){
- const c=canvas.getContext('2d');if(!c)return;const m=makeMesh(kind);let w=1,h=1,dpr=1,raf=0,visible=true,ax=.32,ay=.2,last=0;
- function resize(){const r=canvas.getBoundingClientRect();w=Math.max(1,r.width);h=Math.max(1,r.height);dpr=Math.min(devicePixelRatio||1,1.5);canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);c.setTransform(dpr,0,0,dpr,0,0);draw(performance.now(),true);}
- function draw(t,once=false){c.clearRect(0,0,w,h);const dark=root.dataset.theme!=='light',dt=Math.min(40,t-(last||t-16));last=t;if(!reduce&&!once){ay+=dt*.00017;ax+=Math.sin(t*.0002)*.0005;}
-  const a=reduce?.36:ax+ptr.y*.16,b=reduce?.36:ay+ptr.x*.22,sx=Math.sin(a),cx=Math.cos(a),sy=Math.sin(b),cy=Math.cos(b),scale=Math.min(w,h)*.37;
-  const out=m.p.map(([x,y,z])=>{const X=x*cy+z*sy,Z=-x*sy+z*cy,Y=y*cx-Z*sx,D=y*sx+Z*cx,k=2.7/(2.7-D*.45);return{x:w/2+X*scale*k,y:h/2+Y*scale*k,z:D};});
-  m.edges.forEach(([i,j],n)=>{const p=out[i],q=out[j],d=(p.z+q.z+2)/4;const rgb=dark?['56,225,255','143,125,255','255,122,53'][n%3]:['31,139,163','99,87,197','226,103,44'][n%3];c.strokeStyle='rgba('+rgb+','+(.13+d*.48)+')';c.lineWidth=.55+d*.6;c.beginPath();c.moveTo(p.x,p.y);c.lineTo(q.x,q.y);c.stroke();});
-  out.forEach(p=>{c.fillStyle='rgba('+(dark?'190,247,255':'45,121,149')+','+(.16+(p.z+1)*.22)+')';c.beginPath();c.arc(p.x,p.y,1+Math.max(0,p.z),0,6.283);c.fill();});
-  if(!reduce&&!once)raf=requestAnimationFrame(draw);else raf=0;
- }
- const start=()=>{if(!raf&&visible&&!document.hidden&&!reduce)raf=requestAnimationFrame(draw)},stop=()=>{if(raf)cancelAnimationFrame(raf);raf=0};
- if('ResizeObserver'in window)new ResizeObserver(resize).observe(canvas);else addEventListener('resize',resize,{passive:true});
- if('IntersectionObserver'in window)new IntersectionObserver(([e])=>{visible=e.isIntersecting;visible?start():stop()}).observe(canvas);
- document.addEventListener('visibilitychange',()=>document.hidden?stop():start());addEventListener('gta-theme',()=>draw(performance.now(),true));resize();if(!reduce)start();
-}
-function heroObjects(){const orbit=$('.hero-orbit');if(orbit){orbit.classList.add('fx3d-stage');if(!$('.fx3d-hero-canvas',orbit)){const c=document.createElement('canvas');c.className='fx3d-hero-canvas';c.setAttribute('aria-hidden','true');orbit.prepend(c);solid(c,'sphere');}return;}
- const host=$('main .section-heading')||$('.hero .wrap')||$('main .hero');if(host&&!$('.fx3d-subpage-canvas',host)){host.classList.add('fx3d-subpage-stage');const c=document.createElement('canvas');c.className='fx3d-subpage-canvas';c.setAttribute('aria-hidden','true');host.append(c);solid(c,shape);}
-}
-function toolkitRing(){const host=$('#fx3d-tool-ring'),ring=$('.fx3d-ring',host);if(!host||!ring)return;const items=$$('.fx3d-ring-item',ring);let rot=0,drag=false,x0=0,r0=0,raf=0,last=0;
- const paint=()=>{ring.style.transform='rotateY('+rot+'deg)'};
- function layout(){const radius=Math.max(105,Math.min(220,host.clientWidth*.36));items.forEach((it,i)=>it.style.transform='translate(-50%,-50%) rotateY('+(i*360/items.length)+'deg) translateZ('+radius+'px)');paint();}
- function frame(t){raf=0;if(!document.hidden&&!reduce&&!drag){rot=(rot+Math.min(40,t-(last||t-16))*.0035)%360;paint();}last=t;if(!document.hidden&&!reduce)raf=requestAnimationFrame(frame);}
- function down(e){drag=true;x0=e.clientX;r0=rot;host.classList.add('is-dragging');if(host.setPointerCapture)host.setPointerCapture(e.pointerId);}
- function move(e){if(drag){rot=r0+(e.clientX-x0)*.42;paint();}}
- function up(){drag=false;host.classList.remove('is-dragging');}
- host.addEventListener('pointerdown',down);host.addEventListener('pointermove',move);host.addEventListener('pointerup',up);host.addEventListener('pointercancel',up);host.addEventListener('lostpointercapture',up);
- host.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();rot+=(e.key==='ArrowLeft'?-18:18);paint();}});
- addEventListener('resize',layout,{passive:true});document.addEventListener('visibilitychange',()=>{if(document.hidden)cancelAnimationFrame(raf);else if(!reduce&&!raf)raf=requestAnimationFrame(frame);});layout();if(!reduce)raf=requestAnimationFrame(frame);
-}
-function cardDepth(){if(reduce||!fine)return;$$('.project-card,.service-card,.benefit-card,.benefit,.metric-card,.detail-card,.lifecycle-step,.contact-info-card,.sample-card,.card').forEach(el=>{el.classList.add('fx3d-card');const glare=document.createElement('span');glare.className='fx3d-glare';glare.setAttribute('aria-hidden','true');el.appendChild(glare);el.addEventListener('pointermove',e=>{const r=el.getBoundingClientRect(),x=(e.clientX-r.left)/Math.max(1,r.width),y=(e.clientY-r.top)/Math.max(1,r.height);el.style.setProperty('--fx3d-rx',((.5-y)*6).toFixed(2)+'deg');el.style.setProperty('--fx3d-ry',((x-.5)*7).toFixed(2)+'deg');el.style.setProperty('--fx3d-glare-x',(x*100).toFixed(1)+'%');el.style.setProperty('--fx3d-glare-y',(y*100).toFixed(1)+'%');},{passive:true});el.addEventListener('pointerleave',()=>{el.style.setProperty('--fx3d-rx','0deg');el.style.setProperty('--fx3d-ry','0deg');});});}
-function init(){background();heroObjects();toolkitRing();cardDepth();}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+/* Gautam The Analyst — 3D / background effects layer (no libraries; runs after site.js) */
+(() => {
+  'use strict';
+  const root = document.documentElement;
+  const $ = (s, c = document) => c.querySelector(s);
+  const $$ = (s, c = document) => Array.from(c.querySelectorAll(s));
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const DPR = Math.min(devicePixelRatio || 1, 1.75);
+  const pointer = { x: 0, y: 0 };            // -1..1 across the viewport
+  addEventListener('pointermove', e => { pointer.x = e.clientX / innerWidth * 2 - 1; pointer.y = e.clientY / innerHeight * 2 - 1; }, { passive: true });
+  const accent = () => (root.dataset.theme === 'light' ? ['8,126,160', '91,70,229', '226,84,14'] : ['56,225,255', '143,125,255', '255,122,53']);
+
+  /* shared run-loop: pauses off-screen canvases and hidden tabs */
+  function loop(el, draw) {
+    let raf = 0, visible = true;
+    const tick = t => { raf = 0; if (visible && !document.hidden) { draw(t); } if (!reduce && visible && !document.hidden) raf = requestAnimationFrame(tick); };
+    const kick = () => { if (!raf) raf = requestAnimationFrame(tick); };
+    new IntersectionObserver(([en]) => { visible = en.isIntersecting; if (visible) kick(); }).observe(el);
+    document.addEventListener('visibilitychange', kick);
+    kick();
+  }
+  function fit(canvas) {
+    const ctx = canvas.getContext('2d');
+    const size = () => { const w = canvas.clientWidth, h = canvas.clientHeight; canvas.width = Math.max(1, w * DPR); canvas.height = Math.max(1, h * DPR); ctx.setTransform(DPR, 0, 0, DPR, 0, 0); };
+    size(); new ResizeObserver(size).observe(canvas);
+    return ctx;
+  }
+
+  /* ---------- tiny 3D engine: wireframe solids with depth-shaded glow ---------- */
+  const shapes = {
+    sphere() {
+      const n = 150, pts = [], edges = [], g = Math.PI * (3 - Math.sqrt(5));
+      for (let i = 0; i < n; i++) { const y = 1 - (i / (n - 1)) * 2, r = Math.sqrt(1 - y * y), th = g * i; pts.push([Math.cos(th) * r, y, Math.sin(th) * r]); }
+      for (let i = 0; i < n; i++) {
+        const d = pts.map((p, j) => [j, (p[0] - pts[i][0]) ** 2 + (p[1] - pts[i][1]) ** 2 + (p[2] - pts[i][2]) ** 2]).filter(a => a[0] !== i).sort((a, b) => a[1] - b[1]).slice(0, 3);
+        d.forEach(([j]) => { if (!edges.some(e => (e[0] === i && e[1] === j) || (e[0] === j && e[1] === i))) edges.push([i, j]); });
+      }
+      return { pts, edges, scale: .78 };
+    },
+    icosa() {
+      const p = (1 + Math.sqrt(5)) / 2, v = [];
+      [[-1, p, 0], [1, p, 0], [-1, -p, 0], [1, -p, 0], [0, -1, p], [0, 1, p], [0, -1, -p], [0, 1, -p], [p, 0, -1], [p, 0, 1], [-p, 0, -1], [-p, 0, 1]].forEach(a => { const l = Math.hypot(...a); v.push(a.map(x => x / l)); });
+      const edges = []; v.forEach((a, i) => v.forEach((b, j) => { if (j > i && Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2]) < 1.06) edges.push([i, j]); }));
+      return { pts: v, edges, scale: .8, inner: true };
+    },
+    torus() {
+      const U = 28, V = 12, R = .66, r = .27, pts = [], edges = [];
+      for (let u = 0; u < U; u++) for (let v = 0; v < V; v++) { const a = u / U * 6.283, b = v / V * 6.283; pts.push([(R + r * Math.cos(b)) * Math.cos(a), r * Math.sin(b), (R + r * Math.cos(b)) * Math.sin(a)]); }
+      const id = (u, v) => (u % U) * V + (v % V);
+      for (let u = 0; u < U; u++) for (let v = 0; v < V; v++) { edges.push([id(u, v), id(u + 1, v)]); edges.push([id(u, v), id(u, v + 1)]); }
+      return { pts, edges, scale: .95 };
+    },
+    lattice() {
+      const pts = [], edges = [], k = 3, id = (x, y, z) => (x * k + y) * k + z;
+      for (let x = 0; x < k; x++) for (let y = 0; y < k; y++) for (let z = 0; z < k; z++) pts.push([(x - 1) * .5, (y - 1) * .5, (z - 1) * .5]);
+      for (let x = 0; x < k; x++) for (let y = 0; y < k; y++) for (let z = 0; z < k; z++) { if (x < k - 1) edges.push([id(x, y, z), id(x + 1, y, z)]); if (y < k - 1) edges.push([id(x, y, z), id(x, y + 1, z)]); if (z < k - 1) edges.push([id(x, y, z), id(x, y, z + 1)]); }
+      return { pts, edges, scale: 1.25 };
+    }
+  };
+  function solid(canvas, kind, opts = {}) {
+    const ctx = fit(canvas), sh = shapes[kind](), spin = opts.spin ?? .00022;
+    let ax = .4, ay = 0, tx = 0, ty = 0, last = 0;
+    const rot = ([x, y, z], a, b) => { const c1 = Math.cos(b), s1 = Math.sin(b), x1 = x * c1 + z * s1, z1 = -x * s1 + z * c1, c2 = Math.cos(a), s2 = Math.sin(a); return [x1, y * c2 - z1 * s2, y * s2 + z1 * c2]; };
+    loop(canvas, t => {
+      const w = canvas.clientWidth, h = canvas.clientHeight, s = Math.min(w, h) / 2 * sh.scale, dt = Math.min(50, t - last || 16); last = t;
+      const rect = canvas.getBoundingClientRect(), cx = rect.left + rect.width / 2, cy = rect.top + rect.height / 2;
+      tx = reduce ? 0 : ((pointer.x * innerWidth / 2 + innerWidth / 2) - cx) / innerWidth; ty = reduce ? 0 : ((pointer.y * innerHeight / 2 + innerHeight / 2) - cy) / innerHeight;
+      ay += dt * spin * 6; ax += (.35 + ty * .9 - ax) * .04; const by = ay + tx * .9 + scrollY * .0016;
+      const [c0, c1, c2] = accent();
+      ctx.clearRect(0, 0, w, h);
+      const P = sh.pts.map(p => { const r = rot(p, ax, by), f = 3 / (3 - r[2]); return { x: w / 2 + r[0] * s * f, y: h / 2 + r[1] * s * f, z: r[2], f }; });
+      ctx.lineWidth = 1;
+      sh.edges.forEach(([a, b]) => { const A = P[a], B = P[b], d = ((A.z + B.z) / 2 + 1) / 2; ctx.strokeStyle = `rgba(${d > .5 ? c0 : c1},${.12 + d * .55})`; ctx.beginPath(); ctx.moveTo(A.x, A.y); ctx.lineTo(B.x, B.y); ctx.stroke(); });
+      P.slice().sort((a, b) => a.z - b.z).forEach(p => { const d = (p.z + 1) / 2, r = (1.2 + d * 2.4) * p.f; const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r * 3.2); g.addColorStop(0, `rgba(${c0},${.25 + d * .7})`); g.addColorStop(1, `rgba(${c0},0)`); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(p.x, p.y, r * 3.2, 0, 6.283); ctx.fill(); ctx.fillStyle = `rgba(255,255,255,${.35 + d * .6})`; ctx.beginPath(); ctx.arc(p.x, p.y, r * .75, 0, 6.283); ctx.fill(); });
+      if (sh.inner) { // orbiting satellite on icosahedron
+        const q = rot([Math.cos(t / 900) * 1.18, Math.sin(t / 1300) * .5, Math.sin(t / 900) * 1.18], ax, by), f = 3 / (3 - q[2]);
+        ctx.fillStyle = `rgb(${c2})`; ctx.shadowColor = `rgb(${c2})`; ctx.shadowBlur = 14; ctx.beginPath(); ctx.arc(w / 2 + q[0] * s * f, h / 2 + q[1] * s * f, 4 * f, 0, 6.283); ctx.fill(); ctx.shadowBlur = 0;
+      }
+    });
+  }
+
+  /* hero globe (home) + a different 3D solid on each sub-page hero */
+  const frame = $('.art-frame');
+  if (frame) { const c = document.createElement('canvas'); c.className = 'globe3d'; c.setAttribute('aria-hidden', 'true'); frame.prepend(c); solid(c, 'sphere', { spin: .00018 }); }
+  const sub = $('.subpage-hero');
+  if (sub && innerWidth > 920) {
+    const kind = { about: 'torus', services: 'lattice', projects: 'icosa', resume: 'torus', contact: 'sphere' }[(location.pathname.split('/').pop() || '').replace('.html', '')] || 'icosa';
+    const box = document.createElement('div'); box.className = 'hero3d'; box.setAttribute('aria-hidden', 'true');
+    const c = document.createElement('canvas'); box.append(c); sub.append(box); solid(c, kind);
+  }
+
+  /* ---------- perspective grid floor under every hero ---------- */
+  $$('.hero, .subpage-hero').forEach(h => { const f = document.createElement('div'); f.className = 'floor'; f.setAttribute('aria-hidden', 'true'); h.prepend(f); });
+
+  /* ---------- background depth: stars, orbs, floating glass cubes, scroll hue ---------- */
+  const fx = $('.bg-fx');
+  if (fx) {
+    const parallax = [];
+    const add = (el, speed, px = 0) => { fx.append(el); parallax.push({ el, speed, px, base: el.dataset.t || '' }); };
+    [['o1', 420, '8%', '6%', .08], ['o2 orb', 300, '78%', '38%', .14], ['o1', 220, '60%', '78%', .22]].forEach(([c, s, l, t, sp], i) => {
+      const o = document.createElement('div'); o.className = 'orb' + (i === 1 ? ' o2' : ''); Object.assign(o.style, { width: s + 'px', height: s + 'px', left: l, top: t }); add(o, sp, 18);
+    });
+    [[70, '86%', '16%', .16], [48, '5%', '52%', .24], [96, '90%', '66%', .1], [38, '46%', '88%', .3]].forEach(([s, l, t, sp], i) => {
+      const w = document.createElement('div'); w.className = 'cube-wrap'; Object.assign(w.style, { left: l, top: t, width: s + 'px', height: s + 'px' });
+      const c = document.createElement('div'); c.className = 'cube'; c.style.cssText = `inset:0;--s:${s}px`;
+      const inn = document.createElement('div'); inn.className = 'cube-in'; inn.style.animationDuration = 18 + i * 7 + 's'; inn.style.animationDirection = i % 2 ? 'reverse' : 'normal'; inn.innerHTML = '<i></i><i></i><i></i><i></i><i></i><i></i>';
+      c.append(inn); w.append(c); add(w, sp, 26);
+    });
+    const cv = document.createElement('canvas'); cv.className = 'stars'; fx.insertBefore(cv, $('.noise', fx));
+    const ctx = fit(cv);
+    const stars = Array.from({ length: 120 }, () => ({ x: Math.random(), y: Math.random(), z: Math.random() * .85 + .15, tw: Math.random() * 6.28 }));
+    let shoot = null, nextShoot = 4000, sx = 0, sy = 0;
+    const frameStars = t => {
+      const w = cv.clientWidth, h = cv.clientHeight, [c0] = accent(), sc = scrollY;
+      sx += (pointer.x - sx) * .05; sy += (pointer.y - sy) * .05;
+      ctx.clearRect(0, 0, w, h);
+      for (const s of stars) {
+        const x = ((s.x * w - sx * 26 * s.z) % w + w) % w, y = ((s.y * h - sc * .22 * s.z - sy * 16 * s.z) % h + h) % h;
+        const a = (.25 + .6 * Math.abs(Math.sin(t / 1100 + s.tw))) * s.z; ctx.fillStyle = `rgba(${root.dataset.theme === 'light' ? c0 : '220,236,255'},${a})`;
+        ctx.fillRect(x, y, s.z * 1.8, s.z * 1.8);
+      }
+      if (!reduce) {
+        if (!shoot && t > nextShoot) { shoot = { x: Math.random() * w * .7, y: Math.random() * h * .35, l: 0 }; nextShoot = t + 6000 + Math.random() * 7000; }
+        if (shoot) { shoot.x += 14; shoot.y += 6; shoot.l += 1; const g = ctx.createLinearGradient(shoot.x, shoot.y, shoot.x - 90, shoot.y - 38); g.addColorStop(0, `rgba(${c0},.9)`); g.addColorStop(1, `rgba(${c0},0)`); ctx.strokeStyle = g; ctx.lineWidth = 1.6; ctx.beginPath(); ctx.moveTo(shoot.x, shoot.y); ctx.lineTo(shoot.x - 90, shoot.y - 38); ctx.stroke(); if (shoot.l > 60) shoot = null; }
+      }
+    };
+    loop(cv, frameStars);
+    let tick = false;
+    const onScroll = () => {
+      if (tick) return; tick = true;
+      requestAnimationFrame(() => {
+        const y = scrollY, max = Math.max(1, document.documentElement.scrollHeight - innerHeight);
+        parallax.forEach(p => { p.el.style.transform = `translate3d(${pointer.x * p.px}px, ${-y * p.speed}px, 0)`; });
+        fx.style.setProperty('--hue', (y / max) * 70 - 20 + 'deg');
+        tick = false;
+      });
+    };
+    addEventListener('scroll', onScroll, { passive: true }); if (!reduce) addEventListener('pointermove', onScroll, { passive: true }); onScroll();
+  }
+
+  /* ---------- tilt + holographic glare + HUD brackets on cards ---------- */
+  const tiltSel = '.service-card, .project-card, .detail-card, .skill-group, .sample-feature-card, .principle, .card, .benefit, .metric, .scope-item, .contact-method, .process-step';
+  const hudSel = '.service-card, .sample-feature-card, .principle, .detail-card, .skill-group, .card, .project-card';
+  $$('.metric, .benefit').forEach(m => { const l = document.createElement('span'); l.className = 'pulse-line'; l.setAttribute('aria-hidden', 'true'); m.append(l); });
+  $$(tiltSel).forEach(card => {
+    const g = document.createElement('span'); g.className = 'glare'; g.setAttribute('aria-hidden', 'true'); card.append(g);
+    if (card.matches(hudSel)) ['tl', 'tr', 'bl', 'br'].forEach(c => { const h = document.createElement('i'); h.className = 'hud ' + c; h.setAttribute('aria-hidden', 'true'); card.append(h); });
+    if (!fine || reduce) return;
+    card.classList.add('tilt');
+    const w0 = () => card.offsetWidth;
+    let raf = 0;
+    card.addEventListener('pointerenter', () => { if (card.hasAttribute('data-reveal')) { card.removeAttribute('data-reveal'); card.style.removeProperty('--d'); } card.classList.remove('resting'); });
+    card.addEventListener('pointermove', e => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0; const r = card.getBoundingClientRect(), px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height, max = w0() > 700 ? 2.2 : w0() > 420 ? 5.5 : 9;
+        card.style.setProperty('--ry', ((px - .5) * 2 * max).toFixed(2) + 'deg'); card.style.setProperty('--rx', ((.5 - py) * 2 * max).toFixed(2) + 'deg');
+        card.style.setProperty('--gx', (px * 100).toFixed(1) + '%'); card.style.setProperty('--gy', (py * 100).toFixed(1) + '%');
+        card.style.setProperty('--bx', (px * 100).toFixed(1) + '%'); card.style.setProperty('--by', (py * 100).toFixed(1) + '%');
+      });
+    });
+    card.addEventListener('pointerleave', () => { card.classList.add('resting'); card.style.setProperty('--rx', '0deg'); card.style.setProperty('--ry', '0deg'); });
+  });
+
+  /* ---------- 3D toolkit ring (drag / inertia / auto-spin) ---------- */
+  const scene = $('#ring-scene'), ring = $('#ring');
+  if (scene && ring) {
+    const n = +ring.style.getPropertyValue('--n') || 10;
+    const setRadius = () => { const w = scene.clientWidth, item = w < 560 ? 150 : 184; ring.style.setProperty('--r', Math.round(item / 2 / Math.tan(Math.PI / n) + 26) + 'px'); ring.style.setProperty('--rm', Math.round(150 / 2 / Math.tan(Math.PI / n) + 18) + 'px'); };
+    setRadius(); new ResizeObserver(setRadius).observe(scene);
+    let rot = 0, vel = reduce ? 0 : .16, drag = false, lx = 0, hover = false;
+    scene.addEventListener('pointerdown', e => { drag = true; lx = e.clientX; scene.classList.add('drag'); scene.setPointerCapture(e.pointerId); });
+    scene.addEventListener('pointermove', e => { if (!drag) return; const dx = e.clientX - lx; lx = e.clientX; rot += dx * .35; vel = dx * .35; });
+    const up = () => { drag = false; scene.classList.remove('drag'); if (Math.abs(vel) < .05) vel = reduce ? 0 : .16; };
+    scene.addEventListener('pointerup', up); scene.addEventListener('pointercancel', up);
+    scene.addEventListener('pointerenter', () => { hover = true; }); scene.addEventListener('pointerleave', () => { hover = false; });
+    scene.tabIndex = 0;
+    scene.addEventListener('keydown', e => { if (e.key === 'ArrowLeft') { rot += 36; vel = 0; } if (e.key === 'ArrowRight') { rot -= 36; vel = 0; } });
+    loop(scene, () => {
+      if (!drag) { const target = reduce ? 0 : (hover ? .05 : .16); vel += (target - vel) * .02; rot += vel; }
+      ring.style.setProperty('--rot', rot.toFixed(2) + 'deg');
+    });
+  }
 })();
