@@ -306,3 +306,87 @@ html[data-theme="light"] .case-study-section{background:linear-gradient(180deg,#
 .engagement-section.section-dark>.sample-footer-cta{grid-column:1/-1}
 .process-step>span:first-child{display:none}
 @media(max-width:760px){.engagement-section.section-dark{grid-template-columns:1fr}.engagement-section.section-dark>.section-heading{grid-column:1;grid-row:auto;position:static}.engagement-section.section-dark>.process-grid{grid-column:1;grid-row:auto}.engagement-section.section-dark>.sample-footer-cta{grid-column:1}}
+
+
+/* Mobile-safe floating quick-action dock and JD keyword comparison panel. */
+.gta-utility-dock{
+  position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:999;
+  display:flex;align-items:center;gap:5px;max-width:calc(100vw - 28px);padding:6px;
+  color:var(--ink,#edf2fb);background:var(--fx-glass,rgba(15,23,42,.92));
+  border:1px solid var(--line,rgba(148,163,184,.3));border-radius:999px;
+  box-shadow:0 16px 42px rgba(0,0,0,.22);backdrop-filter:blur(16px) saturate(145%);
+}
+.gta-utility-dock a,.gta-utility-dock button{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:40px;
+  padding:10px 14px;border:1px solid transparent;border-radius:999px;
+  color:inherit;background:transparent;text-decoration:none;white-space:nowrap;
+  font:700 11px/1.1 var(--fx-font-mono,ui-monospace,monospace);cursor:pointer;
+}
+.gta-utility-dock a:hover,.gta-utility-dock button:hover,
+.gta-utility-dock a:focus-visible,.gta-utility-dock button:focus-visible{
+  outline:none;border-color:rgba(85,227,255,.38);background:rgba(85,227,255,.11);
+}
+.gta-utility-dock .gta-dock-resume{background:linear-gradient(135deg,#ef8750,#df662c);color:#fff;border-color:rgba(255,255,255,.14)}
+.gta-jd-panel{
+  position:fixed;right:18px;bottom:calc(78px + env(safe-area-inset-bottom,0px));z-index:998;
+  width:min(400px,calc(100vw - 32px));max-height:min(70vh,620px);overflow:auto;
+  padding:18px;border:1px solid var(--line,rgba(148,163,184,.28));border-radius:18px;
+  background:var(--white,#121f32);color:var(--ink,#edf2fb);
+  box-shadow:0 28px 80px rgba(0,0,0,.34);backdrop-filter:blur(20px);
+}
+.gta-jd-panel[hidden]{display:none!important}
+.gta-jd-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:13px}
+.gta-jd-head h2{font:800 17px/1.25 var(--fx-font-display,Inter,system-ui,sans-serif);margin:0;color:inherit}
+.gta-jd-close{min-height:34px;padding:7px 10px;border:1px solid var(--line);border-radius:9px;background:transparent;color:inherit;font-size:11px;cursor:pointer}
+.gta-jd-panel>label{display:block;margin:4px 0 7px;font-size:11px;font-weight:750;color:var(--muted,#aebbd0)}
+.gta-jd-panel textarea{
+  display:block;width:100%;min-height:105px;resize:vertical;padding:11px;
+  border:1px solid var(--line,rgba(148,163,184,.3));border-radius:11px;
+  background:var(--pale,#0d1727);color:var(--ink,#edf2fb);
+  font:500 12px/1.5 Inter,system-ui,sans-serif;box-sizing:border-box;
+}
+.gta-jd-panel textarea:focus-visible{outline:2px solid var(--fx-cyan,#63d8ef);outline-offset:2px}
+.gta-jd-run{width:100%;min-height:40px;margin:10px 0 7px;padding:10px 13px;border:0;border-radius:10px;background:var(--orange,#e97833);color:#171b22;font-size:11px;font-weight:850;cursor:pointer}
+.gta-jd-results{font-size:11px;line-height:1.5}
+.gta-jd-group{margin:12px 0}
+.gta-jd-group>strong{display:block;margin-bottom:5px;font-size:11px}
+.gta-jd-chips{display:flex;flex-wrap:wrap;gap:5px}
+.gta-jd-chips span{display:inline-flex;padding:5px 8px;border-radius:999px;font-size:10px;line-height:1.25}
+.gta-jd-match{border:1px solid rgba(52,211,153,.25);background:rgba(52,211,153,.13)}
+.gta-jd-learning{border:1px solid rgba(167,139,250,.25);background:rgba(167,139,250,.13)}
+.gta-jd-group p{margin:5px 0;color:var(--muted,#aebbd0)}
+.gta-jd-count{margin:10px 0 0;color:var(--muted,#aebbd0);font-size:10px}
+.gta-jd-note{margin:10px 0 0;padding-top:9px;border-top:1px solid var(--line);font-size:10px;line-height:1.5;color:var(--muted,#aebbd0)}
+@media(max-width:640px){
+  body{padding-bottom:calc(82px + env(safe-area-inset-bottom,0px))}
+  .gta-utility-dock{
+    left:50%;right:auto;bottom:calc(9px + env(safe-area-inset-bottom,0px));
+    transform:translateX(-50%);width:max-content;max-width:calc(100vw - 14px);
+    justify-content:center;gap:3px;padding:5px;
+  }
+  .gta-utility-dock a,.gta-utility-dock button{min-height:42px;padding:10px 12px;font-size:10px}
+  .gta-utility-dock .gta-dock-email{display:none}
+  .gta-jd-panel{
+    left:10px;right:10px;bottom:calc(67px + env(safe-area-inset-bottom,0px));
+    width:auto;max-height:min(66dvh,570px);padding:15px;border-radius:16px;
+  }
+  .gta-jd-panel textarea{min-height:110px;font-size:16px}
+  .fx3d-stage{min-width:0}
+  .hero{overflow:hidden}
+  .hero-orbit{width:100%;min-width:0;overflow:visible}
+  .fx3d-hero-canvas{inset:5%;width:90%;height:90%;opacity:.48}
+}
+@media(max-width:380px){
+  .gta-utility-dock{max-width:calc(100vw - 10px);gap:1px}
+  .gta-utility-dock a,.gta-utility-dock button{padding:9px 9px;font-size:9px}
+  .gta-jd-head h2{font-size:15px}
+  .hero-orbit{min-height:280px}
+  .orbit-ring{width:218px;height:218px}
+  .ring-b{width:178px;height:178px}
+  .orbit-tag{max-width:46%;font-size:8px;padding:7px 8px}
+  .stat-a{right:15%}
+  .stat-b{left:21%}
+  .fx3d-ring-scene{height:235px}
+}
+@media(prefers-reduced-motion:reduce){.gta-utility-dock,.gta-jd-panel{scroll-behavior:auto;transition:none!important}}
+@media print{.gta-utility-dock,.gta-jd-panel{display:none!important}body{padding-bottom:0!important}}
