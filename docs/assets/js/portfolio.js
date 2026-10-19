@@ -18,7 +18,7 @@
       if (icon) icon.textContent = isDark ? '☀' : '☾';
       if (label) label.textContent = isDark ? 'Light theme' : 'Dark theme';
     }
-    if (themeMeta) themeMeta.setAttribute('content', current === 'dark' ? '#0b1220' : '#fbfcfe');
+    if (themeMeta) themeMeta.setAttribute('content', current === 'dark' ? '#05070d' : '#f3f6fc');
   };
   applyTheme(document.documentElement.dataset.theme || safeThemeRead() || 'light');
   themeButton?.addEventListener('click', () => applyTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark', true));
