@@ -221,4 +221,10 @@
 
   /* 9) Safe page-year update; no external services or stored form data. */
   const year=$('#year');if(year)year.textContent=new Date().getFullYear();
+  /* Load the shared 3D effects layer on every page (including BA Samples). */
+  const fx3dScript=document.createElement('script');
+  fx3dScript.src=base+'assets/js/fx3d.js';
+  fx3dScript.defer=true;
+  document.head.appendChild(fx3dScript);
+
 })();

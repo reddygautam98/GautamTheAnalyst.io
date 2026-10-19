@@ -87,3 +87,23 @@ Use this section after the latest Pages build is published. Mark each item only 
 - Record the deployed commit and the last manual browser-QA date here: `Pending manual browser QA`.
 
 **Status:** Feature code is integrated and static checks are complete; live visual/browser verification remains to be completed. Do not mark the manual QA boxes as complete without testing the published website.
+
+
+## Futuristic 3D integration — 2026-10-19
+
+### Added to the live source (static integration checks)
+- [x] Added a self-contained 3D canvas effects layer at `docs/assets/js/fx3d.js` without loading an external 3D library.
+- [x] Added a theme-aware starfield, ambient orbs, CSS 3D cubes, shooting-star accents and scroll-responsive hue shift.
+- [x] Added wireframe geometric visuals to the homepage hero and subtle geometric visuals to interior-page headings.
+- [x] Added a draggable, keyboard-operable toolkit ring to the homepage.
+- [x] Added perspective tilt and pointer-following highlights to cards on fine-pointer devices.
+- [x] Added responsive rules and reduced-motion / print fallbacks.
+- [x] Wired the shared enhancement loader to load the 3D layer on all seven site pages including BA Samples.
+- [x] Preserved existing portfolio content and sample-artifact disclaimers; did not publish a phone number from the supplied ZIP.
+
+### Manual browser checks still required
+- [ ] Confirm 3D geometry does not obscure text or cards on desktop.
+- [ ] Confirm the toolkit ring drags correctly and rotates with the left/right arrow keys.
+- [ ] Test on mobile at 360–430 px widths, including touch-drag and horizontal overflow.
+- [ ] Verify light/dark theme rendering, keyboard focus and reduced-motion behavior in a real browser.
+- [ ] Check CPU/battery impact and confirm animations pause when the tab is hidden.
