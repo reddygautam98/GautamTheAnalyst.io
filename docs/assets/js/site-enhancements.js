@@ -423,7 +423,6 @@
       }
       const matched=covered.filter(k=>jd.includes(k.toLowerCase()));
       const payment=learning.filter(k=>jd.includes(k.toLowerCase()));
-      const chips=(arr,cls)=>arr.length?arr.map(k=>'<span class="'+cls+'"></span>').join(''):'';
       const list=(arr,cls)=>arr.length?'<div class="gta-jd-chips">'+arr.map(k=>'<span class="'+cls+'">'+k.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</span>').join('')+'</div>':'<p>None of these terms were found.</p>';
       result.innerHTML='<div class="gta-jd-group"><strong>Keywords found in the portfolio</strong>'+list(matched,'gta-jd-match')+'</div>'+
         '<div class="gta-jd-group"><strong>Related payment topics listed as learning artifacts</strong>'+list(payment,'gta-jd-learning')+'</div>'+
