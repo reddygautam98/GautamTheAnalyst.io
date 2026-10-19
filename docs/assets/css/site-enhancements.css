@@ -306,3 +306,63 @@ html[data-theme="light"] .case-study-section{background:linear-gradient(180deg,#
 .engagement-section.section-dark>.sample-footer-cta{grid-column:1/-1}
 .process-step>span:first-child{display:none}
 @media(max-width:760px){.engagement-section.section-dark{grid-template-columns:1fr}.engagement-section.section-dark>.section-heading{grid-column:1;grid-row:auto;position:static}.engagement-section.section-dark>.process-grid{grid-column:1;grid-row:auto}.engagement-section.section-dark>.sample-footer-cta{grid-column:1}}
+
+
+
+/* Final QA fixes: resume download action, mobile home dock, and hero orbit fit. */
+.resume-download-bar{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  margin:0 auto 24px;padding:14px 16px;max-width:var(--max,1220px);
+  border:1px solid var(--line);border-radius:13px;background:var(--fx-glass,rgba(255,255,255,.72));
+}
+.resume-download-bar p{margin:0;color:var(--muted);font-size:12px}
+.resume-download-bar .btn{white-space:nowrap}
+@media(max-width:760px){
+  body.has-mobile-dock{padding-bottom:calc(82px + env(safe-area-inset-bottom,0px))}
+  body.has-mobile-dock .dots{
+    display:flex!important;flex-direction:row;align-items:center;justify-content:space-between;
+    gap:clamp(3px,1.2vw,8px);top:auto;right:auto;left:50%;
+    bottom:calc(10px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);
+    width:max-content;max-width:calc(100vw - 18px);padding:7px 10px;
+    overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;
+    border:1px solid rgba(137,159,190,.34);border-radius:999px;
+    background:rgba(10,17,30,.88);box-shadow:0 12px 38px rgba(0,0,0,.24),inset 0 1px rgba(255,255,255,.06);
+    -webkit-backdrop-filter:blur(18px) saturate(155%);backdrop-filter:blur(18px) saturate(155%);
+  }
+  body.has-mobile-dock .dots::-webkit-scrollbar{display:none}
+  body.has-mobile-dock .dots a{
+    display:grid;place-items:center;flex:0 0 28px;width:28px;height:28px;margin:0;
+    border:1px solid transparent;border-radius:50%;background:transparent;transform:none;
+  }
+  body.has-mobile-dock .dots a:before{
+    content:"";display:block;width:7px;height:7px;border-radius:50%;
+    background:#8293ab;box-shadow:0 0 0 1px rgba(130,147,171,.14);transition:background .18s,box-shadow .18s,transform .18s;
+  }
+  body.has-mobile-dock .dots a.on{background:rgba(85,227,255,.12);border-color:rgba(85,227,255,.28);box-shadow:none;transform:none}
+  body.has-mobile-dock .dots a.on:before{background:#55e3ff;box-shadow:0 0 12px rgba(85,227,255,.7);transform:scale(1.12)}
+  body.has-mobile-dock .dots a span{right:auto;left:50%;top:auto;bottom:calc(100% + 11px);padding:5px 8px;
+    opacity:0;transform:translate(-50%,4px);pointer-events:none}
+  body.has-mobile-dock .dots a:focus-visible{outline:2px solid #55e3ff;outline-offset:2px}
+  body.has-mobile-dock .dots a:focus-visible span{opacity:1;transform:translate(-50%,0)}
+  .hero{grid-template-columns:minmax(0,1fr);min-width:0}
+  .hero-inner,.hero-copy{min-width:0}
+  .hero-orbit{width:min(100%,390px);max-width:100%;margin-inline:auto;overflow:visible}
+  .hero-orbit .orbit-tag{max-width:45%;overflow-wrap:anywhere}
+  .hero-orbit .floating-stat{max-width:42%;overflow-wrap:anywhere}
+  .resume-download-bar{align-items:stretch}
+  .resume-download-bar .btn{width:100%;white-space:normal;text-align:center}
+}
+@media(max-width:380px){
+  .hero{padding-left:16px;padding-right:16px}
+  .hero-orbit{min-height:250px}
+  .hero-orbit .orbit-ring{width:212px;height:212px}
+  .hero-orbit .orbit-ring.ring-b{width:176px;height:176px}
+  .hero-orbit .orbit-core{width:116px;height:116px}
+  .hero-orbit .orbit-tag{font-size:8px;padding:7px 8px}
+  .hero-orbit .floating-stat{font-size:9px;padding:7px 8px}
+  body.has-mobile-dock .dots{padding:6px 8px;gap:2px}
+  body.has-mobile-dock .dots a{flex-basis:27px;width:27px;height:27px}
+}
+@media(prefers-reduced-motion:reduce){
+  body.has-mobile-dock .dots a:before{transition:none}
+}
