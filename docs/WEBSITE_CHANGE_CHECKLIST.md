@@ -142,3 +142,29 @@ Use this section after the latest Pages build is published. Mark each item only 
 - [ ] Check performance, tab-visibility behavior, and layout at 360–430 px widths.
 
 **Release status:** v4 code changes are integrated in this branch and static checks passed. Merge/deployment and hands-on browser QA must be confirmed separately.
+
+ 
+## Open items from the 2026-10-19 v6 review — code integration status
+
+### Resolved in the published source (static checks)
+- [x] Standardized the main-site navigation label to **Capabilities** and updated the command-palette entry to match.
+- [x] Changed all six service-card calls to action to **Ask about this capability**.
+- [x] Removed the remaining **freelance** wording from the Contact page metadata/body; the enquiry options focus on discovery, deliverables, support and feasibility.
+- [x] Added the Resume page's direct download link and committed `docs/assets/Gautam_Reddy_Business_Analyst_Resume.pdf`.
+- [x] Added the **Payments Extras** section inside the BA Samples page, with links to `iso20022_pain001_to_pacs008_mapping.csv` and `payment_rails_learning_notes.md`.
+- [x] Confirmed About, Capabilities and Contact have distinct page-specific structures: About bento tiles, Capabilities cards/process, Contact split direct-contact/enquiry layout.
+- [x] Added a floating quick-action dock for Resume / Email / JD fit check; on Resume it links directly to the PDF.
+- [x] Made the dock safe-area aware and centred on mobile, hide Email on narrow screens, and constrained the JD checker to the available viewport.
+- [x] Added a paste-and-compare job-description keyword checker. Its result explicitly says it is a keyword comparison, not an ATS score.
+- [x] Tightened small-screen hero-card styles and reduced the 3D canvas intensity to reduce overlap risk on narrow screens.
+- [x] Prepared a separate LinkedIn/Naukri profile-copy kit; it is draft content for manual publishing, not a change to the external accounts.
+
+### Manual checks still open
+- [ ] Visually inspect Home hero card and the quick-action dock at 360px, 390px, 430px and desktop widths; the local headless screenshot attempt did not complete, so this is not marked as visually verified.
+- [ ] On a phone, tap Resume and JD fit check, confirm labels are legible, and verify the dock does not cover form buttons or footer links.
+- [ ] Paste a sample JD, verify both keyword groups render, close with Escape, and confirm inputs retain normal keyboard behavior.
+- [ ] Click the Resume PDF link on the published site and confirm the browser downloads/opens the PDF.
+- [ ] Test theme toggle, reduced-motion preference, keyboard focus and scrolling on the published site.
+- [ ] Publish the prepared LinkedIn and Naukri text into the respective profile accounts; this cannot be done through the static website repository.
+
+**Status for this review:** Code changes and static checks are complete; real-device visual QA and external-profile publishing remain outstanding.
