@@ -1,6 +1,6 @@
 # Gautam The Analyst — Website Change Checklist
 
-**Purpose:** Verify that the useful interactions from `Gautam_The_Analyst_Futuristic.zip` have been integrated into the published GitHub Pages source.
+**Purpose:** Verify the integrated Futuristic v2/v3 interactions and the 2026 portfolio patterns from Gautam_The_Analyst_Portfolio_2026.zip in the GitHub Pages source.
 
 **Live site:** https://reddygautam98.github.io/GautamTheAnalyst.io/  
 **Canonical source:** `main / docs/`  
@@ -107,3 +107,38 @@ Use this section after the latest Pages build is published. Mark each item only 
 - [ ] Test on mobile at 360–430 px widths, including touch-drag and horizontal overflow.
 - [ ] Verify light/dark theme rendering, keyboard focus and reduced-motion behavior in a real browser.
 - [ ] Check CPU/battery impact and confirm animations pause when the tab is hidden.
+
+
+## 2026 portfolio patterns (v4) — integrated in source
+
+### Static implementation checks
+- [x] Added the home-page proof bento for 100,000+ analyzed records, 350+ coordinated test cases, 2 gateway integrations and 20+ workshops; text aligns with the existing resume evidence.
+- [x] Replaced the home-page three-card preview with four sticky case studies (Sales Data Analysis, HR Data Analysis, Sales Forecasting Report and MetaLayer), each linked to its repository; all nine projects remain available on Projects.
+- [x] Added the process-line / scroll-told handoff treatment to Home and Services.
+- [x] Added the About-page “At a glance” bento with role, focus, method, domain and profile links.
+- [x] Added the six-card bento rhythm to Services.
+- [x] Added a grid/list layout switch to the Projects page without replacing existing category filtering or text search.
+- [x] Added the sticky resume snapshot beside the experience timeline using existing evidence and skills.
+- [x] Added the large GAUTAM · THE ANALYST footer wordmark across the pages and a scroll-linked headline marquee on Home.
+- [x] Added word-by-word heading entrances, magnetic primary CTAs and home-page scroll-spy dots.
+- [x] Changed new-visit theme default to dark while respecting an existing saved light/dark choice.
+- [x] Preserved all current verified career metrics, project links and the fictional PayTrack sample disclaimer.
+- [x] Kept the phone number from the uploaded package off the public contact page.
+
+### Static checks after v4 integration
+- [x] Enhancement JavaScript parses without syntax errors.
+- [x] Enhancement CSS braces are balanced and responsive / reduced-motion fallbacks remain present.
+- [x] All seven pages contain one primary h1 and no duplicate IDs.
+- [x] All seven pages include dark-first theme metadata and load the enhancement layer.
+
+### Manual browser QA — still required
+- [ ] Confirm case-study sticky stacking/depth, transitions and project screenshots on desktop.
+- [ ] Use the Projects Grid/List switch and confirm it works together with category filters, search and result counts.
+- [ ] Confirm the homepage marquee tracks scrolling and the section-dot navigation follows the visible section.
+- [ ] Check About bento and Services card rhythm at desktop, tablet and mobile breakpoints.
+- [ ] Verify the Resume snapshot sticks beside the timeline on desktop and moves above it on mobile.
+- [ ] Confirm kinetic words and magnetic buttons are subtle, usable and fully visible with keyboard focus.
+- [ ] Verify dark-first, saved light/dark preference, and the system's reduced-motion setting in a real browser.
+- [ ] Check performance, tab-visibility behavior, and layout at 360–430 px widths.
+
+**Release status:** v4 code changes are integrated in this branch and static checks passed. Merge/deployment and hands-on browser QA must be confirmed separately.
