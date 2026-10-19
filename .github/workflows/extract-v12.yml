@@ -1,4 +1,5 @@
 name: Publish Portfolio v12
+# Re-trigger v12 extraction after correcting the deployment setup
 
 on:
   push:
