@@ -7,7 +7,7 @@ SITE = "https://reddygautam98.github.io/GautamTheAnalyst.io/"
 GH = "https://github.com/reddygautam98/"
 LI = "https://www.linkedin.com/in/gautam-reddy-analyst"
 HR = "https://www.hackerrank.com/profile/reddygautam98"
-EMAIL = "trkr725@gmail.com"
+EMAIL = "gautamreddy098@gmail.com"
 FONTS = "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,600&display=swap"
 NAV = [("projects.html", "Projects"), ("samples/index.html", "BA samples"), ("services.html", "Services"), ("about.html", "About"), ("resume.html", "Resume"), ("contact.html", "Contact")]
 

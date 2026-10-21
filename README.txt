@@ -20,7 +20,7 @@ BA SAMPLE ARTIFACTS
 The `docs/samples/` folder contains fictional PayTrack BRD/FRD, user stories, RTM/test/UAT plan, workshop MoM/RAID, SVG/PNG diagrams, Mermaid source files, and CSV templates. PayTrack is illustrative. Sample names/values are fictional and test cases are marked Not Run.
 
 CONTACT FORM
-The static enquiry form prepares an email draft addressed to `trkr725@gmail.com`. It does not store enquiries or auto-send; the visitor reviews and sends the draft via their email client.
+The static enquiry form prepares an email draft addressed to `gautamreddy098@gmail.com`. It does not store enquiries or auto-send; the visitor reviews and sends the draft via their email client.
 
 BUILDING & LOCAL DEVELOPMENT
 - Rebuild all pages: from `docs/`, run `python build.py`

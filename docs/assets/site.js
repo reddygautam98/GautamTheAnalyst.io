@@ -258,7 +258,7 @@ if(f){
     if(!ok)return;
     var v=function(n){return(f.elements[n]&&f.elements[n].value||'').trim()};
     var body=['Name: '+v('name'),'Email: '+v('email'),'Company: '+(v('company')||'-'),'Service: '+v('service'),'Engagement: '+v('type'),'Timeline: '+v('timeline'),'Reference: '+(v('ref')||'-'),'','What I need:',v('msg')].join('\n');
-    location.href='mailto:trkr725@gmail.com?subject='+encodeURIComponent('Project enquiry: '+v('service'))+'&body='+encodeURIComponent(body);
+    location.href='mailto:gautamreddy098@gmail.com?subject='+encodeURIComponent('Project enquiry: '+v('service'))+'&body='+encodeURIComponent(body);
     var s=$('#sent');
     if(s){
       s.hidden=false;
