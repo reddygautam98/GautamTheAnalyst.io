@@ -61,7 +61,7 @@ function countUp(root){
 /* 3D tilt on cards (mouse only) */
 if(fine&&!reduce){
   $$('[data-tilt]').forEach(function(el){
-    var max=el.classList.contains('rbody')||el.classList.contains('card')&&el.closest('.g3')?5:7;
+    var max=el.classList.contains('cta')?6:(el.classList.contains('step-card')?12:(el.classList.contains('rbody')?8:11));
     el.addEventListener('pointermove',function(e){
       var b=el.getBoundingClientRect(),x=(e.clientX-b.left)/b.width,y=(e.clientY-b.top)/b.height;
       el.classList.add('tilting');
@@ -74,7 +74,7 @@ if(fine&&!reduce){
   /* hero scene follows the pointer */
   var sc=$('[data-scene]');
   if(sc){var st=$('.stage',sc);
-    sc.addEventListener('pointermove',function(e){var b=sc.getBoundingClientRect(),x=(e.clientX-b.left)/b.width-.5,y=(e.clientY-b.top)/b.height-.5;st.classList.add('live');st.style.setProperty('--ry',(-11+x*22).toFixed(2)+'deg');st.style.setProperty('--rx',(5-y*16).toFixed(2)+'deg')});
+    sc.addEventListener('pointermove',function(e){var b=sc.getBoundingClientRect(),x=(e.clientX-b.left)/b.width-.5,y=(e.clientY-b.top)/b.height-.5;st.classList.add('live');st.style.setProperty('--ry',(-11+x*26).toFixed(2)+'deg');st.style.setProperty('--rx',(5-y*20).toFixed(2)+'deg')});
     sc.addEventListener('pointerleave',function(){st.classList.remove('live');st.style.setProperty('--ry','-11deg');st.style.setProperty('--rx','5deg')});
   }
 }

@@ -77,7 +77,7 @@ def page(path, title, desc, body, p="", cur="", ld=""):
 '''
 
 def cta(p="", h="Hiring a Business Analyst, or scoping a piece of work?", t="Share the role or the problem and the outcome you want. I reply with context."):
-    return f'''<section class="cta-sec"><div class="wrap"><div class="cta has-flow">{F.lifecycle("c" + str(sum(map(ord, h)) % 9973)).replace("xMidYMid meet", "xMidYMid slice")}<div class="cta-in"><div><h2>{h}</h2><p>{t}</p></div><a class="btn btn-primary" href="{p}contact.html">Get in touch</a></div></div></div></section>'''
+    return f'''<section class="cta-sec"><div class="wrap"><div class="cta has-flow" data-tilt>{F.lifecycle("c" + str(sum(map(ord, h)) % 9973)).replace("xMidYMid meet", "xMidYMid slice")}<div class="cta-in"><div><h2>{h}</h2><p>{t}</p></div><a class="btn btn-primary" href="{p}contact.html">Get in touch</a></div></div></div></section>'''
 
 def head(crumb, h, lead, flow, p=""):
     return f'<section class="page-head has-flow">{flow}<div class="wrap"><div class="crumbs rv"><a href="{p}index.html">Home</a> / {crumb}</div><h1 class="{rv(1)}">{h}</h1><p class="lead {rv(2)}">{lead}</p></div></section>'
