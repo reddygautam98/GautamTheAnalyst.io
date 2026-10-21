@@ -2,33 +2,29 @@ GAUTAM THE ANALYST — WEBSITE SOURCE
 ===================================
 
 CANONICAL PUBLISHED SOURCE
-The live GitHub Pages site is published from the `docs/` folder on the `main` branch. All runnable website HTML, shared CSS/JavaScript, project previews, sample-artifact gallery, diagrams and CSV resources are kept together there. Root-level duplicate HTML/CSS/JavaScript and the original HTML5 UP/Massively template dependencies have been removed to avoid competing copies of the site.
+The live GitHub Pages site is published from the `docs/` folder on the `main` branch. All runnable website HTML, shared CSS/JavaScript, project previews, sample-artifact gallery, diagrams, and CSV resources are kept together there.
 
-PUBLISHED PAGES
-- `docs/index.html` — client-focused home page with services, selected work, BA Samples and engagement process.
+PUBLISHED PAGES & ASSETS
+- `docs/index.html` — client-focused home page with services, selected work, BA Samples, and engagement process.
 - `docs/about.html` — professional profile and working principles.
 - `docs/services.html` — service scopes and deliverables.
-- `docs/projects.html` — nine project examples with accurately labelled screenshots/illustrations.
-- `docs/resume.html` — professional experience, skills, education and certifications; no resume-download button or employer-duration ranges.
+- `docs/projects.html` — nine project examples with project screenshots and repository links.
+- `docs/resume.html` — professional experience, skills, education, and certifications.
 - `docs/contact.html` — direct contact details and project enquiry form.
-- `docs/samples/index.html` — BA sample artifacts gallery.
-- `docs/assets/css/portfolio.css` — responsive visual system, light/dark theme and restrained diagram backgrounds.
-- `docs/assets/js/portfolio.js` — persisted theme, mobile navigation, project filters, service preselection and mailto enquiry draft behavior.
-
-ROOT-LEVEL IMAGE FILES
-The root `assets/*.jpg` files are retained as stable public image sources for project screenshots; they are not old website code. The deployed site has the assets it needs under `docs/assets/`.
+- `docs/samples/index.html` — BA sample artifacts gallery (PayTrack case study, documents, diagrams, CSV specs).
+- `docs/assets/style.css` — responsive visual system, light/dark themes, and diagram styling.
+- `docs/assets/site.js` — persisted theme, mobile navigation, project filters, smooth scroll, and form handler.
+- `docs/assets/vendor/lenis.min.js` — bundled smooth-scrolling library.
 
 BA SAMPLE ARTIFACTS
-The `docs/samples/` folder contains fictional PayTrack BRD/FRD, user stories, RTM/test/UAT plan, workshop MoM/RAID, SVG diagrams, Mermaid source files, and CSV templates. PayTrack is illustrative. Sample names/values are fictional and test cases are marked Not Run.
+The `docs/samples/` folder contains fictional PayTrack BRD/FRD, user stories, RTM/test/UAT plan, workshop MoM/RAID, SVG/PNG diagrams, Mermaid source files, and CSV templates. PayTrack is illustrative. Sample names/values are fictional and test cases are marked Not Run.
 
 CONTACT FORM
-The static enquiry form prepares an email addressed to `reddygautam98@gmail.com`. It does not store enquiries or auto-send; the visitor must review and send the email draft.
+The static enquiry form prepares an email draft addressed to `trkr725@gmail.com`. It does not store enquiries or auto-send; the visitor reviews and sends the draft via their email client.
+
+BUILDING & LOCAL DEVELOPMENT
+- Rebuild all pages: from `docs/`, run `python build.py`
+- Local preview: run `npx live-server docs` or `python -m http.server 8080 --directory docs`
 
 DEPLOYMENT
-GitHub Pages source is `main /docs`. The `.nojekyll` marker is included to publish this static HTML/CSS/JavaScript site without relying on legacy template conversion. After publishing, test the live URL, light/dark toggle, mobile navigation, project filters and enquiry flow in a real browser.
-
-
-## Changes ported from the Futuristic v2 package
-The live site includes a progressive enhancement layer in `docs/assets/css/site-enhancements.css` and `docs/assets/js/site-enhancements.js`. It adds a keyboard command palette, typed hero focus line, scroll reveals, reduced-motion-aware hero tilt, toolkit tickers, an interactive PayTrack traceability explorer, project search/live count, resume metric count-up, contact draft terminal/copy buttons, subtle cursor lighting, selected animated borders and a failed-preview fallback.
-
-See `docs/WEBSITE_CHANGE_CHECKLIST.md` for implementation status and a manual browser-QA checklist. The implementation retains the current brand and site content rather than replacing it with a pixel-identical copy of the ZIP stylesheet. The manual browser QA items remain unchecked until tested on the published website.
+GitHub Pages source is configured to publish from `main /docs`. The `docs/.nojekyll` marker is included to ensure static publishing directly without Jekyll conversion.
