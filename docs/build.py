@@ -100,15 +100,15 @@ def tags(l): return '<ul class="tags">' + "".join(f"<li>{t}</li>" for t in l) + 
 # ---------------------------------------------------------------- projects (BA relevant first)
 GHIMG = "https://opengraph.githubassets.com/1/reddygautam98/"
 PROJECTS = [
- ("analytics", "Analytics", "Sales Data Analysis", "SQL analysis of product performance, the leading salesperson by region, high-performing regions and high-value first-quarter transactions.", ["SQL"], GH + "Sales-data-analysis"),
- ("analytics", "Analytics", "Loan Data Analytics", "SQL-based financial analysis covering loan interest rates, loan grades, default patterns, annual issuance, repayment behaviour and state-level risk trends.", ["SQL", "Finance"], GH + "Loan-data-analytics"),
- ("analytics", "Analytics", "Sales Forecasting Report", "Reviews sales performance, monthly profit trends and shipment-efficiency measures that are relevant to planning.", ["Reporting"], GH + "Sales-Forecasting-Report"),
- ("analytics", "Analytics", "HR Data Analysis", "Power BI workforce analysis covering employee performance, turnover, tenure and HR trends.", ["Power BI"], GH + "Hr-data-analysis"),
- ("bi", "Business intelligence", "Business Insights Report", "A structured business report for reviewing sales performance, financial indicators and selected KPIs.", ["BI", "KPIs"], GH + "Business_Insights_Report"),
- ("bi", "Business intelligence", "GameZone Business Intelligence", "A business-intelligence example for exploring performance and presenting metrics. The repository README has the exact implementation and setup.", ["BI"], GH + "gamezone-business-intelligence"),
- ("data", "Data engineering", "MetaLayer", "A data-engineering workflow organised around orchestration and structured processing layers. The README covers architecture, validation and setup.", ["Pipelines"], GH + "MetaLayer"),
- ("ai", "AI prototype", "ClinChat-style RAG App", "An experimental retrieval-augmented generation prototype. Read the README for implementation details and limits. It is not a clinically validated product.", ["RAG", "Prototype"], GH + "ClinChat-style-RAG-app"),
- ("writing", "Writing", "Daily Posts & Notes", "Knowledge-sharing notes and learning summaries on analysis and professional practice.", ["Notes"], GH + "daily_post/blob/main/read.md"),
+ ("analytics", "Personal Analytics Project", "Sales Data Analysis", "SQL analysis of product performance, the leading salesperson by region, high-performing regions and high-value first-quarter transactions.", ["SQL"], GH + "Sales-data-analysis"),
+ ("analytics", "Personal Analytics Project", "Loan Data Analytics", "SQL-based financial analysis covering loan interest rates, loan grades, default patterns, annual issuance, repayment behaviour and state-level risk trends.", ["SQL", "Finance"], GH + "Loan-data-analytics"),
+ ("analytics", "Personal Analytics Project", "Sales Forecasting Report", "Reviews sales performance, monthly profit trends and shipment-efficiency measures that are relevant to planning.", ["Reporting"], GH + "Sales-Forecasting-Report"),
+ ("analytics", "Power BI Workforce Analytics", "HR Data Analysis", "Power BI workforce analysis covering employee performance, turnover, tenure and HR trends.", ["Power BI"], GH + "Hr-data-analysis"),
+ ("bi", "BI Reporting Prototype", "Business Insights Report", "A structured business report for reviewing sales performance, financial indicators and selected KPIs.", ["BI", "KPIs"], GH + "Business_Insights_Report"),
+ ("bi", "BI Dashboard Prototype", "GameZone Business Intelligence", "A business-intelligence example for exploring performance and presenting metrics. The repository README has the exact implementation and setup.", ["BI"], GH + "gamezone-business-intelligence"),
+ ("data", "Data Pipeline Project", "MetaLayer", "A data-engineering workflow organised around orchestration and structured processing layers. The README covers architecture, validation and setup.", ["Pipelines"], GH + "MetaLayer"),
+ ("ai", "Experimental AI Prototype", "ClinChat-style RAG App", "An experimental retrieval-augmented generation prototype. Read the README for implementation details and limits. It is not a clinically validated product.", ["RAG", "Prototype"], GH + "ClinChat-style-RAG-app"),
+ ("writing", "Writing & BA Notes", "Daily Posts & Notes", "Knowledge-sharing notes and learning summaries on analysis and professional practice.", ["Notes"], GH + "daily_post/blob/main/read.md"),
 ]
 
 import itertools
@@ -155,10 +155,10 @@ def trace():
     return (f'''<div class="trace hero-slider" id="heroSlider" aria-label="PayTrack deliverables showcase">
 <div class="trace-top slider-top">
   <div class="slider-tabs" role="tablist" aria-label="Deliverable slides">
-    <button class="slider-tab is-active" role="tab" id="tab-0" aria-selected="true" aria-controls="slide-0" data-slide="0" type="button"><span class="tab-badge">01</span> Traceability</button>
-    <button class="slider-tab" role="tab" id="tab-1" aria-selected="false" aria-controls="slide-1" data-slide="1" type="button"><span class="tab-badge">02</span> User story</button>
-    <button class="slider-tab" role="tab" id="tab-2" aria-selected="false" aria-controls="slide-2" data-slide="2" type="button"><span class="tab-badge">03</span> REST API</button>
-    <button class="slider-tab" role="tab" id="tab-3" aria-selected="false" aria-controls="slide-3" data-slide="3" type="button"><span class="tab-badge">04</span> SQL logic</button>
+    <button class="slider-tab is-active" role="tab" id="tab-0" aria-selected="true" aria-controls="slide-0" data-slide="0" tabindex="0" type="button"><span class="tab-badge">01</span> Traceability</button>
+    <button class="slider-tab" role="tab" id="tab-1" aria-selected="false" aria-controls="slide-1" data-slide="1" tabindex="-1" type="button"><span class="tab-badge">02</span> User story</button>
+    <button class="slider-tab" role="tab" id="tab-2" aria-selected="false" aria-controls="slide-2" data-slide="2" tabindex="-1" type="button"><span class="tab-badge">03</span> REST API</button>
+    <button class="slider-tab" role="tab" id="tab-3" aria-selected="false" aria-controls="slide-3" data-slide="3" tabindex="-1" type="button"><span class="tab-badge">04</span> SQL logic</button>
   </div>
   <div class="slider-nav-ctrls">
     <button class="slider-arrow" id="slidePrev" type="button" aria-label="Previous slide">&#8249;</button>
@@ -666,15 +666,21 @@ def contact():
 <div class="form-card rv" style="--d:.1s"><h2 style="font-size:1.6rem">Project enquiry</h2>
 <p class="muted small" style="margin:8px 0 16px">This site stores nothing. The button opens a draft in your email app and nothing is sent until you press Send.</p>
 <p class="small" style="margin:0 0 16px;color:var(--muted)">* Required fields</p>
-<form id="enquiry">
-<div class="row2"><label>Your name *<input name="name" autocomplete="name" required><span class="err"></span></label><label>Work email *<input name="email" type="email" autocomplete="email" inputmode="email" required><span class="err"></span></label></div>
-<label>Company (optional)<input name="company" autocomplete="organization"></label>
-<label>What do you need help with? *<select name="service" required><option value="">Choose a service</option>{opts(["Business analysis and requirements", "Data analysis and BI reporting", "SQL, data quality and reporting", "API and integration analysis", "UAT, testing and release support", "A role at my company", "Not sure yet"])}</select><span class="err"></span></label>
-<div class="row2"><label>Engagement type<select name="type">{opts(["Full-time role", "Discovery or review", "Defined deliverable", "Ongoing support", "Prototype or feasibility", "Not sure yet"])}</select></label><label>Target timeline<select name="timeline">{opts(["Flexible", "As soon as practical", "Within 2 to 4 weeks", "Within 1 to 3 months", "Specific deadline"])}</select></label></div>
-<label>Describe the problem and the outcome you want *<textarea name="msg" required></textarea><span class="err"></span></label>
-<label>Reference link (optional)<input name="ref" type="url"></label>
+<form id="enquiry" novalidate>
+<div class="row2">
+  <label for="enquiry-name">Your name *<input id="enquiry-name" name="name" autocomplete="name" required aria-describedby="err-name"><span class="err" id="err-name" aria-live="polite"></span></label>
+  <label for="enquiry-email">Work email *<input id="enquiry-email" name="email" type="email" autocomplete="email" inputmode="email" required aria-describedby="err-email"><span class="err" id="err-email" aria-live="polite"></span></label>
+</div>
+<label for="enquiry-company">Company (optional)<input id="enquiry-company" name="company" autocomplete="organization"></label>
+<label for="enquiry-service">What do you need help with? *<select id="enquiry-service" name="service" required aria-describedby="err-service"><option value="">Choose a service</option>{opts(["Business analysis and requirements", "Data analysis and BI reporting", "SQL, data quality and reporting", "API and integration analysis", "UAT, testing and release support", "A role at my company", "Not sure yet"])}</select><span class="err" id="err-service" aria-live="polite"></span></label>
+<div class="row2">
+  <label for="enquiry-type">Engagement type<select id="enquiry-type" name="type">{opts(["Full-time role", "Discovery or review", "Defined deliverable", "Ongoing support", "Prototype or feasibility", "Not sure yet"])}</select></label>
+  <label for="enquiry-timeline">Target timeline<select id="enquiry-timeline" name="timeline">{opts(["Flexible", "As soon as practical", "Within 2 to 4 weeks", "Within 1 to 3 months", "Specific deadline"])}</select></label>
+</div>
+<label for="enquiry-msg">Describe the problem and the outcome you want *<textarea id="enquiry-msg" name="msg" required aria-describedby="err-msg"></textarea><span class="err" id="err-msg" aria-live="polite"></span></label>
+<label for="enquiry-ref">Reference link (optional)<input id="enquiry-ref" name="ref" type="url" placeholder="https://example.com" aria-describedby="err-ref"><span class="err" id="err-ref" aria-live="polite"></span></label>
 <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap"><button class="btn btn-primary" type="submit">Prepare email draft</button><span class="muted small">Or email directly: <a href="mailto:{EMAIL}">{EMAIL}</a></span></div>
-<p id="sent" class="muted small" hidden role="status">Your email app should now show a draft. If nothing opened, write to {EMAIL}.</p>
+<p id="sent" class="muted small" hidden role="status">Preparing your email draft. If your email application does not open automatically, please send your enquiry directly to <a href="mailto:{EMAIL}">{EMAIL}</a>.</p>
 </form></div>
 </div></section>
 '''
@@ -759,11 +765,11 @@ def sitem(t, d, links, item_id="", ico=""):
 def samples():
     docs = "".join([
      sitem("Complete Documentation Bundle (Featured)", "All five primary business analysis specifications consolidated in one comprehensive PDF download.", [flink("docs/PayTrack_Sample_BA_Documentation_Bundle.pdf", "PDF Bundle (1.2MB)", "pdf")], "bundle", ICO_DOC_BUNDLE),
-     sitem("Business Requirements Document (BRD)", "Business need, objectives, scope, stakeholders, assumptions, requirements and sign-off template.", [flink("docs/01_BRD_PayTrack_Sample.pdf", "PDF", "pdf"), flink("docs/01_BRD_PayTrack_Sample.docx", "Word", "word", target_blank=False)], "brd", ICO_DOC_BRD),
-     sitem("Functional Requirements Document (FRD)", "Functional behaviour, business rules, data entities, screen requirements, NFRs, error states and decisions to confirm.", [flink("docs/02_FRD_PayTrack_Sample.pdf", "PDF", "pdf"), flink("docs/02_FRD_PayTrack_Sample.docx", "Word", "word", target_blank=False)], "frd", ICO_DOC_FRD),
-     sitem("User Stories and Acceptance Criteria", "Prioritised stories with testable Given / When / Then criteria across operational personas.", [flink("docs/03_User_Stories_Acceptance_Criteria_Sample.pdf", "PDF", "pdf"), flink("docs/03_User_Stories_Acceptance_Criteria_Sample.docx", "Word", "word", target_blank=False)], "user-stories", ICO_DOC_STORIES),
-     sitem("RTM, Test Cases and UAT Plan", "Traceability from requirement to test, test-case catalogue, UAT entry and exit criteria, sign-off record.", [flink("docs/04_RTM_Test_Cases_UAT_Plan_Sample.pdf", "PDF", "pdf"), flink("docs/04_RTM_Test_Cases_UAT_Plan_Sample.docx", "Word", "word", target_blank=False)], "uat", ICO_DOC_RTM),
-     sitem("Discovery Workshop MoM & Decision Log", "Workshop summary, discussion themes, open decisions, action tracker and RAID log.", [flink("docs/05_Discovery_Workshop_MoM_Decision_Log_Sample.pdf", "PDF", "pdf"), flink("docs/05_Discovery_Workshop_MoM_Decision_Log_Sample.docx", "Word", "word", target_blank=False)], "discovery", ICO_DOC_DISCOVERY)])
+     sitem("Discovery Workshop MoM & Decision Log", "Phase 1 &bull; Workshop summary, discussion themes, open decisions, action tracker and RAID log.", [flink("docs/05_Discovery_Workshop_MoM_Decision_Log_Sample.pdf", "PDF", "pdf"), flink("docs/05_Discovery_Workshop_MoM_Decision_Log_Sample.docx", "Word", "word", target_blank=False)], "discovery", ICO_DOC_DISCOVERY),
+     sitem("Business Requirements Document (BRD)", "Phase 2 &bull; Business need, objectives, scope, stakeholders, assumptions, requirements and sign-off template.", [flink("docs/01_BRD_PayTrack_Sample.pdf", "PDF", "pdf"), flink("docs/01_BRD_PayTrack_Sample.docx", "Word", "word", target_blank=False)], "brd", ICO_DOC_BRD),
+     sitem("Functional Requirements Document (FRD)", "Phase 2 &bull; Functional behaviour, business rules, data entities, screen requirements, NFRs, error states and decisions to confirm.", [flink("docs/02_FRD_PayTrack_Sample.pdf", "PDF", "pdf"), flink("docs/02_FRD_PayTrack_Sample.docx", "Word", "word", target_blank=False)], "frd", ICO_DOC_FRD),
+     sitem("User Stories and Acceptance Criteria", "Phase 3 &bull; Prioritised stories with testable Given / When / Then criteria across operational personas.", [flink("docs/03_User_Stories_Acceptance_Criteria_Sample.pdf", "PDF", "pdf"), flink("docs/03_User_Stories_Acceptance_Criteria_Sample.docx", "Word", "word", target_blank=False)], "user-stories", ICO_DOC_STORIES),
+     sitem("RTM, Test Cases and UAT Plan", "Phase 4 &bull; Traceability from requirement to test, test-case catalogue, UAT entry and exit criteria, sign-off record.", [flink("docs/04_RTM_Test_Cases_UAT_Plan_Sample.pdf", "PDF", "pdf"), flink("docs/04_RTM_Test_Cases_UAT_Plan_Sample.docx", "Word", "word", target_blank=False)], "uat", ICO_DOC_RTM)])
     dg = "".join([
      sitem("Payment reconciliation process flow", "Matched path, validation failure, exception creation, review, resolution or escalation, and audit.", [flink("diagrams/Payment_Reconciliation_Process.svg", "SVG", "img"), flink("diagrams/Payment_Reconciliation_Process.png", "PNG", "img"), flink("diagrams/Payment_Reconciliation_Process.mmd", "Mermaid", "mmd", target_blank=False)], "process-flow", ICO_DIAG_PROCESS),
      sitem("Conceptual solution architecture", "Portal, API, reconciliation service, data store, gateway adapter, audit and access control.", [flink("diagrams/Payment_Conceptual_Architecture.svg", "SVG", "img"), flink("diagrams/Payment_Conceptual_Architecture.png", "PNG", "img")], "architecture", ICO_DIAG_ARCH),
@@ -831,8 +837,20 @@ pages = [
 for path, t, d, b, p, cur, ld in pages:
     open(path, "w", encoding="utf-8").write(page(path, t, d, b, p, cur, ld))
 
-NOT_FOUND = '''<section class="sec"><div class="wrap"><h1>Page not found</h1><p class="lead">That page does not exist or has moved. Try one of these instead:</p>
-<ul class="muted" style="padding-left:1.1em;margin:18px 0"><li><a href="{s}">Home</a></li><li><a href="{s}projects.html">Projects</a></li><li><a href="{s}samples/index.html">BA samples</a></li><li><a href="{s}services.html">Services</a></li><li><a href="{s}resume.html">Resume</a></li><li><a href="{s}contact.html">Contact</a></li></ul></div></section>'''.format(s=SITE)
+NOT_FOUND = '''<section class="sec" style="padding-top:40px"><div class="wrap" style="max-width:680px">
+<h1>Page not found</h1>
+<p class="lead" style="margin-top:16px">The page you were looking for doesn&rsquo;t exist, was renamed, or has moved.</p>
+<div class="actions" style="margin-top:28px">
+<a class="btn btn-primary" href="{s}">Go to homepage <span class="arr" aria-hidden="true">&rarr;</span></a>
+<a class="btn btn-ghost" href="{s}projects.html">Browse projects</a>
+<a class="btn btn-ghost" href="{s}samples/index.html">View BA samples</a>
+</div>
+<ul class="muted small" style="display:flex;gap:18px;list-style:none;padding:0;margin:32px 0 0;flex-wrap:wrap">
+<li><a href="{s}services.html">Services</a></li>
+<li><a href="{s}resume.html">Resume</a></li>
+<li><a href="{s}contact.html">Contact</a></li>
+</ul>
+</div></section>'''.format(s=SITE)
 open("404.html", "w", encoding="utf-8").write(page("404.html", "Page not found | Gautam Reddy, Business Analyst", "This page could not be found.", NOT_FOUND, SITE, "", "", "noindex, follow"))
 
 import datetime

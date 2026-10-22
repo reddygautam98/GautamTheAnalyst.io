@@ -53,15 +53,21 @@
 <div class="form-card rv" style="--d:.1s"><h2 style="font-size:1.6rem">Project enquiry</h2>
 <p class="muted small" style="margin:8px 0 16px">This site stores nothing. The button opens a draft in your email app and nothing is sent until you press Send.</p>
 <p class="small" style="margin:0 0 16px;color:var(--muted)">* Required fields</p>
-<form id="enquiry">
-<div class="row2"><label>Your name *<input name="name" autocomplete="name" required><span class="err"></span></label><label>Work email *<input name="email" type="email" autocomplete="email" inputmode="email" required><span class="err"></span></label></div>
-<label>Company (optional)<input name="company" autocomplete="organization"></label>
-<label>What do you need help with? *<select name="service" required><option value="">Choose a service</option><option>Business analysis and requirements</option><option>Data analysis and BI reporting</option><option>SQL, data quality and reporting</option><option>API and integration analysis</option><option>UAT, testing and release support</option><option>A role at my company</option><option>Not sure yet</option></select><span class="err"></span></label>
-<div class="row2"><label>Engagement type<select name="type"><option>Full-time role</option><option>Discovery or review</option><option>Defined deliverable</option><option>Ongoing support</option><option>Prototype or feasibility</option><option>Not sure yet</option></select></label><label>Target timeline<select name="timeline"><option>Flexible</option><option>As soon as practical</option><option>Within 2 to 4 weeks</option><option>Within 1 to 3 months</option><option>Specific deadline</option></select></label></div>
-<label>Describe the problem and the outcome you want *<textarea name="msg" required></textarea><span class="err"></span></label>
-<label>Reference link (optional)<input name="ref" type="url"></label>
+<form id="enquiry" novalidate>
+<div class="row2">
+  <label for="enquiry-name">Your name *<input id="enquiry-name" name="name" autocomplete="name" required aria-describedby="err-name"><span class="err" id="err-name" aria-live="polite"></span></label>
+  <label for="enquiry-email">Work email *<input id="enquiry-email" name="email" type="email" autocomplete="email" inputmode="email" required aria-describedby="err-email"><span class="err" id="err-email" aria-live="polite"></span></label>
+</div>
+<label for="enquiry-company">Company (optional)<input id="enquiry-company" name="company" autocomplete="organization"></label>
+<label for="enquiry-service">What do you need help with? *<select id="enquiry-service" name="service" required aria-describedby="err-service"><option value="">Choose a service</option><option>Business analysis and requirements</option><option>Data analysis and BI reporting</option><option>SQL, data quality and reporting</option><option>API and integration analysis</option><option>UAT, testing and release support</option><option>A role at my company</option><option>Not sure yet</option></select><span class="err" id="err-service" aria-live="polite"></span></label>
+<div class="row2">
+  <label for="enquiry-type">Engagement type<select id="enquiry-type" name="type"><option>Full-time role</option><option>Discovery or review</option><option>Defined deliverable</option><option>Ongoing support</option><option>Prototype or feasibility</option><option>Not sure yet</option></select></label>
+  <label for="enquiry-timeline">Target timeline<select id="enquiry-timeline" name="timeline"><option>Flexible</option><option>As soon as practical</option><option>Within 2 to 4 weeks</option><option>Within 1 to 3 months</option><option>Specific deadline</option></select></label>
+</div>
+<label for="enquiry-msg">Describe the problem and the outcome you want *<textarea id="enquiry-msg" name="msg" required aria-describedby="err-msg"></textarea><span class="err" id="err-msg" aria-live="polite"></span></label>
+<label for="enquiry-ref">Reference link (optional)<input id="enquiry-ref" name="ref" type="url" placeholder="https://example.com" aria-describedby="err-ref"><span class="err" id="err-ref" aria-live="polite"></span></label>
 <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap"><button class="btn btn-primary" type="submit">Prepare email draft</button><span class="muted small">Or email directly: <a href="mailto:gautamreddy098@gmail.com">gautamreddy098@gmail.com</a></span></div>
-<p id="sent" class="muted small" hidden role="status">Your email app should now show a draft. If nothing opened, write to gautamreddy098@gmail.com.</p>
+<p id="sent" class="muted small" hidden role="status">Preparing your email draft. If your email application does not open automatically, please send your enquiry directly to <a href="mailto:gautamreddy098@gmail.com">gautamreddy098@gmail.com</a>.</p>
 </form></div>
 </div></section>
 
