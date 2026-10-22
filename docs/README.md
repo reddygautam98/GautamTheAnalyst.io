@@ -1,4 +1,4 @@
-# Gautam Reddy Portfolio (v23)
+# Gautam Reddy Portfolio (v24)
 
 Static site. No frameworks, no build step needed to deploy.
 
@@ -9,7 +9,7 @@ Static site. No frameworks, no build step needed to deploy.
 - Deploy: upload the contents of this folder to GitHub Pages (keep the folder structure)
 - Run locally: `python -m http.server 8000`
 
-## What v23 adds
+## What v24 adds
 - Senior UI/UX audit polish & WCAG AA contrast compliance (>4.5:1 text contrast).
 - De-noised animation budget: steady resting state with responsive 3D micro-interactions on hover.
 - Background BPMN animated flow on hero, static on inner sections with off-screen pause via IntersectionObserver.

@@ -9,7 +9,7 @@ LI = "https://www.linkedin.com/in/gautam-reddy-analyst"
 HR = "https://www.hackerrank.com/profile/reddygautam98"
 EMAIL = "gautamreddy098@gmail.com"
 FONTS = "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,600&display=swap"
-NAV = [("projects.html", "Projects"), ("samples/index.html", "BA samples"), ("services.html", "Services"), ("about.html", "About"), ("resume.html", "Resume"), ("contact.html", "Contact")]
+NAV = [("projects.html", "Projects"), ("samples/index.html", "BA samples"), ("services.html", "Services"), ("about.html", "About"), ("contact.html", "Contact")]
 
 # Core BA & technical skills for single-row marquee
 MARQ_ITEMS = ["Requirements Gathering", "BRD / FRD / SRS", "User Stories & BDD", "Traceability Matrix (RTM)", "Process Modelling (BPMN / UML)", "Gap Analysis", "REST API Integration", "SQL (PostgreSQL)", "Python (Pandas)", "Power BI & DAX", "UAT & Defect Triage", "Agile / Scrum"]
@@ -30,6 +30,7 @@ ICO_HR = '<svg class="ico-hr" viewBox="0 0 24 24" width="18" height="18" aria-hi
 ICO_LOC = '<svg class="ico-loc" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>'
 
 def page(path, title, desc, body, p="", cur="", ld=""):
+    res_cur = ' aria-current="page"' if cur == "resume.html" else ""
     nav = "".join('<a href="%s%s"%s>%s</a>' % (p, h, ' aria-current="page"' if h == cur else "", t) for h, t in NAV)
     return f'''<!DOCTYPE html>
 <html lang="en">
@@ -60,14 +61,14 @@ def page(path, title, desc, body, p="", cur="", ld=""):
 <script>document.documentElement.classList.add("js");try{{var t=localStorage.getItem("gr-theme")||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.dataset.theme=t}}catch(e){{}}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="{FONTS}">
-<link rel="stylesheet" href="{p}assets/style.css?v=23">
+<link rel="stylesheet" href="{p}assets/style.css?v=24">
 {ld}</head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <div class="progress" aria-hidden="true"></div>
 <header class="site-header"><div class="wrap bar">
 <a class="brand" href="{p}index.html"><img src="{p}assets/mark.svg" alt="" width="30" height="30">Gautam Reddy</a>
-<nav class="nav" id="nav" aria-label="Main">{nav}<a href="{p}resume.html" class="nav-resume-btn">Resume (PDF)</a></nav>
+<nav class="nav" id="nav" aria-label="Main">{nav}<a href="{p}resume.html" class="nav-resume-btn"{res_cur}>Resume</a></nav>
 <div class="tools"><button class="icon-btn" id="theme" type="button" aria-label="Switch theme" aria-pressed="false"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button></div>
 <button class="icon-btn menu-btn" id="menu" type="button" aria-expanded="false" aria-controls="nav" aria-label="Menu">&#9776;</button>
 </div></header>
@@ -80,7 +81,7 @@ def page(path, title, desc, body, p="", cur="", ld=""):
 </div></footer>
 
 <script src="{p}assets/vendor/lenis.min.js" defer></script>
-<script src="{p}assets/site.js?v=23" defer></script>
+<script src="{p}assets/site.js?v=24" defer></script>
 </body>
 </html>
 '''
@@ -135,15 +136,27 @@ def pcard(c, i=0, base=0.0):
     txt = 'Read notes' if k == 'writing' else 'View repository'
     return f'''<article class="card pcard {rv(i, base)}" data-cat="{k}"><a class="thumb" href="{u}" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true"><span class="ph">{F.mini("m" + str(next(_n)))}<em>{html.escape(t)}</em></span>{img}</a><div class="pbody"><span class="cat">{cat}</span><h3>{t}</h3><p>{d}</p>{tags(tg)}<a class="more" href="{u}" target="_blank" rel="noopener noreferrer" aria-label="{lbl}">{txt} <span class="sr-only">(opens in new tab)</span>&#8599;</a></div></article>'''
 
+TRACE = [
+    ("BR-01", "Single operational view", ["FR-002", "FR-004"], ["US-01", "US-03"], ["TC-001", "TC-002"]),
+    ("BR-02", "Identify unmatched records", ["FR-005", "FR-006", "FR-007"], ["US-03", "US-04"], ["TC-003", "TC-004", "TC-005"]),
+    ("BR-03", "Assign, comment and resolve", ["FR-008", "FR-009", "FR-010", "FR-011"], ["US-05", "US-06", "US-07"], ["TC-006", "TC-007", "TC-008"]),
+]
+
+def _ids(items):
+    return '<span class="idrow">' + "".join(f'<span class="id" data-id="{i}">{i}</span>' for i in items) + '</span>'
+
 def trace():
-    return '''<div class="trace" aria-label="Sample requirements traceability extract">
-<div class="trace-top"><b>PayTrack traceability extract</b><span>Fictional sample &bull; Hover row to trace</span></div>
+    rows = ""
+    for br, label, frs, uss, tcs in TRACE:
+        links = " ".join([br] + frs + uss + tcs)
+        rows += (f'<tr tabindex="0" data-links="{links}" aria-label="Trace {br}: {label}">'
+                 f'<td><span class="id" data-id="{br}">{br}</span><br>{label}</td>'
+                 f'<td>{_ids(frs)}</td><td>{_ids(uss)}</td><td>{_ids(tcs)}</td></tr>\n')
+    return ('''<div class="trace" aria-label="Sample requirements traceability extract">
+<div class="trace-top"><b>PayTrack traceability extract</b><span>Fictional sample &bull; Hover, tap or focus a row to trace</span></div>
 <div class="tbl-wrap"><table><thead><tr><th scope="col">Business requirement</th><th scope="col">Functional</th><th scope="col">Stories</th><th scope="col">Tests</th></tr></thead><tbody>
-<tr data-links="BR-01 FR-002 FR-004 US-01 US-03 TC-001 TC-002"><td><span class="id" data-id="BR-01" tabindex="0">BR-01</span><br>Single operational view</td><td><span class="id" data-id="FR-002">FR-002</span><br><span class="id" data-id="FR-004">FR-004</span></td><td><span class="id" data-id="US-01">US-01</span><br><span class="id" data-id="US-03">US-03</span></td><td><span class="id" data-id="TC-001">TC-001</span><br><span class="id" data-id="TC-002">TC-002</span></td></tr>
-<tr data-links="BR-02 FR-005 FR-006 FR-007 US-03 US-04 TC-003 TC-004 TC-005"><td><span class="id" data-id="BR-02" tabindex="0">BR-02</span><br>Identify unmatched records</td><td><span class="id" data-id="FR-005">FR-005</span><br><span class="id" data-id="FR-006">FR-006</span></td><td><span class="id" data-id="US-03">US-03</span><br><span class="id" data-id="US-04">US-04</span></td><td><span class="id" data-id="TC-003">TC-003</span><br><span class="id" data-id="TC-004">TC-004</span></td></tr>
-<tr data-links="BR-03 FR-008 FR-009 US-05 US-06 TC-006 TC-007"><td><span class="id" data-id="BR-03" tabindex="0">BR-03</span><br>Assign, comment and resolve</td><td><span class="id" data-id="FR-008">FR-008</span><br><span class="id" data-id="FR-009">FR-009</span></td><td><span class="id" data-id="US-05">US-05</span><br><span class="id" data-id="US-06">US-06</span></td><td><span class="id" data-id="TC-006">TC-006</span><br><span class="id" data-id="TC-007">TC-007</span></td></tr>
-</tbody></table></div>
-<div class="trace-foot">Every requirement links forward to a story and a test. <a href="samples/index.html">Open the samples &rarr;</a></div></div>'''
+''' + rows + '''</tbody></table></div>
+<div class="trace-foot">Every requirement links forward to a story and a test. <a href="samples/index.html">Open the samples &rarr;</a></div></div>''')
 
 def marquee():
     items = "".join(f"<li>{k}</li>" for k in MARQ_ITEMS)
@@ -314,7 +327,7 @@ def index():
 <h1 class="{rv(1)}">Business Analyst who turns requirements into <span class="grad">testable specs.</span></h1>
 <p class="rot-line {rv(2)}"><span class="rot-lb">Right now:</span><span class="rot" data-rot aria-live="off">{rot}</span></p>
 <p class="lead {rv(3)}">4+ years of experience in requirements analysis and delivery: translating business needs into clear, testable functional and non-functional requirements, user stories, and BDD acceptance criteria backed by SQL and Python analysis.</p>
-<div class="actions {rv(4)}"><a class="btn btn-primary" href="samples/index.html">View BA samples <span class="arr" aria-hidden="true">&rarr;</span></a><a class="btn btn-ghost" href="resume.html">Resume &amp; PDF <span class="arr" aria-hidden="true">&rarr;</span></a></div>
+<div class="actions {rv(4)}"><a class="btn btn-primary" href="samples/index.html">View BA samples <span class="arr" aria-hidden="true">&rarr;</span></a><a class="btn btn-ghost" href="resume.html">View resume <span class="arr" aria-hidden="true">&rarr;</span></a></div>
 <p class="hero-proof-line {rv(5)}"><span class="h-dot"></span> 4+ yrs BA experience &bull; Payments &amp; Fintech &bull; 2 payment gateway integrations</p>
 </div>
 <div class="scene {rv(2)}" data-scene><div class="stage">
@@ -462,6 +475,7 @@ def projects():
     cards = "".join(pcard(c, i % 3, 0.0) for i, c in enumerate(PROJECTS))
     return head("Projects", "Practical analysis, visible work.", "Repositories across analytics, business intelligence, data engineering, AI prototypes and writing. Every card links to its source so you can review the implementation.", F.erd("pj")) + f'''
 <section class="sec" style="padding-top:24px"><div class="wrap">
+<h2 class="sr-only">Featured case study</h2>
 <div class="feature rv" data-tilt>
 <div><span class="cat feat-badge">Featured case study</span><h3>PayTrack: payment reconciliation, from BRD to UAT</h3><p class="muted"><strong>Problem &bull; Role &bull; Result:</strong> An end-to-end payment reconciliation and exception management portal. Documented business needs (BRD), functional behaviour (FRD), Given/When/Then user stories, REST API sequence flows, and 350+ UAT test scenarios with 100% requirements-to-test traceability.</p>
 <div class="disclaimer"><b>Fictional sample.</b> No client data is used and no executed-test evidence is claimed.</div>
@@ -677,7 +691,7 @@ pages = [
 ("services.html", "Services | Gautam Reddy, Business Analyst", "Business analysis, data analysis, SQL, API and integration analysis, and UAT support, with clear deliverables and scope.", services(), "", "services.html", ""),
 ("projects.html", "Projects | Gautam Reddy, Business Analyst", "Analytics, BI, data engineering and AI prototypes with links to each repository, plus the PayTrack BA case study.", projects(), "", "projects.html", ""),
 ("resume.html", "Resume | Gautam Reddy, Business Analyst", "Experience, skills, education and certifications of Gautam Reddy, Business Analyst with 4+ years in fintech and BFSI.", resume(), "", "resume.html", ""),
-("contact.html", "Contact | Gautam Reddy, Business Analyst", "Contact Gautam Reddy about a Business Analyst role or a project.", contact(), "", "contact.html", ""),
+("contact.html", "Contact | Gautam Reddy, Business Analyst", "Contact Gautam Reddy, a Business Analyst in Bengaluru, about a full-time, hybrid or remote role, or a requirements, reconciliation or reporting project.", contact(), "", "contact.html", ""),
 ("samples/index.html", "BA samples | Gautam Reddy, Business Analyst", "PayTrack: a fictional BA case study with BRD, FRD, user stories, RTM, UAT plan, diagrams and CSV samples.", samples(), "../", "samples/index.html", ""),
 ]
 for path, t, d, b, p, cur, ld in pages:
