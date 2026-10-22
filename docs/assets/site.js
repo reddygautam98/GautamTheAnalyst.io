@@ -336,4 +336,74 @@ if(traceRows.length){
     });
   });
 }
+
+/* hero multi-deliverable slider */
+var slider=$('#heroSlider');
+if(slider){
+  var tabs=$$('.slider-tab',slider),
+      slides=$$('.slider-slide',slider),
+      prevBtn=$('#slidePrev',slider),
+      nextBtn=$('#slideNext',slider),
+      countEl=$('#slideCount',slider),
+      heroStage=$('.stage'),
+      currIdx=0,
+      totalSlides=slides.length,
+      timer=null;
+
+  var showSlide=function(idx){
+    if(idx<0)idx=totalSlides-1;
+    if(idx>=totalSlides)idx=0;
+    currIdx=idx;
+    tabs.forEach(function(t,i){
+      var active=i===currIdx;
+      t.classList.toggle('is-active',active);
+      t.setAttribute('aria-selected',active?'true':'false');
+    });
+    slides.forEach(function(s,i){
+      var active=i===currIdx;
+      s.classList.toggle('is-active',active);
+      s.hidden=!active;
+    });
+    if(countEl)countEl.textContent=(currIdx+1)+' / '+totalSlides;
+    if(heroStage)heroStage.setAttribute('data-active-slide',currIdx);
+  };
+
+  var stopTimer=function(){
+    if(timer){clearInterval(timer);timer=null}
+  };
+
+  tabs.forEach(function(t,i){
+    t.addEventListener('click',function(){stopTimer();showSlide(i)});
+  });
+  if(prevBtn)prevBtn.addEventListener('click',function(){stopTimer();showSlide(currIdx-1)});
+  if(nextBtn)nextBtn.addEventListener('click',function(){stopTimer();showSlide(currIdx+1)});
+
+  slider.addEventListener('keydown',function(e){
+    if(e.key==='ArrowRight'){stopTimer();showSlide(currIdx+1)}
+    else if(e.key==='ArrowLeft'){stopTimer();showSlide(currIdx-1)}
+  });
+
+  var touchX=0;
+  slider.addEventListener('touchstart',function(e){
+    if(e.touches&&e.touches.length===1)touchX=e.touches[0].clientX;
+  },{passive:true});
+  slider.addEventListener('touchend',function(e){
+    if(e.changedTouches&&e.changedTouches.length===1){
+      var dx=e.changedTouches[0].clientX-touchX;
+      if(Math.abs(dx)>40){
+        stopTimer();
+        if(dx<0)showSlide(currIdx+1);
+        else showSlide(currIdx-1);
+      }
+    }
+  },{passive:true});
+
+  if(!reduce){
+    timer=setInterval(function(){
+      if(!slider.matches(':hover')&&!slider.matches(':focus-within')){
+        showSlide(currIdx+1);
+      }
+    },9000);
+  }
+}
 })();

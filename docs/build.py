@@ -152,11 +152,121 @@ def trace():
         rows += (f'<tr tabindex="0" data-links="{links}" aria-label="Trace {br}: {label}">'
                  f'<td><span class="id" data-id="{br}">{br}</span><br>{label}</td>'
                  f'<td>{_ids(frs)}</td><td>{_ids(uss)}</td><td>{_ids(tcs)}</td></tr>\n')
-    return ('''<div class="trace" aria-label="Sample requirements traceability extract">
-<div class="trace-top"><b>PayTrack traceability extract</b><span>Fictional sample &bull; Hover, tap or focus a row to trace</span></div>
-<div class="tbl-wrap"><table><thead><tr><th scope="col">Business requirement</th><th scope="col">Functional</th><th scope="col">Stories</th><th scope="col">Tests</th></tr></thead><tbody>
-''' + rows + '''</tbody></table></div>
-<div class="trace-foot">Every requirement links forward to a story and a test. <a href="samples/index.html">Open the samples &rarr;</a></div></div>''')
+    return (f'''<div class="trace hero-slider" id="heroSlider" aria-label="PayTrack deliverables showcase">
+<div class="trace-top slider-top">
+  <div class="slider-tabs" role="tablist" aria-label="Deliverable slides">
+    <button class="slider-tab is-active" role="tab" id="tab-0" aria-selected="true" aria-controls="slide-0" data-slide="0" type="button"><span class="tab-badge">01</span> Traceability</button>
+    <button class="slider-tab" role="tab" id="tab-1" aria-selected="false" aria-controls="slide-1" data-slide="1" type="button"><span class="tab-badge">02</span> User story</button>
+    <button class="slider-tab" role="tab" id="tab-2" aria-selected="false" aria-controls="slide-2" data-slide="2" type="button"><span class="tab-badge">03</span> REST API</button>
+    <button class="slider-tab" role="tab" id="tab-3" aria-selected="false" aria-controls="slide-3" data-slide="3" type="button"><span class="tab-badge">04</span> SQL logic</button>
+  </div>
+  <div class="slider-nav-ctrls">
+    <button class="slider-arrow" id="slidePrev" type="button" aria-label="Previous slide">&#8249;</button>
+    <span class="slider-counter" id="slideCount" aria-live="polite">1 / 4</span>
+    <button class="slider-arrow" id="slideNext" type="button" aria-label="Next slide">&#8250;</button>
+  </div>
+</div>
+
+<div class="slider-slides">
+  <!-- Slide 1: Traceability matrix -->
+  <div class="slider-slide is-active" id="slide-0" role="tabpanel" aria-labelledby="tab-0" data-index="0">
+    <div class="slide-subhead"><b>PayTrack traceability extract</b><span>Fictional sample &bull; Hover, tap or focus a row to trace</span></div>
+    <div class="tbl-wrap"><table><thead><tr><th scope="col">Business requirement</th><th scope="col">Functional</th><th scope="col">Stories</th><th scope="col">Tests</th></tr></thead><tbody>
+{rows}</tbody></table></div>
+    <div class="trace-foot">Every requirement links forward to a story and a test. <a href="samples/index.html">Open the samples &rarr;</a></div>
+  </div>
+
+  <!-- Slide 2: User story & BDD -->
+  <div class="slider-slide" id="slide-1" role="tabpanel" aria-labelledby="tab-1" data-index="1" hidden>
+    <div class="slide-subhead"><b>US-03: Real-Time Payment Mismatch Triage</b><span>User story &bull; Gherkin acceptance criteria</span></div>
+    <div class="slide-content-wrap">
+      <div class="us-story-card">
+        <div class="us-meta"><span class="kwd-tag kwd-story">USER STORY</span><span class="mono-meta">Sprint 24 &bull; Priority: Must</span></div>
+        <p class="us-text"><b>As a</b> Settlement Operations Analyst,<br><b>I want</b> unmatched transaction exceptions flagged within 5 minutes of ingestion,<br><b>So that</b> discrepancies are triaged and resolved before gateway cutoff.</p>
+      </div>
+      <div class="bdd-block">
+        <div class="bdd-head"><span class="kwd-tag kwd-bdd">GHERKIN SCENARIO</span><span class="mono-meta">Scenario: Unmatched gateway authorization code</span></div>
+        <div class="bdd-code">
+          <div class="bdd-line"><span class="bdd-kw">Given</span> <span class="bdd-tx">internal order #1089 has status <mark class="m-val">'PAID'</mark> via Razorpay</span></div>
+          <div class="bdd-line"><span class="bdd-kw">When</span> <span class="bdd-tx">bank settlement feed arrives with missing auth code</span></div>
+          <div class="bdd-line"><span class="bdd-kw">Then</span> <span class="bdd-tx">generate exception record with severity <mark class="m-warn">'HIGH'</mark></span></div>
+          <div class="bdd-line"><span class="bdd-kw">And</span> <span class="bdd-tx">route to reconciliation queue with a 4-hour SLA timer</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="trace-foot">Gherkin criteria ready for Cucumber/BDD automation. <a href="samples/index.html#user-stories">View stories &rarr;</a></div>
+  </div>
+
+  <!-- Slide 3: REST API flow -->
+  <div class="slider-slide" id="slide-2" role="tabpanel" aria-labelledby="tab-2" data-index="2" hidden>
+    <div class="slide-subhead"><b>PayTrack REST API &amp; Webhook Integration</b><span>POST /v1/reconcile/batch &bull; Idempotent contract</span></div>
+    <div class="slide-content-wrap">
+      <div class="api-pipeline">
+        <div class="api-node">
+          <span class="node-step">01</span>
+          <div class="node-info">
+            <span class="node-verb verb-post">POST</span>
+            <span class="node-path">/v1/payments/auth</span>
+            <span class="node-detail">Header: Idempotency-Key &bull; 200 OK</span>
+          </div>
+        </div>
+        <div class="api-arrow" aria-hidden="true">&rarr;</div>
+        <div class="api-node">
+          <span class="node-step">02</span>
+          <div class="node-info">
+            <span class="node-verb verb-event">EVENT</span>
+            <span class="node-path">webhook.txn_captured</span>
+            <span class="node-detail">HMAC-SHA256 signature verified</span>
+          </div>
+        </div>
+        <div class="api-arrow" aria-hidden="true">&rarr;</div>
+        <div class="api-node">
+          <span class="node-step">03</span>
+          <div class="node-info">
+            <span class="node-verb verb-match">RECON</span>
+            <span class="node-path">T+0 Window Match</span>
+            <span class="node-detail">Auto-reconciliation run: 99.8% match</span>
+          </div>
+        </div>
+      </div>
+      <div class="schema-preview">
+        <div class="schema-head"><span class="kwd-tag kwd-api">PAYLOAD CONTRACT</span><span class="mono-meta">application/json &bull; Response schema</span></div>
+        <pre class="schema-json"><code>&#123;
+  <span class="j-k">"batch_id"</span>: <span class="j-s">"REC-2026-9420"</span>,
+  <span class="j-k">"total_records"</span>: <span class="j-n">1423</span>,
+  <span class="j-k">"matched"</span>: <span class="j-n">1420</span>,
+  <span class="j-k">"unmatched_exceptions"</span>: <span class="j-n">3</span>,
+  <span class="j-k">"sla_status"</span>: <span class="j-s">"WITHIN_SLA"</span>
+&#125;</code></pre>
+      </div>
+    </div>
+    <div class="trace-foot">Documented with OpenAPI 3.0 &amp; Postman collections. <a href="samples/index.html#rest-api">View API specs &rarr;</a></div>
+  </div>
+
+  <!-- Slide 4: SQL query -->
+  <div class="slider-slide" id="slide-3" role="tabpanel" aria-labelledby="tab-3" data-index="3" hidden>
+    <div class="slide-subhead"><b>PostgreSQL Exception Detection Query</b><span>Unsettled transactions nearing SLA breach threshold</span></div>
+    <div class="slide-content-wrap">
+      <div class="sql-code-box">
+        <div class="sql-head"><span class="kwd-tag kwd-sql">SQL SCRIPT</span><span class="mono-meta">sample_reconciliation_queries.sql</span></div>
+        <pre class="sql-view"><code><span class="s-c">-- Surface un-reconciled records approaching 4h SLA breach</span>
+<span class="s-k">SELECT</span> t.txn_id, t.amount, t.currency,
+       ROUND(EXTRACT(EPOCH <span class="s-k">FROM</span> (NOW() - t.created_at))/3600, 1) <span class="s-k">AS</span> pending_hrs,
+       <span class="s-k">CASE</span>
+         <span class="s-k">WHEN</span> b.bank_ref <span class="s-k">IS NULL THEN</span> <span class="s-s">'MISSING_BANK_FEED'</span>
+         <span class="s-k">WHEN</span> b.amount != t.amount <span class="s-k">THEN</span> <span class="s-s">'AMOUNT_MISMATCH'</span>
+       <span class="s-k">END AS</span> discrepancy_reason
+<span class="s-k">FROM</span> core_transactions t
+<span class="s-k">LEFT JOIN</span> bank_settlement_feed b <span class="s-k">ON</span> t.gateway_ref = b.gateway_ref
+<span class="s-k">WHERE</span> t.status = <span class="s-s">'PENDING_SETTLEMENT'</span>
+  <span class="s-k">AND</span> (NOW() - t.created_at) &gt; <span class="s-k">INTERVAL</span> <span class="s-s">'3 hours'</span>
+<span class="s-k">ORDER BY</span> pending_hrs <span class="s-k">DESC LIMIT</span> 4;</code></pre>
+      </div>
+    </div>
+    <div class="trace-foot">Extracts from PayTrack PostgreSQL query templates. <a href="samples/index.html#sql">View SQL repository &rarr;</a></div>
+  </div>
+</div>
+</div>''')
 
 def marquee():
     items = "".join(f"<li>{k}</li>" for k in MARQ_ITEMS)
