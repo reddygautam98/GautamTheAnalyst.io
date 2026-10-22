@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://reddygautam98.github.io/GautamTheAnalyst.io/sitemap.xml

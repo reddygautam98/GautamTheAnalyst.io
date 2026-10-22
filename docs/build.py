@@ -14,10 +14,6 @@ NAV = [("projects.html", "Projects"), ("samples/index.html", "BA samples"), ("se
 # Core BA & technical skills for single-row marquee
 MARQ_ITEMS = ["Requirements Gathering", "BRD / FRD / SRS", "User Stories & BDD", "Traceability Matrix (RTM)", "Process Modelling (BPMN / UML)", "Gap Analysis", "REST API Integration", "SQL (PostgreSQL)", "Python (Pandas)", "Power BI & DAX", "UAT & Defect Triage", "Agile / Scrum"]
 
-META_KW = ", ".join(["Business Analyst", "Business Analyst Bengaluru", "Fintech Business Analyst", "BFSI Business Analyst", "Functional Analyst", "Business Systems Analyst",
-                     "requirements gathering", "stakeholder management", "BRD", "FRD", "user stories", "acceptance criteria", "UAT", "SQL", "Python", "Power BI", "Agile", "Scrum",
-                     "requirements gathering", "stakeholder management", "BRD", "FRD", "user stories", "acceptance criteria", "UAT", "SQL", "Python", "Power BI", "Agile", "Scrum",
-                     "Jira", "Postman", "REST API", "payment gateway integrations", "transaction processing", "settlement and reconciliation", "SLA monitoring", "finance and operations reporting", "process mapping", "gap analysis"])
 ROLES_ROT = ["Requirements Gathering", "BRD / FRD & User Stories", "REST API & System Integration", "SQL & Python Analysis", "Power BI & KPI Dashboards", "Settlement & Reconciliation", "UAT & Agile Delivery"]
 
 def ext(u, t): return f'<a href="{u}" target="_blank" rel="noopener noreferrer">{t} <span class="sr-only">(opens in new tab)</span>&rarr;</a>'
@@ -29,34 +25,38 @@ ICO_GH = '<svg class="ico-gh" viewBox="0 0 24 24" width="18" height="18" fill="c
 ICO_HR = '<svg class="ico-hr" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><rect width="24" height="24" rx="4" fill="#00EA64"/><path fill="#ffffff" d="M9.95 8.002h1.805c.061 0 .111.05.111.111v7.767c0 .061-.05.111-.11.111H9.95c-.061 0-.111-.05-.111-.11v-2.87H7.894v2.87c0 .06-.05.11-.11.11H5.976a.11.11 0 01-.11-.11V8.112c0-.06.05-.11.11-.11h1.806c.061 0 .11.05.11.11v2.869H9.84v-2.87c0-.06.05-.11.11-.11zm2.999 0h5.778c.061 0 .111.05.111.11v7.767a.11.11 0 01-.11.112h-5.78a.11.11 0 01-.11-.11V8.111c0-.06.05-.11.11-.11z"/></svg>'
 ICO_LOC = '<svg class="ico-loc" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>'
 
-def page(path, title, desc, body, p="", cur="", ld=""):
+def page(path, title, desc, body, p="", cur="", ld="", robots="index, follow, max-image-preview:large, max-snippet:-1"):
+    url = SITE if path == "index.html" else SITE + path
+    home = p if p else "./"
+    if robots.startswith("noindex"): url_tags = ""
+    else: url_tags = f'<link rel="canonical" href="{url}">\n<meta property="og:url" content="{url}">\n'
     res_cur = ' aria-current="page"' if cur == "resume.html" else ""
     nav = "".join('<a href="%s%s"%s>%s</a>' % (p, h, ' aria-current="page"' if h == cur else "", t) for h, t in NAV)
     return f'''<!DOCTYPE html>
-<html lang="en">
+<html lang="en-IN">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{html.escape(title)}</title>
 <meta name="description" content="{html.escape(desc)}">
-<meta name="keywords" content="{html.escape(META_KW)}">
+<meta name="robots" content="{robots}">
 <meta name="author" content="Gautam Reddy">
 <meta property="og:type" content="website">
 <meta property="og:title" content="{html.escape(title)}">
 <meta property="og:description" content="{html.escape(desc)}">
 <meta property="og:site_name" content="Gautam Reddy - Business Analyst Portfolio">
-<meta property="og:url" content="{SITE}{path}">
+<meta property="og:locale" content="en_IN">
 <meta property="og:image" content="{SITE}assets/og-card.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Gautam Reddy, Business Analyst in Bengaluru: fintech and BFSI requirements, BRD/FRD, SQL and UAT">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{html.escape(title)}">
 <meta name="twitter:description" content="{html.escape(desc)}">
 <meta name="twitter:image" content="{SITE}assets/og-card.png">
 <meta name="theme-color" content="#f4f6fb" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0a0d13" media="(prefers-color-scheme: dark)">
-<link rel="canonical" href="{SITE}{path}">
-<link rel="icon" href="{p}assets/mark.svg" type="image/svg+xml">
+{url_tags}<link rel="icon" href="{p}assets/mark.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="{p}assets/apple-touch-icon.png">
 <script>document.documentElement.classList.add("js");try{{var t=localStorage.getItem("gr-theme")||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.dataset.theme=t}}catch(e){{}}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -67,7 +67,7 @@ def page(path, title, desc, body, p="", cur="", ld=""):
 <a class="skip" href="#main">Skip to content</a>
 <div class="progress" aria-hidden="true"></div>
 <header class="site-header"><div class="wrap bar">
-<a class="brand" href="{p}index.html"><img src="{p}assets/mark.svg" alt="" width="30" height="30">Gautam Reddy</a>
+<a class="brand" href="{home}"><img src="{p}assets/mark.svg" alt="" width="30" height="30">Gautam Reddy</a>
 <nav class="nav" id="nav" aria-label="Main">{nav}<a href="{p}resume.html" class="nav-resume-btn"{res_cur}>Resume</a></nav>
 <div class="tools"><button class="icon-btn" id="theme" type="button" aria-label="Switch theme" aria-pressed="false"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button></div>
 <button class="icon-btn menu-btn" id="menu" type="button" aria-expanded="false" aria-controls="nav" aria-label="Menu">&#9776;</button>
@@ -77,7 +77,7 @@ def page(path, title, desc, body, p="", cur="", ld=""):
 </main>
 <footer class="site-footer"><div class="wrap foot">
 <div>&copy; <span data-year>2026</span> Gautam Reddy &bull; Business Analyst, Bengaluru, India (IST / UTC+5:30) &bull; Updated 2026.<br>Sample artifacts on this site are fictional and are labelled as such.</div>
-<nav aria-label="Footer"><a href="{p}resume.html">Resume</a>{ext(GH, "GitHub")}{ext(LI, "LinkedIn")}{ext(HR, "HackerRank")}<a href="mailto:{EMAIL}">Email</a><a href="#main" class="back-to-top" title="Back to top">&uarr; Top</a></nav>
+<nav aria-label="Footer"><a href="{home}">Home</a><a href="{p}about.html">About</a><a href="{p}services.html">Services</a><a href="{p}projects.html">Projects</a><a href="{p}samples/index.html">BA samples</a><a href="{p}resume.html">Resume</a><a href="{p}contact.html">Contact</a>{ext(GH, "GitHub")}{ext(LI, "LinkedIn")}{ext(HR, "HackerRank")}<a href="mailto:{EMAIL}">Email</a><a href="#main" class="back-to-top" title="Back to top">&uarr; Top</a></nav>
 </div></footer>
 
 <script src="{p}assets/vendor/lenis.min.js" defer></script>
@@ -90,7 +90,7 @@ def cta(p="", h="Hiring a Business Analyst, or scoping a piece of work?", t="Sha
     return f'''<section class="cta-sec"><div class="wrap"><div class="cta has-flow" data-tilt>{F.lifecycle("c" + str(sum(map(ord, h)) % 9973)).replace("xMidYMid meet", "xMidYMid slice")}<div class="cta-in"><div><h2>{h}</h2><p>{t}</p></div><a class="btn btn-primary" href="{p}contact.html">Get in touch</a></div></div></div></section>'''
 
 def head(crumb, h, lead, flow, p=""):
-    return f'<section class="page-head has-flow">{flow}<div class="wrap"><div class="crumbs rv"><a href="{p}index.html">Home</a> / {crumb}</div><h1 class="{rv(1)}">{h}</h1><p class="lead {rv(2)}">{lead}</p></div></section>'
+    return f'<section class="page-head has-flow">{flow}<div class="wrap"><div class="crumbs rv"><a href="{p or "./"}">Home</a> / {crumb}</div><h1 class="{rv(1)}">{h}</h1><p class="lead {rv(2)}">{lead}</p></div></section>'
 
 def sh(n, tag, h, p=None):
     return f'<div class="sec-head"><div class="eyebrow {rv(0)}"><b>{n:02d}</b>{tag}</div><h2 class="{rv(1)}">{h}</h2>' + (f'<p class="{rv(2)}">{p}</p>' if p else "") + '</div>'
@@ -131,7 +131,7 @@ def pcard(c, i=0, base=0.0):
     k, cat, t, d, tg, u = c
     repo = repo_of(u)
     img_src = LOCAL_PROJECT_IMAGES.get(repo, f"{GHIMG}{repo}")
-    img = f'<img src="{img_src}" alt="Screenshot of {html.escape(t)}" width="1200" height="600" loading="lazy" decoding="async">'
+    img = f'<img src="{img_src}" alt="{html.escape(t)} project screenshot ({html.escape(cat.lower())})" width="1200" height="600" loading="lazy" decoding="async">'
     lbl = f'View repository for {html.escape(t)} on GitHub (opens in new tab)' if k != 'writing' else f'Read notes for {html.escape(t)} on GitHub (opens in new tab)'
     txt = 'Read notes' if k == 'writing' else 'View repository'
     return f'''<article class="card pcard {rv(i, base)}" data-cat="{k}"><a class="thumb" href="{u}" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true"><span class="ph">{F.mini("m" + str(next(_n)))}<em>{html.escape(t)}</em></span>{img}</a><div class="pbody"><span class="cat">{cat}</span><h3>{t}</h3><p>{d}</p>{tags(tg)}<a class="more" href="{u}" target="_blank" rel="noopener noreferrer" aria-label="{lbl}">{txt} <span class="sr-only">(opens in new tab)</span>&#8599;</a></div></article>'''
@@ -171,17 +171,17 @@ ICO_PHASE3 = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke
 ICO_PHASE4 = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>'
 
 METHOD_STEPS = [
-    (1, "Phase 1: Discover", "Workshops turn scattered requests into one agreed problem statement with assumptions, constraints and named decision owners.", ICO_PHASE1, 20, "+", "workshops & alignments"),
-    (2, "Phase 2: Define", "BRD and FRD, business rules, user stories and acceptance criteria, linked to process, API and data flows.", ICO_PHASE2, 100, "%", "spec & rule baseline"),
-    (3, "Phase 3: Validate", "Traceability from requirement to test, UAT scenarios, expected results and defect triage with QA & Engineering.", ICO_PHASE3, 350, "+", "verified test cases"),
-    (4, "Phase 4: Hand over", "Decisions, risks, open questions and limitations are recorded so delivery proceeds with confidence.", ICO_PHASE4, 100, "%", "UAT sign-off & launch")
+    (1, "Phase 1: Discover", "Workshops turn scattered requests into one agreed problem statement with assumptions, constraints and named decision owners.", ICO_PHASE1, 20, "+", "workshops run"),
+    (2, "Phase 2: Define", "BRD and FRD, business rules, user stories and acceptance criteria, linked to process, API and data flows.", ICO_PHASE2, 2, "", "payment-gateway integrations documented"),
+    (3, "Phase 3: Validate", "Traceability from requirement to test, UAT scenarios, expected results and defect triage with QA & Engineering.", ICO_PHASE3, 350, "+", "test cases coordinated"),
+    (4, "Phase 4: Hand over", "Decisions, risks, open questions and limitations are recorded so delivery proceeds with confidence.", ICO_PHASE4, 0, "", "critical defects reported")
 ]
 
 SERVICE_STEPS = [
-    (1, "Phase 1: Understand", "Discuss the problem, users, data or systems, constraints, deadlines and what success looks like.", ICO_PHASE1, 1, "st", "alignment workshop"),
-    (2, "Phase 2: Scope", "Agree deliverables, assumptions, dependencies, review points, responsibilities and a practical timeline.", ICO_PHASE2, 100, "%", "scope agreement"),
-    (3, "Phase 3: Deliver", "Share drafts, analysis or requirements in checkpoints; collect feedback and resolve agreed changes.", ICO_PHASE3, 100, "%", "review checkpoints"),
-    (4, "Phase 4: Hand over", "Review against acceptance criteria and provide agreed documents, findings or handover notes.", ICO_PHASE4, 100, "%", "deliverable sign-off")
+    (1, "Phase 1: Understand", "Discuss the problem, users, data or systems, constraints, deadlines and what success looks like.", ICO_PHASE1, None, "", "Alignment workshop"),
+    (2, "Phase 2: Scope", "Agree deliverables, assumptions, dependencies, review points, responsibilities and a practical timeline.", ICO_PHASE2, None, "", "Scope agreement"),
+    (3, "Phase 3: Deliver", "Share drafts, analysis or requirements in checkpoints; collect feedback and resolve agreed changes.", ICO_PHASE3, None, "", "Review checkpoints"),
+    (4, "Phase 4: Hand over", "Review against acceptance criteria and provide agreed documents, findings or handover notes.", ICO_PHASE4, None, "", "Deliverable sign-off")
 ]
 
 def make_steps(items):
@@ -209,7 +209,7 @@ def make_steps(items):
 </div>
 <p>{desc}</p>
 <div class="step-metric-foot">
-<span class="step-metric-chip"><b data-count="{stat_val}" data-suf="{stat_suf}">{stat_val}{stat_suf}</b> <span>{stat_lbl}</span></span>
+<span class="step-metric-chip">{(f'<b data-count="{stat_val}" data-suf="{stat_suf}">{stat_val}{stat_suf}</b> ') if stat_val is not None else ''}<span>{stat_lbl}</span></span>
 </div>
 {arrow_html}
 </li>''')
@@ -324,9 +324,9 @@ def index():
 <section class="hero has-flow">{F.lifecycle("h")}<div class="wrap hero-grid">
 <div>
 <div class="status rv"><i></i><span>Available for global remote, hybrid &amp; full-time roles</span></div>
-<h1 class="{rv(1)}">Business Analyst who turns requirements into <span class="grad">testable specs.</span></h1>
+<h1 class="{rv(1)}">Business Analyst in Bengaluru who turns requirements into <span class="grad">testable specs.</span></h1>
 <p class="rot-line {rv(2)}"><span class="rot-lb">Right now:</span><span class="rot" data-rot aria-live="off">{rot}</span></p>
-<p class="lead {rv(3)}">4+ years of experience in requirements analysis and delivery: translating business needs into clear, testable functional and non-functional requirements, user stories, and BDD acceptance criteria backed by SQL and Python analysis.</p>
+<p class="lead {rv(3)}">4+ years in fintech and BFSI: translating business needs into clear, testable functional and non-functional requirements, user stories and BDD acceptance criteria, backed by SQL and Python analysis.</p>
 <div class="actions {rv(4)}"><a class="btn btn-primary" href="samples/index.html">View BA samples <span class="arr" aria-hidden="true">&rarr;</span></a><a class="btn btn-ghost" href="resume.html">View resume <span class="arr" aria-hidden="true">&rarr;</span></a></div>
 <p class="hero-proof-line {rv(5)}"><span class="h-dot"></span> 4+ yrs BA experience &bull; Payments &amp; Fintech &bull; 2 payment gateway integrations</p>
 </div>
@@ -344,7 +344,7 @@ def index():
 {marquee()}
 
 <section class="sec" id="proof"><div class="wrap">
-{sh(1, "Proof", "Results from past delivery work")}
+{sh(1, "Proof", "Business analyst results from past delivery work")}
 <div class="proof">
 <div class="proof-card proof-card-1 {rv(0)}"><b data-count="100" data-suf="K+">100K+</b><span class="source-tag">Marolix &bull; SQL analysis</span><span>transaction records analysed with SQL and Python, surfacing 3 recurring SLA-breach patterns</span></div>
 <div class="proof-card proof-card-2 {rv(1)}"><b data-count="350" data-suf="+">350+</b><span class="source-tag">QA &amp; UAT coordination</span><span>test cases coordinated in Jira, with zero critical defects reported</span></div>
@@ -362,7 +362,7 @@ def index():
 {sh(3, "Selected work", "Case study and projects", "A fictional end-to-end BA case study, plus personal analytics and data projects. Each card opens its repository.")}
 <div class="feature {rv(0)}" data-tilt>
 {paytrack_wireframe_svg()}
-<div><span class="cat feat-badge">Featured Case Study</span><h3>PayTrack: payment reconciliation, from BRD to UAT</h3><p class="muted"><strong>Problem &bull; Role &bull; Result:</strong> Reconciles multi-gateway transactions with bank statements. Documented complete business &amp; functional requirements (BRD/FRD), BDD user stories, REST API sequence flows, and 350+ UAT test scenarios with full forward-traceability.</p>
+<div><span class="cat feat-badge">Featured Case Study</span><h3>PayTrack: payment reconciliation, from BRD to UAT</h3><p class="muted"><strong>Problem &bull; Role &bull; Result:</strong> Operations teams struggle to investigate unmatched gateway and internal payment records. As the Business Analyst I wrote the BRD, FRD, 10 BDD user stories and REST API sequence flows, and traced 8 business requirements to 15 sample test cases (not executed).</p>
 <div class="disclaimer"><b>Fictional sample.</b> No client data is used and no executed-test evidence is claimed.</div>
 <div class="actions"><a class="btn btn-primary" href="samples/index.html">View case study artifacts &rarr;</a></div></div>
 </div>
@@ -380,12 +380,12 @@ def index():
 </div></section>
 
 <section class="sec has-flow" id="experience">{F.seq("e")}<div class="wrap">
-{sh(5, "Experience", "Where I have delivered")}
+{sh(5, "Experience", "Business analyst experience in fintech and BFSI")}
 <div class="roles">
-<div class="role {rv(0)}"><div class="node">01</div><div class="rbody"><h3>Business Analyst</h3><div class="org">Marolix Technology Solutions Pvt Ltd, Hyderabad &bull; 2023 &ndash; Present</div><ul><li>Defined REST API requirements, UML flows and data mappings for <strong>2 payment-gateway integrations</strong>.</li><li>Analysed <strong>100,000+ transaction records</strong> using SQL and Python to identify 3 recurring SLA-breach patterns.</li><li>Coordinated UAT across <strong>350+ test cases</strong> in Jira; managed 12+ change requests over 2 Agile releases with zero critical defects at launch.</li></ul></div></div>
+<div class="role {rv(0)}"><div class="node">01</div><div class="rbody"><h3>Business Analyst</h3><div class="org">Marolix Technology Solutions Pvt Ltd, Hyderabad &bull; 2023 &ndash; Present</div><ul><li>Delivered implementation-ready documentation for <strong>2 payment-gateway integrations</strong> by defining REST API requirements, UML flows and data mappings.</li><li>Identified 3 recurring SLA-breach patterns across <strong>100,000+ transaction records</strong> by analysing them with SQL and Python.</li><li>Supported zero reported critical defects across <strong>350+ test cases</strong> by coordinating UAT in Jira; managed 12+ change requests over 2 Agile releases.</li></ul></div></div>
 <div class="role {rv(1)}"><div class="node">02</div><div class="rbody"><h3>Business Analyst</h3><div class="org">V Moksha Technologies Pvt Ltd, Bengaluru &bull; 2022 &ndash; 2023</div><ul><li>Resolved recurring operational bottlenecks and SLA shortfalls using SQL data extraction, fishbone diagrams, and 5-Why root cause analysis.</li><li>Mapped AS-IS and TO-BE business processes (BPMN / swimlane), saving an estimated <strong>2 weeks per improvement cycle</strong>.</li></ul></div></div>
 <div class="role {rv(2)}"><div class="node">03</div><div class="rbody"><h3>Business Analyst</h3><div class="org">Iinfocomm IT Services Pvt Ltd, Bengaluru &bull; 2021 &ndash; 2022</div><ul><li>Facilitated Three Amigos sessions, delivering functional specifications and BDD user stories for 3 concurrent modules across 4 business units.</li><li>Coordinated UAT, smoke and regression testing across <strong>50+ Jira test cases</strong> with zero post-launch incidents.</li><li>Reviewed API contracts against business rules and maintained the RTM and RACI matrix.</li></ul></div></div>
-<div class="role {rv(3)}"><div class="node">04</div><div class="rbody"><h3>Associate Software Engineer</h3><div class="org">Iinfocomm IT Services Pvt Ltd, Bengaluru &bull; 2020 &ndash; 2021</div><ul><li>Promoted to Business Analyst in <strong>17 months (6 months ahead of schedule)</strong> after managing requirements for 3 reporting features.</li><li>Gathered reporting requirements from 15+ Finance and Operations stakeholders; built Power BI dashboards and automated manual reports saving 3+ hrs/week.</li></ul></div></div>
+<div class="role {rv(3)}"><div class="node">04</div><div class="rbody"><h3>Associate Software Engineer</h3><div class="org">Iinfocomm IT Services Pvt Ltd, Bengaluru &bull; 2020 &ndash; 2021</div><ul><li>Promoted to Business Analyst in <strong>17 months (6 months ahead of schedule)</strong> after managing requirements for 3 reporting features.</li><li>Translated reporting needs from 15+ Finance and Operations stakeholders into Power BI requirements and BDD user stories, and secured approval for a reporting-automation business case projecting 3+ hrs/week of savings.</li></ul></div></div>
 </div>
 <div class="actions"><a class="btn btn-ghost" href="resume.html">Full resume &amp; ATS PDF</a></div>
 </div></section>
@@ -393,7 +393,7 @@ def index():
 
 # ---------------------------------------------------------------- about
 def about():
-    return head("About", "Requirements teams can build and validate.", "I connect stakeholder needs, requirements, data, systems and delivery teams, so ambiguous business problems become clear, testable work.", F.seq("a")) + f'''
+    return head("About", "Fintech business analyst: requirements teams can build and validate.", "I connect stakeholder needs, requirements, data, systems and delivery teams, so ambiguous business problems become clear, testable work.", F.seq("a")) + f'''
 <section class="sec" style="padding-top:24px"><div class="wrap two">
 <div><h2 class="{rv(0)}">Who I am</h2>
 <p class="{rv(1)}" style="margin-top:18px">I&rsquo;m Gautam Reddy, a Business Analyst with 4+ years of experience in requirements analysis and delivery, translating business needs into clear, testable functional and non-functional requirements.</p>
@@ -424,7 +424,7 @@ def about():
 <div class="role {rv(0)}"><div class="node">01</div><div class="rbody"><h3>Business Analyst</h3><div class="org">Marolix Technology Solutions Pvt Ltd, Hyderabad &bull; 2023 &ndash; Present</div><p class="muted">REST API requirements, UML flows and data mappings for 2 payment-gateway integrations; 100,000+ transaction records analysed using SQL and Python; 20+ workshops with 13+ stakeholders; 350+ test cases coordinated in Jira with zero critical defects.</p></div></div>
 <div class="role {rv(1)}"><div class="node">02</div><div class="rbody"><h3>Business Analyst</h3><div class="org">V Moksha Technologies Pvt Ltd, Bengaluru &bull; 2022 &ndash; 2023</div><p class="muted">Fishbone and 5-Why root cause analysis with SQL data extraction; AS-IS / TO-BE process mapping eliminating redundant handover steps and saving an estimated 2 weeks per improvement cycle.</p></div></div>
 <div class="role {rv(2)}"><div class="node">03</div><div class="rbody"><h3>Business Analyst</h3><div class="org">Iinfocomm IT Services Pvt Ltd, Bengaluru &bull; 2021 &ndash; 2022</div><p class="muted">Three Amigos facilitation, functional specs and BDD acceptance criteria for 3 modules across 4 business units; API contract review, RTM, and UAT across 50+ test cases with zero post-launch incidents.</p></div></div>
-<div class="role {rv(3)}"><div class="node">04</div><div class="rbody"><h3>Associate Software Engineer &rarr; Promoted to BA</h3><div class="org">Iinfocomm IT Services Pvt Ltd, Bengaluru &bull; 2020 &ndash; 2021</div><p class="muted"><strong>Promoted to Business Analyst in 17 months (6 months ahead of schedule)</strong> after managing requirements for 3 reporting features; gathered reporting requirements from 15+ Finance and Operations stakeholders, built Power BI dashboards and secured business case for reporting automation saving 3+ hrs/week.</p></div></div>
+<div class="role {rv(3)}"><div class="node">04</div><div class="rbody"><h3>Associate Software Engineer &rarr; Promoted to BA</h3><div class="org">Iinfocomm IT Services Pvt Ltd, Bengaluru &bull; 2020 &ndash; 2021</div><p class="muted"><strong>Promoted to Business Analyst in 17 months (6 months ahead of schedule)</strong> after managing requirements for 3 reporting features; translated reporting needs from 15+ Finance and Operations stakeholders into Power BI requirements and BDD user stories, and secured approval for a reporting-automation business case projecting 3+ hrs/week of savings.</p></div></div>
 </div></div></section>
 
 ''' + cta()
@@ -444,9 +444,9 @@ FAQ = [("How do fees and timelines work?", "They depend on complexity, the outpu
 def services():
     cards = "".join(f'<div class="card {rv(i % 3, 0.0)}"><h3>{t}</h3><p>{d}</p>{tags(tg)}<div class="actions" style="margin-top:auto"><a class="btn btn-ghost" href="contact.html?service={html.escape(t)}">Enquire about this</a></div></div>' for i, (t, d, tg) in enumerate(SERV))
     faq = "".join(f'<details class="faq-item {rv(i, 0.0)}"><summary><span>{q}</span><svg class="chevron" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></summary><div class="faq-ans"><p>{a}</p></div></details>' for i, (q, a) in enumerate(FAQ))
-    return head("Services", "Useful deliverables. Clear scope.", "Business analysis, data and technology support shaped around the problem, the people who need the answer and the output your team can use.", F.swim("sv")) + f'''
+    return head("Services", "Business analysis services with clear scope and useful deliverables.", "Business analysis, data and technology support shaped around the problem, the people who need the answer and the output your team can use.", F.swim("sv")) + f'''
 <section class="sec" style="padding-top:24px"><div class="wrap">
-{sh(1, "Services", "What I can help with")}
+{sh(1, "Services", "Business analysis services I offer")}
 <div class="grid g3">{cards}</div>
 </div></section>
 
@@ -473,11 +473,11 @@ def services():
 def projects():
     chips = '<button class="chip" type="button" data-f="all" aria-pressed="true">All</button>' + "".join(f'<button class="chip" type="button" data-f="{k}" aria-pressed="false">{n}</button>' for k, n in [("analytics", "Analytics"), ("bi", "Business intelligence"), ("data", "Data engineering"), ("ai", "AI prototype"), ("writing", "Writing")])
     cards = "".join(pcard(c, i % 3, 0.0) for i, c in enumerate(PROJECTS))
-    return head("Projects", "Practical analysis, visible work.", "Repositories across analytics, business intelligence, data engineering, AI prototypes and writing. Every card links to its source so you can review the implementation.", F.erd("pj")) + f'''
+    return head("Projects", "Business analyst projects: practical analysis, visible work.", "Repositories across analytics, business intelligence, data engineering, AI prototypes and writing. Every card links to its source so you can review the implementation.", F.erd("pj")) + f'''
 <section class="sec" style="padding-top:24px"><div class="wrap">
 <h2 class="sr-only">Featured case study</h2>
 <div class="feature rv" data-tilt>
-<div><span class="cat feat-badge">Featured case study</span><h3>PayTrack: payment reconciliation, from BRD to UAT</h3><p class="muted"><strong>Problem &bull; Role &bull; Result:</strong> An end-to-end payment reconciliation and exception management portal. Documented business needs (BRD), functional behaviour (FRD), Given/When/Then user stories, REST API sequence flows, and 350+ UAT test scenarios with 100% requirements-to-test traceability.</p>
+<div><span class="cat feat-badge">Featured case study</span><h3>PayTrack: payment reconciliation, from BRD to UAT</h3><p class="muted"><strong>Problem &bull; Role &bull; Result:</strong> Operations teams struggle to investigate unmatched gateway and internal payment records. As the Business Analyst I wrote the BRD, FRD, 10 Given/When/Then user stories and REST API sequence flows, and traced all 8 business requirements to 15 sample test cases (not executed).</p>
 <div class="disclaimer"><b>Fictional sample.</b> No client data is used and no executed-test evidence is claimed.</div>
 <div class="actions"><a class="btn btn-primary" href="samples/index.html">Open all artifacts</a></div></div>
 <div class="feat-side"><a class="feat-img" href="samples/diagrams/Payment_Data_Model_ERD.svg" aria-label="Open the data model diagram"><img src="samples/diagrams/Payment_Data_Model_ERD.png" alt="Logical data model (ERD) from the PayTrack sample" width="1120" height="704" loading="lazy"></a>
@@ -495,25 +495,25 @@ def projects():
 def resume():
     def role(n, t, o, b, i): return f'<div class="role {rv(i)}"><div class="node">{n:02d}</div><div class="rbody"><h3>{t}</h3><div class="org">{o}</div><ul>' + "".join(f"<li>{x}</li>" for x in b) + '</ul></div></div>'
     roles = role(1, "Business Analyst", "Marolix Technology Solutions Pvt Ltd &bull; Hyderabad, India &bull; 2023 &ndash; Present", [
-"Defined REST API requirements, UML system flows, and data mappings for <strong>2 payment gateway integrations</strong>, providing implementation-ready documentation for Engineering and QA.",
-"Analyzed <strong>100,000+ transaction records</strong> using SQL and Python, identified 3 recurring SLA breach patterns, and shared findings to inform process-improvement actions.",
-"Elicited and validated requirements through <strong>20+ workshops with 13+ stakeholders</strong>; documented BRDs/FRDs, functional and non-functional requirements, use cases, and BDD acceptance criteria.",
-"Prioritized requirements across 4 modules using MoSCoW and challenged 3 feature requests with insufficient business justification to keep backlog decisions focused on business value.",
-"Coordinated UAT and functional, regression, and integration testing across <strong>350+ test cases</strong>; supported JIRA defect triage with QA and Engineering, with zero critical defects reported.",
-"Managed 12+ change requests across 2 Agile releases, assessed requirement impacts, and maintained traceability through delivery.",
+"Delivered implementation-ready documentation for <strong>2 payment gateway integrations</strong> by defining REST API requirements, UML system flows and data mappings for Engineering and QA.",
+"Identified <strong>3 recurring SLA breach patterns</strong> across <strong>100,000+ transaction records</strong> by analysing them with SQL and Python, and shared the findings to inform process-improvement actions.",
+"Aligned <strong>13+ stakeholders</strong> on business and functional requirements through <strong>20+ workshops</strong>, documenting BRDs/FRDs, functional and non-functional requirements, use cases and BDD acceptance criteria.",
+"Kept backlog decisions focused on business value across 4 modules by prioritizing requirements with MoSCoW and challenging 3 feature requests that lacked business justification.",
+"Supported <strong>zero reported critical defects</strong> across <strong>350+ test cases</strong> by coordinating UAT and functional, regression and integration testing and supporting JIRA defect triage with QA and Engineering.",
+"Managed <strong>12+ change requests</strong> across 2 Agile releases by assessing requirement impacts and maintaining traceability through delivery.",
 "Maintained business rules, data dictionaries, and field mappings in Confluence and Excel; reviewed Figma wireframes and prepared stakeholder reports."], 0)
     roles += role(2, "Business Analyst", "V Moksha Technologies Pvt Ltd &bull; Bengaluru, India &bull; 2022 &ndash; 2023", [
-"Resolved recurring SLA shortfalls and reduced error recurrence and rework, saving <strong>2 weeks per improvement cycle</strong> through SQL analysis, fishbone/5-Why root-cause analysis, and AS-IS/TO-BE process mapping."], 0)
+"Saved an estimated <strong>2 weeks per improvement cycle</strong> by resolving recurring SLA shortfalls and reducing error recurrence and rework through SQL analysis, fishbone/5-Why root-cause analysis and AS-IS/TO-BE process mapping."], 0)
     roles += role(3, "Business Analyst", "Iinfocomm IT Services Pvt Ltd &bull; Bengaluru, India &bull; 2021 &ndash; 2022", [
-"Facilitated Three Amigos sessions and translated stakeholder needs into functional requirements and BDD acceptance criteria for 3 concurrent modules delivered on time.",
+"Delivered <strong>3 concurrent modules</strong> on time by facilitating Three Amigos sessions and translating stakeholder needs into functional requirements and BDD acceptance criteria.",
 "Documented functional requirements, business rules, and control requirements across 4 business units.",
-"Coordinated UAT, smoke, sanity, and regression testing across <strong>50+ JIRA-tracked test cases</strong>; the delivered modules had no reported post-launch incidents.",
+"Delivered modules with no reported post-launch incidents by coordinating UAT, smoke, sanity and regression testing across <strong>50+ JIRA-tracked test cases</strong>.",
 "Reviewed API contracts against functional requirements and maintained the Requirements Traceability Matrix (RTM) and RACI to connect requirements, delivery, and acceptance."], 0)
     roles += role(4, "Associate Software Engineer &rarr; Promoted to BA", "Iinfocomm IT Services Pvt Ltd &bull; Bengaluru, India &bull; 2020 &ndash; 2021", [
-"Promoted to Business Analyst within <strong>17 months (6 months ahead of schedule)</strong> after managing requirements for 3 reporting features from elicitation through stakeholder acceptance.",
+"Earned promotion to Business Analyst within <strong>17 months (6 months ahead of schedule)</strong> by managing requirements for 3 reporting features from elicitation through stakeholder acceptance.",
 "Translated input from 15+ Finance and Operations stakeholders into Power BI requirements and BDD user stories, coordinating with Engineering and business leads.",
-"Built a business case for reporting automation projecting <strong>3+ hours of weekly manual-effort savings</strong> and secured executive approval."], 0)
-    return head("Resume", "Experience, skills, delivery.", "Business Analyst focused on requirements, API and system integration, SQL and Python analysis, Agile delivery and UAT coordination.", F.swim("rs")) + f'''
+"Secured executive approval for a reporting-automation business case projecting <strong>3+ hours of weekly manual-effort savings</strong>."], 0)
+    return head("Resume", "Business Analyst resume: experience, skills, delivery.", "Business Analyst focused on requirements, API and system integration, SQL and Python analysis, Agile delivery and UAT coordination.", F.swim("rs")) + f'''
 <section class="sec" style="padding-top:8px"><div class="wrap">
 <div class="actions rv" style="margin:0 0 40px"><button type="button" class="btn btn-primary" onclick="window.print()" title="Print ATS-friendly resume or save as PDF">Print / Save as PDF</button><a class="btn btn-ghost" href="{LI}" target="_blank" rel="noopener noreferrer">View LinkedIn profile</a><a class="btn btn-ghost" href="{HR}" target="_blank" rel="noopener noreferrer">HackerRank profile</a><a class="btn btn-ghost" href="contact.html">Contact me</a></div>
 <div class="proof">
@@ -546,7 +546,7 @@ def resume():
 # ---------------------------------------------------------------- contact
 def contact():
     opts = lambda l: "".join(f"<option>{o}</option>" for o in l)
-    return head("Contact", "Tell me what you&rsquo;re trying to solve.", "For a role, mention the position and team. For a collaboration, describe the problem and the outcome. I reply with context.", F.seq("ct")) + f'''
+    return head("Contact", "Contact a Business Analyst: tell me what you&rsquo;re trying to solve.", "For a role, mention the position and team. For a collaboration, describe the problem and the outcome. I reply with context.", F.seq("ct")) + f'''
 <section class="sec" style="padding-top:24px"><div class="wrap two" style="align-items:start">
 <div class="rv"><h2>Reach me directly</h2>
 <ul class="contact-list" style="margin-top:24px"><li><span>{ICO_MAIL}Email</span><div><a href="mailto:{EMAIL}">{EMAIL}</a> <button class="chip copy" type="button" data-copy="{EMAIL}">Copy</button></div></li><li><span>{ICO_LI}LinkedIn</span><div>{ext(LI, "gautam-reddy-analyst")}</div></li><li><span>{ICO_GH}GitHub</span><div>{ext(GH, "reddygautam98")}</div></li><li><span>{ICO_HR}HackerRank</span><div>{ext(HR, "reddygautam98")}</div></li><li><span>{ICO_LOC}Location</span><div>Bengaluru, India (IST / UTC+5:30)</div></li></ul>
@@ -667,7 +667,7 @@ def samples():
      sitem("Sample test cases", "Scenarios, preconditions, steps, expected results, traceability and Not Run status.", [flink("specs/sample_test_cases.csv", "CSV", "csv", download=True, target_blank=False)], "test-cases", ICO_DATA_TESTS),
      sitem("Sample user stories", "Backlog starter with priority, acceptance criteria and traceability.", [flink("specs/sample_user_stories.csv", "CSV", "csv", download=True, target_blank=False)], "user-stories-csv", ICO_DATA_STORIES),
      sitem("SQL reconciliation and data validation queries", "Analytical SQL queries to detect amount mismatches, orphan gateway events and 48-hour SLA breach exceptions.", [flink("specs/sample_reconciliation_queries.sql", "SQL", "sql", download=True, target_blank=False), flink("../projects.html#analytics", "SQL Projects &#8599;", "sql", target_blank=False)], "sql", ICO_DATA_SQL)])
-    return head("BA samples", "Sample artifacts: clear thinking, visible evidence.", "One connected, fictional case study that shows how a business problem becomes requirements, prioritised stories, test coverage, process models and reviewable wireframes.", F.lifecycle("sm"), "../") + f'''
+    return head("BA samples", "Business analyst sample documents: clear thinking, visible evidence.", "One connected, fictional case study that shows how a business problem becomes requirements, prioritised stories, test coverage, process models and reviewable wireframes.", F.lifecycle("sm"), "../") + f'''
 <section class="sec" style="padding-top:8px"><div class="wrap">
 <div class="disclaimer rv" style="margin:0 0 48px"><b>Sample only, fictional case study.</b> PayTrack is an invented payment reconciliation and exception-management portal. Names, IDs, amounts, targets and scenarios are illustrative. Test cases have not been executed and no client outcome is claimed.</div>
 <h2 class="rv sec-title-with-ico sec-title-docs" style="margin-bottom:20px"><span class="sec-hdr-ico sec-hdr-docs">{ICO_SEC_DOCS}</span><span class="sec-title-text">Documents</span></h2><ul class="file-list">{docs}</ul>
@@ -677,23 +677,57 @@ def samples():
 </div></section>
 ''' + cta("../")
 
-DESC = "Gautam Reddy: Business Analyst in Bengaluru with 4+ years in fintech and BFSI. Requirements gathering, BRD/FRD, user stories, REST API requirements, SQL, Python, Power BI, UAT and stakeholder management."
-LD = '<script type="application/ld+json">' + json.dumps({
-    "@context": "https://schema.org", "@type": "Person", "name": "Gautam Reddy", "jobTitle": "Business Analyst",
+DESC = "Business Analyst in Bengaluru with 4+ years in fintech and BFSI: BRD/FRD, user stories, REST API requirements, SQL, Power BI and UAT. Open to remote and hybrid roles."
+PERSON_ID = SITE + "#person"
+PERSON = {"@type": "Person", "@id": PERSON_ID, "name": "Gautam Reddy", "jobTitle": "Business Analyst",
     "description": DESC, "url": SITE, "sameAs": [LI, GH, HR],
     "address": {"@type": "PostalAddress", "addressLocality": "Bengaluru", "addressCountry": "IN"},
+    "alumniOf": {"@type": "CollegeOrUniversity", "name": "Biju Patnaik University of Technology"},
+    "hasCredential": {"@type": "EducationalOccupationalCredential", "name": "Google Data Analytics Professional Certificate", "credentialCategory": "certificate"},
     "knowsAbout": ["Business analysis", "Requirements gathering", "Stakeholder management", "BRD and FRD", "User stories", "Acceptance criteria", "UAT", "SQL", "Python", "Power BI", "Agile", "Scrum",
-                   "REST API requirements", "Postman", "Payment gateway integrations", "Transaction processing", "Settlement and reconciliation", "SLA monitoring", "Finance and operations reporting", "Fintech", "BFSI"]}, ensure_ascii=False) + '</script>\n'
+                   "REST API requirements", "Postman", "Payment gateway integrations", "Transaction processing", "Settlement and reconciliation", "SLA monitoring", "Finance and operations reporting", "Fintech", "BFSI"]}
+
+def ldscript(*objs):
+    return "".join('<script type="application/ld+json">' + json.dumps({"@context": "https://schema.org", **o}, ensure_ascii=False) + '</script>\n' for o in objs)
+
+def crumbs(name, path):
+    return {"@type": "BreadcrumbList", "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Home", "item": SITE},
+        {"@type": "ListItem", "position": 2, "name": name, "item": SITE + path}]}
+
+WEBSITE = {"@type": "WebSite", "@id": SITE + "#website", "name": "Gautam Reddy - Business Analyst Portfolio", "url": SITE, "inLanguage": "en-IN", "publisher": {"@id": PERSON_ID}}
+LD_HOME = ldscript(WEBSITE, PERSON)
+LD_ABOUT = ldscript({"@type": "ProfilePage", "url": SITE + "about.html", "name": "About Gautam Reddy", "mainEntity": {"@id": PERSON_ID}}, PERSON, crumbs("About", "about.html"))
+LD_SERVICES = ldscript({"@type": "ProfessionalService", "name": "Gautam Reddy - Business Analysis Services", "url": SITE + "services.html", "provider": {"@id": PERSON_ID},
+    "areaServed": "Worldwide (remote) and Bengaluru, India", "serviceType": [t for t, _, _ in SERV]}, crumbs("Services", "services.html"))
+LD_PROJECTS = ldscript({"@type": "CollectionPage", "url": SITE + "projects.html", "name": "Business analyst projects", "mainEntity": {"@type": "ItemList", "itemListElement": [
+    {"@type": "ListItem", "position": i + 1, "name": c[2], "url": c[5]} for i, c in enumerate(PROJECTS)]}}, crumbs("Projects", "projects.html"))
+LD_RESUME = ldscript({"@type": "ProfilePage", "url": SITE + "resume.html", "name": "Gautam Reddy resume", "mainEntity": {"@id": PERSON_ID}}, crumbs("Resume", "resume.html"))
+LD_CONTACT = ldscript({"@type": "ContactPage", "url": SITE + "contact.html", "name": "Contact Gautam Reddy", "mainEntity": {"@id": PERSON_ID}}, crumbs("Contact", "contact.html"))
+LD_SAMPLES = ldscript({"@type": "CollectionPage", "url": SITE + "samples/index.html", "name": "PayTrack BA sample documents (fictional)", "author": {"@id": PERSON_ID}},
+    {"@type": "BreadcrumbList", "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Home", "item": SITE},
+        {"@type": "ListItem", "position": 2, "name": "BA samples", "item": SITE + "samples/index.html"}]})
 
 pages = [
-("index.html", "Gautam Reddy | Business Analyst, Bengaluru | Fintech and BFSI", DESC, index(), "", "", LD),
-("about.html", "About | Gautam Reddy, Business Analyst", "Who Gautam Reddy is, how he works and the principles behind his requirements and analysis work in fintech and BFSI.", about(), "", "about.html", ""),
-("services.html", "Services | Gautam Reddy, Business Analyst", "Business analysis, data analysis, SQL, API and integration analysis, and UAT support, with clear deliverables and scope.", services(), "", "services.html", ""),
-("projects.html", "Projects | Gautam Reddy, Business Analyst", "Analytics, BI, data engineering and AI prototypes with links to each repository, plus the PayTrack BA case study.", projects(), "", "projects.html", ""),
-("resume.html", "Resume | Gautam Reddy, Business Analyst", "Experience, skills, education and certifications of Gautam Reddy, Business Analyst with 4+ years in fintech and BFSI.", resume(), "", "resume.html", ""),
-("contact.html", "Contact | Gautam Reddy, Business Analyst", "Contact Gautam Reddy, a Business Analyst in Bengaluru, about a full-time, hybrid or remote role, or a requirements, reconciliation or reporting project.", contact(), "", "contact.html", ""),
-("samples/index.html", "BA samples | Gautam Reddy, Business Analyst", "PayTrack: a fictional BA case study with BRD, FRD, user stories, RTM, UAT plan, diagrams and CSV samples.", samples(), "../", "samples/index.html", ""),
+("index.html", "Gautam Reddy | Business Analyst in Bengaluru | Fintech & BFSI", DESC, index(), "", "", LD_HOME),
+("about.html", "About Gautam Reddy | Fintech & BFSI Business Analyst", "About Gautam Reddy, a Bengaluru Business Analyst with 4+ years in fintech and BFSI: his career path from engineer to BA and the principles behind his work.", about(), "", "about.html", LD_ABOUT),
+("services.html", "Business Analyst Services: BRD, FRD, SQL, UAT | Gautam Reddy", "Business analysis services for fintech teams: BRD/FRD requirements packs, SQL and BI reporting, REST API analysis and UAT support, with clear deliverables.", services(), "", "services.html", LD_SERVICES),
+("projects.html", "Business Analyst Projects: SQL, Power BI, PayTrack | Gautam Reddy", "Nine portfolio projects by Business Analyst Gautam Reddy: SQL and Power BI analytics, a data pipeline, a RAG prototype and the PayTrack case study.", projects(), "", "projects.html", LD_PROJECTS),
+("resume.html", "Resume | Gautam Reddy, Business Analyst (Fintech & BFSI)", "Resume of Gautam Reddy, Business Analyst with 4+ years in fintech and BFSI: 2 payment gateway integrations, 100,000+ transactions analysed, 350+ test cases.", resume(), "", "resume.html", LD_RESUME),
+("contact.html", "Contact Gautam Reddy | Hire a Business Analyst, Bengaluru", "Contact Gautam Reddy, a Business Analyst in Bengaluru, about a full-time, hybrid or remote role, or a requirements, reconciliation or reporting project.", contact(), "", "contact.html", LD_CONTACT),
+("samples/index.html", "BA Sample Documents: BRD, FRD, User Stories, RTM | Gautam Reddy", "Fictional PayTrack business analysis case study: BRD, FRD, user stories, RTM, UAT plan, process and ERD diagrams, SQL queries and CSV templates.", samples(), "../", "samples/index.html", LD_SAMPLES),
 ]
 for path, t, d, b, p, cur, ld in pages:
     open(path, "w", encoding="utf-8").write(page(path, t, d, b, p, cur, ld))
+
+NOT_FOUND = '''<section class="sec"><div class="wrap"><h1>Page not found</h1><p class="lead">That page does not exist or has moved. Try one of these instead:</p>
+<ul class="muted" style="padding-left:1.1em;margin:18px 0"><li><a href="{s}">Home</a></li><li><a href="{s}projects.html">Projects</a></li><li><a href="{s}samples/index.html">BA samples</a></li><li><a href="{s}services.html">Services</a></li><li><a href="{s}resume.html">Resume</a></li><li><a href="{s}contact.html">Contact</a></li></ul></div></section>'''.format(s=SITE)
+open("404.html", "w", encoding="utf-8").write(page("404.html", "Page not found | Gautam Reddy, Business Analyst", "This page could not be found.", NOT_FOUND, SITE, "", "", "noindex, follow"))
+
+import datetime
+today = datetime.date.today().isoformat()
+urls = [SITE if p_ == "index.html" else SITE + p_ for p_, *_ in pages]
+open("sitemap.xml", "w", encoding="utf-8").write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "".join(f"  <url><loc>{u}</loc><lastmod>{today}</lastmod></url>\n" for u in urls) + "</urlset>\n")
+open("robots.txt", "w", encoding="utf-8").write(f"User-agent: *\nAllow: /\n\nSitemap: {SITE}sitemap.xml\n")
 print("built", len(pages))

@@ -21,4 +21,4 @@ Static site. No frameworks, no build step needed to deploy.
 
 ## Editing
 `python build.py` regenerates all 7 HTML pages from `build.py` (copy, links, keywords) and `flows.py` (diagrams).
-The recruiter keyword lists are `MARQ_ITEMS`, `META_KW` and `ROLES_ROT` at the top of `build.py`.
+The keyword lists are `MARQ_ITEMS` and `ROLES_ROT` at the top of `build.py`. `build.py` also writes `sitemap.xml`, `robots.txt` and `404.html`; page titles, descriptions and JSON-LD are set at the bottom of the file.
