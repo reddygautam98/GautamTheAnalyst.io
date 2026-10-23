@@ -26,7 +26,7 @@ if(tb)tb.addEventListener('click',function(){
 });
 
 /* mobile menu with backdrop & scroll-lock */
-var mb=$('#menu'),nav=$('#nav');
+var mb=$('#menu'),nav=$('#nav'),bd=$('#navBackdrop');
 function closeMenu(){
   if(nav&&nav.classList.contains('open')){
     nav.classList.remove('open');
@@ -35,6 +35,7 @@ function closeMenu(){
     if(lenis)lenis.start();
   }
 }
+if(bd)bd.addEventListener('click',closeMenu);
 if(mb&&nav){
   mb.addEventListener('click',function(){
     var o=nav.classList.toggle('open');
@@ -197,10 +198,10 @@ if(fine&&!reduce){
     });
   });
 
-  /* hero scene follows pointer within gentle ±6deg range */
-  var sc=$('[data-scene]');
-  if(sc){
+  /* 3D scenes follow pointer within gentle ±6deg range */
+  $$('[data-scene]').forEach(function(sc){
     var st=$('.stage',sc);
+    if(!st)return;
     sc.addEventListener('pointermove',function(e){
       var b=sc.getBoundingClientRect(),x=(e.clientX-b.left)/b.width-.5,y=(e.clientY-b.top)/b.height-.5;
       st.classList.add('live');
@@ -212,7 +213,7 @@ if(fine&&!reduce){
       st.style.setProperty('--ry','-11deg');
       st.style.setProperty('--rx','5deg');
     });
-  }
+  });
 }
 
 /* hero keyword rotator */
@@ -231,34 +232,81 @@ if(rot&&!reduce){
   }
 }
 
-/* marquee pause toggle button */
+/* marquee pause toggle button (icon-only button) */
 var mqToggle=$('#marqToggle'),mqWrap=$('.marq-wrap');
+var PAUSE_ICO='<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>';
+var PLAY_ICO='<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><polygon points="6 4 20 12 6 20 6 4"/></svg>';
 if(mqToggle&&mqWrap){
   mqToggle.addEventListener('click',function(){
     var paused=mqWrap.classList.toggle('is-paused');
     mqToggle.setAttribute('aria-pressed',String(paused));
-    mqToggle.setAttribute('aria-label',paused?'Play marquee animation':'Pause marquee animation');
-    mqToggle.innerHTML=paused?'&#9654; Play':'&#9646;&#9646; Pause';
+    mqToggle.setAttribute('aria-label',paused?'Play marquee':'Pause marquee');
+    mqToggle.innerHTML=paused?PLAY_ICO:PAUSE_ICO;
   });
 }
 
 /* pause decorative SMIL motion when asked to reduce motion */
 if(reduce)$$('svg.bgflow').forEach(function(s){try{s.pauseAnimations()}catch(e){}});
 
-/* project filter: choosing an option filters matching cards without disruptive blurring */
+/* project filter: sliding pill indicator and FLIP reflow animation */
 var chips=$$('.chip[data-f]');
 if(chips.length){
-  var cards=$$('[data-cat]'),count=$('#count');
+  var cards=$$('[data-cat]'),count=$('#count'),pill=$('#filterPill');
+  function setPill(activeChip){
+    if(!pill||!activeChip)return;
+    pill.style.width=activeChip.offsetWidth+'px';
+    pill.style.transform='translateX('+activeChip.offsetLeft+'px)';
+  }
+  var initActive=$('.chip[data-f].is-active')||chips[0];
+  if(initActive)setTimeout(function(){setPill(initActive)},50);
+  window.addEventListener('resize',function(){var a=$('.chip[data-f][aria-pressed=true]');if(a)setPill(a)});
+
   chips.forEach(function(c){
     c.addEventListener('click',function(){
       var f=c.dataset.f,n=0;
-      chips.forEach(function(x){x.setAttribute('aria-pressed',String(x===c))});
+      chips.forEach(function(x){
+        var active=x===c;
+        x.setAttribute('aria-pressed',String(active));
+        x.classList.toggle('is-active',active);
+      });
+      setPill(c);
+
+      /* FLIP Animation: First */
+      var firstRects=new Map();
+      cards.forEach(function(k){firstRects.set(k,k.getBoundingClientRect())});
+
+      /* Apply visibility */
       cards.forEach(function(k){
         var match=f==='all'||k.dataset.cat===f;
-        if(match)n++;
-        k.hidden=!match;
-        if(match){k.classList.remove('out')}else{k.classList.add('out')}
+        if(match){
+          n++;
+          k.hidden=false;
+          k.classList.remove('out');
+        }else{
+          k.hidden=true;
+          k.classList.add('out');
+        }
       });
+
+      /* FLIP Animation: Last, Invert, Play */
+      if(!reduce){
+        cards.forEach(function(k){
+          if(k.hidden)return;
+          var first=firstRects.get(k);
+          if(!first)return;
+          var last=k.getBoundingClientRect();
+          var dx=first.left-last.left,dy=first.top-last.top;
+          if(dx!==0||dy!==0){
+            k.style.transform='translate('+dx+'px, '+dy+'px)';
+            k.style.transition='none';
+            requestAnimationFrame(function(){
+              k.style.transition='transform 0.4s cubic-bezier(0,0,0.2,1)';
+              k.style.transform='';
+            });
+          }
+        });
+      }
+
       if(count){
         count.setAttribute('aria-live','polite');
         count.textContent=n+(n===1?' project':' projects');
@@ -504,4 +552,124 @@ if(slider){
     }
   },{passive:true});
 }
+
+/* -------------------------------------------------------------
+   About 3D BA Console: Interactive Tab Navigation
+   ------------------------------------------------------------- */
+var abConsole=$('.about-console');
+if(abConsole){
+  var abTabs=$$('.console-tab',abConsole),
+      abPanels=$$('.console-panel',abConsole);
+  if(abTabs.length&&abPanels.length){
+    abTabs.forEach(function(tab,idx){
+      tab.addEventListener('click',function(){
+        abTabs.forEach(function(t,i){
+          var sel=i===idx;
+          t.classList.toggle('is-active',sel);
+          t.setAttribute('aria-selected',sel?'true':'false');
+          t.tabIndex=sel?0:-1;
+        });
+        abPanels.forEach(function(p,i){
+          var sel=i===idx;
+          p.classList.toggle('is-active',sel);
+          p.hidden=!sel;
+        });
+      });
+      tab.addEventListener('keydown',function(e){
+        var next=-1;
+        if(e.key==='ArrowRight'||e.key==='ArrowDown')next=(idx+1)%abTabs.length;
+        else if(e.key==='ArrowLeft'||e.key==='ArrowUp')next=(idx-1+abTabs.length)%abTabs.length;
+        if(next>=0){
+          e.preventDefault();
+          abTabs[next].focus();
+          abTabs[next].click();
+        }
+      });
+    });
+  }
+}
+
+/* -------------------------------------------------------------
+   Hero 3D Document Stack: Scroll-linked translateZ separation (0 -> -80px)
+   ------------------------------------------------------------- */
+var heroSec=$('.hero'),heroStage=$('#heroStage')||$('.stage');
+if(heroSec&&heroStage&&!reduce){
+  function onHeroScroll(){
+    var rect=heroSec.getBoundingClientRect();
+    if(rect.bottom<0)return;
+    var p=Math.max(0,Math.min(1,-rect.top/Math.max(1,rect.height*0.75)));
+    var gap=-46-(p*38); /* smooth separation on scroll */
+    heroStage.style.setProperty('--plane-gap',gap.toFixed(1)+'px');
+  }
+  window.addEventListener('scroll',onHeroScroll,{passive:true});
+  onHeroScroll();
+}
+
+/* -------------------------------------------------------------
+   Selected Work: PayTrack Wireframe Active Row Cycling
+   ------------------------------------------------------------- */
+var wfRows=$$('.wf-row-cycle');
+if(wfRows.length&&!reduce){
+  var wfIdx=0;
+  setInterval(function(){
+    if(d.hidden)return;
+    wfRows.forEach(function(r,i){
+      r.classList.toggle('is-active-row',i===wfIdx);
+    });
+    wfIdx=(wfIdx+1)%wfRows.length;
+  },2400);
+}
+
+/* -------------------------------------------------------------
+   Experience: Collapsible Role Metrics Tray
+   ------------------------------------------------------------- */
+$$('.role-expander').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    var metrics=btn.nextElementSibling;
+    if(!metrics)return;
+    var isHidden=metrics.hidden;
+    metrics.hidden=!isHidden;
+    btn.setAttribute('aria-expanded',String(isHidden));
+    btn.innerHTML=isHidden?'Hide key metrics &amp; delivery impact &#9652;':'View key metrics &amp; delivery impact &#9662;';
+    if(lenis)setTimeout(function(){lenis.resize()},150);
+  });
+});
+
+/* -------------------------------------------------------------
+   Samples: In-Page Document Preview Drawer Modal
+   ------------------------------------------------------------- */
+var pdDrawer=$('#previewDrawer'),pdBackdrop=$('#pdBackdrop'),pdClose=$('#pdClose');
+function openDrawer(tabName){
+  if(!pdDrawer)return;
+  pdDrawer.hidden=false;
+  d.body.style.overflow='hidden';
+  if(tabName&&tabName!=='bundle')showPdTab(tabName);
+}
+function closeDrawer(){
+  if(!pdDrawer)return;
+  pdDrawer.hidden=true;
+  d.body.style.overflow='';
+}
+if(pdBackdrop)pdBackdrop.addEventListener('click',closeDrawer);
+if(pdClose)pdClose.addEventListener('click',closeDrawer);
+d.addEventListener('keydown',function(e){
+  if(e.key==='Escape'&&pdDrawer&&!pdDrawer.hidden)closeDrawer();
+});
+$$('[data-preview]').forEach(function(btn){
+  btn.addEventListener('click',function(){openDrawer(btn.dataset.preview)});
+});
+var pdTabs=$$('.pd-tab'),pdPanes=$$('.pd-pane');
+function showPdTab(name){
+  pdTabs.forEach(function(t){
+    var on=t.dataset.pdtab===name;
+    t.classList.toggle('is-active',on);
+  });
+  pdPanes.forEach(function(p){
+    p.hidden=p.id!=='pd-'+name;
+  });
+}
+pdTabs.forEach(function(t){
+  t.addEventListener('click',function(){showPdTab(t.dataset.pdtab)});
+});
+
 })();
