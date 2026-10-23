@@ -1,6 +1,6 @@
 """Regenerates all 7 HTML pages. Run:  python build.py
 Edit copy / links here, then rebuild. Diagrams come from flows.py."""
-import html, json
+import html, json, urllib.parse
 import flows as F
 
 SITE = "https://reddygautam98.github.io/GautamTheAnalyst.io/"
@@ -8,13 +8,13 @@ GH = "https://github.com/reddygautam98/"
 LI = "https://www.linkedin.com/in/gautam-reddy-analyst"
 HR = "https://www.hackerrank.com/profile/reddygautam98"
 EMAIL = "gautamreddy098@gmail.com"
-FONTS = "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,600&display=swap"
+FONTS = "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600&display=swap"
 NAV = [("projects.html", "Projects"), ("samples/index.html", "BA samples"), ("services.html", "Services"), ("about.html", "About"), ("contact.html", "Contact")]
 
 # Core BA & technical skills for single-row marquee
 MARQ_ITEMS = ["Requirements Gathering", "BRD / FRD / SRS", "User Stories & BDD", "Traceability Matrix (RTM)", "Process Modelling (BPMN / UML)", "Gap Analysis", "REST API Integration", "SQL (PostgreSQL)", "Python (Pandas)", "Power BI & DAX", "UAT & Defect Triage", "Agile / Scrum"]
 
-ROLES_ROT = ["Requirements Gathering", "BRD / FRD & User Stories", "REST API & System Integration", "SQL & Python Analysis", "Power BI & KPI Dashboards", "Settlement & Reconciliation", "UAT & Agile Delivery"]
+ROLES_ROT = ["Requirements Gathering", "BRD / FRD &amp; User Stories", "REST API &amp; System Integration", "SQL &amp; Python Analysis", "Power BI &amp; KPI Dashboards", "Settlement &amp; Reconciliation", "UAT &amp; Agile Delivery"]
 
 def ext(u, t): return f'<a href="{u}" target="_blank" rel="noopener noreferrer">{t} <span class="sr-only">(opens in new tab)</span>&rarr;</a>'
 def rv(i=0, base=0.0, step=0.07): return f'rv" style="--d:{base + i * step:.2f}s'
@@ -54,8 +54,8 @@ def page(path, title, desc, body, p="", cur="", ld="", robots="index, follow, ma
 <meta name="twitter:title" content="{html.escape(title)}">
 <meta name="twitter:description" content="{html.escape(desc)}">
 <meta name="twitter:image" content="{SITE}assets/og-card.png">
-<meta name="theme-color" content="#f4f6fb" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0a0d13" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f8fafc" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0b0f19" media="(prefers-color-scheme: dark)">
 {url_tags}<link rel="icon" href="{p}assets/mark.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="{p}assets/apple-touch-icon.png">
 <script>document.documentElement.classList.add("js");try{{var t=localStorage.getItem("gr-theme")||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.dataset.theme=t}}catch(e){{}}</script>
@@ -131,7 +131,7 @@ def pcard(c, i=0, base=0.0):
     k, cat, t, d, tg, u = c
     repo = repo_of(u)
     img_src = LOCAL_PROJECT_IMAGES.get(repo, f"{GHIMG}{repo}")
-    img = f'<img src="{img_src}" alt="{html.escape(t)} project screenshot ({html.escape(cat.lower())})" width="1200" height="600" loading="lazy" decoding="async">'
+    img = f'<img src="{img_src}" alt="{html.escape(t)} &bull; {html.escape(cat)}" width="1200" height="600" loading="lazy" decoding="async">'
     lbl = f'View repository for {html.escape(t)} on GitHub (opens in new tab)' if k != 'writing' else f'Read notes for {html.escape(t)} on GitHub (opens in new tab)'
     txt = 'Read notes' if k == 'writing' else 'View repository'
     return f'''<article class="card pcard {rv(i, base)}" data-cat="{k}"><a class="thumb" href="{u}" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true"><span class="ph">{F.mini("m" + str(next(_n)))}<em>{html.escape(t)}</em></span>{img}</a><div class="pbody"><span class="cat">{cat}</span><h3>{t}</h3><p>{d}</p>{tags(tg)}<a class="more" href="{u}" target="_blank" rel="noopener noreferrer" aria-label="{lbl}">{txt} <span class="sr-only">(opens in new tab)</span>&#8599;</a></div></article>'''
@@ -149,8 +149,8 @@ def trace():
     rows = ""
     for br, label, frs, uss, tcs in TRACE:
         links = " ".join([br] + frs + uss + tcs)
-        rows += (f'<tr tabindex="0" data-links="{links}" aria-label="Trace {br}: {label}">'
-                 f'<td><span class="id" data-id="{br}">{br}</span><br>{label}</td>'
+        rows += (f'<tr tabindex="0" data-links="{links}">'
+                 f'<th scope="row"><span class="id" data-id="{br}">{br}</span><br>{label}</th>'
                  f'<td>{_ids(frs)}</td><td>{_ids(uss)}</td><td>{_ids(tcs)}</td></tr>\n')
     return (f'''<div class="trace hero-slider" id="heroSlider" aria-label="PayTrack deliverables showcase">
 <div class="trace-top slider-top">
@@ -308,7 +308,7 @@ def make_steps(items):
 </div>'''
         out.append(f'''<li class="step-card step-{num} {rv(i)}">
 <div class="step-top">
-<div class="step-badge" aria-label="Phase {num}: {title}">
+<div class="step-badge" aria-label="{title}">
 <span class="step-num">0{num}</span>
 <span class="step-ico">{icon_svg}</span>
 </div>
@@ -388,7 +388,7 @@ def paytrack_wireframe_svg():
     <div class="wf-browser-bar">
       <div class="wf-browser-dots"><span class="wf-dot red"></span><span class="wf-dot yellow"></span><span class="wf-dot green"></span></div>
       <div class="wf-browser-addr"><span>https://ops.paytrack.internal/reconciliation</span></div>
-      <div class="wf-browser-badge">BA Wireframe</div>
+      <div class="wf-browser-badge">Fictional Prototype</div>
     </div>
     <div class="wf-screen">
       <div class="wf-side">
@@ -406,14 +406,14 @@ def paytrack_wireframe_svg():
           <div class="wf-main-actions"><span class="wf-btn wf-btn-primary">Resolve Case</span><span class="wf-btn">Export CSV</span></div>
         </div>
         <div class="wf-kpis">
-          <div class="wf-kpi-card"><span class="wf-kpi-val">100K+</span><span class="wf-kpi-lbl">Analysed Txns</span></div>
+          <div class="wf-kpi-card"><span class="wf-kpi-val">14.2K</span><span class="wf-kpi-lbl">Daily Txns</span></div>
           <div class="wf-kpi-card warn"><span class="wf-kpi-val">3</span><span class="wf-kpi-lbl">SLA Breaches</span></div>
-          <div class="wf-kpi-card ok"><span class="wf-kpi-val">99.4%</span><span class="wf-kpi-lbl">Reconciled</span></div>
+          <div class="wf-kpi-card ok"><span class="wf-kpi-val">99.8%</span><span class="wf-kpi-lbl">Reconciled</span></div>
         </div>
         <div class="wf-table">
           <div class="wf-tr wf-th"><span>TXN_ID</span><span>GATEWAY</span><span>AMOUNT</span><span>STATUS</span><span>SLA DUE</span></div>
           <div class="wf-tr"><span class="wf-td-code">TXN_9841</span><span>Stripe API</span><span>$1,420.00</span><span class="wf-badge-warn">WARN (Amount)</span><span>2h 15m</span></div>
-          <div class="wf-tr"><span class="wf-td-code">TXN_9842</span><span>Razorpay</span><span>$850.50</span><span class="wf-badge-ok">RECONCILED</span><span>&mdash;</span></div>
+          <div class="wf-tr"><span class="wf-td-code">TXN_9842</span><span>Razorpay</span><span>&#8377;68,500.00</span><span class="wf-badge-ok">RECONCILED</span><span>&mdash;</span></div>
           <div class="wf-tr"><span class="wf-td-code">TXN_9843</span><span>Adyen Webhook</span><span>$3,190.00</span><span class="wf-badge-err">ERROR (Timeout)</span><span>Overdue</span></div>
         </div>
       </div>
@@ -441,13 +441,11 @@ def index():
 <p class="hero-proof-line {rv(5)}"><span class="h-dot"></span> 4+ yrs BA experience &bull; Payments &amp; Fintech &bull; 2 payment gateway integrations</p>
 </div>
 <div class="scene {rv(2)}" data-scene><div class="stage">
-<a href="samples/index.html#brd" class="plane plane-brd" style="--i:3;--k:var(--c-brd)" title="View BRD sample document"><b>BRD</b><span>Business need</span></a><a href="samples/index.html#frd" class="plane plane-frd" style="--i:2;--k:var(--c-frd)" title="View FRD sample document"><b>FRD</b><span>System behaviour</span></a><a href="samples/index.html#user-stories" class="plane plane-story" style="--i:1;--k:var(--c-story)" title="View User Stories sample document"><b>Stories</b><span>Acceptance criteria</span></a>
+<a href="samples/index.html#brd" class="plane plane-brd" style="--i:3;--k:var(--c-brd)" tabindex="-1" aria-hidden="true"><b>BRD</b><span>Business need</span></a><a href="samples/index.html#frd" class="plane plane-frd" style="--i:2;--k:var(--c-frd)" tabindex="-1" aria-hidden="true"><b>FRD</b><span>System behaviour</span></a><a href="samples/index.html#user-stories" class="plane plane-story" style="--i:1;--k:var(--c-story)" tabindex="-1" aria-hidden="true"><b>Stories</b><span>Acceptance criteria</span></a>
 {trace()}
-<a href="samples/index.html#user-stories" class="f3d chip-story" style="--z:80px;top:0px;left:0px;--dl:0s;--k:var(--c-story)" title="View User Stories sample document">User stories</a>
-<a href="samples/index.html#uat" class="f3d chip-test" style="--z:90px;top:40%;right:0px;--dl:.8s;--k:var(--c-test)" title="View UAT &amp; test cases sample document">UAT</a>
-<a href="samples/index.html#sql" class="f3d chip-sql" style="--z:70px;bottom:0px;left:15%;--dl:1.4s;--k:var(--c-sql)" title="View SQL queries &amp; data model sample">SQL</a>
-<a href="samples/index.html#rest-api" class="f3d chip-api alt" style="--z:85px;top:0px;right:15%;--dl:.4s;--k:var(--c-api)" title="View REST API sequence diagram &amp; specifications">REST API</a>
-<a href="samples/index.html#power-bi" class="f3d chip-bi alt" style="--z:75px;bottom:0px;right:10%;--dl:1.9s;--k:var(--c-api)" title="View Power BI reporting sample &amp; dashboard">Power BI</a>
+<a href="samples/index.html#user-stories" class="f3d chip-story" style="--z:80px;top:-16px;left:24px;--dl:0s;--k:var(--c-story)" title="View User Stories sample document">User stories</a>
+<a href="samples/index.html#rest-api" class="f3d chip-api alt" style="--z:85px;top:-16px;right:24px;--dl:.4s;--k:var(--c-api)" title="View REST API sequence diagram &amp; specifications">REST API</a>
+<a href="samples/index.html#uat" class="f3d chip-test" style="--z:90px;bottom:-14px;right:32px;--dl:.8s;--k:var(--c-test)" title="View UAT &amp; test cases sample document">UAT</a>
 </div></div>
 </div></section>
 
@@ -458,8 +456,8 @@ def index():
 <div class="proof">
 <div class="proof-card proof-card-1 {rv(0)}"><b data-count="100" data-suf="K+">100K+</b><span class="source-tag">Marolix &bull; SQL analysis</span><span>transaction records analysed with SQL and Python, surfacing 3 recurring SLA-breach patterns</span></div>
 <div class="proof-card proof-card-2 {rv(1)}"><b data-count="350" data-suf="+">350+</b><span class="source-tag">QA &amp; UAT coordination</span><span>test cases coordinated in Jira, with zero critical defects reported</span></div>
-<div class="proof-card proof-card-3 {rv(2)}"><b data-count="20" data-suf="+">20+</b><span class="source-tag">13+ cross-functional stakeholders</span><span>workshops that aligned stakeholders on business &amp; functional requirements</span></div>
-<div class="proof-card proof-card-4 {rv(3)}"><b data-count="2" data-suf="">2</b><span class="source-tag">Payment gateway integrations</span><span>payment-gateway integrations documented with UML flows for Engineering and QA</span></div>
+<div class="proof-card proof-card-3 {rv(2)}"><b data-count="20" data-suf="+">20+</b><span class="source-tag">Stakeholder Discovery</span><span>workshops conducted across 13+ cross-functional stakeholders, aligning business &amp; functional requirements</span></div>
+<div class="proof-card proof-card-4 {rv(3)}"><b data-count="2" data-suf="">2</b><span class="source-tag">Fintech Systems</span><span>payment gateway integrations (Razorpay &amp; Stripe) documented with UML flows and OpenAPI contracts</span></div>
 </div>
 <p class="note">Figures come from my resume and describe past roles and projects. They are not a guarantee of future outcomes.</p>
 </div></section>
@@ -470,7 +468,7 @@ def index():
 
 <section class="sec has-flow" id="work">{F.erd("w")}<div class="wrap">
 {sh(3, "Selected work", "Case study and projects", "A fictional end-to-end BA case study, plus personal analytics and data projects. Each card opens its repository.")}
-<div class="feature {rv(0)}" data-tilt>
+<div class="feature {rv(0)}">
 {paytrack_wireframe_svg()}
 <div><span class="cat feat-badge">Featured Case Study</span><h3>PayTrack: payment reconciliation, from BRD to UAT</h3><p class="muted"><strong>Problem &bull; Role &bull; Result:</strong> Operations teams struggle to investigate unmatched gateway and internal payment records. As the Business Analyst I wrote the BRD, FRD, 10 BDD user stories and REST API sequence flows, and traced 8 business requirements to 15 sample test cases (not executed).</p>
 <div class="disclaimer"><b>Fictional sample.</b> No client data is used and no executed-test evidence is claimed.</div>
@@ -506,10 +504,10 @@ def about():
     return head("About", "Fintech business analyst: requirements teams can build and validate.", "I connect stakeholder needs, requirements, data, systems and delivery teams, so ambiguous business problems become clear, testable work.", F.seq("a")) + f'''
 <section class="sec" style="padding-top:24px"><div class="wrap two">
 <div><h2 class="{rv(0)}">Who I am</h2>
-<p class="{rv(1)}" style="margin-top:18px">I&rsquo;m Gautam Reddy, a Business Analyst with 4+ years of experience in requirements analysis and delivery, translating business needs into clear, testable functional and non-functional requirements.</p>
+<p class="about-lead {rv(1)}">I&rsquo;m Gautam Reddy, a Business Analyst with 4+ years of experience in requirements analysis and delivery, translating business needs into clear, testable functional and non-functional requirements.</p>
 <div class="{rv(2)}">
-<h3 style="font-size:1.1rem;margin:18px 0 8px">What I do:</h3>
-<ul style="padding-left:1.2em;margin:0 0 20px;color:var(--muted);line-height:1.6">
+<h3 class="about-subhead">What I do:</h3>
+<ul class="about-list">
 <li><strong>Elicitation &amp; Scoping:</strong> Facilitating stakeholder workshops, discovery interviews, and backlog prioritization (MoSCoW).</li>
 <li><strong>Technical Specifications:</strong> Authoring BRD, FRD, REST API integration contracts, and BDD Given/When/Then user stories.</li>
 <li><strong>Data &amp; Process Analysis:</strong> SQL querying, data mapping, and AS-IS / TO-BE process modelling with BPMN and UML.</li>
@@ -517,7 +515,7 @@ def about():
 </ul>
 </div>
 <div class="actions {rv(4)}"><a class="btn btn-primary" href="resume.html">View resume &amp; PDF</a><a class="btn btn-ghost" href="{LI}" target="_blank" rel="noopener noreferrer">Connect on LinkedIn</a></div></div>
-<div class="{rv(2)}" style="align-self:start"><dl class="facts card"><dt>Role</dt><dd>Business Analyst, 4+ years</dd><dt>Focus</dt><dd>Requirements Gathering, API &amp; System Integration, SQL, Agile, UAT</dd><dt>Technical Tools</dt><dd>SQL, Python (Pandas), Excel, Power BI, JIRA, Confluence, Figma, Postman</dd><dt>Based in</dt><dd>Bengaluru, India (IST / UTC+5:30)</dd><dt>Profiles</dt><dd>{ext(GH, "GitHub")}, {ext(LI, "LinkedIn")}, {ext(HR, "HackerRank")}</dd></dl></div>
+<div class="about-facts-col {rv(2)}"><dl class="facts card"><dt>Role</dt><dd>Business Analyst, 4+ years</dd><dt>Focus</dt><dd>Requirements Gathering, API &amp; System Integration, SQL, Agile, UAT</dd><dt>Technical Tools</dt><dd>SQL, Python (Pandas), Excel, Power BI, JIRA, Confluence, Figma, Postman</dd><dt>Based in</dt><dd>Bengaluru, India (IST / UTC+5:30)</dd><dt>Profiles</dt><dd>{ext(GH, "GitHub")}, {ext(LI, "LinkedIn")}, {ext(HR, "HackerRank")}</dd></dl></div>
 </div></section>
 
 <section class="sec band has-flow">{F.pipeline("ab")}<div class="wrap">
@@ -552,8 +550,8 @@ FAQ = [("How do fees and timelines work?", "They depend on complexity, the outpu
 ("Can you work with confidential data?", "We can discuss an NDA and appropriate handling before sharing project materials. Do not send credentials, regulated records or confidential customer data in the initial enquiry form.")]
 
 def services():
-    cards = "".join(f'<div class="card {rv(i % 3, 0.0)}"><h3>{t}</h3><p>{d}</p>{tags(tg)}<div class="actions" style="margin-top:auto"><a class="btn btn-ghost" href="contact.html?service={html.escape(t)}">Enquire about this</a></div></div>' for i, (t, d, tg) in enumerate(SERV))
-    faq = "".join(f'<details class="faq-item {rv(i, 0.0)}"><summary><span>{q}</span><svg class="chevron" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></summary><div class="faq-ans"><p>{a}</p></div></details>' for i, (q, a) in enumerate(FAQ))
+    cards = "".join(f'<div class="card {rv(i % 3, 0.0)}"><h3>{t}</h3><p>{d}</p>{tags(tg)}<div class="actions" style="margin-top:auto"><a class="btn btn-ghost" href="contact.html?service={urllib.parse.quote_plus(t)}">Enquire about this</a></div></div>' for i, (t, d, tg) in enumerate(SERV))
+    faq = "".join(f'<details class="faq-item {rv(i, 0.0)}"><summary><span>{q}</span></summary><div class="faq-ans"><p>{a}</p></div></details>' for i, (q, a) in enumerate(FAQ))
     return head("Services", "Business analysis services with clear scope and useful deliverables.", "Business analysis, data and technology support shaped around the problem, the people who need the answer and the output your team can use.", F.swim("sv")) + f'''
 <section class="sec" style="padding-top:24px"><div class="wrap">
 {sh(1, "Services", "Business analysis services I offer")}
@@ -667,19 +665,20 @@ def contact():
 <p class="muted small" style="margin:8px 0 16px">This site stores nothing. The button opens a draft in your email app and nothing is sent until you press Send.</p>
 <p class="small" style="margin:0 0 16px;color:var(--muted)">* Required fields</p>
 <form id="enquiry" novalidate>
+<div id="form-errors" class="form-errors" role="alert" aria-live="polite" hidden></div>
 <div class="row2">
-  <label for="enquiry-name">Your name *<input id="enquiry-name" name="name" autocomplete="name" required aria-describedby="err-name"><span class="err" id="err-name" aria-live="polite"></span></label>
-  <label for="enquiry-email">Work email *<input id="enquiry-email" name="email" type="email" autocomplete="email" inputmode="email" required aria-describedby="err-email"><span class="err" id="err-email" aria-live="polite"></span></label>
+  <div class="form-group"><label for="enquiry-name">Your name *</label><input id="enquiry-name" name="name" autocomplete="name" required aria-describedby="err-name"><span class="err" id="err-name" aria-live="polite"></span></div>
+  <div class="form-group"><label for="enquiry-email">Work email *</label><input id="enquiry-email" name="email" type="email" autocomplete="email" inputmode="email" required aria-describedby="err-email"><span class="err" id="err-email" aria-live="polite"></span></div>
 </div>
-<label for="enquiry-company">Company (optional)<input id="enquiry-company" name="company" autocomplete="organization"></label>
-<label for="enquiry-service">What do you need help with? *<select id="enquiry-service" name="service" required aria-describedby="err-service"><option value="">Choose a service</option>{opts(["Business analysis and requirements", "Data analysis and BI reporting", "SQL, data quality and reporting", "API and integration analysis", "UAT, testing and release support", "A role at my company", "Not sure yet"])}</select><span class="err" id="err-service" aria-live="polite"></span></label>
+<div class="form-group"><label for="enquiry-company">Company (optional)</label><input id="enquiry-company" name="company" autocomplete="organization"></div>
+<div class="form-group"><label for="enquiry-service">What do you need help with? *</label><select id="enquiry-service" name="service" required aria-describedby="err-service"><option value="">Choose a service</option>{opts(["Business analysis and requirements", "Data analysis and BI reporting", "SQL, data quality and reporting", "API and integration analysis", "UAT, testing and release support", "A role at my company", "Not sure yet"])}</select><span class="err" id="err-service" aria-live="polite"></span></div>
 <div class="row2">
-  <label for="enquiry-type">Engagement type<select id="enquiry-type" name="type">{opts(["Full-time role", "Discovery or review", "Defined deliverable", "Ongoing support", "Prototype or feasibility", "Not sure yet"])}</select></label>
-  <label for="enquiry-timeline">Target timeline<select id="enquiry-timeline" name="timeline">{opts(["Flexible", "As soon as practical", "Within 2 to 4 weeks", "Within 1 to 3 months", "Specific deadline"])}</select></label>
+  <div class="form-group"><label for="enquiry-type">Engagement type</label><select id="enquiry-type" name="type">{opts(["Full-time role", "Discovery or review", "Defined deliverable", "Ongoing support", "Prototype or feasibility", "Not sure yet"])}</select></div>
+  <div class="form-group"><label for="enquiry-timeline">Target timeline</label><select id="enquiry-timeline" name="timeline">{opts(["Flexible", "As soon as practical", "Within 2 to 4 weeks", "Within 1 to 3 months", "Specific deadline"])}</select></div>
 </div>
-<label for="enquiry-msg">Describe the problem and the outcome you want *<textarea id="enquiry-msg" name="msg" required aria-describedby="err-msg"></textarea><span class="err" id="err-msg" aria-live="polite"></span></label>
-<label for="enquiry-ref">Reference link (optional)<input id="enquiry-ref" name="ref" type="url" placeholder="https://example.com" aria-describedby="err-ref"><span class="err" id="err-ref" aria-live="polite"></span></label>
-<div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap"><button class="btn btn-primary" type="submit">Prepare email draft</button><span class="muted small">Or email directly: <a href="mailto:{EMAIL}">{EMAIL}</a></span></div>
+<div class="form-group"><label for="enquiry-msg">Describe the problem and the outcome you want *</label><textarea id="enquiry-msg" name="msg" required aria-describedby="err-msg"></textarea><span class="err" id="err-msg" aria-live="polite"></span></div>
+<div class="form-group"><label for="enquiry-ref">Reference link (optional)</label><input id="enquiry-ref" name="ref" type="url" placeholder="https://example.com" aria-describedby="err-ref"><span class="err" id="err-ref" aria-live="polite"></span></div>
+<div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap"><button class="btn btn-primary" type="submit">Prepare email draft</button><button class="btn btn-ghost" type="button" id="copyEnquiryBtn">Copy message</button><span class="muted small">Or email directly: <a href="mailto:{EMAIL}">{EMAIL}</a></span></div>
 <p id="sent" class="muted small" hidden role="status">Preparing your email draft. If your email application does not open automatically, please send your enquiry directly to <a href="mailto:{EMAIL}">{EMAIL}</a>.</p>
 </form></div>
 </div></section>
@@ -748,10 +747,11 @@ def flink(href, text, ico_type="", download=False, target_blank=True):
     return f'<a href="{href}"{tgt}{dl} class="file-link-btn{cls_extra}">{ico_svg}<span>{text}</span></a>'
 
 # ---------------------------------------------------------------- samples
-def sitem(t, d, links, item_id="", ico=""):
+def sitem(t, d, links, item_id="", ico="", featured=False):
     id_attr = f' id="{item_id}"' if item_id else ''
+    feat_cls = ' file-item-featured' if (featured or item_id == 'bundle') else ''
     ico_box = f'<div class="file-item-ico" aria-hidden="true">{ico}</div>' if ico else ''
-    return f'''<li class="rv"{id_attr}>
+    return f'''<li class="rv{feat_cls}"{id_attr}>
   <div class="file-item-main">
     {ico_box}
     <div class="file-item-body">
@@ -764,7 +764,7 @@ def sitem(t, d, links, item_id="", ico=""):
 
 def samples():
     docs = "".join([
-     sitem("Complete Documentation Bundle (Featured)", "All five primary business analysis specifications consolidated in one comprehensive PDF download.", [flink("docs/PayTrack_Sample_BA_Documentation_Bundle.pdf", "PDF Bundle (1.2MB)", "pdf")], "bundle", ICO_DOC_BUNDLE),
+     sitem("Complete Documentation Bundle (Featured)", "All five primary business analysis specifications consolidated in one comprehensive PDF download.", [flink("docs/PayTrack_Sample_BA_Documentation_Bundle.pdf", "PDF Bundle (246 KB)", "pdf")], "bundle", ICO_DOC_BUNDLE, featured=True),
      sitem("Discovery Workshop MoM & Decision Log", "Phase 1 &bull; Workshop summary, discussion themes, open decisions, action tracker and RAID log.", [flink("docs/05_Discovery_Workshop_MoM_Decision_Log_Sample.pdf", "PDF", "pdf"), flink("docs/05_Discovery_Workshop_MoM_Decision_Log_Sample.docx", "Word", "word", target_blank=False)], "discovery", ICO_DOC_DISCOVERY),
      sitem("Business Requirements Document (BRD)", "Phase 2 &bull; Business need, objectives, scope, stakeholders, assumptions, requirements and sign-off template.", [flink("docs/01_BRD_PayTrack_Sample.pdf", "PDF", "pdf"), flink("docs/01_BRD_PayTrack_Sample.docx", "Word", "word", target_blank=False)], "brd", ICO_DOC_BRD),
      sitem("Functional Requirements Document (FRD)", "Phase 2 &bull; Functional behaviour, business rules, data entities, screen requirements, NFRs, error states and decisions to confirm.", [flink("docs/02_FRD_PayTrack_Sample.pdf", "PDF", "pdf"), flink("docs/02_FRD_PayTrack_Sample.docx", "Word", "word", target_blank=False)], "frd", ICO_DOC_FRD),

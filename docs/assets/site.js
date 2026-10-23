@@ -60,6 +60,11 @@ if(mb&&nav){
   nav.addEventListener('click',function(e){
     if(e.target.tagName==='A')closeMenu();
   });
+  d.addEventListener('click',function(e){
+    if(nav.classList.contains('open')&&!nav.contains(e.target)&&!mb.contains(e.target)){
+      closeMenu();
+    }
+  });
 }
 
 /* smooth scroll (Lenis) */
@@ -165,6 +170,13 @@ function countUp(root){
     })(t0);
   });
 }
+window.addEventListener('beforeprint',function(){
+  $$('[data-count]').forEach(function(b){
+    var end=+b.dataset.count,suf=b.dataset.suf||'';
+    b.dataset.done='1';
+    b.textContent=end+suf;
+  });
+});
 
 /* 3D tilt on featured cards only (subtle range) */
 if(fine&&!reduce){
@@ -197,8 +209,8 @@ if(fine&&!reduce){
     });
     sc.addEventListener('pointerleave',function(){
       st.classList.remove('live');
-      st.style.setProperty('--ry','-6deg');
-      st.style.setProperty('--rx','3deg');
+      st.style.setProperty('--ry','-11deg');
+      st.style.setProperty('--rx','5deg');
     });
   }
 }
@@ -225,6 +237,7 @@ if(mqToggle&&mqWrap){
   mqToggle.addEventListener('click',function(){
     var paused=mqWrap.classList.toggle('is-paused');
     mqToggle.setAttribute('aria-pressed',String(paused));
+    mqToggle.setAttribute('aria-label',paused?'Play marquee animation':'Pause marquee animation');
     mqToggle.innerHTML=paused?'&#9654; Play':'&#9646;&#9646; Pause';
   });
 }
@@ -277,15 +290,34 @@ if(f){
     }
   };
 
+  /* prefill service from query parameter */
+  try{
+    var q=new URLSearchParams(location.search).get('service');
+    var sField=$('#enquiry-service')||f.elements['service'];
+    if(q&&sField){
+      var cleanQ=q.trim().toLowerCase();
+      [].some.call(sField.options,function(o){
+        if(o.text.trim().toLowerCase()===cleanQ||o.value.trim().toLowerCase()===cleanQ){
+          sField.value=o.value||o.text;
+          return true;
+        }
+      });
+    }
+  }catch(_){}
+
   f.addEventListener('submit',function(e){
     e.preventDefault();
-    var ok=true,em=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    var ok=true,em=/^[^\s@]+@[^\s@]+\.[^\s@]+$/,errCount=0;
+    var errBox=$('#form-errors');
     $$('[required]',f).forEach(function(i){
       var errSpan=$('#err-'+i.name,f)||(i.parentNode&&i.parentNode.querySelector('.err')),
           bad=!i.value.trim()||(i.type==='email'&&!em.test(i.value.trim()));
       if(errSpan)errSpan.textContent=bad?(i.type==='email'?'Please enter a valid work email address.':'This field is required.'):'';
       i.setAttribute('aria-invalid',String(bad));
-      if(bad&&ok){i.focus();ok=false}
+      if(bad){
+        errCount++;
+        if(ok){i.focus();ok=false}
+      }
     });
 
     var refInput=f.elements['ref'];
@@ -294,7 +326,19 @@ if(f){
       var refErr=$('#err-ref',f)||(refInput.parentNode&&refInput.parentNode.querySelector('.err'));
       if(refErr)refErr.textContent=urlBad?'Please enter a valid URL starting with https:// or http://':'';
       refInput.setAttribute('aria-invalid',String(urlBad));
-      if(urlBad&&ok){refInput.focus();ok=false}
+      if(urlBad){
+        errCount++;
+        if(ok){refInput.focus();ok=false}
+      }
+    }
+
+    if(errBox){
+      if(errCount>0){
+        errBox.textContent='Please correct '+errCount+' error'+(errCount===1?'':'s')+' below before submitting.';
+        errBox.hidden=false;
+      }else{
+        errBox.hidden=true;
+      }
     }
 
     if(!ok)return;
@@ -309,6 +353,27 @@ if(f){
       s.focus();
     }
   });
+
+  /* copy message helper for long enquiries */
+  var copyEnquiryBtn=$('#copyEnquiryBtn');
+  if(copyEnquiryBtn){
+    copyEnquiryBtn.addEventListener('click',function(){
+      var v=function(n){return(f.elements[n]&&f.elements[n].value||'').trim()};
+      var body=['Name: '+v('name'),'Email: '+v('email'),'Company: '+(v('company')||'-'),'Service: '+v('service'),'Engagement: '+v('type'),'Timeline: '+v('timeline'),'Reference: '+(v('ref')||'-'),'','What I need:',v('msg')].join('\n');
+      if(!v('name')&&!v('msg')){
+        copyEnquiryBtn.textContent='Fill form first';
+        setTimeout(function(){copyEnquiryBtn.textContent='Copy message'},2000);
+        return;
+      }
+      var orig=copyEnquiryBtn.textContent;
+      if(navigator.clipboard&&window.isSecureContext){
+        navigator.clipboard.writeText(body).then(function(){
+          copyEnquiryBtn.textContent='Copied!';
+          setTimeout(function(){copyEnquiryBtn.textContent=orig},2000);
+        });
+      }
+    });
+  }
 }
 
 /* clipboard copy helper */
