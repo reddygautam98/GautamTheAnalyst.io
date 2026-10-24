@@ -372,7 +372,7 @@ METHOD_STEPS = [
     (1, "Phase 1: Discover", "Workshops turn scattered requests into one agreed problem statement with assumptions, constraints and named decision owners.", ICO_PHASE1, 20, "+", "workshops run"),
     (2, "Phase 2: Define", "BRD and FRD, business rules, user stories and acceptance criteria, linked to process, API and data flows.", ICO_PHASE2, 2, "", "payment-gateway integrations documented"),
     (3, "Phase 3: Validate", "Traceability from requirement to test, UAT scenarios, expected results and defect triage with QA & Engineering.", ICO_PHASE3, 350, "+", "test cases coordinated"),
-    (4, "Phase 4: Hand over", "Decisions, risks, open questions and limitations are recorded so delivery proceeds with confidence.", ICO_PHASE4, 0, "", "critical defects reported")
+    (4, "Phase 4: Hand over", "Business rules, data dictionaries and field mappings are maintained in Confluence and Excel so delivery teams work from one source.", ICO_PHASE4, 0, "", "critical defects reported")
 ]
 
 SERVICE_STEPS = [
@@ -406,36 +406,36 @@ def make_steps(items):
 
 BA_WORKFLOW = [
     ("Stakeholder Mgmt", '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>', "Facilitated 20+ workshops with 13+ cross-functional stakeholders"),
-    ("Requirements Elicitation", '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><path d="M11 8v6M8 11h6"/></svg>', "Captured business needs across 4 operational units"),
-    ("BRD / FRD Specs", '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>', "Authored comprehensive specifications for 2 gateway integrations"),
-    ("User Stories & BDD", '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>', "Created Given/When/Then testable criteria in Jira"),
-    ("Traceability (RTM)", '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>', "Mapped 100% of business requirements to tests with zero gaps"),
+    ("Requirements Elicitation", '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><path d="M11 8v6M8 11h6"/></svg>', "Captured requirements across 4 business units"),
+    ("BRD / FRD Specs", '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>', "Documented requirements for 2 payment gateway integrations"),
+    ("User Stories & BDD", '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>', "Wrote Given/When/Then (BDD) acceptance criteria"),
+    ("Traceability (RTM)", '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>', "Maintained requirements traceability (RTM) through delivery"),
     ("Scope & Impact", '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>', "Managed 12+ change requests with formal impact assessments")
 ]
 
 PROCESS_WORKFLOW = [
-    ("AS-IS / TO-BE", '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 8L22 12L18 16"/><path d="M2 12H22"/></svg>', "Eliminated 2 weeks per cycle of handover waste"),
-    ("BPMN & Swimlanes", '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><path d="M10 6.5h4M17.5 10v4"/></svg>', "Visualized settlement stages & exception workflows"),
-    ("Root Cause Analysis", '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg>', "Fishbone & 5-Why analysis on SLA breaches"),
-    ("Business Rules", '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M9 15l2 2 4-4"/></svg>', "Defined 45+ validation rules for reconciliation"),
-    ("Data Mapping", '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>', "Bank feed to internal ledger entity transformations"),
-    ("MoSCoW Priorities", '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>', "Challenged unfeasible asks to protect MVP launch")
+    ("AS-IS / TO-BE", '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 8L22 12L18 16"/><path d="M2 12H22"/></svg>', "Saved an estimated 2 weeks per improvement cycle"),
+    ("Process Mapping (BPMN / UML)", '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><path d="M10 6.5h4M17.5 10v4"/></svg>', "Mapped AS-IS / TO-BE business processes and UML system flows"),
+    ("Root Cause Analysis", '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg>', "Fishbone & 5-Why root cause analysis on recurring SLA shortfalls"),
+    ("Business Rules", '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M9 15l2 2 4-4"/></svg>', "Maintained business rules and data dictionaries in Confluence and Excel"),
+    ("Data Mapping", '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>', "Field and data mappings for payment gateway integrations"),
+    ("MoSCoW Priorities", '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>', "Prioritized requirements across 4 modules and challenged 3 feature requests lacking business justification")
 ]
 
 AGILE_WORKFLOW = [
-    ("Agile / Scrum", '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>', "Bi-weekly sprint planning & standup ceremonies"),
-    ("Sprint Planning", '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>', "Three Amigos sessions with Dev and QA leads"),
-    ("Backlog Refinement", '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>', "Prioritized 100+ user stories with story points"),
-    ("UAT Coordination", '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>', "Coordinated 350+ test cases across Finance & Ops"),
-    ("Defect Triage", '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>', "Daily Jira triage: zero critical defects at launch"),
-    ("Change Management", '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>', "Assessed scope and timeline for 12+ CRs")
+    ("Agile / Scrum", '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>', "Agile / Scrum delivery across 2 Agile releases"),
+    ("Sprint Planning", '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>', "Three Amigos sessions and sprint planning"),
+    ("Backlog Refinement", '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>', "Backlog refinement and MoSCoW prioritization across 4 modules"),
+    ("UAT Coordination", '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>', "Coordinated UAT across 350+ test cases (Marolix) and 50+ (Iinfocomm)"),
+    ("Defect Triage", '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>', "Supported JIRA defect triage with QA and Engineering; zero critical defects reported"),
+    ("Change Management", '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>', "Assessed requirement impacts for 12+ change requests across 2 Agile releases")
 ]
 
 TECH_WORKFLOW = [
     ("REST API Specs", '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/><line x1="2" y1="12" x2="22" y2="12"/></svg>', "OpenAPI 3.0 contracts & webhook payload specs"),
     ("SQL (Postgres)", '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>', "Analysed 100,000+ records & query optimization"),
-    ("Python (Pandas)", '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>', "Data reconciliation automation & exception logs"),
-    ("Power BI & DAX", '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="13" width="4" height="8" rx="1"/><rect x="10" y="8" width="4" height="13" rx="1"/><rect x="17" y="3" width="4" height="18" rx="1"/></svg>', "Operations dashboards & weekly settlement KPIs"),
+    ("Python (Pandas)", '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>', "Transaction data analysis (100,000+ records) with Pandas"),
+    ("Power BI & DAX", '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="13" width="4" height="8" rx="1"/><rect x="10" y="8" width="4" height="13" rx="1"/><rect x="17" y="3" width="4" height="18" rx="1"/></svg>', "Power BI requirements from Finance and Operations stakeholders"),
     ("JIRA & Confluence", '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="m9 12 2 2 4-4"/></svg>', "Requirements repository & sprint backlog boards"),
     ("Figma & Postman", '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 14.14 14.14"/></svg>', "Wireframe reviews & API response verification")
 ]
@@ -503,9 +503,9 @@ def index():
 <div class="status rv"><i></i><span>Available for global remote, hybrid &amp; full-time roles</span></div>
 <h1 class="{rv(1)}">Business Analyst in Bengaluru who turns requirements into <span class="grad">testable specs.</span></h1>
 <p class="rot-line {rv(2)}"><span class="rot-lb">Right now:</span><span class="rot" data-rot aria-live="off">{rot}</span></p>
-<p class="lead {rv(3)}">4+ years of experience in requirements analysis and delivery: translating business needs into clear, testable functional and non-functional requirements, REST APIs, user stories and BDD acceptance criteria, backed by SQL and Python analysis.</p>
+<p class="lead {rv(3)}">4+ years of experience in requirements analysis and delivery: translating business needs into clear, testable functional and non-functional requirements (NFRs), REST APIs, Source-to-Target Mappings (STTM), user stories and BDD acceptance criteria, backed by SQL and Python analysis.</p>
 <div class="actions {rv(4)}"><a class="btn btn-primary" href="samples/index.html">View BA samples <span class="arr" aria-hidden="true">&rarr;</span></a><a class="btn btn-ghost" href="resume.html">View resume <span class="arr" aria-hidden="true">&rarr;</span></a></div>
-<p class="hero-proof-line {rv(5)}"><span class="h-dot"></span> 4+ yrs BA experience &bull; Requirements &amp; APIs &bull; 2 payment gateway integrations &bull; 350+ UAT test cases</p>
+<p class="hero-proof-line {rv(5)}"><span class="h-dot"></span> 4+ yrs in requirements analysis &amp; delivery &bull; REST APIs &amp; STTM &bull; 2 payment gateway integrations documented &bull; 350+ UAT test cases coordinated</p>
 </div>
 <div class="hero-showcase-wrap {rv(2)}" aria-label="PayTrack deliverables showcase">
 {trace()}
@@ -519,7 +519,7 @@ def index():
 <div class="proof">
 <div class="proof-card proof-card-1 {rv(0)}"><b data-count="100" data-suf="K+">100K+</b><div class="proof-bar" aria-hidden="true"><span class="proof-bar-fill" style="--val:92%"></span></div><span class="source-tag">Marolix &bull; SQL analysis</span><span>transaction records analysed with SQL and Python, surfacing 3 recurring SLA-breach patterns</span></div>
 <div class="proof-card proof-card-2 {rv(1)}"><b data-count="350" data-suf="+">350+</b><div class="proof-bar" aria-hidden="true"><span class="proof-bar-fill" style="--val:100%"></span></div><span class="source-tag">QA &amp; UAT coordination</span><span>test cases coordinated in Jira, with zero critical defects reported</span></div>
-<div class="proof-card proof-card-3 {rv(2)}"><b data-count="20" data-suf="+">20+</b><div class="proof-bar" aria-hidden="true"><span class="proof-bar-fill" style="--val:80%"></span></div><span class="source-tag">Requirements Elicitation</span><span>workshops conducted across 13+ cross-functional stakeholders, aligning business &amp; functional requirements</span></div>
+<div class="proof-card proof-card-3 {rv(2)}"><b data-count="20" data-suf="+">20+</b><div class="proof-bar" aria-hidden="true"><span class="proof-bar-fill" style="--val:80%"></span></div><span class="source-tag">Requirements Elicitation</span><span>workshops conducted across 13+ cross-functional stakeholders, aligning functional &amp; non-functional requirements (NFRs)</span></div>
 <div class="proof-card proof-card-4 {rv(3)}"><b data-count="2" data-suf="">2</b><div class="proof-bar" aria-hidden="true"><span class="proof-bar-fill" style="--val:85%"></span></div><span class="source-tag">API &amp; System Integration</span><span>payment gateway integrations documented with REST API requirements, UML flows and data mappings</span></div>
 </div>
 <p class="note">Figures come from my resume and describe past roles and projects. They are not a guarantee of future outcomes.</p>
@@ -553,10 +553,10 @@ def index():
 <section class="sec has-flow" id="experience">{F.seq("e")}<div class="wrap">
 {sh(5, "Experience", "Professional Business Analyst Experience", "Requirements analysis, stakeholder workshops, system integration, and UAT delivery across past roles.")}
 <div class="roles">
-<div class="role {rv(0)}"><div class="node" aria-hidden="true"></div><div class="rbody"><h3>Business Analyst</h3><div class="org">Marolix Technology Solutions Pvt Ltd, Hyderabad</div><ul><li>Delivered implementation-ready documentation for <strong>2 payment-gateway integrations</strong> by defining REST API requirements, UML flows and data mappings.</li><li>Identified 3 recurring SLA-breach patterns across <strong>100,000+ transaction records</strong> by analysing them with SQL and Python.</li><li>Supported zero reported critical defects across <strong>350+ test cases</strong> by coordinating UAT in Jira; managed 12+ change requests over 2 Agile releases.</li></ul><button class="role-expander" type="button" aria-expanded="false">View key metrics &amp; delivery impact &#9662;</button><div class="role-metrics" hidden><div class="role-metrics-grid"><div><b>100K+</b><span>Transactions analysed</span></div><div><b>350+</b><span>Test cases triaged</span></div><div><b>0</b><span>Post-launch defects</span></div><div><b>12+</b><span>CRs scoped</span></div></div></div></div></div>
-<div class="role {rv(1)}"><div class="node" aria-hidden="true"></div><div class="rbody"><h3>Business Analyst</h3><div class="org">V Moksha Technologies Pvt Ltd, Bengaluru</div><ul><li>Resolved recurring operational bottlenecks and SLA shortfalls using SQL data extraction, fishbone diagrams, and 5-Why root cause analysis.</li><li>Mapped AS-IS and TO-BE business processes (BPMN / swimlane), saving an estimated <strong>2 weeks per improvement cycle</strong>.</li></ul><button class="role-expander" type="button" aria-expanded="false">View key metrics &amp; delivery impact &#9662;</button><div class="role-metrics" hidden><div class="role-metrics-grid"><div><b>2 wks</b><span>Cycle time saved</span></div><div><b>5-Why</b><span>Root-cause audits</span></div><div><b>BPMN</b><span>Process swimlanes</span></div></div></div></div></div>
-<div class="role {rv(2)}"><div class="node" aria-hidden="true"></div><div class="rbody"><h3>Business Analyst</h3><div class="org">Iinfocomm IT Services Pvt Ltd, Bengaluru</div><ul><li>Facilitated Three Amigos sessions, delivering functional specifications and BDD user stories for 3 concurrent modules across 4 business units.</li><li>Coordinated UAT, smoke and regression testing across <strong>50+ Jira test cases</strong> with zero post-launch incidents.</li><li>Reviewed API contracts against business rules and maintained the RTM and RACI matrix.</li></ul><button class="role-expander" type="button" aria-expanded="false">View key metrics &amp; delivery impact &#9662;</button><div class="role-metrics" hidden><div class="role-metrics-grid"><div><b>3</b><span>Concurrent modules</span></div><div><b>4</b><span>Business units</span></div><div><b>50+</b><span>Jira test cases</span></div></div></div></div></div>
-<div class="role {rv(3)}"><div class="node" aria-hidden="true"></div><div class="rbody"><h3>Associate Software Engineer</h3><div class="org">Iinfocomm IT Services Pvt Ltd, Bengaluru</div><ul><li>Promoted to Business Analyst <strong>ahead of schedule</strong> after managing requirements for 3 reporting features.</li><li>Translated reporting needs from 15+ Finance and Operations stakeholders into Power BI requirements and BDD user stories, and secured approval for a reporting-automation business case projecting 3+ hrs/week of savings.</li></ul><button class="role-expander" type="button" aria-expanded="false">View key metrics &amp; delivery impact &#9662;</button><div class="role-metrics" hidden><div class="role-metrics-grid"><div><b>Early</b><span>Promotion</span></div><div><b>15+</b><span>Finance stakeholders</span></div><div><b>3+ hrs</b><span>Weekly manual savings</span></div></div></div></div></div>
+<div class="role {rv(0)}"><div class="node" aria-hidden="true"></div><div class="rbody"><h3>Business Analyst</h3><div class="org">Marolix Technology Solutions Pvt Ltd, Hyderabad</div><ul><li>Accomplished payment gateway integration readiness, as measured by <strong>zero reported critical defects</strong> across <strong>2 gateway integrations</strong>, by defining REST API requirements, UML system flows, and Source-to-Target Mappings (STTM) with JSON payload schemas.</li><li>Accomplished backend risk reduction, as measured by identifying <strong>3 recurring SLA-breach patterns</strong> across <strong>100,000+ transaction records</strong>, by executing SQL queries and Python data analysis.</li><li>Accomplished enterprise UAT and delivery readiness, as measured by coordinating <strong>350+ test cases</strong> in Jira and managing 12+ change requests over 2 Agile releases, by managing functional, regression, and integration testing with zero critical defects reported.</li></ul><button class="role-expander" type="button" aria-expanded="false">View key metrics &amp; delivery impact &#9662;</button><div class="role-metrics" hidden><div class="role-metrics-grid"><div><b>100K+</b><span>Transactions analysed</span></div><div><b>350+</b><span>Test cases coordinated</span></div><div><b>0</b><span>Critical defects reported</span></div><div><b>12+</b><span>Change requests managed</span></div></div></div></div></div>
+<div class="role {rv(1)}"><div class="node" aria-hidden="true"></div><div class="rbody"><h3>Business Analyst</h3><div class="org">V Moksha Technologies Pvt Ltd, Bengaluru</div><ul><li>Accomplished operational cycle-time reduction and reduced rework, as measured by saving an estimated <strong>2 weeks per improvement cycle</strong>, by executing SQL analysis, fishbone diagrams, and 5-Why root cause analysis on recurring SLA shortfalls.</li><li>Accomplished workflow optimization, as measured by eliminating process bottlenecks, by mapping AS-IS and TO-BE business processes.</li></ul><button class="role-expander" type="button" aria-expanded="false">View key metrics &amp; delivery impact &#9662;</button><div class="role-metrics" hidden><div class="role-metrics-grid"><div><b>2 wks</b><span>Cycle time saved</span></div><div><b>5-Why</b><span>Root-cause analysis</span></div><div><b>AS-IS/TO-BE</b><span>Process mapping</span></div></div></div></div></div>
+<div class="role {rv(2)}"><div class="node" aria-hidden="true"></div><div class="rbody"><h3>Business Analyst</h3><div class="org">Iinfocomm IT Services Pvt Ltd, Bengaluru</div><ul><li>Accomplished multi-unit sprint delivery on time, as measured by delivering <strong>3 concurrent modules</strong> across 4 business units, by facilitating Three Amigos sessions, documenting functional requirements and business rules, and writing Given/When/Then (BDD) acceptance criteria.</li><li>Accomplished zero-incident release stability, as measured by <strong>no reported post-launch incidents</strong> across <strong>50+ Jira test cases</strong>, by coordinating UAT, smoke, sanity, and regression testing.</li><li>Accomplished end-to-end requirement traceability, as measured by complete alignment connecting delivery to acceptance, by reviewing API contracts against functional requirements and maintaining the RTM and RACI matrix.</li></ul><button class="role-expander" type="button" aria-expanded="false">View key metrics &amp; delivery impact &#9662;</button><div class="role-metrics" hidden><div class="role-metrics-grid"><div><b>3</b><span>Concurrent modules</span></div><div><b>4</b><span>Business units</span></div><div><b>50+</b><span>Jira test cases</span></div></div></div></div></div>
+<div class="role {rv(3)}"><div class="node" aria-hidden="true"></div><div class="rbody"><h3>Associate Software Engineer</h3><div class="org">Iinfocomm IT Services Pvt Ltd, Bengaluru</div><ul><li>Accomplished early career progression, as measured by promotion to Business Analyst <strong>ahead of schedule</strong> within 17 months, by managing requirements for 3 reporting features from elicitation through stakeholder sign-off.</li><li>Accomplished reporting automation approval, as measured by executive business-case sign-off projecting <strong>3+ hrs/week of savings</strong>, by translating input from 15+ Finance and Operations stakeholders into Power BI requirements and BDD user stories.</li></ul><button class="role-expander" type="button" aria-expanded="false">View key metrics &amp; delivery impact &#9662;</button><div class="role-metrics" hidden><div class="role-metrics-grid"><div><b>Early</b><span>Promotion</span></div><div><b>15+</b><span>Finance &amp; Ops stakeholders</span></div><div><b>3+ hrs</b><span>Projected weekly savings</span></div></div></div></div></div>
 </div>
 <div class="actions"><a class="btn btn-ghost" href="resume.html">Full resume &amp; ATS PDF</a></div>
 </div></section>
@@ -574,9 +574,9 @@ def about_3d_console():
       </div>
       <div class="console-addr">
         <svg class="c-file-ico" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-        <span>spec // requirements-spec.yml</span>
+        <span>spec // requirements-spec.yml (illustrative sample)</span>
       </div>
-      <div class="console-live-badge"><span class="c-live-dot"></span> GOVERNED SPEC</div>
+      <div class="console-live-badge"><span class="c-live-dot"></span> ILLUSTRATIVE SAMPLE</div>
     </div>
 
     <div class="console-hero-row">
@@ -673,7 +673,7 @@ def about_3d_console():
             <div class="stakeholder-list">
               <div class="sh-item">
                 <div class="sh-role"><span class="sh-dot blue"></span>Finance &amp; Operations</div>
-                <div class="sh-desc"><strong>Requirement:</strong> Daily automated reconciliation and operational reporting with zero manual Excel export delay.<br><strong>BA Resolution:</strong> Standardized SQL reporting pipelines with automated Power BI dashboards.</div>
+                <div class="sh-desc"><strong>Requirement:</strong> Reporting needs captured from Finance and Operations stakeholders.<br><strong>BA Resolution:</strong> Translated into Power BI requirements and BDD user stories.</div>
               </div>
               <div class="sh-item">
                 <div class="sh-role"><span class="sh-dot purple"></span>Engineering &amp; Architecture</div>
@@ -681,7 +681,7 @@ def about_3d_console():
               </div>
               <div class="sh-item">
                 <div class="sh-role"><span class="sh-dot green"></span>QA &amp; Product Management</div>
-                <div class="sh-desc"><strong>Requirement:</strong> 100% test coverage against acceptance criteria with zero post-launch critical defects.<br><strong>BA Resolution:</strong> Three Amigos alignment sessions, BDD Given/When/Then scenarios, and end-to-end RTM.</div>
+                <div class="sh-desc"><strong>Requirement:</strong> Testable acceptance criteria agreed before development.<br><strong>BA Resolution:</strong> Three Amigos alignment sessions, BDD Given/When/Then scenarios, and end-to-end RTM.</div>
               </div>
             </div>
           </div>
@@ -689,7 +689,7 @@ def about_3d_console():
       </div>
 
       <div class="console-foot">
-        <span class="cfoot-id"><span class="cfoot-dot"></span> SPEC-DOC: <code>BA-GOV-2026</code></span>
+        <span class="cfoot-id"><span class="cfoot-dot"></span> SPEC-DOC: <code>BA-GOV-2026</code> &bull; Fictional example, not client work</span>
         <a class="cfoot-link" href="samples/index.html">Explore living BA samples &rarr;</a>
       </div>
     </div>
@@ -699,14 +699,14 @@ def about():
     return head("About", "Business Analyst: requirements teams can build and validate.", "I connect stakeholder needs, requirements, data, systems and delivery teams, so ambiguous business problems become clear, testable work.", F.seq("a")) + f'''
 <section class="sec" style="padding-top:24px"><div class="wrap about-hero-grid">
 <div><h2 class="{rv(0)}">Who I am</h2>
-<p class="about-lead {rv(1)}">I&rsquo;m Gautam Reddy, a Business Analyst with 4+ years of experience in requirements analysis and delivery, translating business needs into clear, testable functional and non-functional requirements.</p>
+<p class="about-lead {rv(1)}">I&rsquo;m Gautam Reddy, a Business Analyst with 4+ years of experience in requirements analysis and delivery, translating business needs into clear, testable functional and non-functional requirements (NFRs).</p>
 <div class="{rv(2)}">
 <h3 class="about-subhead">What I do:</h3>
 <ul class="about-list">
-<li><strong>Elicitation &amp; Scoping:</strong> Facilitating stakeholder workshops, discovery interviews, and backlog prioritization (MoSCoW).</li>
-<li><strong>Technical Specifications:</strong> Authoring BRD, FRD, REST API integration contracts, and BDD Given/When/Then user stories.</li>
-<li><strong>Data &amp; Process Analysis:</strong> SQL querying, data mapping, and AS-IS / TO-BE process modelling with BPMN and UML.</li>
-<li><strong>Testing &amp; UAT:</strong> Requirements Traceability Matrix (RTM), test-case coordination, and defect triage with Engineering.</li>
+<li><strong>Elicitation &amp; Scoping:</strong> Facilitating stakeholder workshops, validating functional and non-functional requirements (NFRs) through to sign-off, and prioritizing the backlog with MoSCoW in Agile / Scrum.</li>
+<li><strong>Requirements &amp; Specifications:</strong> Writing BRDs, FRDs, REST API requirements, Source-to-Target Mappings (STTM), use cases, and BDD Given/When/Then user stories and acceptance criteria.</li>
+<li><strong>Data &amp; Process Analysis:</strong> SQL querying, data mapping, data dictionaries in Confluence and Excel, and AS-IS / TO-BE process modelling with BPMN and UML.</li>
+<li><strong>Testing &amp; UAT:</strong> Requirements Traceability Matrix (RTM), test-case coordination, and JIRA defect triage with Engineering and QA.</li>
 </ul>
 </div>
 <div class="actions {rv(4)}"><a class="btn btn-primary" href="resume.html">View resume &amp; PDF</a><a class="btn btn-ghost" href="{LI}" target="_blank" rel="noopener noreferrer">Connect on LinkedIn</a></div></div>
@@ -726,24 +726,24 @@ def about():
 <section class="sec has-flow">{F.swim("ab2")}<div class="wrap">
 {sh(2, "Career path", "Career path &amp; promotions")}
 <div class="roles">
-<div class="role {rv(0)}"><div class="node" aria-hidden="true"></div><div class="rbody"><h3>Business Analyst</h3><div class="org">Marolix Technology Solutions Pvt Ltd, Hyderabad</div><p class="muted">REST API requirements, UML flows and data mappings for 2 payment-gateway integrations; 100,000+ transaction records analysed using SQL and Python; 20+ workshops with 13+ stakeholders; 350+ test cases coordinated in Jira with zero critical defects.</p></div></div>
-<div class="role {rv(1)}"><div class="node" aria-hidden="true"></div><div class="rbody"><h3>Business Analyst</h3><div class="org">V Moksha Technologies Pvt Ltd, Bengaluru</div><p class="muted">Fishbone and 5-Why root cause analysis with SQL data extraction; AS-IS / TO-BE process mapping eliminating redundant handover steps and saving an estimated 2 weeks per improvement cycle.</p></div></div>
-<div class="role {rv(2)}"><div class="node" aria-hidden="true"></div><div class="rbody"><h3>Business Analyst</h3><div class="org">Iinfocomm IT Services Pvt Ltd, Bengaluru</div><p class="muted">Three Amigos facilitation, functional specs and BDD acceptance criteria for 3 modules across 4 business units; API contract review, RTM, and UAT across 50+ test cases with zero post-launch incidents.</p></div></div>
-<div class="role {rv(3)}"><div class="node" aria-hidden="true"></div><div class="rbody"><h3>Associate Software Engineer <span class="rank-up-badge">&#8679; Promoted early</span></h3><div class="org">Iinfocomm IT Services Pvt Ltd, Bengaluru</div><p class="muted"><strong>Promoted to Business Analyst ahead of schedule</strong> after managing requirements for 3 reporting features; translated reporting needs from 15+ Finance and Operations stakeholders into Power BI requirements and BDD user stories, and secured approval for a reporting-automation business case projecting 3+ hrs/week of savings.</p></div></div>
+<div class="role {rv(0)}"><div class="node" aria-hidden="true"></div><div class="rbody"><h3>Business Analyst</h3><div class="org">Marolix Technology Solutions Pvt Ltd, Hyderabad</div><p class="muted">Accomplished payment gateway readiness and risk reduction, as measured by zero reported critical defects and identifying 3 SLA breach patterns across 100,000+ transaction records, by defining REST API requirements, UML flows, and Source-to-Target Mappings (STTM) with JSON payload schemas, and coordinating 350+ test cases in Jira.</p></div></div>
+<div class="role {rv(1)}"><div class="node" aria-hidden="true"></div><div class="rbody"><h3>Business Analyst</h3><div class="org">V Moksha Technologies Pvt Ltd, Bengaluru</div><p class="muted">Accomplished operational cycle-time reduction, as measured by saving an estimated 2 weeks per improvement cycle and reducing rework, by conducting SQL data analysis, fishbone/5-Why root cause analysis, and AS-IS / TO-BE process mapping.</p></div></div>
+<div class="role {rv(2)}"><div class="node" aria-hidden="true"></div><div class="rbody"><h3>Business Analyst</h3><div class="org">Iinfocomm IT Services Pvt Ltd, Bengaluru</div><p class="muted">Accomplished multi-unit delivery with no reported post-launch incidents across 3 modules and 4 business units, by facilitating Three Amigos sessions, authoring BDD acceptance criteria, reviewing API contracts, and coordinating 50+ Jira test cases.</p></div></div>
+<div class="role {rv(3)}"><div class="node" aria-hidden="true"></div><div class="rbody"><h3>Associate Software Engineer <span class="rank-up-badge">&#8679; Promoted early</span></h3><div class="org">Iinfocomm IT Services Pvt Ltd, Bengaluru</div><p class="muted"><strong>Promoted to Business Analyst ahead of schedule</strong> within 17 months after managing requirements for 3 reporting features; translated needs from 15+ Finance and Operations stakeholders into Power BI requirements and BDD user stories, securing approval for an automation business case projecting 3+ hrs/week of savings.</p></div></div>
 </div></div></section>
 
 ''' + cta()
 
 # ---------------------------------------------------------------- services
-SERV = [("Business analysis and requirements", "Turn fragmented requests into an agreed problem statement, requirements and an actionable backlog.", ["BRD / FRD", "User stories", "Acceptance criteria", "Process maps", "Traceability"]),
-("Data analysis and BI reporting", "Translate operational or sales data into useful answers, clear KPIs and reporting views that support decisions.", ["SQL analysis", "Power BI requirements", "DAX measures", "KPI definitions", "Insight summary"]),
-("SQL, data quality and reporting", "Investigate mismatches, recurring reporting issues and data-quality risks with repeatable checks and documented findings.", ["Validation queries", "Root cause analysis", "Quality rules", "Exception log", "Recommendations"]),
-("API and integration analysis", "Make integration expectations explicit for business, engineering and QA teams before implementation and testing.", ["REST API requirements", "Field mapping", "Sequence flows", "Error scenarios", "Dependency notes"]),
-("UAT, testing and release support", "Help teams check that a solution meets the agreed requirement and make defects, risks and decisions visible.", ["Test scenarios", "UAT cases", "RTM", "Defect triage", "Release checklist"])]
+SERV = [("Business analysis and requirements", "Turn fragmented requests into an agreed problem statement, requirements and an actionable backlog.", ["BRD / FRD", "Non-Functional Requirements (NFRs)", "User stories & BDD", "Process maps (BPMN / UML)", "Traceability (RTM)"]),
+("Data analysis and BI reporting", "Translate operational data and reporting needs into clear Power BI requirements and findings that support decisions.", ["SQL analysis", "Power BI requirements", "DAX measures", "Reporting user stories", "Stakeholder reports"]),
+("SQL, data quality and reporting", "Investigate recurring SLA and error patterns with SQL analysis and root cause analysis, and document the findings.", ["SQL analysis", "Root cause analysis (fishbone / 5-Why)", "Business rules & data dictionaries", "Confluence & Excel documentation", "Findings and recommendations"]),
+("API and integration analysis", "Make integration expectations explicit for business, engineering and QA teams before implementation and testing.", ["REST API requirements", "Source-to-Target Mapping (STTM)", "JSON payload schemas", "API contract review", "UML system flows"]),
+("UAT, testing and release support", "Help teams check that a solution meets the agreed requirement and make defects, risks and decisions visible.", ["UAT coordination", "Agile / Scrum delivery", "Functional, regression and integration test cases", "RTM", "JIRA defect triage"])]
 
 FAQ = [("How do fees and timelines work?", "They depend on complexity, the output required, dependencies and review cycles. We can agree a discovery phase or a defined deliverable after clarifying the scope. No fixed price is quoted on this site."),
 ("Can I start with a small task?", "Yes. A requirements review, data-quality check, process walkthrough or feasibility prototype can be a focused first phase when the goals and output are clear."),
-("Can you work with my existing team?", "The services include collaboration with stakeholders, Product, Engineering and QA teams. Working cadence and tool access should be agreed before delivery begins."),
+("Can you work with my existing team?", "My resume shows work alongside Product, Engineering, QA and business stakeholders. Working cadence and tool access should be agreed before delivery begins."),
 ("Can you work with confidential data?", "We can discuss an NDA and appropriate handling before sharing project materials. Do not send credentials, regulated records or confidential customer data in the initial enquiry form.")]
 
 def services():
@@ -790,7 +790,7 @@ def services():
     <div class="flip-back card">
       <div class="flip-badge">BACK &bull; ARTIFACT THUMBNAIL</div>
       <h4>01_BRD_PayTrack_Sample.pdf</h4>
-      <p class="small muted">28-page specification with stakeholder RACI, business flows, and functional requirements.</p>
+      <p class="small muted">Fictional PayTrack sample BRD covering business need, objectives, scope, stakeholders and requirements.</p>
       <a class="btn btn-ghost btn-sm" href="samples/index.html#brd">Open artifact &rarr;</a>
     </div>
   </div>
@@ -822,7 +822,7 @@ def services():
     <div class="flip-back card">
       <div class="flip-badge">BACK &bull; ARTIFACT THUMBNAIL</div>
       <h4>04_RTM_Test_Cases_UAT_Plan.pdf</h4>
-      <p class="small muted">Bidirectional traceability matrix covering 15 test scenarios, entry/exit criteria, and defect log.</p>
+      <p class="small muted">Fictional sample: traceability matrix linking requirements to 15 test scenarios (not executed).</p>
       <a class="btn btn-ghost btn-sm" href="samples/index.html#uat">Open artifact &rarr;</a>
     </div>
   </div>
@@ -839,7 +839,7 @@ def services():
 def projects():
     chips = '<button class="chip is-active" type="button" data-f="all" aria-pressed="true">All</button>' + "".join(f'<button class="chip" type="button" data-f="{k}" aria-pressed="false">{n}</button>' for k, n in [("analytics", "Analytics"), ("bi", "Business intelligence"), ("data", "Data engineering"), ("ai", "AI prototype"), ("writing", "Writing")])
     cards = "".join(pcard(c, i % 3, 0.0) for i, c in enumerate(PROJECTS))
-    return head("Projects", "Business analyst projects: practical analysis, visible work.", "Repositories across analytics, business intelligence, data engineering, AI prototypes and writing. Every card links to its source so you can review the implementation.", F.erd("pj")) + f'''
+    return head("Projects", "Business analyst projects: practical analysis, visible work.", "Nine technical portfolio repositories across SQL analytics, business intelligence, data pipelines, and the PayTrack case study demonstrating BRD, FRD, NFRs, STTM, and RTM traceability.", F.erd("pj")) + f'''
 <section class="sec" style="padding-top:24px"><div class="wrap">
 <h2 class="sr-only">Featured case study</h2>
 <div class="feature featured-paytrack rv" data-tilt>
@@ -882,24 +882,24 @@ def projects():
 def resume():
     def role(t, o, b, i): return f'<div class="role {rv(i)}"><div class="node" aria-hidden="true"></div><div class="rbody"><h3>{t}</h3><div class="org">{o}</div><ul>' + "".join(f"<li>{x}</li>" for x in b) + '</ul></div></div>'
     roles = role("Business Analyst", "Marolix Technology Solutions Pvt Ltd &bull; Hyderabad, India", [
-"Delivered implementation-ready documentation for <strong>2 payment gateway integrations</strong> by defining REST API requirements, UML system flows and data mappings for Engineering and QA.",
-"Identified <strong>3 recurring SLA breach patterns</strong> across <strong>100,000+ transaction records</strong> by analysing them with SQL and Python, and shared the findings to inform process-improvement actions.",
-"Aligned <strong>13+ stakeholders</strong> on business and functional requirements through <strong>20+ workshops</strong>, documenting BRDs/FRDs, functional and non-functional requirements, use cases and BDD acceptance criteria.",
-"Kept backlog decisions focused on business value across 4 modules by prioritizing requirements with MoSCoW and challenging 3 feature requests that lacked business justification.",
-"Supported <strong>zero reported critical defects</strong> across <strong>350+ test cases</strong> by coordinating UAT and functional, regression and integration testing and supporting JIRA defect triage with QA and Engineering.",
-"Managed <strong>12+ change requests</strong> across 2 Agile releases by assessing requirement impacts and maintaining traceability through delivery.",
-"Maintained business rules, data dictionaries, and field mappings in Confluence and Excel; reviewed Figma wireframes and prepared stakeholder reports."], 0)
+"Accomplished payment gateway integration readiness, as measured by <strong>zero reported critical defects</strong> across <strong>2 payment gateway integrations</strong>, by defining REST API requirements, UML system flows, and Source-to-Target Mappings (STTM) with JSON payload schemas for Engineering and QA.",
+"Accomplished backend risk reduction, as measured by identifying <strong>3 recurring SLA breach patterns</strong> across <strong>100,000+ transaction records</strong>, by executing SQL queries and Python data analysis to inform process improvements.",
+"Accomplished cross-functional stakeholder alignment across 4 modules, as measured by securing sign-off from <strong>13+ stakeholders</strong> in <strong>20+ workshops</strong>, by documenting BRDs/FRDs, Non-Functional Requirements (NFRs), use cases, and BDD acceptance criteria.",
+"Accomplished business-value backlog optimization across 4 modules, as measured by protecting release scope, by prioritizing requirements with MoSCoW and challenging 3 feature requests lacking business justification.",
+"Accomplished enterprise quality assurance, as measured by <strong>zero reported critical defects</strong> across <strong>350+ test cases</strong>, by coordinating UAT, functional, regression and integration testing, and supporting JIRA defect triage with QA and Engineering.",
+"Accomplished scope stability across 2 Agile releases, as measured by tracking requirement traceability through delivery, by assessing impact for <strong>12+ change requests</strong>.",
+"Accomplished technical clarity for engineering teams, as measured by unified system reference definitions, by maintaining business rules, data dictionaries, and field mappings in Confluence and Excel."], 0)
     roles += role("Business Analyst", "V Moksha Technologies Pvt Ltd &bull; Bengaluru, India", [
-"Saved an estimated <strong>2 weeks per improvement cycle</strong> by resolving recurring SLA shortfalls and reducing error recurrence and rework through SQL analysis, fishbone/5-Why root-cause analysis and AS-IS/TO-BE process mapping."], 0)
+"Accomplished operational cycle-time reduction and reduced rework, as measured by saving an estimated <strong>2 weeks per improvement cycle</strong>, by resolving recurring SLA shortfalls through SQL analysis, fishbone/5-Why root-cause analysis, and AS-IS/TO-BE process mapping."], 0)
     roles += role("Business Analyst", "Iinfocomm IT Services Pvt Ltd &bull; Bengaluru, India", [
-"Delivered <strong>3 concurrent modules</strong> on time by facilitating Three Amigos sessions and translating stakeholder needs into functional requirements and BDD acceptance criteria.",
-"Documented functional requirements, business rules, and control requirements across 4 business units.",
-"Delivered modules with no reported post-launch incidents by coordinating UAT, smoke, sanity and regression testing across <strong>50+ JIRA-tracked test cases</strong>.",
-"Reviewed API contracts against functional requirements and maintained the Requirements Traceability Matrix (RTM) and RACI to connect requirements, delivery, and acceptance."], 0)
+"Accomplished multi-unit sprint delivery on time, as measured by delivering <strong>3 concurrent modules</strong> across 4 business units, by facilitating Three Amigos sessions and translating stakeholder needs into functional requirements and BDD acceptance criteria.",
+"Accomplished business process governance, as measured by standardized operational controls across 4 business units, by documenting functional requirements, business rules, and control requirements.",
+"Accomplished zero-incident post-launch stability, as measured by <strong>no reported post-launch incidents</strong> across <strong>50+ JIRA-tracked test cases</strong>, by coordinating UAT, smoke, sanity, and regression testing.",
+"Accomplished end-to-end requirement traceability, as measured by connecting requirements, delivery, and acceptance, by reviewing API contracts against functional requirements and maintaining the Requirements Traceability Matrix (RTM) and RACI matrix."], 0)
     roles += role("Associate Software Engineer &rarr; Promoted to BA", "Iinfocomm IT Services Pvt Ltd &bull; Bengaluru, India", [
-"Earned promotion to Business Analyst ahead of schedule by managing requirements for 3 reporting features from elicitation through stakeholder acceptance.",
-"Translated input from 15+ Finance and Operations stakeholders into Power BI requirements and BDD user stories, coordinating with Engineering and business leads.",
-"Secured executive approval for a reporting-automation business case projecting <strong>3+ hours of weekly manual-effort savings</strong>."], 0)
+"Accomplished career progression ahead of timeline, as measured by promotion to Business Analyst within 17 months (6 months ahead of schedule), by managing requirements for 3 reporting features from elicitation through stakeholder acceptance.",
+"Accomplished reporting automation approval, as measured by executive business-case sign-off projecting <strong>3+ hours of weekly manual-effort savings</strong>, by translating input from 15+ Finance and Operations stakeholders into Power BI requirements and BDD user stories.",
+"Accomplished cross-team alignment on reporting delivery, as measured by validated reporting capabilities, by coordinating with Engineering and business leads."], 0)
     return head("Resume", "Business Analyst resume: experience, skills, delivery.", "Business Analyst focused on requirements, API and system integration, SQL and Python analysis, Agile delivery and UAT coordination.", F.swim("rs")) + f'''
 <section class="sec" style="padding-top:8px"><div class="wrap">
 <div class="actions rv" style="margin:0 0 36px"><button type="button" class="btn btn-primary" onclick="window.print()" title="Print ATS-friendly resume or save as PDF">Print / Save as PDF</button><a class="btn btn-ghost" href="{LI}" target="_blank" rel="noopener noreferrer">View LinkedIn profile</a><a class="btn btn-ghost" href="{HR}" target="_blank" rel="noopener noreferrer">HackerRank profile</a><a class="btn btn-ghost" href="contact.html">Contact me</a></div>
@@ -947,7 +947,7 @@ def resume():
         </div>
         <div class="skill-meter-row">
           <div class="sm-head"><b>Agile Delivery &amp; UAT</b><span>4+ yrs</span></div>
-          <div class="sm-desc">Scrum, Jira, 350+ test cases coordinated, zero post-launch bugs</div>
+          <div class="sm-desc">Scrum, Jira, 350+ test cases coordinated, zero critical defects reported</div>
         </div>
         <div class="skill-meter-row">
           <div class="sm-head"><b>BI &amp; Reporting</b><span>3+ yrs</span></div>
@@ -965,7 +965,7 @@ def resume():
 # ---------------------------------------------------------------- contact
 def contact():
     opts = lambda l: "".join(f"<option>{o}</option>" for o in l)
-    return head("Contact", "Contact a Business Analyst: tell me what you&rsquo;re trying to solve.", "For a role, mention the position and team. For a collaboration, describe the problem and the outcome. I reply with context.", F.seq("ct")) + f'''
+    return head("Contact", "Contact a Business Analyst: tell me what you&rsquo;re trying to solve.", "For a full-time, hybrid or remote role, reach out directly. For systems analysis or technical specifications, describe the problem and the outcome.", F.seq("ct")) + f'''
 <section class="sec" style="padding-top:24px"><div class="wrap two" style="align-items:start">
 <div class="rv"><h2>Reach me directly</h2>
 <div class="reply-status"><span class="reply-dot"></span> Typically replies within 24 hours</div>
@@ -1100,9 +1100,9 @@ def samples():
     sp = "".join([
      sitem("Requirements traceability matrix", "Maps business requirements to functional requirements, stories and test cases.", [flink("specs/requirements_traceability.csv", "CSV", "csv", download=True, target_blank=False)], "rtm", ICO_DATA_RTM),
      sitem("Sample test cases", "Scenarios, preconditions, steps, expected results, traceability and Not Run status.", [flink("specs/sample_test_cases.csv", "CSV", "csv", download=True, target_blank=False)], "test-cases", ICO_DATA_TESTS),
-     sitem("Sample user stories", "Backlog starter with priority, acceptance criteria and traceability.", [flink("specs/sample_user_stories.csv", "CSV", "csv", download=True, target_blank=False)], "user-stories-csv", ICO_DATA_STORIES),
+     sitem("Sample user stories", "JIRA and Confluence backlog starter with Agile / Scrum priority, acceptance criteria and traceability.", [flink("specs/sample_user_stories.csv", "CSV", "csv", download=True, target_blank=False)], "user-stories-csv", ICO_DATA_STORIES),
      sitem("SQL reconciliation and data validation queries", "Analytical SQL queries to detect amount mismatches, orphan gateway events and 48-hour SLA breach exceptions.", [flink("specs/sample_reconciliation_queries.sql", "SQL", "sql", download=True, target_blank=False), flink("../projects.html#analytics", "SQL Projects &#8599;", "sql", target_blank=False)], "sql", ICO_DATA_SQL)])
-    return head("BA samples", "Business analyst sample documents: clear thinking, visible evidence.", "One connected, fictional case study that shows how a business problem becomes requirements, prioritised stories, test coverage, process models and reviewable wireframes.", F.lifecycle("sm"), "../") + f'''
+    return head("BA samples", "Business analyst sample documents: clear thinking, visible engineering evidence.", "One connected, fictional case study that shows how a business problem becomes functional requirements, NFRs, Source-to-Target Mappings (STTM), prioritised Agile stories, test coverage (RTM), and process models.", F.lifecycle("sm"), "../") + f'''
 <section class="sec" style="padding-top:8px"><div class="wrap">
 <div class="disclaimer rv" style="margin:0 0 48px"><b>Sample only, fictional case study.</b> PayTrack is an invented payment reconciliation and exception-management portal. Names, IDs, amounts, targets and scenarios are illustrative. Test cases have not been executed and no client outcome is claimed.</div>
 <h2 class="rv sec-title-with-ico sec-title-docs" style="margin-bottom:20px"><span class="sec-hdr-ico sec-hdr-docs">{ICO_SEC_DOCS}</span><span class="sec-title-text">Documents</span></h2><ul class="file-list">{docs}</ul>
@@ -1112,15 +1112,14 @@ def samples():
 </div></section>
 ''' + cta("../")
 
-DESC = "Business Analyst in Bengaluru with 4+ years of experience: requirements elicitation, BRD/FRD, user stories, REST API requirements, SQL, Power BI and UAT. Open to remote and hybrid roles."
+DESC = "Business Analyst in Bengaluru with 4+ years of experience: requirements engineering, BRD/FRD, NFRs, REST APIs, STTM, SQL, Power BI and UAT. Open to remote and hybrid roles."
 PERSON_ID = SITE + "#person"
 PERSON = {"@type": "Person", "@id": PERSON_ID, "name": "Gautam Reddy", "jobTitle": "Business Analyst",
     "description": DESC, "url": SITE, "sameAs": [LI, GH, HR],
     "address": {"@type": "PostalAddress", "addressLocality": "Bengaluru", "addressCountry": "IN"},
     "alumniOf": {"@type": "CollegeOrUniversity", "name": "Biju Patnaik University of Technology"},
     "hasCredential": {"@type": "EducationalOccupationalCredential", "name": "Google Data Analytics Professional Certificate", "credentialCategory": "certificate"},
-    "knowsAbout": ["Business analysis", "Requirements gathering", "Stakeholder management", "BRD and FRD", "User stories", "Acceptance criteria", "UAT", "SQL", "Python", "Power BI", "Agile", "Scrum",
-                   "REST API requirements", "Postman", "Payment gateway integrations", "Transaction processing", "Settlement and reconciliation", "SLA monitoring", "Finance and operations reporting"]}
+    "knowsAbout": ["Technical Business Analysis", "Requirements Engineering", "Stakeholder Management", "BRD and FRD", "Non-Functional Requirements (NFRs)", "User Stories", "Acceptance Criteria", "UAT", "SQL", "Python", "Power BI", "Agile", "Scrum", "Jira", "Confluence", "REST API Requirements", "Source-to-Target Mapping (STTM)", "JSON Schemas", "Postman", "Payment Gateway Integrations", "Transaction Data Analysis", "SLA Breach Analysis", "Root Cause Analysis", "Process Mapping (BPMN / UML)", "Requirements Traceability Matrix (RTM)", "BDD Acceptance Criteria", "Finance and Operations Reporting Requirements"]}
 
 def ldscript(*objs):
     return "".join('<script type="application/ld+json">' + json.dumps({"@context": "https://schema.org", **o}, ensure_ascii=False) + '</script>\n' for o in objs)
@@ -1145,13 +1144,13 @@ LD_SAMPLES = ldscript({"@type": "CollectionPage", "url": SITE + "samples/index.h
         {"@type": "ListItem", "position": 2, "name": "BA samples", "item": SITE + "samples/index.html"}]})
 
 pages = [
-("index.html", "Gautam Reddy | Business Analyst in Bengaluru", DESC, index(), "", "", LD_HOME),
-("about.html", "About Gautam Reddy | Business Analyst", "About Gautam Reddy, a Bengaluru Business Analyst with 4+ years of experience in requirements analysis, API integrations, SQL analysis and UAT delivery.", about(), "", "about.html", LD_ABOUT),
-("services.html", "Business Analyst Services: BRD, FRD, SQL, UAT | Gautam Reddy", "Business analysis services: BRD/FRD requirements packs, SQL and BI reporting, REST API analysis and UAT support, with clear deliverables.", services(), "", "services.html", LD_SERVICES),
-("projects.html", "Business Analyst Projects: SQL, Power BI, PayTrack | Gautam Reddy", "Nine portfolio projects by Business Analyst Gautam Reddy: SQL and Power BI analytics, a data pipeline, a RAG prototype and the PayTrack case study.", projects(), "", "projects.html", LD_PROJECTS),
-("resume.html", "Resume | Gautam Reddy, Business Analyst", "Resume of Gautam Reddy, Business Analyst with 4+ years of experience: 2 payment gateway integrations, 100,000+ transactions analysed, 350+ test cases.", resume(), "", "resume.html", LD_RESUME),
-("contact.html", "Contact Gautam Reddy | Hire a Business Analyst, Bengaluru", "Contact Gautam Reddy, a Business Analyst in Bengaluru, about a full-time, hybrid or remote role, or a requirements, reconciliation or reporting project.", contact(), "", "contact.html", LD_CONTACT),
-("samples/index.html", "BA Sample Documents: BRD, FRD, User Stories, RTM | Gautam Reddy", "Fictional PayTrack business analysis case study: BRD, FRD, user stories, RTM, UAT plan, process and ERD diagrams, SQL queries and CSV templates.", samples(), "../", "samples/index.html", LD_SAMPLES),
+("index.html", "Gautam Reddy | Business Analyst: Requirements, APIs, SQL, UAT", DESC, index(), "", "", LD_HOME),
+("about.html", "About Gautam Reddy | Business Analyst", "About Gautam Reddy, a Bengaluru Business Analyst with 4+ years of experience in requirements engineering, NFRs, REST APIs, STTM, SQL analysis and UAT.", about(), "", "about.html", LD_ABOUT),
+("services.html", "BA Services: BRD/FRD, REST API Requirements, SQL, UAT | Gautam Reddy", "Business analysis services: BRD/FRD and NFRs requirements packs, SQL and Python analysis, STTM, Power BI requirements, REST API requirements and Agile UAT support.", services(), "", "services.html", LD_SERVICES),
+("projects.html", "Business Analyst Projects: SQL, Power BI, PayTrack | Gautam Reddy", "Portfolio projects by Business Analyst Gautam Reddy: SQL and Power BI analytics, data pipelines, RAG prototypes, and the PayTrack case study.", projects(), "", "projects.html", LD_PROJECTS),
+("resume.html", "Resume | Gautam Reddy, Business Analyst", "Resume of Gautam Reddy, Business Analyst with 4+ years of experience: 2 payment gateway integrations, STTM, NFRs, 100,000+ transactions analysed, 350+ test cases.", resume(), "", "resume.html", LD_RESUME),
+("contact.html", "Contact Gautam Reddy | Hire a Business Analyst, Bengaluru", "Contact Gautam Reddy, a Business Analyst in Bengaluru, about full-time, hybrid or remote roles, or requirements, systems integration, and reporting projects.", contact(), "", "contact.html", LD_CONTACT),
+("samples/index.html", "BA Sample Documents: BRD, FRD, NFRs, User Stories, RTM | Gautam Reddy", "Business Analyst case study artifacts: BRD, FRD, NFRs, user stories, STTM, RTM, UAT plan, BPMN and UML diagrams, SQL queries and CSV templates.", samples(), "../", "samples/index.html", LD_SAMPLES),
 ]
 for path, t, d, b, p, cur, ld in pages:
     open(path, "w", encoding="utf-8").write(page(path, t, d, b, p, cur, ld))
