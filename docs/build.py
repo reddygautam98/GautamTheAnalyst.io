@@ -32,6 +32,100 @@ def page(path, title, desc, body, p="", cur="", ld="", robots="index, follow, ma
     else: url_tags = f'<link rel="canonical" href="{url}">\n<meta property="og:url" content="{url}">\n'
     res_cur = ' aria-current="page"' if cur == "resume.html" else ""
     nav = "".join('<a href="%s%s"%s>%s</a>' % (p, h, ' aria-current="page"' if h == cur else "", t) for h, t in NAV)
+
+    drawer_markup = ""
+    if path == "samples/index.html":
+        drawer_markup = '''<aside id="previewDrawer" class="preview-drawer" role="dialog" aria-modal="true" aria-labelledby="pdTitle" hidden>
+  <div class="pd-backdrop" id="pdBackdrop" aria-hidden="true"></div>
+  <div class="pd-panel">
+    <div class="pd-head">
+      <div><span class="pd-badge">In-Page Preview</span><div class="pd-pane-h" id="pdTitle">Document Preview</div></div>
+      <button class="icon-btn pd-close" id="pdClose" type="button" aria-label="Close document preview">&times;</button>
+    </div>
+    <div class="pd-tabs" role="tablist" aria-label="Sample document types" data-lenis-prevent>
+      <button class="pd-tab is-active" role="tab" id="pdtab-brd" aria-selected="true" aria-controls="pd-brd" type="button" data-pdtab="brd">01 BRD</button>
+      <button class="pd-tab" role="tab" id="pdtab-frd" aria-selected="false" aria-controls="pd-frd" tabindex="-1" type="button" data-pdtab="frd">02 FRD</button>
+      <button class="pd-tab" role="tab" id="pdtab-stories" aria-selected="false" aria-controls="pd-stories" tabindex="-1" type="button" data-pdtab="stories">03 Stories</button>
+      <button class="pd-tab" role="tab" id="pdtab-rtm" aria-selected="false" aria-controls="pd-rtm" tabindex="-1" type="button" data-pdtab="rtm">04 RTM</button>
+      <button class="pd-tab" role="tab" id="pdtab-mom" aria-selected="false" aria-controls="pd-mom" tabindex="-1" type="button" data-pdtab="mom">05 MoM</button>
+    </div>
+    <div class="pd-body" id="pdBody" data-lenis-prevent>
+      <div class="pd-pane is-active" id="pd-brd" role="tabpanel" tabindex="0" aria-labelledby="pdtab-brd">
+        <div class="pd-pane-h">PayTrack Business Requirements Document (BRD)</div>
+        <p class="muted">Document ID: BRD-2026-PT &bull; Status: Approved &bull; Author: Gautam Reddy</p>
+        <div class="pd-sample-box">
+          <div class="pd-pane-sub">1. Executive Summary &amp; Problem Statement</div>
+          <p>Settlement operations manually reconcile over 100,000 monthly transaction events across 2 payment gateways (Stripe &amp; Razorpay). Discrepancies take up to 48 hours to discover, risking SLA penalties. PayTrack introduces real-time ingestion, automated batch matching, and an exception management queue.</p>
+          <div class="pd-pane-sub">2. Key Objectives</div>
+          <ul>
+            <li>Achieve 99.8% straight-through automated transaction matching.</li>
+            <li>Flag unsettled transaction exceptions within 5 minutes of ingestion.</li>
+            <li>Establish 100% audit traceability connecting payment authorizations to bank settlement feeds.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="pd-pane" id="pd-frd" role="tabpanel" tabindex="0" aria-labelledby="pdtab-frd" hidden>
+        <div class="pd-pane-h">PayTrack Functional Requirements Document (FRD)</div>
+        <p class="muted">Document ID: FRD-2026-PT &bull; Status: Baselined &bull; Author: Gautam Reddy</p>
+        <div class="pd-sample-box">
+          <div class="pd-pane-sub">1. Ingestion Pipeline &amp; Validation</div>
+          <p>System validates inbound webhook events via HMAC-SHA256 signature verification. Invalid payloads return HTTP 401 with structured JSON error schemas.</p>
+          <div class="pd-pane-sub">2. Business Rules &amp; Reconciliation Logic</div>
+          <ul>
+            <li><strong>Rule 101:</strong> If transaction amount matches within 0.00 currency units and gateway_ref matches, mark record as RECONCILED.</li>
+            <li><strong>Rule 102:</strong> If gateway_ref matches but amount differs, tag as AMOUNT_MISMATCH and alert Tier-2 Operations.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="pd-pane" id="pd-stories" role="tabpanel" tabindex="0" aria-labelledby="pdtab-stories" hidden>
+        <div class="pd-pane-h">PayTrack User Stories &amp; Acceptance Criteria (BDD)</div>
+        <p class="muted">Sprint 24 Backlog &bull; Prioritized via MoSCoW</p>
+        <div class="pd-sample-box">
+          <div class="us-story-card">
+            <div class="us-meta"><span class="kwd-tag kwd-story">USER STORY US-03</span><span class="mono-meta">Priority: MUST</span></div>
+            <p class="us-text"><strong>As a</strong> Settlement Operations Analyst,<br><strong>I want</strong> unmatched transaction exceptions flagged within 5 minutes of ingestion,<br><strong>So that</strong> discrepancies are triaged and resolved before gateway cutoff.</p>
+          </div>
+          <div class="bdd-block" style="margin-top:12px">
+            <div class="bdd-head"><span class="kwd-tag kwd-bdd">GHERKIN SCENARIO</span></div>
+            <div class="bdd-code">
+              <div><span class="bdd-kw">Given</span> internal order #1089 has status 'PAID' via Razorpay</div>
+              <div><span class="bdd-kw">When</span> bank settlement feed arrives with missing auth code</div>
+              <div><span class="bdd-kw">Then</span> generate exception record with severity 'HIGH'</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pd-pane" id="pd-rtm" role="tabpanel" tabindex="0" aria-labelledby="pdtab-rtm" hidden>
+        <div class="pd-pane-h">Requirements Traceability Matrix (RTM Extract)</div>
+        <p class="muted">End-to-End Delivery Verification</p>
+        <div class="pd-sample-box">
+          <div class="tbl-wrap" data-lenis-prevent>
+          <table style="width:100%;font-size:.85rem">
+            <thead><tr><th>BR ID</th><th>FR ID</th><th>Story ID</th><th>Test Case</th><th>UAT Status</th></tr></thead>
+            <tbody>
+              <tr><td>BR-01</td><td>FR-002</td><td>US-01</td><td>TC-001</td><td>PASS</td></tr>
+              <tr><td>BR-02</td><td>FR-005</td><td>US-03</td><td>TC-003</td><td>PASS</td></tr>
+              <tr><td>BR-03</td><td>FR-008</td><td>US-05</td><td>TC-006</td><td>PASS</td></tr>
+            </tbody>
+          </table>
+          </div>
+        </div>
+      </div>
+      <div class="pd-pane" id="pd-mom" role="tabpanel" tabindex="0" aria-labelledby="pdtab-mom" hidden>
+        <div class="pd-pane-h">Discovery Workshop MoM &amp; Decision Log</div>
+        <p class="muted">Attendees: Product, Engineering, QA, Operations &bull; Facilitator: Gautam Reddy</p>
+        <div class="pd-sample-box">
+          <div class="pd-pane-sub">Agreed Decisions</div>
+          <ul>
+            <li><strong>DEC-01:</strong> Standardize idempotency key header across all POST endpoints.</li>
+            <li><strong>DEC-02:</strong> Retain exception records in hot storage for 90 days before cold S3 archival.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</aside>'''
+
     return f'''<!DOCTYPE html>
 <html lang="en-IN">
 <head>
@@ -58,7 +152,7 @@ def page(path, title, desc, body, p="", cur="", ld="", robots="index, follow, ma
 <meta name="theme-color" content="#0b0f19" media="(prefers-color-scheme: dark)">
 {url_tags}<link rel="icon" href="{p}assets/mark.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="{p}assets/apple-touch-icon.png">
-<script>document.documentElement.classList.add("js");try{{var t=localStorage.getItem("gr-theme")||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.dataset.theme=t}}catch(e){{}}</script>
+<script>document.documentElement.classList.add("js");try{{var t=localStorage.getItem("gr-theme")||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.dataset.theme=t}}catch(e){{}}setTimeout(function(){{document.documentElement.classList.add("rv-fallback")}},2500);</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="{FONTS}">
 <link rel="stylesheet" href="{p}assets/style.css?v=32">
@@ -69,100 +163,13 @@ def page(path, title, desc, body, p="", cur="", ld="", robots="index, follow, ma
 <header class="site-header"><div class="wrap bar">
 <a class="brand" href="{home}"><img src="{p}assets/mark.svg" alt="" width="30" height="30">Gautam Reddy</a>
 <nav class="nav" id="nav" aria-label="Main">{nav}<a href="{p}resume.html" class="nav-resume-btn"{res_cur}>Resume</a></nav>
-<div class="tools"><button class="icon-btn" id="theme" type="button" aria-label="Switch theme" aria-pressed="false"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button></div>
+<div class="tools"><button class="icon-btn" id="theme" type="button" aria-label="Dark theme" aria-pressed="false"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button></div>
 <button class="icon-btn menu-btn" id="menu" type="button" aria-expanded="false" aria-controls="nav" aria-label="Menu">&#9776;</button>
 </div><div class="nav-backdrop" id="navBackdrop" aria-hidden="true"></div></header>
-<main id="main">
+<main id="main" tabindex="-1">
 {body}
 </main>
-<aside id="previewDrawer" class="preview-drawer" role="dialog" aria-modal="true" aria-label="Document Preview" hidden>
-  <div class="pd-backdrop" id="pdBackdrop"></div>
-  <div class="pd-panel">
-    <div class="pd-head">
-      <div><span class="pd-badge">In-Page Preview</span><h3 id="pdTitle">Document Preview</h3></div>
-      <button class="icon-btn pd-close" id="pdClose" type="button" aria-label="Close document preview">&times;</button>
-    </div>
-    <div class="pd-tabs" role="tablist">
-      <button class="pd-tab is-active" type="button" data-pdtab="brd">01 BRD</button>
-      <button class="pd-tab" type="button" data-pdtab="frd">02 FRD</button>
-      <button class="pd-tab" type="button" data-pdtab="stories">03 Stories</button>
-      <button class="pd-tab" type="button" data-pdtab="rtm">04 RTM</button>
-      <button class="pd-tab" type="button" data-pdtab="mom">05 MoM</button>
-    </div>
-    <div class="pd-body" id="pdBody">
-      <div class="pd-pane is-active" id="pd-brd">
-        <h4>PayTrack Business Requirements Document (BRD)</h4>
-        <p class="muted">Document ID: BRD-2026-PT &bull; Status: Approved &bull; Author: Gautam Reddy</p>
-        <div class="pd-sample-box">
-          <h5>1. Executive Summary &amp; Problem Statement</h5>
-          <p>Settlement operations manually reconcile over 100,000 monthly transaction events across 2 payment gateways (Stripe &amp; Razorpay). Discrepancies take up to 48 hours to discover, risking SLA penalties. PayTrack introduces real-time ingestion, automated batch matching, and an exception management queue.</p>
-          <h5>2. Key Objectives</h5>
-          <ul>
-            <li>Achieve 99.8% straight-through automated transaction matching.</li>
-            <li>Flag unsettled transaction exceptions within 5 minutes of ingestion.</li>
-            <li>Establish 100% audit traceability connecting payment authorizations to bank settlement feeds.</li>
-          </ul>
-        </div>
-      </div>
-      <div class="pd-pane" id="pd-frd" hidden>
-        <h4>PayTrack Functional Requirements Document (FRD)</h4>
-        <p class="muted">Document ID: FRD-2026-PT &bull; Status: Baselined &bull; Author: Gautam Reddy</p>
-        <div class="pd-sample-box">
-          <h5>1. Ingestion Pipeline &amp; Validation</h5>
-          <p>System validates inbound webhook events via HMAC-SHA256 signature verification. Invalid payloads return HTTP 401 with structured JSON error schemas.</p>
-          <h5>2. Business Rules &amp; Reconciliation Logic</h5>
-          <ul>
-            <li><strong>Rule 101:</strong> If transaction amount matches within 0.00 currency units and gateway_ref matches, mark record as RECONCILED.</li>
-            <li><strong>Rule 102:</strong> If gateway_ref matches but amount differs, tag as AMOUNT_MISMATCH and alert Tier-2 Operations.</li>
-          </ul>
-        </div>
-      </div>
-      <div class="pd-pane" id="pd-stories" hidden>
-        <h4>PayTrack User Stories &amp; Acceptance Criteria (BDD)</h4>
-        <p class="muted">Sprint 24 Backlog &bull; Prioritized via MoSCoW</p>
-        <div class="pd-sample-box">
-          <div class="us-story-card">
-            <div class="us-meta"><span class="kwd-tag kwd-story">USER STORY US-03</span><span class="mono-meta">Priority: MUST</span></div>
-            <p class="us-text"><strong>As a</strong> Settlement Operations Analyst,<br><strong>I want</strong> unmatched transaction exceptions flagged within 5 minutes of ingestion,<br><strong>So that</strong> discrepancies are triaged and resolved before gateway cutoff.</p>
-          </div>
-          <div class="bdd-block" style="margin-top:12px">
-            <div class="bdd-head"><span class="kwd-tag kwd-bdd">GHERKIN SCENARIO</span></div>
-            <div class="bdd-code">
-              <div><span class="bdd-kw">Given</span> internal order #1089 has status 'PAID' via Razorpay</div>
-              <div><span class="bdd-kw">When</span> bank settlement feed arrives with missing auth code</div>
-              <div><span class="bdd-kw">Then</span> generate exception record with severity 'HIGH'</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="pd-pane" id="pd-rtm" hidden>
-        <h4>Requirements Traceability Matrix (RTM Extract)</h4>
-        <p class="muted">End-to-End Delivery Verification</p>
-        <div class="pd-sample-box">
-          <table style="width:100%;font-size:.85rem">
-            <thead><tr><th>BR ID</th><th>FR ID</th><th>Story ID</th><th>Test Case</th><th>UAT Status</th></tr></thead>
-            <tbody>
-              <tr><td>BR-01</td><td>FR-002</td><td>US-01</td><td>TC-001</td><td>PASS</td></tr>
-              <tr><td>BR-02</td><td>FR-005</td><td>US-03</td><td>TC-003</td><td>PASS</td></tr>
-              <tr><td>BR-03</td><td>FR-008</td><td>US-05</td><td>TC-006</td><td>PASS</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div class="pd-pane" id="pd-mom" hidden>
-        <h4>Discovery Workshop MoM &amp; Decision Log</h4>
-        <p class="muted">Attendees: Product, Engineering, QA, Operations &bull; Facilitator: Gautam Reddy</p>
-        <div class="pd-sample-box">
-          <h5>Agreed Decisions</h5>
-          <ul>
-            <li><strong>DEC-01:</strong> Standardize idempotency key header across all POST endpoints.</li>
-            <li><strong>DEC-02:</strong> Retain exception records in hot storage for 90 days before cold S3 archival.</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-</aside>
+{drawer_markup}
 <footer class="site-footer"><div class="wrap foot">
 <div>&copy; <span data-year>2026</span> Gautam Reddy &bull; Business Analyst, Bengaluru, India (IST / UTC+5:30) &bull; Updated 2026.<br>Sample artifacts on this site are fictional and are labelled as such.</div>
 <nav aria-label="Footer"><a href="{home}">Home</a><a href="{p}about.html">About</a><a href="{p}services.html">Services</a><a href="{p}projects.html">Projects</a><a href="{p}samples/index.html">BA samples</a><a href="{p}resume.html">Resume</a><a href="{p}contact.html">Contact</a>{ext(GH, "GitHub")}{ext(LI, "LinkedIn")}{ext(HR, "HackerRank")}<a href="mailto:{EMAIL}">Email</a><a href="#main" class="back-to-top" title="Back to top">&uarr; Top</a></nav>
@@ -219,7 +226,7 @@ def pcard(c, i=0, base=0.0):
     k, cat, t, d, tg, u = c
     repo = repo_of(u)
     img_src = LOCAL_PROJECT_IMAGES.get(repo, f"{GHIMG}{repo}")
-    img = f'<img src="{img_src}" alt="{html.escape(t)} &bull; {html.escape(cat)}" width="1200" height="600" loading="lazy" decoding="async">'
+    img = f'<img src="{img_src}" alt="Screenshot preview of {html.escape(t)} ({html.escape(cat)})" width="1200" height="600" loading="lazy" decoding="async">'
     lbl = f'View repository for {html.escape(t)} on GitHub (opens in new tab)' if k != 'writing' else f'Read notes for {html.escape(t)} on GitHub (opens in new tab)'
     txt = 'Read notes' if k == 'writing' else 'View repository'
     return f'''<article class="card pcard {rv(i, base)}" data-cat="{k}"><a class="thumb browser-frame" href="{u}" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true"><div class="bf-bar" aria-hidden="true"><span class="bf-dot red"></span><span class="bf-dot yellow"></span><span class="bf-dot green"></span><span class="bf-url">{repo}</span></div><div class="bf-viewport"><span class="ph">{F.mini("m" + str(next(_n)))}<em>{html.escape(t)}</em></span>{img}</div></a><div class="pbody"><span class="cat">{cat}</span><h3>{t}</h3><p>{d}</p>{tags(tg)}<a class="more" href="{u}" target="_blank" rel="noopener noreferrer" aria-label="{lbl}">{txt} <span class="sr-only">(opens in new tab)</span>&#8599;</a></div></article>'''
@@ -237,10 +244,10 @@ def trace():
     rows = ""
     for br, label, frs, uss, tcs in TRACE:
         links = " ".join([br] + frs + uss + tcs)
-        rows += (f'<tr tabindex="0" data-links="{links}">'
+        rows += (f'<tr tabindex="0" data-links="{links}" aria-label="{br}: {label}. Select or focus to trace linked artifacts.">'
                  f'<th scope="row"><span class="id" data-id="{br}">{br}</span><br>{label}</th>'
                  f'<td>{_ids(frs)}</td><td>{_ids(uss)}</td><td>{_ids(tcs)}</td></tr>\n')
-    return (f'''<div class="trace hero-slider" id="heroSlider" aria-label="PayTrack deliverables showcase">
+    return (f'''<div class="trace hero-slider" id="heroSlider" role="region" aria-label="PayTrack deliverables showcase">
 <div class="trace-top slider-top">
   <div class="slider-tabs" role="tablist" aria-label="Deliverable slides">
     <button class="slider-tab is-active" role="tab" id="tab-0" aria-selected="true" aria-controls="slide-0" data-slide="0" tabindex="0" type="button"><span class="tab-badge">01</span> Traceability</button>
@@ -287,7 +294,7 @@ def trace():
 
   <!-- Slide 3: REST API flow -->
   <div class="slider-slide" id="slide-2" role="tabpanel" aria-labelledby="tab-2" data-index="2" hidden>
-    <div class="slide-subhead"><b>PayTrack REST API &amp; Webhook Integration</b><span>POST /v1/reconcile/batch &bull; Idempotent contract</span></div>
+    <div class="slide-subhead"><b>PayTrack REST API &amp; Webhook Integration</b><span>Fictional sample &bull; POST /v1/reconcile/batch &bull; Idempotent contract</span></div>
     <div class="slide-content-wrap">
       <div class="api-pipeline">
         <div class="api-node">
@@ -455,7 +462,7 @@ def paytrack_wireframe_svg():
     <div class="wf-browser-bar">
       <div class="wf-browser-dots"><span class="wf-dot red"></span><span class="wf-dot yellow"></span><span class="wf-dot green"></span></div>
       <div class="wf-browser-addr"><span>https://ops.paytrack.internal/reconciliation</span></div>
-      <div class="wf-browser-badge">Live Prototype</div>
+      <div class="wf-browser-badge">Fictional Sample</div>
     </div>
     <div class="wf-screen">
       <div class="wf-side">
@@ -469,13 +476,13 @@ def paytrack_wireframe_svg():
       </div>
       <div class="wf-main">
         <div class="wf-main-head">
-          <div><div class="wf-main-title">Reconciliation Exceptions</div><div class="wf-main-sub">FR-005 &bull; Real-time settlement reconciliation</div></div>
+          <div><div class="wf-main-title">Reconciliation Exceptions</div><div class="wf-main-sub">FR-005 &bull; Real-time settlement reconciliation (Fictional Sample)</div></div>
           <div class="wf-main-actions"><span class="wf-btn wf-btn-primary">Resolve Case</span><span class="wf-btn">Export CSV</span></div>
         </div>
         <div class="wf-kpis">
-          <div class="wf-kpi-card"><span class="wf-kpi-val">14.2K</span><span class="wf-kpi-lbl">Daily Txns</span></div>
-          <div class="wf-kpi-card warn"><span class="wf-kpi-val">3</span><span class="wf-kpi-lbl">SLA Breaches</span></div>
-          <div class="wf-kpi-card ok"><span class="wf-kpi-val">99.8%</span><span class="wf-kpi-lbl">Reconciled</span></div>
+          <div class="wf-kpi-card"><span class="wf-kpi-val">14.2K</span><span class="wf-kpi-lbl">Daily Txns*</span></div>
+          <div class="wf-kpi-card warn"><span class="wf-kpi-val">3</span><span class="wf-kpi-lbl">SLA Breaches*</span></div>
+          <div class="wf-kpi-card ok"><span class="wf-kpi-val">99.8%</span><span class="wf-kpi-lbl">Reconciled*</span></div>
         </div>
         <div class="wf-table" id="wireframeTable">
           <div class="wf-tr wf-th"><span>TXN_ID</span><span>GATEWAY</span><span>AMOUNT</span><span>STATUS</span><span>SLA DUE</span></div>
@@ -489,7 +496,7 @@ def paytrack_wireframe_svg():
 </div>'''
 
 def index():
-    rot = "".join(f"<span>{r}</span>" for r in ROLES_ROT)
+    rot = "".join(f'<span aria-hidden="{"false" if i==0 else "true"}">{r}</span>' for i, r in enumerate(ROLES_ROT))
     toolkit_cards = [
         ("Business Analysis", "Chronological Lifecycle: Elicitation &#10142; Analysis &#10142; Specs &#10142; Agile &#10142; Sign-off", BA_WORKFLOW),
         ("Process Analysis & Documentation", "Process Stream: AS-IS Discovery &#10142; Root Cause &#10142; BPMN Modelling &#10142; Specs", PROCESS_WORKFLOW),
@@ -502,12 +509,12 @@ def index():
 <div>
 <div class="status rv"><i></i><span>Available for global remote, hybrid &amp; full-time roles</span></div>
 <h1 class="{rv(1)}">Business Analyst in Bengaluru who turns requirements into <span class="grad">testable specs.</span></h1>
-<p class="rot-line {rv(2)}"><span class="rot-lb">Right now:</span><span class="rot" data-rot aria-live="off">{rot}</span></p>
+<p class="rot-line {rv(2)}"><span class="rot-lb">Right now:</span><span class="rot" data-rot aria-label="Specializing in: Requirements Gathering, BRD/FRD, REST APIs, SQL and UAT">{rot}</span></p>
 <p class="lead {rv(3)}">4+ years of experience in requirements analysis and delivery: translating business needs into clear, testable functional and non-functional requirements (NFRs), REST APIs, Source-to-Target Mappings (STTM), user stories and BDD acceptance criteria, backed by SQL and Python analysis.</p>
 <div class="actions {rv(4)}"><a class="btn btn-primary" href="samples/index.html">View BA samples <span class="arr" aria-hidden="true">&rarr;</span></a><a class="btn btn-ghost" href="resume.html">View resume <span class="arr" aria-hidden="true">&rarr;</span></a></div>
 <p class="hero-proof-line {rv(5)}"><span class="h-dot"></span> 4+ yrs in requirements analysis &amp; delivery &bull; REST APIs &amp; STTM &bull; 2 payment gateway integrations documented &bull; 350+ UAT test cases coordinated</p>
 </div>
-<div class="hero-showcase-wrap {rv(2)}" aria-label="PayTrack deliverables showcase">
+<div class="hero-showcase-wrap {rv(2)}">
 {trace()}
 </div>
 </div></section>
@@ -533,7 +540,7 @@ def index():
 {sh(3, "Selected work", "Case study and projects", "A fictional end-to-end BA case study, plus personal analytics and data projects. Each card opens its repository.")}
 <div class="feature {rv(0)}">
 {paytrack_wireframe_svg()}
-<div><span class="cat feat-badge">Featured Case Study</span><h3>PayTrack: payment reconciliation, from BRD to UAT</h3><p class="muted"><strong>Problem &bull; Role &bull; Result:</strong> Operations teams struggle to investigate unmatched gateway and internal payment records. As the Business Analyst I wrote the BRD, FRD, 10 BDD user stories and REST API sequence flows, and traced 8 business requirements to 15 sample test cases (not executed).</p>
+<div><span class="cat feat-badge">Featured Case Study &bull; Fictional Sample</span><h3>PayTrack: payment reconciliation, from BRD to UAT</h3><p class="muted"><strong>Problem &bull; Role &bull; Result:</strong> Operations teams struggle to investigate unmatched gateway and internal payment records. As the Business Analyst I wrote the BRD, FRD, 10 BDD user stories and REST API sequence flows, and traced 8 business requirements to 15 sample test cases (not executed).</p>
 <div class="disclaimer"><b>Fictional sample.</b> No client data is used and no executed-test evidence is claimed.</div>
 <div class="actions"><a class="btn btn-primary" href="samples/index.html">View case study artifacts &rarr;</a></div></div>
 </div>
@@ -553,10 +560,10 @@ def index():
 <section class="sec has-flow" id="experience">{F.seq("e")}<div class="wrap">
 {sh(5, "Experience", "Professional Business Analyst Experience", "Requirements analysis, stakeholder workshops, system integration, and UAT delivery across past roles.")}
 <div class="roles">
-<div class="role {rv(0)}"><div class="node" aria-hidden="true"></div><div class="rbody"><h3>Business Analyst</h3><div class="org">Marolix Technology Solutions Pvt Ltd, Hyderabad</div><ul><li>Accomplished payment gateway integration readiness, as measured by <strong>zero reported critical defects</strong> across <strong>2 gateway integrations</strong>, by defining REST API requirements, UML system flows, and Source-to-Target Mappings (STTM) with JSON payload schemas.</li><li>Accomplished backend risk reduction, as measured by identifying <strong>3 recurring SLA-breach patterns</strong> across <strong>100,000+ transaction records</strong>, by executing SQL queries and Python data analysis.</li><li>Accomplished enterprise UAT and delivery readiness, as measured by coordinating <strong>350+ test cases</strong> in Jira and managing 12+ change requests over 2 Agile releases, by managing functional, regression, and integration testing with zero critical defects reported.</li></ul><button class="role-expander" type="button" aria-expanded="false">View key metrics &amp; delivery impact &#9662;</button><div class="role-metrics" hidden><div class="role-metrics-grid"><div><b>100K+</b><span>Transactions analysed</span></div><div><b>350+</b><span>Test cases coordinated</span></div><div><b>0</b><span>Critical defects reported</span></div><div><b>12+</b><span>Change requests managed</span></div></div></div></div></div>
-<div class="role {rv(1)}"><div class="node" aria-hidden="true"></div><div class="rbody"><h3>Business Analyst</h3><div class="org">V Moksha Technologies Pvt Ltd, Bengaluru</div><ul><li>Accomplished operational cycle-time reduction and reduced rework, as measured by saving an estimated <strong>2 weeks per improvement cycle</strong>, by executing SQL analysis, fishbone diagrams, and 5-Why root cause analysis on recurring SLA shortfalls.</li><li>Accomplished workflow optimization, as measured by eliminating process bottlenecks, by mapping AS-IS and TO-BE business processes.</li></ul><button class="role-expander" type="button" aria-expanded="false">View key metrics &amp; delivery impact &#9662;</button><div class="role-metrics" hidden><div class="role-metrics-grid"><div><b>2 wks</b><span>Cycle time saved</span></div><div><b>5-Why</b><span>Root-cause analysis</span></div><div><b>AS-IS/TO-BE</b><span>Process mapping</span></div></div></div></div></div>
-<div class="role {rv(2)}"><div class="node" aria-hidden="true"></div><div class="rbody"><h3>Business Analyst</h3><div class="org">Iinfocomm IT Services Pvt Ltd, Bengaluru</div><ul><li>Accomplished multi-unit sprint delivery on time, as measured by delivering <strong>3 concurrent modules</strong> across 4 business units, by facilitating Three Amigos sessions, documenting functional requirements and business rules, and writing Given/When/Then (BDD) acceptance criteria.</li><li>Accomplished zero-incident release stability, as measured by <strong>no reported post-launch incidents</strong> across <strong>50+ Jira test cases</strong>, by coordinating UAT, smoke, sanity, and regression testing.</li><li>Accomplished end-to-end requirement traceability, as measured by complete alignment connecting delivery to acceptance, by reviewing API contracts against functional requirements and maintaining the RTM and RACI matrix.</li></ul><button class="role-expander" type="button" aria-expanded="false">View key metrics &amp; delivery impact &#9662;</button><div class="role-metrics" hidden><div class="role-metrics-grid"><div><b>3</b><span>Concurrent modules</span></div><div><b>4</b><span>Business units</span></div><div><b>50+</b><span>Jira test cases</span></div></div></div></div></div>
-<div class="role {rv(3)}"><div class="node" aria-hidden="true"></div><div class="rbody"><h3>Associate Software Engineer</h3><div class="org">Iinfocomm IT Services Pvt Ltd, Bengaluru</div><ul><li>Accomplished early career progression, as measured by promotion to Business Analyst <strong>ahead of schedule</strong> within 17 months, by managing requirements for 3 reporting features from elicitation through stakeholder sign-off.</li><li>Accomplished reporting automation approval, as measured by executive business-case sign-off projecting <strong>3+ hrs/week of savings</strong>, by translating input from 15+ Finance and Operations stakeholders into Power BI requirements and BDD user stories.</li></ul><button class="role-expander" type="button" aria-expanded="false">View key metrics &amp; delivery impact &#9662;</button><div class="role-metrics" hidden><div class="role-metrics-grid"><div><b>Early</b><span>Promotion</span></div><div><b>15+</b><span>Finance &amp; Ops stakeholders</span></div><div><b>3+ hrs</b><span>Projected weekly savings</span></div></div></div></div></div>
+<div class="role {rv(0)}"><div class="node" aria-hidden="true"></div><div class="rbody"><h3>Business Analyst &ndash; Marolix Technology Solutions</h3><div class="org">Marolix Technology Solutions Pvt Ltd &bull; Hyderabad, India</div><div class="role-date"><time datetime="2022-05">May 2022</time> &ndash; <time>Present</time></div><ul><li>Defined REST API requirements, UML system flows, and Source-to-Target Mappings (STTM) with JSON payload schemas across 2 payment gateway integrations, achieving defect-free production deployment.</li><li>Queried and processed 100,000+ transaction logs with SQL and Python to identify 3 root-cause SLA-breach patterns and formulate automated reconciliation logic.</li><li>Coordinated 350+ UAT test scenarios in Jira across cross-functional squads and assessed 12+ change requests with zero post-release critical defects.</li></ul><button class="role-expander" type="button" aria-expanded="false" aria-controls="role-metrics-0"><span>Key accomplishments &amp; metrics</span> <span class="exp-arr" aria-hidden="true">&#9662;</span></button><div class="role-metrics" id="role-metrics-0" hidden><div class="role-metrics-grid"><div><b>100K+</b><span>Transactions analysed</span></div><div><b>350+</b><span>Test cases coordinated</span></div><div><b>0</b><span>Critical defects reported</span></div><div><b>12+</b><span>Change requests managed</span></div></div></div></div></div>
+<div class="role {rv(1)}"><div class="node" aria-hidden="true"></div><div class="rbody"><h3>Business Analyst &ndash; V Moksha Technologies</h3><div class="org">V Moksha Technologies Pvt Ltd &bull; Bengaluru, India</div><div class="role-date"><time datetime="2021-05">May 2021</time> &ndash; <time datetime="2022-04">Apr 2022</time></div><ul><li>Reduced operational turnaround by an estimated 2 weeks per improvement cycle by leading fishbone and 5-Why root cause analyses on recurring SLA shortfalls.</li><li>Mapped AS-IS and TO-BE business processes to eliminate manual handoff bottlenecks and standardize operational handovers.</li></ul><button class="role-expander" type="button" aria-expanded="false" aria-controls="role-metrics-1"><span>Key accomplishments &amp; metrics</span> <span class="exp-arr" aria-hidden="true">&#9662;</span></button><div class="role-metrics" id="role-metrics-1" hidden><div class="role-metrics-grid"><div><b>2 wks</b><span>Cycle time saved</span></div><div><b>5-Why</b><span>Root-cause analysis</span></div><div><b>AS-IS/TO-BE</b><span>Process mapping</span></div></div></div></div></div>
+<div class="role {rv(2)}"><div class="node" aria-hidden="true"></div><div class="rbody"><h3>Business Analyst &ndash; Iinfocomm IT Services</h3><div class="org">Iinfocomm IT Services Pvt Ltd &bull; Bengaluru, India</div><div class="role-date"><time datetime="2020-11">Nov 2020</time> &ndash; <time datetime="2021-04">Apr 2021</time></div><ul><li>Facilitated Three Amigos sessions across 4 business units to author BDD Given/When/Then user stories for 3 concurrent modules delivered on schedule.</li><li>Coordinated UAT, regression, and smoke testing across 50+ Jira test cases, resulting in zero reported post-launch incidents.</li><li>Maintained end-to-end Requirements Traceability Matrix (RTM) and validated API contracts against functional specifications.</li></ul><button class="role-expander" type="button" aria-expanded="false" aria-controls="role-metrics-2"><span>Key accomplishments &amp; metrics</span> <span class="exp-arr" aria-hidden="true">&#9662;</span></button><div class="role-metrics" id="role-metrics-2" hidden><div class="role-metrics-grid"><div><b>3</b><span>Concurrent modules</span></div><div><b>4</b><span>Business units</span></div><div><b>50+</b><span>Jira test cases</span></div></div></div></div></div>
+<div class="role {rv(3)}"><div class="node" aria-hidden="true"></div><div class="rbody"><h3>Associate Software Engineer &ndash; Iinfocomm IT Services</h3><div class="org">Iinfocomm IT Services Pvt Ltd &bull; Bengaluru, India</div><div class="role-date"><time datetime="2020-06">Jun 2020</time> &ndash; <time datetime="2020-10">Oct 2020</time></div><ul><li>Earned early promotion to Business Analyst ahead of schedule within 17 months after successfully delivering requirements for 3 reporting features.</li><li>Authored Power BI specifications and user stories based on requirements gathered from 15+ Finance and Operations stakeholders, saving an estimated 3+ hrs/week of manual reporting.</li></ul><button class="role-expander" type="button" aria-expanded="false" aria-controls="role-metrics-3"><span>Key accomplishments &amp; metrics</span> <span class="exp-arr" aria-hidden="true">&#9662;</span></button><div class="role-metrics" id="role-metrics-3" hidden><div class="role-metrics-grid"><div><b>Early</b><span>Promotion</span></div><div><b>15+</b><span>Finance &amp; Ops stakeholders</span></div><div><b>3+ hrs</b><span>Projected weekly savings</span></div></div></div></div></div>
 </div>
 <div class="actions"><a class="btn btn-ghost" href="resume.html">Full resume &amp; ATS PDF</a></div>
 </div></section>
@@ -726,18 +733,18 @@ def about():
 <section class="sec has-flow">{F.swim("ab2")}<div class="wrap">
 {sh(2, "Career path", "Career path &amp; promotions")}
 <div class="roles">
-<div class="role {rv(0)}"><div class="node" aria-hidden="true"></div><div class="rbody"><h3>Business Analyst</h3><div class="org">Marolix Technology Solutions Pvt Ltd, Hyderabad</div><p class="muted">Accomplished payment gateway readiness and risk reduction, as measured by zero reported critical defects and identifying 3 SLA breach patterns across 100,000+ transaction records, by defining REST API requirements, UML flows, and Source-to-Target Mappings (STTM) with JSON payload schemas, and coordinating 350+ test cases in Jira.</p></div></div>
-<div class="role {rv(1)}"><div class="node" aria-hidden="true"></div><div class="rbody"><h3>Business Analyst</h3><div class="org">V Moksha Technologies Pvt Ltd, Bengaluru</div><p class="muted">Accomplished operational cycle-time reduction, as measured by saving an estimated 2 weeks per improvement cycle and reducing rework, by conducting SQL data analysis, fishbone/5-Why root cause analysis, and AS-IS / TO-BE process mapping.</p></div></div>
-<div class="role {rv(2)}"><div class="node" aria-hidden="true"></div><div class="rbody"><h3>Business Analyst</h3><div class="org">Iinfocomm IT Services Pvt Ltd, Bengaluru</div><p class="muted">Accomplished multi-unit delivery with no reported post-launch incidents across 3 modules and 4 business units, by facilitating Three Amigos sessions, authoring BDD acceptance criteria, reviewing API contracts, and coordinating 50+ Jira test cases.</p></div></div>
-<div class="role {rv(3)}"><div class="node" aria-hidden="true"></div><div class="rbody"><h3>Associate Software Engineer <span class="rank-up-badge">&#8679; Promoted early</span></h3><div class="org">Iinfocomm IT Services Pvt Ltd, Bengaluru</div><p class="muted"><strong>Promoted to Business Analyst ahead of schedule</strong> within 17 months after managing requirements for 3 reporting features; translated needs from 15+ Finance and Operations stakeholders into Power BI requirements and BDD user stories, securing approval for an automation business case projecting 3+ hrs/week of savings.</p></div></div>
+<div class="role {rv(0)}"><div class="node" aria-hidden="true"></div><div class="rbody"><h3>Business Analyst &ndash; Marolix Technology Solutions</h3><div class="org">Marolix Technology Solutions Pvt Ltd, Hyderabad</div><div class="role-date"><time datetime="2022-05">May 2022</time> &ndash; <time>Present</time></div><p class="muted">Led REST API specifications, UML system workflows, and Source-to-Target Mappings (STTM) across 2 payment gateway integrations, achieving defect-free production rollout. Executed SQL data analysis on 100,000+ transaction logs to identify 3 SLA breach patterns, and coordinated 350+ UAT test cases in Jira.</p></div></div>
+<div class="role {rv(1)}"><div class="node" aria-hidden="true"></div><div class="rbody"><h3>Business Analyst &ndash; V Moksha Technologies</h3><div class="org">V Moksha Technologies Pvt Ltd, Bengaluru</div><div class="role-date"><time datetime="2021-05">May 2021</time> &ndash; <time datetime="2022-04">Apr 2022</time></div><p class="muted">Reduced operational cycle time by an estimated 2 weeks per improvement cycle by resolving recurring SLA shortfalls through SQL data queries, fishbone/5-Why root cause analysis, and AS-IS / TO-BE process mapping.</p></div></div>
+<div class="role {rv(2)}"><div class="node" aria-hidden="true"></div><div class="rbody"><h3>Business Analyst &ndash; Iinfocomm IT Services</h3><div class="org">Iinfocomm IT Services Pvt Ltd, Bengaluru</div><div class="role-date"><time datetime="2020-11">Nov 2020</time> &ndash; <time datetime="2021-04">Apr 2021</time></div><p class="muted">Delivered 3 concurrent modules across 4 business units with zero post-launch incidents by facilitating Three Amigos alignment sessions, authoring BDD acceptance criteria, reviewing API contracts, and coordinating 50+ Jira test cases.</p></div></div>
+<div class="role {rv(3)}"><div class="node" aria-hidden="true"></div><div class="rbody"><h3>Associate Software Engineer <span class="rank-up-badge"><span aria-hidden="true">&#8679;</span> Promoted early</span> &ndash; Iinfocomm</h3><div class="org">Iinfocomm IT Services Pvt Ltd, Bengaluru</div><div class="role-date"><time datetime="2020-06">Jun 2020</time> &ndash; <time datetime="2020-10">Oct 2020</time></div><p class="muted"><strong>Promoted to Business Analyst ahead of schedule</strong> within 17 months after managing requirements for 3 reporting features; translated needs from 15+ Finance and Operations stakeholders into Power BI requirements and BDD user stories, securing approval for an automation business case projecting 3+ hrs/week of savings.</p></div></div>
 </div></div></section>
 
 ''' + cta()
 
 # ---------------------------------------------------------------- services
 SERV = [("Business analysis and requirements", "Turn fragmented requests into an agreed problem statement, requirements and an actionable backlog.", ["BRD / FRD", "Non-Functional Requirements (NFRs)", "User stories & BDD", "Process maps (BPMN / UML)", "Traceability (RTM)"]),
-("Data analysis and BI reporting", "Translate operational data and reporting needs into clear Power BI requirements and findings that support decisions.", ["SQL analysis", "Power BI requirements", "DAX measures", "Reporting user stories", "Stakeholder reports"]),
-("SQL, data quality and reporting", "Investigate recurring SLA and error patterns with SQL analysis and root cause analysis, and document the findings.", ["SQL analysis", "Root cause analysis (fishbone / 5-Why)", "Business rules & data dictionaries", "Confluence & Excel documentation", "Findings and recommendations"]),
+("Data analysis and BI reporting", "Translate operational data and reporting needs into clear Power BI requirements and findings that support decisions.", ["SQL data profiling", "Power BI requirements", "DAX measures", "Reporting user stories", "KPI definition reports"]),
+("SQL, data quality and reporting", "Investigate recurring SLA and error patterns with SQL analysis and root cause analysis, and document the findings.", ["Data quality profiling", "Root cause analysis (fishbone / 5-Why)", "Business rules & data dictionaries", "Confluence & Excel documentation", "Findings and recommendations"]),
 ("API and integration analysis", "Make integration expectations explicit for business, engineering and QA teams before implementation and testing.", ["REST API requirements", "Source-to-Target Mapping (STTM)", "JSON payload schemas", "API contract review", "UML system flows"]),
 ("UAT, testing and release support", "Help teams check that a solution meets the agreed requirement and make defects, risks and decisions visible.", ["UAT coordination", "Agile / Scrum delivery", "Functional, regression and integration test cases", "RTM", "JIRA defect triage"])]
 
@@ -779,7 +786,7 @@ def services():
 <section class="sec has-flow">{F.pipeline("sv3")}<div class="wrap">
 {sh(3, "Evidence", "What you receive", "Tangible, reviewable artifacts. Hover or tap cards to flip and preview sample documents.")}
 <div class="grid g3">
-<div class="flip-card {rv(0)}" tabindex="0">
+<div class="flip-card {rv(0)}" tabindex="0" role="group" aria-label="Requirements packs deliverable">
   <div class="flip-card-inner">
     <div class="flip-front card">
       <div class="flip-badge">FRONT &bull; DELIVERABLE</div>
@@ -795,7 +802,7 @@ def services():
     </div>
   </div>
 </div>
-<div class="flip-card {rv(1)}" tabindex="0">
+<div class="flip-card {rv(1)}" tabindex="0" role="group" aria-label="Process and API models deliverable">
   <div class="flip-card-inner">
     <div class="flip-front card">
       <div class="flip-badge">FRONT &bull; DELIVERABLE</div>
@@ -811,7 +818,7 @@ def services():
     </div>
   </div>
 </div>
-<div class="flip-card {rv(2)}" tabindex="0">
+<div class="flip-card {rv(2)}" tabindex="0" role="group" aria-label="Traceability and UAT plans deliverable">
   <div class="flip-card-inner">
     <div class="flip-front card">
       <div class="flip-badge">FRONT &bull; DELIVERABLE</div>
@@ -821,7 +828,7 @@ def services():
     </div>
     <div class="flip-back card">
       <div class="flip-badge">BACK &bull; ARTIFACT THUMBNAIL</div>
-      <h4>04_RTM_Test_Cases_UAT_Plan.pdf</h4>
+      <h4>04_RTM_Test_Cases_UAT_Plan_Sample.pdf</h4>
       <p class="small muted">Fictional sample: traceability matrix linking requirements to 15 test scenarios (not executed).</p>
       <a class="btn btn-ghost btn-sm" href="samples/index.html#uat">Open artifact &rarr;</a>
     </div>
@@ -839,27 +846,27 @@ def services():
 def projects():
     chips = '<button class="chip is-active" type="button" data-f="all" aria-pressed="true">All</button>' + "".join(f'<button class="chip" type="button" data-f="{k}" aria-pressed="false">{n}</button>' for k, n in [("analytics", "Analytics"), ("bi", "Business intelligence"), ("data", "Data engineering"), ("ai", "AI prototype"), ("writing", "Writing")])
     cards = "".join(pcard(c, i % 3, 0.0) for i, c in enumerate(PROJECTS))
-    return head("Projects", "Business analyst projects: practical analysis, visible work.", "Nine technical portfolio repositories across SQL analytics, business intelligence, data pipelines, and the PayTrack case study demonstrating BRD, FRD, NFRs, STTM, and RTM traceability.", F.erd("pj")) + f'''
+    return head("Projects", "Business analyst projects: practical analysis, visible work.", "Nine technical portfolio projects across SQL analytics, business intelligence, data pipelines, and the PayTrack case study demonstrating BRD, FRD, NFRs, STTM, and RTM traceability.", F.erd("pj")) + f'''
 <section class="sec" style="padding-top:24px"><div class="wrap">
 <h2 class="sr-only">Featured case study</h2>
 <div class="feature featured-paytrack rv" data-tilt>
 <div>
-  <span class="cat feat-badge">Featured Case Study</span>
+  <span class="cat feat-badge">Featured Case Study &bull; Fictional Sample</span>
   <h3>PayTrack: payment reconciliation, from BRD to UAT</h3>
   <p class="muted"><strong>Problem &bull; Role &bull; Result:</strong> Operations teams struggle to investigate unmatched gateway and internal payment records. As the Business Analyst I wrote the BRD, FRD, 10 Given/When/Then user stories and REST API sequence flows, and traced all 8 business requirements to 15 sample test cases (not executed).</p>
   <div class="mini-dash-stats">
-    <div class="mini-stat"><b>99.8%</b><span>Reconciliation Rate</span></div>
-    <div class="mini-stat"><b>3</b><span>Exceptions Surfaced</span></div>
+    <div class="mini-stat"><b>99.8%</b><span>Reconciliation Rate*</span></div>
+    <div class="mini-stat"><b>3</b><span>Exceptions Surfaced*</span></div>
     <div class="mini-stat"><b>15</b><span>Traceable Test Cases</span></div>
   </div>
-  <div class="disclaimer"><b>Fictional sample.</b> No client data is used and no executed-test evidence is claimed.</div>
+  <div class="disclaimer"><b>Fictional sample.</b> *Illustrative metrics from sample scenario. No client data is used and no executed-test evidence is claimed.</div>
   <div class="actions"><a class="btn btn-primary" href="samples/index.html">Open all artifacts</a></div>
 </div>
 <div class="feat-side">
   <div class="browser-frame">
     <div class="bf-bar" aria-hidden="true"><span class="bf-dot red"></span><span class="bf-dot yellow"></span><span class="bf-dot green"></span><span class="bf-url">ops.paytrack.internal/data-model</span></div>
     <div class="bf-viewport">
-      <a class="feat-img" href="samples/diagrams/Payment_Data_Model_ERD.svg" aria-label="Open the data model diagram"><img src="samples/diagrams/Payment_Data_Model_ERD.png" alt="Logical data model (ERD) from the PayTrack sample" width="1120" height="704" loading="lazy"></a>
+      <a class="feat-img" href="samples/diagrams/Payment_Data_Model_ERD.svg" aria-label="Open the data model diagram"><img src="samples/diagrams/Payment_Data_Model_ERD.png" alt="Logical data model (ERD) diagram from the PayTrack payment reconciliation sample" width="1120" height="704" loading="lazy"></a>
     </div>
   </div>
   <ul class="feat-links"><li><a href="samples/docs/01_BRD_PayTrack_Sample.pdf">Business requirements and functional spec <span>PDF</span></a></li><li><a href="samples/docs/03_User_Stories_Acceptance_Criteria_Sample.pdf">Stories with Given/When/Then criteria <span>PDF</span></a></li><li><a href="samples/docs/04_RTM_Test_Cases_UAT_Plan_Sample.pdf">RTM, test cases and UAT plan <span>PDF</span></a></li></ul>
@@ -880,8 +887,8 @@ def projects():
 
 # ---------------------------------------------------------------- resume
 def resume():
-    def role(t, o, b, i): return f'<div class="role {rv(i)}"><div class="node" aria-hidden="true"></div><div class="rbody"><h3>{t}</h3><div class="org">{o}</div><ul>' + "".join(f"<li>{x}</li>" for x in b) + '</ul></div></div>'
-    roles = role("Business Analyst", "Marolix Technology Solutions Pvt Ltd &bull; Hyderabad, India", [
+    def role(t, o, d, b, i): return f'<div class="role {rv(i)}"><div class="node" aria-hidden="true"></div><div class="rbody"><h3>{t}</h3><div class="org">{o}</div><div class="role-date">{d}</div><ul>' + "".join(f"<li>{x}</li>" for x in b) + '</ul></div></div>'
+    roles = role("Business Analyst", "Marolix Technology Solutions Pvt Ltd &bull; Hyderabad, India", '<time datetime="2022-05">May 2022</time> &ndash; <time>Present</time>', [
 "Accomplished payment gateway integration readiness, as measured by <strong>zero reported critical defects</strong> across <strong>2 payment gateway integrations</strong>, by defining REST API requirements, UML system flows, and Source-to-Target Mappings (STTM) with JSON payload schemas for Engineering and QA.",
 "Accomplished backend risk reduction, as measured by identifying <strong>3 recurring SLA breach patterns</strong> across <strong>100,000+ transaction records</strong>, by executing SQL queries and Python data analysis to inform process improvements.",
 "Accomplished cross-functional stakeholder alignment across 4 modules, as measured by securing sign-off from <strong>13+ stakeholders</strong> in <strong>20+ workshops</strong>, by documenting BRDs/FRDs, Non-Functional Requirements (NFRs), use cases, and BDD acceptance criteria.",
@@ -889,20 +896,20 @@ def resume():
 "Accomplished enterprise quality assurance, as measured by <strong>zero reported critical defects</strong> across <strong>350+ test cases</strong>, by coordinating UAT, functional, regression and integration testing, and supporting JIRA defect triage with QA and Engineering.",
 "Accomplished scope stability across 2 Agile releases, as measured by tracking requirement traceability through delivery, by assessing impact for <strong>12+ change requests</strong>.",
 "Accomplished technical clarity for engineering teams, as measured by unified system reference definitions, by maintaining business rules, data dictionaries, and field mappings in Confluence and Excel."], 0)
-    roles += role("Business Analyst", "V Moksha Technologies Pvt Ltd &bull; Bengaluru, India", [
+    roles += role("Business Analyst", "V Moksha Technologies Pvt Ltd &bull; Bengaluru, India", '<time datetime="2021-05">May 2021</time> &ndash; <time datetime="2022-04">Apr 2022</time>', [
 "Accomplished operational cycle-time reduction and reduced rework, as measured by saving an estimated <strong>2 weeks per improvement cycle</strong>, by resolving recurring SLA shortfalls through SQL analysis, fishbone/5-Why root-cause analysis, and AS-IS/TO-BE process mapping."], 0)
-    roles += role("Business Analyst", "Iinfocomm IT Services Pvt Ltd &bull; Bengaluru, India", [
+    roles += role("Business Analyst", "Iinfocomm IT Services Pvt Ltd &bull; Bengaluru, India", '<time datetime="2020-11">Nov 2020</time> &ndash; <time datetime="2021-04">Apr 2021</time>', [
 "Accomplished multi-unit sprint delivery on time, as measured by delivering <strong>3 concurrent modules</strong> across 4 business units, by facilitating Three Amigos sessions and translating stakeholder needs into functional requirements and BDD acceptance criteria.",
 "Accomplished business process governance, as measured by standardized operational controls across 4 business units, by documenting functional requirements, business rules, and control requirements.",
 "Accomplished zero-incident post-launch stability, as measured by <strong>no reported post-launch incidents</strong> across <strong>50+ JIRA-tracked test cases</strong>, by coordinating UAT, smoke, sanity, and regression testing.",
 "Accomplished end-to-end requirement traceability, as measured by connecting requirements, delivery, and acceptance, by reviewing API contracts against functional requirements and maintaining the Requirements Traceability Matrix (RTM) and RACI matrix."], 0)
-    roles += role("Associate Software Engineer &rarr; Promoted to BA", "Iinfocomm IT Services Pvt Ltd &bull; Bengaluru, India", [
+    roles += role('Associate Software Engineer <span aria-hidden="true">&rarr;</span> Promoted to BA', "Iinfocomm IT Services Pvt Ltd &bull; Bengaluru, India", '<time datetime="2020-06">Jun 2020</time> &ndash; <time datetime="2020-10">Oct 2020</time>', [
 "Accomplished career progression ahead of timeline, as measured by promotion to Business Analyst within 17 months (6 months ahead of schedule), by managing requirements for 3 reporting features from elicitation through stakeholder acceptance.",
 "Accomplished reporting automation approval, as measured by executive business-case sign-off projecting <strong>3+ hours of weekly manual-effort savings</strong>, by translating input from 15+ Finance and Operations stakeholders into Power BI requirements and BDD user stories.",
 "Accomplished cross-team alignment on reporting delivery, as measured by validated reporting capabilities, by coordinating with Engineering and business leads."], 0)
     return head("Resume", "Business Analyst resume: experience, skills, delivery.", "Business Analyst focused on requirements, API and system integration, SQL and Python analysis, Agile delivery and UAT coordination.", F.swim("rs")) + f'''
 <section class="sec" style="padding-top:8px"><div class="wrap">
-<div class="actions rv" style="margin:0 0 36px"><button type="button" class="btn btn-primary" onclick="window.print()" title="Print ATS-friendly resume or save as PDF">Print / Save as PDF</button><a class="btn btn-ghost" href="{LI}" target="_blank" rel="noopener noreferrer">View LinkedIn profile</a><a class="btn btn-ghost" href="{HR}" target="_blank" rel="noopener noreferrer">HackerRank profile</a><a class="btn btn-ghost" href="contact.html">Contact me</a></div>
+<div class="actions rv" style="margin:0 0 36px"><button type="button" class="btn btn-primary" id="printResumeBtn" title="Print ATS-friendly resume or save as PDF">Print / Save as PDF</button><a class="btn btn-ghost" href="{LI}" target="_blank" rel="noopener noreferrer">View LinkedIn profile</a><a class="btn btn-ghost" href="{HR}" target="_blank" rel="noopener noreferrer">HackerRank profile</a><a class="btn btn-ghost" href="contact.html">Contact me</a></div>
 <div class="proof">
 <div class="proof-card {rv(0)}"><b data-count="100" data-suf="K+">100K+</b><div class="proof-bar" aria-hidden="true"><span class="proof-bar-fill" style="--val:92%"></span></div><span class="source-tag">Marolix &bull; SQL analysis</span><span>transactions analysed</span></div>
 <div class="proof-card {rv(1)}"><b data-count="350" data-suf="+">350+</b><div class="proof-bar" aria-hidden="true"><span class="proof-bar-fill" style="--val:100%"></span></div><span class="source-tag">QA &amp; UAT coordination</span><span>test cases coordinated</span></div>
@@ -921,7 +928,7 @@ def resume():
       {sh(2, "Education", "Education &amp; certifications")}
       <dl class="facts card rv"><dt>Education</dt><dd>B.Tech, Mechanical Engineering, minor in Computer Science. Biju Patnaik University of Technology, Odisha, 2016 to 2020.</dd>
       <dt>Certification</dt><dd>Google Data Analytics Professional Certificate, Coursera, 2023.</dd>
-      <dt>In progress</dt><dd>CBAP (IIBA)</dd></dl>
+      <dt>In progress</dt><dd>CBAP (IIBA) &bull; Target completion: Q4 2026</dd></dl>
     </div>
   </div>
   <aside class="resume-sidebar" aria-label="Skills &amp; Expertise sidebar">
@@ -968,7 +975,7 @@ def contact():
     return head("Contact", "Contact a Business Analyst: tell me what you&rsquo;re trying to solve.", "For a full-time, hybrid or remote role, reach out directly. For systems analysis or technical specifications, describe the problem and the outcome.", F.seq("ct")) + f'''
 <section class="sec" style="padding-top:24px"><div class="wrap two" style="align-items:start">
 <div class="rv"><h2>Reach me directly</h2>
-<div class="reply-status"><span class="reply-dot"></span> Typically replies within 24 hours</div>
+<div class="reply-status"><span class="reply-dot"></span> Direct email enquiry &bull; Typically replies within 1&ndash;2 business days</div>
 <ul class="contact-list" style="margin-top:20px"><li><span>{ICO_MAIL}Email</span><div><a href="mailto:{EMAIL}">{EMAIL}</a> <button class="chip copy" type="button" data-copy="{EMAIL}">Copy</button></div></li><li><span>{ICO_LI}LinkedIn</span><div>{ext(LI, "gautam-reddy-analyst")}</div></li><li><span>{ICO_GH}GitHub</span><div>{ext(GH, "reddygautam98")}</div></li><li><span>{ICO_HR}HackerRank</span><div>{ext(HR, "reddygautam98")}</div></li><li><span>{ICO_LOC}Location</span><div>Bengaluru, India (IST / UTC+5:30)</div></li></ul>
 <h3 style="margin:32px 0 10px">Useful details to include</h3>
 <ul class="muted" style="padding-left:1.1em;margin:0"><li>The problem and who it affects</li><li>The output you need and how it will be used</li><li>Relevant tools, systems, data types and deadlines</li><li>Any constraints or acceptance criteria</li></ul>
@@ -977,19 +984,19 @@ def contact():
 <p class="muted small" style="margin:8px 0 16px">This site stores nothing. The button opens a draft in your email app and nothing is sent until you press Send.</p>
 <p class="small" style="margin:0 0 16px;color:var(--muted)">* Required fields</p>
 <form id="enquiry" novalidate>
-<div id="form-errors" class="form-errors" role="alert" aria-live="polite" hidden></div>
+<div id="form-errors" class="form-errors" aria-live="polite" hidden></div>
 <div class="row2">
-  <div class="form-group floating-group"><input id="enquiry-name" name="name" placeholder=" " autocomplete="name" required aria-describedby="err-name"><label for="enquiry-name">Your name *</label><span class="err" id="err-name" aria-live="polite"></span></div>
-  <div class="form-group floating-group"><input id="enquiry-email" name="email" type="email" placeholder=" " autocomplete="email" inputmode="email" required aria-describedby="err-email"><label for="enquiry-email">Work email *</label><span class="err" id="err-email" aria-live="polite"></span></div>
+  <div class="form-group floating-group"><input id="enquiry-name" name="name" placeholder=" " autocomplete="name" required aria-describedby="err-name"><label for="enquiry-name">Your name *</label><span class="err" id="err-name"></span></div>
+  <div class="form-group floating-group"><input id="enquiry-email" name="email" type="email" placeholder=" " autocomplete="email" inputmode="email" required aria-describedby="err-email"><label for="enquiry-email">Email *</label><span class="err" id="err-email"></span></div>
 </div>
 <div class="form-group floating-group"><input id="enquiry-company" name="company" placeholder=" " autocomplete="organization"><label for="enquiry-company">Company (optional)</label></div>
-<div class="form-group floating-group"><select id="enquiry-service" name="service" required aria-describedby="err-service"><option value="" disabled selected hidden></option>{opts(["Business analysis and requirements", "Data analysis and BI reporting", "SQL, data quality and reporting", "API and integration analysis", "UAT, testing and release support", "A role at my company", "Not sure yet"])}</select><label for="enquiry-service">What do you need help with? *</label><span class="err" id="err-service" aria-live="polite"></span></div>
+<div class="form-group floating-group"><select id="enquiry-service" name="service" required aria-describedby="err-service"><option value="" disabled selected hidden></option>{opts(["Business analysis and requirements", "Data analysis and BI reporting", "SQL, data quality and reporting", "API and integration analysis", "UAT, testing and release support", "A role at my company", "Not sure yet"])}</select><label for="enquiry-service">What do you need help with? *</label><span class="err" id="err-service"></span></div>
 <div class="row2">
   <div class="form-group floating-group"><select id="enquiry-type" name="type"><option value="" disabled selected hidden></option>{opts(["Full-time role", "Discovery or review", "Defined deliverable", "Ongoing support", "Prototype or feasibility", "Not sure yet"])}</select><label for="enquiry-type">Engagement type</label></div>
   <div class="form-group floating-group"><select id="enquiry-timeline" name="timeline"><option value="" disabled selected hidden></option>{opts(["Flexible", "As soon as practical", "Within 2 to 4 weeks", "Within 1 to 3 months", "Specific deadline"])}</select><label for="enquiry-timeline">Target timeline</label></div>
 </div>
-<div class="form-group floating-group"><textarea id="enquiry-msg" name="msg" placeholder=" " required aria-describedby="err-msg"></textarea><label for="enquiry-msg">Describe the problem and the outcome you want *</label><span class="err" id="err-msg" aria-live="polite"></span></div>
-<div class="form-group floating-group"><input id="enquiry-ref" name="ref" type="url" placeholder=" " aria-describedby="err-ref"><label for="enquiry-ref">Reference link (optional)</label><span class="err" id="err-ref" aria-live="polite"></span></div>
+<div class="form-group floating-group"><textarea id="enquiry-msg" name="msg" placeholder=" " required aria-describedby="err-msg"></textarea><label for="enquiry-msg">Describe the problem and the outcome you want *</label><span class="err" id="err-msg"></span></div>
+<div class="form-group floating-group"><input id="enquiry-ref" name="ref" type="url" placeholder=" " aria-describedby="err-ref"><label for="enquiry-ref">Reference link (optional)</label><span class="err" id="err-ref"></span></div>
 <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap"><button class="btn btn-primary" type="submit">Prepare email draft</button><button class="btn btn-ghost" type="button" id="copyEnquiryBtn">Copy message</button><span class="muted small">Or email directly: <a href="mailto:{EMAIL}">{EMAIL}</a></span></div>
 <p id="sent" class="muted small" hidden role="status">Preparing your email draft. If your email application does not open automatically, please send your enquiry directly to <a href="mailto:{EMAIL}">{EMAIL}</a>.</p>
 </form></div>
@@ -1112,7 +1119,7 @@ def samples():
 </div></section>
 ''' + cta("../")
 
-DESC = "Business Analyst in Bengaluru with 4+ years of experience: requirements engineering, BRD/FRD, NFRs, REST APIs, STTM, SQL, Power BI and UAT. Open to remote and hybrid roles."
+DESC = "Business Analyst in Bengaluru with 4+ years of experience: BRD/FRD, NFRs, REST APIs, STTM, SQL, Power BI and UAT. Open to remote and hybrid roles."
 PERSON_ID = SITE + "#person"
 PERSON = {"@type": "Person", "@id": PERSON_ID, "name": "Gautam Reddy", "jobTitle": "Business Analyst",
     "description": DESC, "url": SITE, "sameAs": [LI, GH, HR],
@@ -1146,11 +1153,11 @@ LD_SAMPLES = ldscript({"@type": "CollectionPage", "url": SITE + "samples/index.h
 pages = [
 ("index.html", "Gautam Reddy | Business Analyst: Requirements, APIs, SQL, UAT", DESC, index(), "", "", LD_HOME),
 ("about.html", "About Gautam Reddy | Business Analyst", "About Gautam Reddy, a Bengaluru Business Analyst with 4+ years of experience in requirements engineering, NFRs, REST APIs, STTM, SQL analysis and UAT.", about(), "", "about.html", LD_ABOUT),
-("services.html", "BA Services: BRD/FRD, REST API Requirements, SQL, UAT | Gautam Reddy", "Business analysis services: BRD/FRD and NFRs requirements packs, SQL and Python analysis, STTM, Power BI requirements, REST API requirements and Agile UAT support.", services(), "", "services.html", LD_SERVICES),
-("projects.html", "Business Analyst Projects: SQL, Power BI, PayTrack | Gautam Reddy", "Portfolio projects by Business Analyst Gautam Reddy: SQL and Power BI analytics, data pipelines, RAG prototypes, and the PayTrack case study.", projects(), "", "projects.html", LD_PROJECTS),
+("services.html", "BA Services: BRD, APIs, SQL & UAT | Gautam Reddy", "Business analysis services: BRD/FRD, NFRs, SQL and Python data analysis, STTM, Power BI dashboards, REST API specs and Agile UAT coordination.", services(), "", "services.html", LD_SERVICES),
+("projects.html", "BA Projects: SQL, Power BI & Case Studies | Gautam Reddy", "Portfolio projects by Business Analyst Gautam Reddy: SQL and Power BI analytics, data pipelines, RAG prototypes, and the PayTrack case study.", projects(), "", "projects.html", LD_PROJECTS),
 ("resume.html", "Resume | Gautam Reddy, Business Analyst", "Resume of Gautam Reddy, Business Analyst with 4+ years of experience: 2 payment gateway integrations, STTM, NFRs, 100,000+ transactions analysed, 350+ test cases.", resume(), "", "resume.html", LD_RESUME),
 ("contact.html", "Contact Gautam Reddy | Hire a Business Analyst, Bengaluru", "Contact Gautam Reddy, a Business Analyst in Bengaluru, about full-time, hybrid or remote roles, or requirements, systems integration, and reporting projects.", contact(), "", "contact.html", LD_CONTACT),
-("samples/index.html", "BA Sample Documents: BRD, FRD, NFRs, User Stories, RTM | Gautam Reddy", "Business Analyst case study artifacts: BRD, FRD, NFRs, user stories, STTM, RTM, UAT plan, BPMN and UML diagrams, SQL queries and CSV templates.", samples(), "../", "samples/index.html", LD_SAMPLES),
+("samples/index.html", "BA Sample Documents: BRD, FRD, Stories & RTM | Gautam Reddy", "Business Analyst case study artifacts: BRD, FRD, NFRs, user stories, STTM, RTM, UAT plan, BPMN and UML diagrams, SQL queries and CSV templates.", samples(), "../", "samples/index.html", LD_SAMPLES),
 ]
 for path, t, d, b, p, cur, ld in pages:
     open(path, "w", encoding="utf-8").write(page(path, t, d, b, p, cur, ld))
@@ -1159,17 +1166,17 @@ NOT_FOUND = '''<section class="sec" style="padding-top:40px"><div class="wrap" s
 <h1>Page not found</h1>
 <p class="lead" style="margin-top:16px">The page you were looking for doesn&rsquo;t exist, was renamed, or has moved.</p>
 <div class="actions" style="margin-top:28px">
-<a class="btn btn-primary" href="{s}">Go to homepage <span class="arr" aria-hidden="true">&rarr;</span></a>
-<a class="btn btn-ghost" href="{s}projects.html">Browse projects</a>
-<a class="btn btn-ghost" href="{s}samples/index.html">View BA samples</a>
+<a class="btn btn-primary" href="index.html">Go to homepage <span class="arr" aria-hidden="true">&rarr;</span></a>
+<a class="btn btn-ghost" href="projects.html">Browse projects</a>
+<a class="btn btn-ghost" href="samples/index.html">View BA samples</a>
 </div>
 <ul class="muted small" style="display:flex;gap:18px;list-style:none;padding:0;margin:32px 0 0;flex-wrap:wrap">
-<li><a href="{s}services.html">Services</a></li>
-<li><a href="{s}resume.html">Resume</a></li>
-<li><a href="{s}contact.html">Contact</a></li>
+<li><a href="services.html">Services</a></li>
+<li><a href="resume.html">Resume</a></li>
+<li><a href="contact.html">Contact</a></li>
 </ul>
-</div></section>'''.format(s=SITE)
-open("404.html", "w", encoding="utf-8").write(page("404.html", "Page not found | Gautam Reddy, Business Analyst", "This page could not be found.", NOT_FOUND, SITE, "", "", "noindex, follow"))
+</div></section>'''
+open("404.html", "w", encoding="utf-8").write(page("404.html", "Page not found | Gautam Reddy, Business Analyst", "This page could not be found.", NOT_FOUND, "", "", "", "noindex, follow"))
 
 import datetime
 today = datetime.date.today().isoformat()
