@@ -36,29 +36,68 @@
 <header class="site-header"><div class="wrap bar">
 <a class="brand" href="./"><img src="assets/mark.svg" alt="" width="30" height="30">Gautam Reddy</a>
 <nav class="nav" id="nav" aria-label="Main"><a href="projects.html">Projects</a><a href="samples/index.html">BA samples</a><a href="services.html">Services</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="resume.html" class="nav-resume-btn">Resume</a></nav>
-<div class="tools"><button class="icon-btn" id="theme" type="button" aria-label="Dark theme" aria-pressed="false"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button></div>
+<div class="tools">
+<button class="icon-btn" id="animToggle" type="button" aria-label="Pause animations" aria-pressed="false" title="Toggle animations (pause/resume)"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg></button>
+<button class="icon-btn" id="theme" type="button" aria-label="Switch to dark theme" aria-pressed="false" title="Toggle theme (light/dark)"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
+</div>
 <button class="icon-btn menu-btn" id="menu" type="button" aria-expanded="false" aria-controls="nav" aria-label="Menu">&#9776;</button>
 </div><div class="nav-backdrop" id="navBackdrop" aria-hidden="true"></div></header>
 <main id="main" tabindex="-1">
-<section class="sec" style="padding-top:40px"><div class="wrap" style="max-width:680px">
-<h1>Page not found</h1>
-<p class="lead" style="margin-top:16px">The page you were looking for doesn&rsquo;t exist, was renamed, or has moved.</p>
-<div class="actions" style="margin-top:28px">
-<a class="btn btn-primary" href="index.html">Go to homepage <span class="arr" aria-hidden="true">&rarr;</span></a>
-<a class="btn btn-ghost" href="projects.html">Browse projects</a>
-<a class="btn btn-ghost" href="samples/index.html">View BA samples</a>
+<section class="sec notfound-sec" style="padding-top:40px"><div class="wrap" style="max-width:720px">
+<div class="notfound-badge">404 &bull; MISSING REQUIREMENT</div>
+<h1>Path not found in specification</h1>
+<p class="lead" style="margin-top:16px">The requested URL does not match any route or documented artifact in this portfolio.</p>
+
+<div class="notfound-flow" aria-hidden="true">
+  <div class="nf-node"><span class="nf-step">01</span><span>Incoming Route</span></div>
+  <div class="nf-arrow broken">&dash;&dash;&times;&dash;&dash;</div>
+  <div class="nf-node dead"><span class="nf-step">404</span><span>Unmapped Endpoint</span></div>
 </div>
-<ul class="muted small" style="display:flex;gap:18px;list-style:none;padding:0;margin:32px 0 0;flex-wrap:wrap">
-<li><a href="services.html">Services</a></li>
-<li><a href="resume.html">Resume</a></li>
-<li><a href="contact.html">Contact</a></li>
-</ul>
+
+<div class="actions" style="margin-top:28px">
+<a class="btn btn-primary" href="index.html">Return to homepage <span class="arr" aria-hidden="true">&rarr;</span></a>
+<a class="btn btn-ghost" href="samples/index.html">View BA samples</a>
+<a class="btn btn-ghost" href="projects.html">Browse projects</a>
+</div>
+
+<div class="notfound-links-card card" style="margin-top:36px">
+  <h3>Popular destinations</h3>
+  <ul class="notfound-links-list">
+    <li><a href="samples/index.html#brd"><b>Business Requirements Document (BRD)</b> &bull; PayTrack payment reconciliation sample</a></li>
+    <li><a href="resume.html"><b>Resume &amp; Experience</b> &bull; 4+ years BA experience, STTM, SQL, UAT</a></li>
+    <li><a href="services.html"><b>BA Services &amp; Deliverables</b> &bull; Scoping, process mapping, test planning</a></li>
+    <li><a href="contact.html"><b>Contact Gautam Reddy</b> &bull; Role enquiries &amp; direct email</a></li>
+  </ul>
+</div>
 </div></section>
 </main>
 
+<aside id="imageLightbox" class="image-lightbox erd-lightbox" role="dialog" aria-modal="true" aria-label="Artifact Zoom Preview" hidden>
+  <div class="ilb-backdrop erd-lb-backdrop" id="ilbBackdrop" aria-hidden="true"></div>
+  <div class="ilb-dialog erd-lb-dialog">
+    <div class="ilb-head erd-lb-head">
+      <span class="feat-badge ilb-title" id="ilbTitle">Artifact Preview &bull; Full Resolution</span>
+      <button class="icon-btn ilb-close" id="ilbClose" type="button" aria-label="Close image viewer">&times;</button>
+    </div>
+    <div class="ilb-body erd-lb-body">
+      <img id="ilbImg" src="samples/diagrams/Payment_Data_Model_ERD.png" alt="Full resolution preview" width="1600" height="1000" loading="lazy">
+      <p class="ilb-caption" id="ilbCaption"></p>
+    </div>
+  </div>
+</aside>
 <footer class="site-footer"><div class="wrap foot">
-<div>&copy; <span data-year>2026</span> Gautam Reddy &bull; Business Analyst, Bengaluru, India (IST / UTC+5:30) &bull; Recently updated.<br>Sample artifacts on this site are fictional and are labelled as such.</div>
-<nav aria-label="Footer"><a href="https://github.com/reddygautam98/" target="_blank" rel="noopener noreferrer">GitHub <span class="sr-only">(opens in new tab)</span>&rarr;</a><a href="https://www.linkedin.com/in/gautam-reddy-analyst" target="_blank" rel="noopener noreferrer">LinkedIn <span class="sr-only">(opens in new tab)</span>&rarr;</a><a href="https://www.hackerrank.com/profile/reddygautam98" target="_blank" rel="noopener noreferrer">HackerRank <span class="sr-only">(opens in new tab)</span>&rarr;</a><a href="mailto:gautamreddy098@gmail.com">Email</a><a href="#main" class="back-to-top" title="Back to top">&uarr; Top</a></nav>
+<div class="foot-main">
+  <div class="foot-copy">&copy; <span data-year>2026</span> Gautam Reddy &bull; Business Analyst, Bengaluru, India (IST / UTC+5:30) &bull; Built 2026.<br>Sample artifacts on this site are fictional and are labelled as such.</div>
+  <div class="foot-sitemap" aria-label="Footer Navigation">
+    <a href="projects.html">Projects</a>
+    <a href="samples/index.html">BA Samples</a>
+    <a href="services.html">Services</a>
+    <a href="about.html">About</a>
+    <a href="resume.html">Resume</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</div>
+<nav aria-label="Social and direct links"><a href="https://github.com/reddygautam98/" target="_blank" rel="noopener noreferrer">GitHub <span class="sr-only">(opens in new tab)</span>&rarr;</a><a href="https://www.linkedin.com/in/gautam-reddy-analyst" target="_blank" rel="noopener noreferrer">LinkedIn <span class="sr-only">(opens in new tab)</span>&rarr;</a><a href="https://www.hackerrank.com/profile/reddygautam98" target="_blank" rel="noopener noreferrer">HackerRank <span class="sr-only">(opens in new tab)</span>&rarr;</a><a href="mailto:gautamreddy098@gmail.com">Email</a><a href="#main" class="back-to-top" title="Back to top">&uarr; Top</a></nav>
 </div></footer>
 
 <script src="assets/vendor/lenis.min.js" defer></script>
