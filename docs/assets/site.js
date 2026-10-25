@@ -567,6 +567,7 @@ var slider=$('#heroSlider');
 if(slider){
   var tabs=$$('.slider-tab',slider),
       slides=$$('.slider-slide',slider),
+      dots=$$('.s-dot',slider),
       prevBtn=$('#slidePrev',slider),
       nextBtn=$('#slideNext',slider),
       countEl=$('#slideCount',slider),
@@ -574,9 +575,15 @@ if(slider){
       currIdx=0,
       totalSlides=slides.length;
 
-  var showSlide=function(idx){
+  var showSlide=function(idx,explicitDir){
     if(idx<0)idx=totalSlides-1;
     if(idx>=totalSlides)idx=0;
+    var dir=explicitDir;
+    if(!dir){
+      if(currIdx===totalSlides-1&&idx===0)dir='next';
+      else if(currIdx===0&&idx===totalSlides-1)dir='prev';
+      else dir=idx>currIdx?'next':(idx<currIdx?'prev':'');
+    }
     currIdx=idx;
     tabs.forEach(function(t,i){
       var active=i===currIdx;
@@ -584,10 +591,21 @@ if(slider){
       t.setAttribute('aria-selected',active?'true':'false');
       t.setAttribute('tabindex',active?'0':'-1');
     });
+    dots.forEach(function(d,i){
+      d.classList.toggle('is-active',i===currIdx);
+    });
     slides.forEach(function(s,i){
       var active=i===currIdx;
-      s.classList.toggle('is-active',active);
-      s.hidden=!active;
+      s.classList.remove('slide-from-right','slide-from-left','is-active');
+      if(active){
+        s.hidden=false;
+        void s.offsetWidth;
+        s.classList.add('is-active');
+        if(dir==='next')s.classList.add('slide-from-right');
+        else if(dir==='prev')s.classList.add('slide-from-left');
+      }else{
+        s.hidden=true;
+      }
     });
     if(countEl)countEl.textContent=(currIdx+1)+' / '+totalSlides;
   };
@@ -595,8 +613,11 @@ if(slider){
   tabs.forEach(function(t,i){
     t.addEventListener('click',function(){showSlide(i)});
   });
-  if(prevBtn)prevBtn.addEventListener('click',function(){showSlide(currIdx-1)});
-  if(nextBtn)nextBtn.addEventListener('click',function(){showSlide(currIdx+1)});
+  dots.forEach(function(d,i){
+    d.addEventListener('click',function(){showSlide(i)});
+  });
+  if(prevBtn)prevBtn.addEventListener('click',function(){showSlide(currIdx-1,'prev')});
+  if(nextBtn)nextBtn.addEventListener('click',function(){showSlide(currIdx+1,'next')});
 
   /* WAI-ARIA tablist keyboard navigation on tabs */
   if(tablist){
@@ -604,20 +625,20 @@ if(slider){
       if(e.key==='ArrowRight'||e.key==='ArrowDown'){
         e.preventDefault();
         var next=(currIdx+1)%totalSlides;
-        showSlide(next);
+        showSlide(next,'next');
         tabs[next].focus();
       }else if(e.key==='ArrowLeft'||e.key==='ArrowUp'){
         e.preventDefault();
         var prev=(currIdx-1+totalSlides)%totalSlides;
-        showSlide(prev);
+        showSlide(prev,'prev');
         tabs[prev].focus();
       }else if(e.key==='Home'){
         e.preventDefault();
-        showSlide(0);
+        showSlide(0,'prev');
         tabs[0].focus();
       }else if(e.key==='End'){
         e.preventDefault();
-        showSlide(totalSlides-1);
+        showSlide(totalSlides-1,'next');
         tabs[totalSlides-1].focus();
       }
     });
@@ -632,11 +653,30 @@ if(slider){
     if(e.changedTouches&&e.changedTouches.length===1){
       var dx=e.changedTouches[0].clientX-touchX;
       if(Math.abs(dx)>40){
-        if(dx<0)showSlide(currIdx+1);
-        else showSlide(currIdx-1);
+        if(dx<0)showSlide(currIdx+1,'next');
+        else showSlide(currIdx-1,'prev');
       }
     }
   },{passive:true});
+
+  /* Auto-slide rotation with pause on hover/focus */
+  var slideTimer=null;
+  var startSlideTimer=function(){
+    if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+      stopSlideTimer();
+      slideTimer=setInterval(function(){
+        showSlide(currIdx+1,'next');
+      },6500);
+    }
+  };
+  var stopSlideTimer=function(){
+    if(slideTimer){clearInterval(slideTimer);slideTimer=null;}
+  };
+  slider.addEventListener('pointerenter',stopSlideTimer);
+  slider.addEventListener('pointerleave',startSlideTimer);
+  slider.addEventListener('focusin',stopSlideTimer);
+  slider.addEventListener('focusout',startSlideTimer);
+  startSlideTimer();
 }
 
 /* About BA Console: Interactive Tab Navigation with Home/End support */
