@@ -28,7 +28,7 @@ ICO_LOC = '<svg class="ico-loc" viewBox="0 0 24 24" width="18" height="18" fill=
 def page(path, title, desc, body, p="", cur="", ld="", robots="index, follow, max-image-preview:large, max-snippet:-1"):
     url = SITE if path == "index.html" else SITE + path
     home = p if p else "./"
-    if robots.startswith("noindex"): url_tags = ""
+    if robots.startswith("noindex"): url_tags = f'<base href="{SITE}">\n'
     else: url_tags = f'<link rel="canonical" href="{url}">\n<meta property="og:url" content="{url}">\n'
     res_cur = ' aria-current="page"' if cur == "resume.html" else ""
     nav = "".join('<a href="%s%s"%s>%s</a>' % (p, h, ' aria-current="page"' if h == cur else "", t) for h, t in NAV)
@@ -103,9 +103,9 @@ def page(path, title, desc, body, p="", cur="", ld="", robots="index, follow, ma
           <table style="width:100%;font-size:.85rem">
             <thead><tr><th>BR ID</th><th>FR ID</th><th>Story ID</th><th>Test Case</th><th>UAT Status</th></tr></thead>
             <tbody>
-              <tr><td>BR-01</td><td>FR-002</td><td>US-01</td><td>TC-001</td><td>PASS</td></tr>
-              <tr><td>BR-02</td><td>FR-005</td><td>US-03</td><td>TC-003</td><td>PASS</td></tr>
-              <tr><td>BR-03</td><td>FR-008</td><td>US-05</td><td>TC-006</td><td>PASS</td></tr>
+              <tr><td>BR-01</td><td>FR-002</td><td>US-01</td><td>TC-001</td><td>Not Run</td></tr>
+              <tr><td>BR-02</td><td>FR-005</td><td>US-03</td><td>TC-003</td><td>Not Run</td></tr>
+              <tr><td>BR-03</td><td>FR-008</td><td>US-05</td><td>TC-006</td><td>Not Run</td></tr>
             </tbody>
           </table>
           </div>
@@ -171,7 +171,7 @@ def page(path, title, desc, body, p="", cur="", ld="", robots="index, follow, ma
 </main>
 {drawer_markup}
 <footer class="site-footer"><div class="wrap foot">
-<div>&copy; <span data-year>2026</span> Gautam Reddy &bull; Business Analyst, Bengaluru, India (IST / UTC+5:30) &bull; Updated 2026.<br>Sample artifacts on this site are fictional and are labelled as such.</div>
+<div>&copy; <span data-year>2026</span> Gautam Reddy &bull; Business Analyst, Bengaluru, India (IST / UTC+5:30) &bull; Recently updated.<br>Sample artifacts on this site are fictional and are labelled as such.</div>
 <nav aria-label="Footer"><a href="{home}">Home</a><a href="{p}about.html">About</a><a href="{p}services.html">Services</a><a href="{p}projects.html">Projects</a><a href="{p}samples/index.html">BA samples</a><a href="{p}resume.html">Resume</a><a href="{p}contact.html">Contact</a>{ext(GH, "GitHub")}{ext(LI, "LinkedIn")}{ext(HR, "HackerRank")}<a href="mailto:{EMAIL}">Email</a><a href="#main" class="back-to-top" title="Back to top">&uarr; Top</a></nav>
 </div></footer>
 
@@ -484,11 +484,11 @@ def paytrack_wireframe_svg():
           <div class="wf-kpi-card warn"><span class="wf-kpi-val">3</span><span class="wf-kpi-lbl">SLA Breaches*</span></div>
           <div class="wf-kpi-card ok"><span class="wf-kpi-val">99.8%</span><span class="wf-kpi-lbl">Reconciled*</span></div>
         </div>
-        <div class="wf-table" id="wireframeTable">
-          <div class="wf-tr wf-th"><span>TXN_ID</span><span>GATEWAY</span><span>AMOUNT</span><span>STATUS</span><span>SLA DUE</span></div>
-          <div class="wf-tr wf-row-cycle is-active-row" id="wfRow1"><span class="wf-td-code">TXN_9841</span><span>Stripe API</span><span>$1,420.00</span><span class="wf-badge-warn">WARN (Amount)</span><span>2h 15m</span></div>
-          <div class="wf-tr wf-row-cycle" id="wfRow2"><span class="wf-td-code">TXN_9842</span><span>Razorpay</span><span>&#8377;68,500.00</span><span class="wf-badge-ok">RECONCILED</span><span>&mdash;</span></div>
-          <div class="wf-tr wf-row-cycle" id="wfRow3"><span class="wf-td-code">TXN_9843</span><span>Adyen Webhook</span><span>$3,190.00</span><span class="wf-badge-err">ERROR (Timeout)</span><span>Overdue</span></div>
+        <div class="wf-table" id="wireframeTable" role="table" aria-label="Reconciliation Exceptions Table">
+          <div class="wf-tr wf-th" role="row"><span role="columnheader">TXN_ID</span><span role="columnheader">GATEWAY</span><span role="columnheader">AMOUNT</span><span role="columnheader">STATUS</span><span role="columnheader">SLA DUE</span></div>
+          <div class="wf-tr wf-row-cycle is-active-row" id="wfRow1" role="row"><span class="wf-td-code" role="cell">TXN_9841</span><span role="cell">Stripe API</span><span role="cell">$1,420.00</span><span class="wf-badge-warn" role="cell">WARN (Amount)</span><span role="cell">2h 15m</span></div>
+          <div class="wf-tr wf-row-cycle" id="wfRow2" role="row"><span class="wf-td-code" role="cell">TXN_9842</span><span role="cell">Razorpay</span><span role="cell">&#8377;68,500.00</span><span class="wf-badge-ok" role="cell">RECONCILED</span><span role="cell">&mdash;</span></div>
+          <div class="wf-tr wf-row-cycle" id="wfRow3" role="row"><span class="wf-td-code" role="cell">TXN_9843</span><span role="cell">Adyen Webhook</span><span role="cell">$3,190.00</span><span class="wf-badge-err" role="cell">ERROR (Timeout)</span><span role="cell">Overdue</span></div>
         </div>
       </div>
     </div>
@@ -563,7 +563,7 @@ def index():
 <div class="role {rv(0)}"><div class="node" aria-hidden="true"></div><div class="rbody"><h3>Business Analyst &ndash; Marolix Technology Solutions</h3><div class="org">Marolix Technology Solutions Pvt Ltd &bull; Hyderabad, India</div><div class="role-date"><time datetime="2022-05">May 2022</time> &ndash; <time>Present</time></div><ul><li>Defined REST API requirements, UML system flows, and Source-to-Target Mappings (STTM) with JSON payload schemas across 2 payment gateway integrations, achieving defect-free production deployment.</li><li>Queried and processed 100,000+ transaction logs with SQL and Python to identify 3 root-cause SLA-breach patterns and formulate automated reconciliation logic.</li><li>Coordinated 350+ UAT test scenarios in Jira across cross-functional squads and assessed 12+ change requests with zero post-release critical defects.</li></ul><button class="role-expander" type="button" aria-expanded="false" aria-controls="role-metrics-0"><span>Key accomplishments &amp; metrics</span> <span class="exp-arr" aria-hidden="true">&#9662;</span></button><div class="role-metrics" id="role-metrics-0" hidden><div class="role-metrics-grid"><div><b>100K+</b><span>Transactions analysed</span></div><div><b>350+</b><span>Test cases coordinated</span></div><div><b>0</b><span>Critical defects reported</span></div><div><b>12+</b><span>Change requests managed</span></div></div></div></div></div>
 <div class="role {rv(1)}"><div class="node" aria-hidden="true"></div><div class="rbody"><h3>Business Analyst &ndash; V Moksha Technologies</h3><div class="org">V Moksha Technologies Pvt Ltd &bull; Bengaluru, India</div><div class="role-date"><time datetime="2021-05">May 2021</time> &ndash; <time datetime="2022-04">Apr 2022</time></div><ul><li>Reduced operational turnaround by an estimated 2 weeks per improvement cycle by leading fishbone and 5-Why root cause analyses on recurring SLA shortfalls.</li><li>Mapped AS-IS and TO-BE business processes to eliminate manual handoff bottlenecks and standardize operational handovers.</li></ul><button class="role-expander" type="button" aria-expanded="false" aria-controls="role-metrics-1"><span>Key accomplishments &amp; metrics</span> <span class="exp-arr" aria-hidden="true">&#9662;</span></button><div class="role-metrics" id="role-metrics-1" hidden><div class="role-metrics-grid"><div><b>2 wks</b><span>Cycle time saved</span></div><div><b>5-Why</b><span>Root-cause analysis</span></div><div><b>AS-IS/TO-BE</b><span>Process mapping</span></div></div></div></div></div>
 <div class="role {rv(2)}"><div class="node" aria-hidden="true"></div><div class="rbody"><h3>Business Analyst &ndash; Iinfocomm IT Services</h3><div class="org">Iinfocomm IT Services Pvt Ltd &bull; Bengaluru, India</div><div class="role-date"><time datetime="2020-11">Nov 2020</time> &ndash; <time datetime="2021-04">Apr 2021</time></div><ul><li>Facilitated Three Amigos sessions across 4 business units to author BDD Given/When/Then user stories for 3 concurrent modules delivered on schedule.</li><li>Coordinated UAT, regression, and smoke testing across 50+ Jira test cases, resulting in zero reported post-launch incidents.</li><li>Maintained end-to-end Requirements Traceability Matrix (RTM) and validated API contracts against functional specifications.</li></ul><button class="role-expander" type="button" aria-expanded="false" aria-controls="role-metrics-2"><span>Key accomplishments &amp; metrics</span> <span class="exp-arr" aria-hidden="true">&#9662;</span></button><div class="role-metrics" id="role-metrics-2" hidden><div class="role-metrics-grid"><div><b>3</b><span>Concurrent modules</span></div><div><b>4</b><span>Business units</span></div><div><b>50+</b><span>Jira test cases</span></div></div></div></div></div>
-<div class="role {rv(3)}"><div class="node" aria-hidden="true"></div><div class="rbody"><h3>Associate Software Engineer &ndash; Iinfocomm IT Services</h3><div class="org">Iinfocomm IT Services Pvt Ltd &bull; Bengaluru, India</div><div class="role-date"><time datetime="2020-06">Jun 2020</time> &ndash; <time datetime="2020-10">Oct 2020</time></div><ul><li>Earned early promotion to Business Analyst ahead of schedule within 17 months after successfully delivering requirements for 3 reporting features.</li><li>Authored Power BI specifications and user stories based on requirements gathered from 15+ Finance and Operations stakeholders, saving an estimated 3+ hrs/week of manual reporting.</li></ul><button class="role-expander" type="button" aria-expanded="false" aria-controls="role-metrics-3"><span>Key accomplishments &amp; metrics</span> <span class="exp-arr" aria-hidden="true">&#9662;</span></button><div class="role-metrics" id="role-metrics-3" hidden><div class="role-metrics-grid"><div><b>Early</b><span>Promotion</span></div><div><b>15+</b><span>Finance &amp; Ops stakeholders</span></div><div><b>3+ hrs</b><span>Projected weekly savings</span></div></div></div></div></div>
+<div class="role {rv(3)}"><div class="node" aria-hidden="true"></div><div class="rbody"><h3>Associate Software Engineer &ndash; Iinfocomm IT Services</h3><div class="org">Iinfocomm IT Services Pvt Ltd &bull; Bengaluru, India</div><div class="role-date"><time datetime="2020-06">Jun 2020</time> &ndash; <time datetime="2020-10">Oct 2020</time></div><ul><li>Earned early promotion to Business Analyst ahead of schedule within 5 months (ahead of standard 12-month promotion cycle) after successfully delivering requirements for 3 reporting features.</li><li>Authored Power BI specifications and user stories based on requirements gathered from 15+ Finance and Operations stakeholders, saving an estimated 3+ hrs/week of manual reporting.</li></ul><button class="role-expander" type="button" aria-expanded="false" aria-controls="role-metrics-3"><span>Key accomplishments &amp; metrics</span> <span class="exp-arr" aria-hidden="true">&#9662;</span></button><div class="role-metrics" id="role-metrics-3" hidden><div class="role-metrics-grid"><div><b>Early</b><span>Promotion</span></div><div><b>15+</b><span>Finance &amp; Ops stakeholders</span></div><div><b>3+ hrs</b><span>Projected weekly savings</span></div></div></div></div></div>
 </div>
 <div class="actions"><a class="btn btn-ghost" href="resume.html">Full resume &amp; ATS PDF</a></div>
 </div></section>
@@ -607,7 +607,7 @@ def about_3d_console():
 
       <div class="console-body">
         <!-- Panel 0: Business Rules Engine (BRE) -->
-        <div class="console-panel is-active" id="ab-panel-0" role="tabpanel" aria-labelledby="ab-tab-0">
+        <div class="console-panel is-active" id="ab-panel-0" role="tabpanel" tabindex="0" aria-labelledby="ab-tab-0">
           <div class="ba-spec-sheet">
             <div class="ba-spec-hdr">
               <span class="ba-spec-kwd">DECISION TABLE</span>
@@ -643,7 +643,7 @@ def about_3d_console():
         </div>
 
         <!-- Panel 1: Change Impact Analysis -->
-        <div class="console-panel" id="ab-panel-1" role="tabpanel" aria-labelledby="ab-tab-1" hidden>
+        <div class="console-panel" id="ab-panel-1" role="tabpanel" tabindex="0" aria-labelledby="ab-tab-1" hidden>
           <div class="ba-spec-sheet">
             <div class="ba-spec-hdr">
               <span class="ba-spec-kwd">CHANGE TRIAGE</span>
@@ -671,7 +671,7 @@ def about_3d_console():
         </div>
 
         <!-- Panel 2: Stakeholder Triangulation -->
-        <div class="console-panel" id="ab-panel-2" role="tabpanel" aria-labelledby="ab-tab-2" hidden>
+        <div class="console-panel" id="ab-panel-2" role="tabpanel" tabindex="0" aria-labelledby="ab-tab-2" hidden>
           <div class="ba-spec-sheet">
             <div class="ba-spec-hdr">
               <span class="ba-spec-kwd">STAKEHOLDER TRIANGULATION</span>
@@ -736,7 +736,7 @@ def about():
 <div class="role {rv(0)}"><div class="node" aria-hidden="true"></div><div class="rbody"><h3>Business Analyst &ndash; Marolix Technology Solutions</h3><div class="org">Marolix Technology Solutions Pvt Ltd, Hyderabad</div><div class="role-date"><time datetime="2022-05">May 2022</time> &ndash; <time>Present</time></div><p class="muted">Led REST API specifications, UML system workflows, and Source-to-Target Mappings (STTM) across 2 payment gateway integrations, achieving defect-free production rollout. Executed SQL data analysis on 100,000+ transaction logs to identify 3 SLA breach patterns, and coordinated 350+ UAT test cases in Jira.</p></div></div>
 <div class="role {rv(1)}"><div class="node" aria-hidden="true"></div><div class="rbody"><h3>Business Analyst &ndash; V Moksha Technologies</h3><div class="org">V Moksha Technologies Pvt Ltd, Bengaluru</div><div class="role-date"><time datetime="2021-05">May 2021</time> &ndash; <time datetime="2022-04">Apr 2022</time></div><p class="muted">Reduced operational cycle time by an estimated 2 weeks per improvement cycle by resolving recurring SLA shortfalls through SQL data queries, fishbone/5-Why root cause analysis, and AS-IS / TO-BE process mapping.</p></div></div>
 <div class="role {rv(2)}"><div class="node" aria-hidden="true"></div><div class="rbody"><h3>Business Analyst &ndash; Iinfocomm IT Services</h3><div class="org">Iinfocomm IT Services Pvt Ltd, Bengaluru</div><div class="role-date"><time datetime="2020-11">Nov 2020</time> &ndash; <time datetime="2021-04">Apr 2021</time></div><p class="muted">Delivered 3 concurrent modules across 4 business units with zero post-launch incidents by facilitating Three Amigos alignment sessions, authoring BDD acceptance criteria, reviewing API contracts, and coordinating 50+ Jira test cases.</p></div></div>
-<div class="role {rv(3)}"><div class="node" aria-hidden="true"></div><div class="rbody"><h3>Associate Software Engineer <span class="rank-up-badge"><span aria-hidden="true">&#8679;</span> Promoted early</span> &ndash; Iinfocomm</h3><div class="org">Iinfocomm IT Services Pvt Ltd, Bengaluru</div><div class="role-date"><time datetime="2020-06">Jun 2020</time> &ndash; <time datetime="2020-10">Oct 2020</time></div><p class="muted"><strong>Promoted to Business Analyst ahead of schedule</strong> within 17 months after managing requirements for 3 reporting features; translated needs from 15+ Finance and Operations stakeholders into Power BI requirements and BDD user stories, securing approval for an automation business case projecting 3+ hrs/week of savings.</p></div></div>
+<div class="role {rv(3)}"><div class="node" aria-hidden="true"></div><div class="rbody"><h3>Associate Software Engineer <span class="rank-up-badge"><span aria-hidden="true">&#8679;</span> Promoted early</span> &ndash; Iinfocomm</h3><div class="org">Iinfocomm IT Services Pvt Ltd, Bengaluru</div><div class="role-date"><time datetime="2020-06">Jun 2020</time> &ndash; <time datetime="2020-10">Oct 2020</time></div><p class="muted"><strong>Promoted to Business Analyst ahead of schedule</strong> within 5 months (ahead of standard 12-month promotion cycle) after managing requirements for 3 reporting features; translated needs from 15+ Finance and Operations stakeholders into Power BI requirements and BDD user stories, securing approval for an automation business case projecting 3+ hrs/week of savings.</p></div></div>
 </div></div></section>
 
 ''' + cta()
@@ -863,7 +863,7 @@ def projects():
   <div class="actions"><a class="btn btn-primary" href="samples/index.html">Open all artifacts</a></div>
 </div>
 <div class="feat-side">
-  <div class="browser-frame">
+  <div class="thumb browser-frame">
     <div class="bf-bar" aria-hidden="true"><span class="bf-dot red"></span><span class="bf-dot yellow"></span><span class="bf-dot green"></span><span class="bf-url">ops.paytrack.internal/data-model</span></div>
     <div class="bf-viewport">
       <a class="feat-img" href="samples/diagrams/Payment_Data_Model_ERD.svg" aria-label="Open the data model diagram"><img src="samples/diagrams/Payment_Data_Model_ERD.png" alt="Logical data model (ERD) diagram from the PayTrack payment reconciliation sample" width="1120" height="704" loading="lazy"></a>
@@ -904,7 +904,7 @@ def resume():
 "Accomplished zero-incident post-launch stability, as measured by <strong>no reported post-launch incidents</strong> across <strong>50+ JIRA-tracked test cases</strong>, by coordinating UAT, smoke, sanity, and regression testing.",
 "Accomplished end-to-end requirement traceability, as measured by connecting requirements, delivery, and acceptance, by reviewing API contracts against functional requirements and maintaining the Requirements Traceability Matrix (RTM) and RACI matrix."], 0)
     roles += role('Associate Software Engineer <span aria-hidden="true">&rarr;</span> Promoted to BA', "Iinfocomm IT Services Pvt Ltd &bull; Bengaluru, India", '<time datetime="2020-06">Jun 2020</time> &ndash; <time datetime="2020-10">Oct 2020</time>', [
-"Accomplished career progression ahead of timeline, as measured by promotion to Business Analyst within 17 months (6 months ahead of schedule), by managing requirements for 3 reporting features from elicitation through stakeholder acceptance.",
+"Accomplished career progression ahead of timeline, as measured by promotion to Business Analyst within 5 months (ahead of standard 12-month promotion cycle), by managing requirements for 3 reporting features from elicitation through stakeholder acceptance.",
 "Accomplished reporting automation approval, as measured by executive business-case sign-off projecting <strong>3+ hours of weekly manual-effort savings</strong>, by translating input from 15+ Finance and Operations stakeholders into Power BI requirements and BDD user stories.",
 "Accomplished cross-team alignment on reporting delivery, as measured by validated reporting capabilities, by coordinating with Engineering and business leads."], 0)
     return head("Resume", "Business Analyst resume: experience, skills, delivery.", "Business Analyst focused on requirements, API and system integration, SQL and Python analysis, Agile delivery and UAT coordination.", F.swim("rs")) + f'''
