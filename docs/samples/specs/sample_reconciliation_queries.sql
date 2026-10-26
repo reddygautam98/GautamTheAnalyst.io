@@ -33,26 +33,27 @@ LEFT JOIN PAYMENT_TRANSACTION pt
     ON ge.payment_id = pt.payment_id
 WHERE pt.payment_id IS NULL;
 
--- 3. Exception Cases Breaching 48-Hour SLA
+-- 3. Exception Cases Breaching 4-Hour Triage SLA
 SELECT 
     ec.case_id,
     ec.payment_id,
     ec.case_status,
     ec.assigned_to,
     ec.updated_at,
-    DATEDIFF('hour', ec.created_at, CURRENT_TIMESTAMP) AS hours_open
+    ROUND(CAST(EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - ec.created_at)) / 3600.0 AS numeric), 1) AS hours_open
 FROM EXCEPTION_CASE ec
 WHERE ec.case_status NOT IN ('RESOLVED', 'CLOSED')
-  AND DATEDIFF('hour', ec.created_at, CURRENT_TIMESTAMP) > 48
+  AND (EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - ec.created_at)) / 3600.0) > 4.0
 ORDER BY hours_open DESC;
 
 -- 4. Daily Reconciliation Summary KPIs (Feeds Power BI Executive Dashboard)
 SELECT 
     CAST(compared_at AS DATE) AS recon_date,
     COUNT(*) AS total_transactions,
-    SUM(CASE WHEN match_status = 'MATCHED' THEN 1 ELSE 0 END) AS matched_count,
-    SUM(CASE WHEN match_status = 'UNMATCHED' THEN 1 ELSE 0 END) AS unmatched_count,
-    ROUND(100.0 * SUM(CASE WHEN match_status = 'MATCHED' THEN 1 ELSE 0 END) / COUNT(*), 2) AS match_rate_pct
-FROM RECONCILIATION_RESULT
+    SUM(CASE WHEN match_state = 'MATCHED' THEN 1 ELSE 0 END) AS matched_count,
+    SUM(CASE WHEN match_state = 'UNMATCHED' THEN 1 ELSE 0 END) AS unmatched_count,
+    ROUND(CAST(100.0 * SUM(CASE WHEN match_state = 'MATCHED' THEN 1 ELSE 0 END) / NULLIF(COUNT(*), 0) AS numeric), 2) AS match_rate_pct
+FROM RECON_RESULT
 GROUP BY CAST(compared_at AS DATE)
 ORDER BY recon_date DESC;
+

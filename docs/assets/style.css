@@ -141,8 +141,8 @@
 ::view-transition-new(root){animation:vt-fade-in .35s var(--ease) both}
 @keyframes vt-fade-out{to{opacity:0}}
 @keyframes vt-fade-in{from{opacity:0;transform:translateY(8px)}}
-*,*::before,*::after{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%;scroll-padding-top:84px}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:84px;scrollbar-gutter:stable}
+[hidden]{display:none!important}
 html.lenis,html.lenis body{height:auto}
 .lenis:not(.lenis-autoToggle).lenis-stopped{overflow:clip}
 .lenis [data-lenis-prevent]{overscroll-behavior:contain}
@@ -5230,5 +5230,40 @@ p,li{text-wrap:pretty}
 .term-dots .t-yellow { background: #f59e0b; }
 .term-dots .t-green { background: #10b981; }
 
+/* 19. Utilities & Layout Classes (GL-12, HM, CT, SM, NF) */
+.sec--first { padding-top: 24px; }
+.h2-lg { font-size: clamp(1.8rem, 3.5vw, 2.3rem); font-family: var(--serif); line-height: 1.25; margin-bottom: 20px; }
+.h2-md { font-size: clamp(1.35rem, 2.4vw, 1.7rem); font-family: var(--serif); line-height: 1.3; }
+.stack-lg > * + * { margin-top: 24px; }
+.role-dates { font: 600 max(12px, 0.82rem) var(--mono); color: var(--accent); margin-bottom: 4px; letter-spacing: 0.04em; }
 
+/* Toolkit tile button disclosure */
+.tk-toggle { width: 100%; display: flex; align-items: center; gap: 10px; background: none; border: none; padding: 0; font: inherit; color: inherit; text-align: left; cursor: pointer; }
+.tk-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 4px; }
+.tk-tile { position: relative; background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; transition: border-color var(--dur-fast), box-shadow var(--dur-fast); }
+.tk-tile:focus-within { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft); }
 
+/* Status badge sprint */
+.status-badge.sprint { background: rgba(59, 130, 246, 0.12); color: #2563eb; border: 1px solid rgba(59, 130, 246, 0.25); }
+[data-theme=dark] .status-badge.sprint { background: rgba(99, 102, 241, 0.18); color: #818cf8; border-color: rgba(99, 102, 241, 0.35); }
+
+/* Static dots for honest UI state */
+.c-static-dot, .reply-dot-static { width: 8px; height: 8px; border-radius: 50%; background: var(--ok); display: inline-block; vertical-align: middle; margin-right: 6px; }
+
+/* 404 Layout */
+.notfound-sec { padding-top: clamp(32px, 6vw, 64px); min-height: 65vh; display: flex; align-items: center; }
+.notfound-wrap { max-width: 720px; margin: 0 auto; width: 100%; }
+.notfound-flow .nf-arrow { white-space: nowrap; }
+
+/* Tabular numerals & contrast fixes */
+.proof b, .hfs-item b, .mini-stat b, .slider-counter, .wf-kpi-val, .subbar-status { font-variant-numeric: tabular-nums; }
+.role li.is-dimmed { opacity: 0.45; }
+.img-zoom-btn:focus-visible { opacity: 1 !important; outline: 2px solid var(--accent) !important; outline-offset: 2px; }
+
+/* Print Stylesheet (Appendix B) */
+@media print {
+  .site-header .tools, .site-header .menu-btn, .progress, .bgflow, .marq-wrap, .actions, .filter-wrapper, .samples-ctrl-row, .phase-timeline-bar, .ilb-backdrop, .preview-drawer, .contact-fallback-card, [hidden] { display: none !important; }
+  .resume-sidebar { display: block !important; width: 100% !important; margin-top: 24px; }
+  .role-metrics { display: block !important; }
+  body { background: #ffffff !important; color: #000000 !important; }
+}

@@ -78,9 +78,9 @@ def swim(uid="s"):
 
 def erd(uid="e"):
     f = Flow(uid, (1200, 560))
-    f.entity(80, 60, 200, "TRANSACTION", ["txn_id PK", "amount", "status", "gateway_ref FK"])
+    f.entity(80, 60, 200, "PAYMENT_TRANSACTION", ["payment_id PK", "amount", "status", "gateway_ref FK"])
     f.entity(430, 40, 210, "GATEWAY_EVENT", ["event_id PK", "gateway_ref", "settled_at", "fee"])
-    f.entity(800, 70, 220, "RECON_RESULT", ["result_id PK", "txn_id FK", "event_id FK", "match_state"])
+    f.entity(800, 70, 220, "RECON_RESULT", ["result_id PK", "payment_id FK", "event_id FK", "match_state"])
     f.entity(260, 330, 210, "EXCEPTION_CASE", ["case_id PK", "result_id FK", "owner", "sla_due"])
     f.entity(700, 340, 220, "AUDIT_EVENT", ["audit_id PK", "case_id FK", "actor", "action"])
     f.edge([(280, 130), (430, 110)], dash=False); f.edge([(640, 110), (800, 130)], dash=False, dot=7)
@@ -110,8 +110,9 @@ def pipeline(uid="p"):
     return f.render()
 
 def mini(uid):
-    """tiny flow for project thumbnails / placeholders"""
+    """tiny flow for project thumbnails / placeholders - no CPU-heavy animated dots"""
     f = Flow(uid, (400, 200))
     f.ev(40, 100, "", r=9); f.task(80, 74, 80, 52, ""); f.gate(215, 100, "", k=26); f.task(268, 74, 90, 52, "")
-    f.edge([(49, 100), (80, 100)]); f.edge([(160, 100), (189, 100)], dot=4); f.edge([(241, 100), (268, 100)])
+    f.edge([(49, 100), (80, 100)]); f.edge([(160, 100), (189, 100)]); f.edge([(241, 100), (268, 100)])
     return f.render("mini")
+
