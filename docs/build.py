@@ -385,27 +385,33 @@ def trace():
         <div class="api-node">
           <span class="node-step">01</span>
           <div class="node-info">
-            <span class="node-verb verb-post">POST</span>
-            <span class="node-path">/v1/payments/verify</span>
-            <span class="node-detail">Header: Idempotency-Key &bull; 200 OK</span>
+            <div class="node-top-row">
+              <span class="node-verb verb-post">POST</span>
+              <span class="node-path">/payments/verify</span>
+            </div>
+            <span class="node-detail">Idempotency-Key &bull; 200</span>
           </div>
         </div>
         <div class="api-arrow" aria-hidden="true">&rarr;</div>
         <div class="api-node">
           <span class="node-step">02</span>
           <div class="node-info">
-            <span class="node-verb verb-event">EVENT</span>
-            <span class="node-path">webhook.txn_captured</span>
-            <span class="node-detail">HMAC-SHA256 signature verified</span>
+            <div class="node-top-row">
+              <span class="node-verb verb-event">EVENT</span>
+              <span class="node-path">webhook.captured</span>
+            </div>
+            <span class="node-detail">HMAC-SHA256 verified</span>
           </div>
         </div>
         <div class="api-arrow" aria-hidden="true">&rarr;</div>
         <div class="api-node">
           <span class="node-step">03</span>
           <div class="node-info">
-            <span class="node-verb verb-match">RECON</span>
-            <span class="node-path">Daily Batch Match</span>
-            <span class="node-detail">99.8% match rate (1,420 / 1,423)</span>
+            <div class="node-top-row">
+              <span class="node-verb verb-match">RECON</span>
+              <span class="node-path">Daily Batch Recon</span>
+            </div>
+            <span class="node-detail">99.8% match (1.4K tx)</span>
           </div>
         </div>
       </div>
