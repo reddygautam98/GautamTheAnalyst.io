@@ -178,7 +178,6 @@ def page(path, title, desc, body, p="", cur="", ld="", robots="index, follow, ma
 <a class="brand" href="{home}"><img src="{p}assets/mark.svg" alt="" width="30" height="30">Gautam Reddy</a>
 <nav class="nav" id="nav" aria-label="Main">{nav}<a href="{p}resume.html" class="nav-resume-btn"{res_cur}>Resume</a></nav>
 <div class="tools">
-<button class="icon-btn" id="animToggle" type="button" aria-label="Toggle site animations" aria-pressed="false" title="Toggle site animations"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg></button>
 <button class="icon-btn" id="theme" type="button" aria-label="Toggle dark theme" aria-pressed="false" title="Toggle dark theme"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
 </div>
 <button class="icon-btn menu-btn" id="menu" type="button" aria-expanded="false" aria-controls="nav" aria-label="Open navigation menu">{MENU_ICO}</button>
