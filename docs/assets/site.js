@@ -346,7 +346,10 @@ if(chips.length){
         x.classList.toggle('is-active',active);
       });
       setPill(c);
-      try{history.replaceState(null,'','#'+f)}catch(_){}
+      try{
+        var targetHash = (f === 'all') ? '' : ('#' + f);
+        history.replaceState(null, '', location.pathname + targetHash);
+      }catch(_){}
 
       /* FLIP Animation */
       var firstRects=new Map();
@@ -397,7 +400,12 @@ if(chips.length){
     });
   });
   var filterFromHash=function(){
-    var h=(location.hash||'').slice(1).replace(/[^a-z0-9_-]/gi,'');
+    var qf='';
+    try{
+      var sp=new URLSearchParams(location.search);
+      qf=sp.get('filter')||'';
+    }catch(_){}
+    var h=(qf||(location.hash||'').slice(1)).replace(/[^a-z0-9_-]/gi,'');
     if(!h)return;
     var chip=$('.chip[data-f="'+h+'"]');
     if(chip){
@@ -413,6 +421,7 @@ if(chips.length){
   };
   filterFromHash();
   addEventListener('hashchange',filterFromHash);
+  addEventListener('popstate',filterFromHash);
 }
 
 /* contact form: validate required, email & optional URL, draft flow (CT-1 to CT-5) */
@@ -1048,7 +1057,7 @@ function openImgLightbox(src,title,caption){
   if(mainEl)mainEl.inert=true;
   if(hdrEl)hdrEl.inert=true;
   if(ftrEl)ftrEl.inert=true;
-  if(lenis)lenis.stop();
+  if(typeof lenis!=='undefined'&&lenis)lenis.stop();
   if(ilbClose)ilbClose.focus();
 }
 
@@ -1060,7 +1069,7 @@ function closeImgLightbox(){
     if(mainEl)mainEl.inert=false;
     if(hdrEl)hdrEl.inert=false;
     if(ftrEl)ftrEl.inert=false;
-    if(lenis)lenis.start();
+    if(typeof lenis!=='undefined'&&lenis)lenis.start();
     if(lastActiveImgEl&&lastActiveImgEl.focus)lastActiveImgEl.focus();
   }
 }

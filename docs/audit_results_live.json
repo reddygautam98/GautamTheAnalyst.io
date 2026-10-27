@@ -1,0 +1,636 @@
+{
+  "pages": {
+    "index.html": {
+      "viewports": {
+        "320": {
+          "overflow": false,
+          "docWidth": 305,
+          "winWidth": 320,
+          "diff": -15,
+          "elements": []
+        },
+        "360": {
+          "overflow": false,
+          "docWidth": 345,
+          "winWidth": 360,
+          "diff": -15,
+          "elements": []
+        },
+        "390": {
+          "overflow": false,
+          "docWidth": 375,
+          "winWidth": 390,
+          "diff": -15,
+          "elements": []
+        },
+        "430": {
+          "overflow": false,
+          "docWidth": 415,
+          "winWidth": 430,
+          "diff": -15,
+          "elements": []
+        },
+        "768": {
+          "overflow": false,
+          "docWidth": 753,
+          "winWidth": 768,
+          "diff": -15,
+          "elements": []
+        },
+        "1024": {
+          "overflow": false,
+          "docWidth": 1009,
+          "winWidth": 1024,
+          "diff": -15,
+          "elements": []
+        },
+        "1280": {
+          "overflow": false,
+          "docWidth": 1265,
+          "winWidth": 1280,
+          "diff": -15,
+          "elements": []
+        },
+        "1440": {
+          "overflow": false,
+          "docWidth": 1425,
+          "winWidth": 1440,
+          "diff": -15,
+          "elements": []
+        },
+        "1920": {
+          "overflow": false,
+          "docWidth": 1905,
+          "winWidth": 1920,
+          "diff": -15,
+          "elements": []
+        }
+      }
+    },
+    "about.html": {
+      "viewports": {
+        "320": {
+          "overflow": false,
+          "docWidth": 305,
+          "winWidth": 320,
+          "diff": -15,
+          "elements": []
+        },
+        "360": {
+          "overflow": false,
+          "docWidth": 345,
+          "winWidth": 360,
+          "diff": -15,
+          "elements": []
+        },
+        "390": {
+          "overflow": false,
+          "docWidth": 375,
+          "winWidth": 390,
+          "diff": -15,
+          "elements": []
+        },
+        "430": {
+          "overflow": false,
+          "docWidth": 415,
+          "winWidth": 430,
+          "diff": -15,
+          "elements": []
+        },
+        "768": {
+          "overflow": false,
+          "docWidth": 753,
+          "winWidth": 768,
+          "diff": -15,
+          "elements": []
+        },
+        "1024": {
+          "overflow": false,
+          "docWidth": 1009,
+          "winWidth": 1024,
+          "diff": -15,
+          "elements": []
+        },
+        "1280": {
+          "overflow": false,
+          "docWidth": 1265,
+          "winWidth": 1280,
+          "diff": -15,
+          "elements": []
+        },
+        "1440": {
+          "overflow": false,
+          "docWidth": 1425,
+          "winWidth": 1440,
+          "diff": -15,
+          "elements": []
+        },
+        "1920": {
+          "overflow": false,
+          "docWidth": 1905,
+          "winWidth": 1920,
+          "diff": -15,
+          "elements": []
+        }
+      }
+    },
+    "services.html": {
+      "viewports": {
+        "320": {
+          "overflow": false,
+          "docWidth": 305,
+          "winWidth": 320,
+          "diff": -15,
+          "elements": []
+        },
+        "360": {
+          "overflow": false,
+          "docWidth": 345,
+          "winWidth": 360,
+          "diff": -15,
+          "elements": []
+        },
+        "390": {
+          "overflow": false,
+          "docWidth": 375,
+          "winWidth": 390,
+          "diff": -15,
+          "elements": []
+        },
+        "430": {
+          "overflow": false,
+          "docWidth": 415,
+          "winWidth": 430,
+          "diff": -15,
+          "elements": []
+        },
+        "768": {
+          "overflow": false,
+          "docWidth": 753,
+          "winWidth": 768,
+          "diff": -15,
+          "elements": []
+        },
+        "1024": {
+          "overflow": false,
+          "docWidth": 1009,
+          "winWidth": 1024,
+          "diff": -15,
+          "elements": []
+        },
+        "1280": {
+          "overflow": false,
+          "docWidth": 1265,
+          "winWidth": 1280,
+          "diff": -15,
+          "elements": []
+        },
+        "1440": {
+          "overflow": false,
+          "docWidth": 1425,
+          "winWidth": 1440,
+          "diff": -15,
+          "elements": []
+        },
+        "1920": {
+          "overflow": false,
+          "docWidth": 1905,
+          "winWidth": 1920,
+          "diff": -15,
+          "elements": []
+        }
+      }
+    },
+    "projects.html": {
+      "viewports": {
+        "320": {
+          "overflow": false,
+          "docWidth": 305,
+          "winWidth": 320,
+          "diff": -15,
+          "elements": []
+        },
+        "360": {
+          "overflow": false,
+          "docWidth": 345,
+          "winWidth": 360,
+          "diff": -15,
+          "elements": []
+        },
+        "390": {
+          "overflow": false,
+          "docWidth": 375,
+          "winWidth": 390,
+          "diff": -15,
+          "elements": []
+        },
+        "430": {
+          "overflow": false,
+          "docWidth": 415,
+          "winWidth": 430,
+          "diff": -15,
+          "elements": []
+        },
+        "768": {
+          "overflow": false,
+          "docWidth": 753,
+          "winWidth": 768,
+          "diff": -15,
+          "elements": []
+        },
+        "1024": {
+          "overflow": false,
+          "docWidth": 1009,
+          "winWidth": 1024,
+          "diff": -15,
+          "elements": []
+        },
+        "1280": {
+          "overflow": false,
+          "docWidth": 1265,
+          "winWidth": 1280,
+          "diff": -15,
+          "elements": []
+        },
+        "1440": {
+          "overflow": false,
+          "docWidth": 1425,
+          "winWidth": 1440,
+          "diff": -15,
+          "elements": []
+        },
+        "1920": {
+          "overflow": false,
+          "docWidth": 1905,
+          "winWidth": 1920,
+          "diff": -15,
+          "elements": []
+        }
+      }
+    },
+    "resume.html": {
+      "viewports": {
+        "320": {
+          "overflow": false,
+          "docWidth": 305,
+          "winWidth": 320,
+          "diff": -15,
+          "elements": []
+        },
+        "360": {
+          "overflow": false,
+          "docWidth": 345,
+          "winWidth": 360,
+          "diff": -15,
+          "elements": []
+        },
+        "390": {
+          "overflow": false,
+          "docWidth": 375,
+          "winWidth": 390,
+          "diff": -15,
+          "elements": []
+        },
+        "430": {
+          "overflow": false,
+          "docWidth": 415,
+          "winWidth": 430,
+          "diff": -15,
+          "elements": []
+        },
+        "768": {
+          "overflow": false,
+          "docWidth": 753,
+          "winWidth": 768,
+          "diff": -15,
+          "elements": []
+        },
+        "1024": {
+          "overflow": false,
+          "docWidth": 1009,
+          "winWidth": 1024,
+          "diff": -15,
+          "elements": []
+        },
+        "1280": {
+          "overflow": false,
+          "docWidth": 1265,
+          "winWidth": 1280,
+          "diff": -15,
+          "elements": []
+        },
+        "1440": {
+          "overflow": false,
+          "docWidth": 1425,
+          "winWidth": 1440,
+          "diff": -15,
+          "elements": []
+        },
+        "1920": {
+          "overflow": false,
+          "docWidth": 1905,
+          "winWidth": 1920,
+          "diff": -15,
+          "elements": []
+        }
+      }
+    },
+    "contact.html": {
+      "viewports": {
+        "320": {
+          "overflow": false,
+          "docWidth": 305,
+          "winWidth": 320,
+          "diff": -15,
+          "elements": []
+        },
+        "360": {
+          "overflow": false,
+          "docWidth": 345,
+          "winWidth": 360,
+          "diff": -15,
+          "elements": []
+        },
+        "390": {
+          "overflow": false,
+          "docWidth": 375,
+          "winWidth": 390,
+          "diff": -15,
+          "elements": []
+        },
+        "430": {
+          "overflow": false,
+          "docWidth": 415,
+          "winWidth": 430,
+          "diff": -15,
+          "elements": []
+        },
+        "768": {
+          "overflow": false,
+          "docWidth": 753,
+          "winWidth": 768,
+          "diff": -15,
+          "elements": []
+        },
+        "1024": {
+          "overflow": false,
+          "docWidth": 1009,
+          "winWidth": 1024,
+          "diff": -15,
+          "elements": []
+        },
+        "1280": {
+          "overflow": false,
+          "docWidth": 1265,
+          "winWidth": 1280,
+          "diff": -15,
+          "elements": []
+        },
+        "1440": {
+          "overflow": false,
+          "docWidth": 1425,
+          "winWidth": 1440,
+          "diff": -15,
+          "elements": []
+        },
+        "1920": {
+          "overflow": false,
+          "docWidth": 1905,
+          "winWidth": 1920,
+          "diff": -15,
+          "elements": []
+        }
+      }
+    },
+    "samples/index.html": {
+      "viewports": {
+        "320": {
+          "overflow": false,
+          "docWidth": 305,
+          "winWidth": 320,
+          "diff": -15,
+          "elements": []
+        },
+        "360": {
+          "overflow": false,
+          "docWidth": 345,
+          "winWidth": 360,
+          "diff": -15,
+          "elements": []
+        },
+        "390": {
+          "overflow": false,
+          "docWidth": 375,
+          "winWidth": 390,
+          "diff": -15,
+          "elements": []
+        },
+        "430": {
+          "overflow": false,
+          "docWidth": 415,
+          "winWidth": 430,
+          "diff": -15,
+          "elements": []
+        },
+        "768": {
+          "overflow": false,
+          "docWidth": 753,
+          "winWidth": 768,
+          "diff": -15,
+          "elements": []
+        },
+        "1024": {
+          "overflow": false,
+          "docWidth": 1009,
+          "winWidth": 1024,
+          "diff": -15,
+          "elements": []
+        },
+        "1280": {
+          "overflow": false,
+          "docWidth": 1265,
+          "winWidth": 1280,
+          "diff": -15,
+          "elements": []
+        },
+        "1440": {
+          "overflow": false,
+          "docWidth": 1425,
+          "winWidth": 1440,
+          "diff": -15,
+          "elements": []
+        },
+        "1920": {
+          "overflow": false,
+          "docWidth": 1905,
+          "winWidth": 1920,
+          "diff": -15,
+          "elements": []
+        }
+      }
+    },
+    "404.html": {
+      "viewports": {
+        "320": {
+          "overflow": false,
+          "docWidth": 305,
+          "winWidth": 320,
+          "diff": -15,
+          "elements": []
+        },
+        "360": {
+          "overflow": false,
+          "docWidth": 345,
+          "winWidth": 360,
+          "diff": -15,
+          "elements": []
+        },
+        "390": {
+          "overflow": false,
+          "docWidth": 375,
+          "winWidth": 390,
+          "diff": -15,
+          "elements": []
+        },
+        "430": {
+          "overflow": false,
+          "docWidth": 415,
+          "winWidth": 430,
+          "diff": -15,
+          "elements": []
+        },
+        "768": {
+          "overflow": false,
+          "docWidth": 753,
+          "winWidth": 768,
+          "diff": -15,
+          "elements": []
+        },
+        "1024": {
+          "overflow": false,
+          "docWidth": 1009,
+          "winWidth": 1024,
+          "diff": -15,
+          "elements": []
+        },
+        "1280": {
+          "overflow": false,
+          "docWidth": 1265,
+          "winWidth": 1280,
+          "diff": -15,
+          "elements": []
+        },
+        "1440": {
+          "overflow": false,
+          "docWidth": 1425,
+          "winWidth": 1440,
+          "diff": -15,
+          "elements": []
+        },
+        "1920": {
+          "overflow": false,
+          "docWidth": 1905,
+          "winWidth": 1920,
+          "diff": -15,
+          "elements": []
+        }
+      }
+    }
+  },
+  "overflows": [],
+  "console_errors": [],
+  "headings": {},
+  "images_without_alt": [],
+  "interactive_without_name": [],
+  "meta": {
+    "index.html": {
+      "title": "Gautam Reddy | Business Analyst: Requirements, APIs, SQL, UAT",
+      "desc": "Business Analyst in Bengaluru with 4+ years of experience: BRD/FRD, NFRs, REST APIs, STTM, SQL, Power BI and UAT. Open to remote and hybrid roles.",
+      "robots": "index, follow, max-image-preview:large, max-snippet:-1",
+      "canonical": "https://reddygautam98.github.io/GautamTheAnalyst.io/",
+      "ogTitle": "Gautam Reddy | Business Analyst: Requirements, APIs, SQL, UAT",
+      "h1s": [
+        "Business Analyst in Bengaluru who turns requirements into testable specs."
+      ],
+      "h2_count": 6
+    },
+    "about.html": {
+      "title": "About Gautam Reddy | Business Analyst",
+      "desc": "About Gautam Reddy, a Bengaluru Business Analyst with 4+ years of experience in requirements engineering, NFRs, REST APIs, STTM, SQL analysis and UAT.",
+      "robots": "index, follow, max-image-preview:large, max-snippet:-1",
+      "canonical": "https://reddygautam98.github.io/GautamTheAnalyst.io/about.html",
+      "ogTitle": "About Gautam Reddy | Business Analyst",
+      "h1s": [
+        "Business Analyst: requirements teams can build and validate."
+      ],
+      "h2_count": 4
+    },
+    "services.html": {
+      "title": "BA Services: BRD, APIs, SQL & UAT | Gautam Reddy",
+      "desc": "Business analysis services: BRD/FRD, NFRs, SQL and Python data analysis, STTM, Power BI dashboards, REST API specs and Agile UAT coordination.",
+      "robots": "index, follow, max-image-preview:large, max-snippet:-1",
+      "canonical": "https://reddygautam98.github.io/GautamTheAnalyst.io/services.html",
+      "ogTitle": "BA Services: BRD, APIs, SQL & UAT | Gautam Reddy",
+      "h1s": [
+        "Business analysis services with clear scope and useful deliverables."
+      ],
+      "h2_count": 5
+    },
+    "projects.html": {
+      "title": "BA Projects: SQL, Power BI & Case Studies | Gautam Reddy",
+      "desc": "Portfolio projects by Business Analyst Gautam Reddy: SQL and Power BI analytics, data pipelines, RAG prototypes, and the PayTrack case study.",
+      "robots": "index, follow, max-image-preview:large, max-snippet:-1",
+      "canonical": "https://reddygautam98.github.io/GautamTheAnalyst.io/projects.html",
+      "ogTitle": "BA Projects: SQL, Power BI & Case Studies | Gautam Reddy",
+      "h1s": [
+        "Business analyst projects: practical analysis, visible work."
+      ],
+      "h2_count": 3
+    },
+    "resume.html": {
+      "title": "Resume | Gautam Reddy, Business Analyst",
+      "desc": "Resume of Gautam Reddy, Business Analyst with 4+ years of experience: 2 payment gateway integrations, STTM, NFRs, 100,000+ transactions analysed, 350+ UAT test scenarios.",
+      "robots": "index, follow, max-image-preview:large, max-snippet:-1",
+      "canonical": "https://reddygautam98.github.io/GautamTheAnalyst.io/resume.html",
+      "ogTitle": "Resume | Gautam Reddy, Business Analyst",
+      "h1s": [
+        "Business Analyst resume: experience, skills, delivery."
+      ],
+      "h2_count": 3
+    },
+    "contact.html": {
+      "title": "Contact Gautam Reddy | Hire a Business Analyst, Bengaluru",
+      "desc": "Contact Gautam Reddy, a Business Analyst in Bengaluru, about full-time, hybrid or remote roles, or requirements, systems integration, and reporting projects.",
+      "robots": "index, follow, max-image-preview:large, max-snippet:-1",
+      "canonical": "https://reddygautam98.github.io/GautamTheAnalyst.io/contact.html",
+      "ogTitle": "Contact Gautam Reddy | Hire a Business Analyst, Bengaluru",
+      "h1s": [
+        "Contact a Business Analyst: tell me what you\u2019re trying to solve."
+      ],
+      "h2_count": 2
+    },
+    "samples/index.html": {
+      "title": "BA Sample Documents: BRD, FRD, Stories & RTM | Gautam Reddy",
+      "desc": "Business Analyst case study artifacts: BRD, FRD, NFRs, user stories, STTM, RTM, UAT plan, BPMN and UML diagrams, SQL queries and CSV templates.",
+      "robots": "index, follow, max-image-preview:large, max-snippet:-1",
+      "canonical": "https://reddygautam98.github.io/GautamTheAnalyst.io/samples/index.html",
+      "ogTitle": "BA Sample Documents: BRD, FRD, Stories & RTM | Gautam Reddy",
+      "h1s": [
+        "Business analyst sample documents: requirements, models and test evidence."
+      ],
+      "h2_count": 4
+    },
+    "404.html": {
+      "title": "Page not found | Gautam Reddy, Business Analyst",
+      "desc": "This page could not be found.",
+      "robots": "noindex, follow",
+      "canonical": null,
+      "ogTitle": "Page not found | Gautam Reddy, Business Analyst",
+      "h1s": [
+        "Path not found in specification"
+      ],
+      "h2_count": 1
+    }
+  },
+  "contrast_samples": []
+}

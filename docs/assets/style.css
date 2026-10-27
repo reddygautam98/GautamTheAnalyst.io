@@ -975,14 +975,7 @@ tr.is-source{background:var(--accent-soft)!important;transition:background-color
 /* steps as a flow chart with artifact progression & travelling packet */
 .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;padding:26px 0 0;margin:0;position:relative;container-type:inline-size}
 .steps::before{content:"";position:absolute;left:4%;right:4%;top:26px;height:3px;background:linear-gradient(90deg,var(--c-brd) 0%,var(--c-frd) 33%,var(--c-story) 66%,var(--c-test) 100%);border-radius:999px;opacity:.75;box-shadow:0 0 10px color-mix(in srgb,var(--c-brd) 35%,transparent);z-index:0}
-.steps::after{content:"";position:absolute;top:23px;left:4%;width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px 2px var(--accent-glow);will-change:transform,opacity;animation:travel-packet 10s ease-in-out infinite;pointer-events:none;z-index:1}
-@keyframes travel-packet{
-  0%,12%{transform:translateX(0);background:var(--c-brd);box-shadow:0 0 12px var(--c-brd)}
-  25%,37%{transform:translateX(calc((100cqi - 8%) * 0.33));background:var(--c-frd);box-shadow:0 0 12px var(--c-frd)}
-  50%,62%{transform:translateX(calc((100cqi - 8%) * 0.66));background:var(--c-story);box-shadow:0 0 12px var(--c-story)}
-  75%,88%{transform:translateX(calc((100cqi - 8%) * 0.98));background:var(--c-test);box-shadow:0 0 12px var(--c-test)}
-  100%{transform:translateX(calc((100cqi - 8%) * 0.98));opacity:0}
-}
+/* Travelling arrow on .steps track configured in Section 15 */
 .steps li{list-style:none;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:26px 20px 22px;position:relative;overflow:visible;transition:transform .3s var(--ease),border-color .3s,box-shadow .3s;z-index:1;display:flex;flex-direction:column}
 .steps li:hover{transform:translateY(-4px)}
 .steps li::before{display:none}
@@ -1360,9 +1353,15 @@ tr.is-source{background:var(--accent-soft)!important;transition:background-color
 
 .feature h3{font:600 1.75rem/1.15 var(--serif);margin:10px 0 12px;letter-spacing:-.01em}
 .feat-side{display:grid;gap:14px;align-content:start}
+.feat-side .browser-frame{aspect-ratio:16/10;min-height:280px;display:flex;flex-direction:column;background:#f7f9fc;overflow:hidden}
+.feat-side .bf-viewport{position:relative;flex:1;width:100%;height:calc(100% - 33px);min-height:240px;background:#f7f9fc;overflow:hidden}
+.feat-side .bf-viewport .feat-img{position:absolute;inset:0;width:100%;height:100%;display:block;border:none;border-radius:0;background:#f7f9fc;overflow:hidden;cursor:zoom-in}
+.feat-side .bf-viewport .feat-img img{position:absolute;inset:0;width:100%!important;height:100%!important;object-fit:contain!important;object-position:center!important;padding:8px 12px;background:#f7f9fc!important;transition:transform .4s var(--ease)}
+.feat-side .bf-viewport:hover .feat-img img{transform:scale(1.03)}
+.feat-side .feat-zoom-hint{position:absolute;bottom:8px;right:8px;background:rgba(15,23,42,.85);color:#fff;font:500 .72rem var(--mono);padding:4px 8px;border-radius:4px;pointer-events:none;z-index:5;backdrop-filter:blur(4px);display:inline-flex;align-items:center;gap:5px;transition:background .2s ease}
+.feat-side .bf-viewport:hover .feat-zoom-hint{background:var(--accent)}
 .feat-img{display:block;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}
 .feat-img img{width:100%;height:auto;aspect-ratio:16/9;object-fit:contain;transition:transform .8s var(--ease)}
-.feat-img:hover img{transform:scale(1.05)}
 .feature ul{list-style:none;margin:0;padding:0;display:grid;gap:0;align-content:start}
 .feature li a{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);color:var(--ink);text-decoration:none;font-weight:500;transition:color .2s,padding-left .25s var(--ease)}
 .feature li:first-child a{border-top:1px solid var(--line)}
@@ -2639,23 +2638,53 @@ p,li{text-wrap:pretty}
 .steps::after {
   content: "";
   position: absolute;
-  top: 24px;
+  top: 22px;
   left: 6%;
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-  background: #ffffff;
-  box-shadow: 0 0 14px 4px var(--accent);
+  width: 17px;
+  height: 15px;
+  background: var(--c-brd);
+  clip-path: polygon(0 25%, 52% 25%, 52% 0%, 100% 50%, 52% 100%, 52% 75%, 0 75%);
+  filter: drop-shadow(0 0 6px var(--c-brd)) drop-shadow(0 0 12px var(--c-brd));
+  will-change: transform, background-color, filter, opacity;
   animation: travel-packet 9s ease-in-out infinite;
   pointer-events: none;
   z-index: 2;
 }
 @keyframes travel-packet {
-  0% { transform: translateX(0); background: var(--c-brd); box-shadow: 0 0 14px 4px var(--c-brd); }
-  25% { transform: translateX(calc((100cqi - 12%) * 0.33)); background: var(--c-frd); box-shadow: 0 0 14px 4px var(--c-frd); }
-  50% { transform: translateX(calc((100cqi - 12%) * 0.66)); background: var(--c-story); box-shadow: 0 0 14px 4px var(--c-story); }
-  75% { transform: translateX(calc((100cqi - 12%) * 0.98)); background: var(--c-test); box-shadow: 0 0 14px 4px var(--c-test); }
-  100% { transform: translateX(calc((100cqi - 12%) * 0.98)); opacity: 0; }
+  0%, 12% {
+    transform: translateX(0);
+    background: var(--c-brd);
+    filter: drop-shadow(0 0 6px var(--c-brd)) drop-shadow(0 0 12px var(--c-brd));
+    opacity: 1;
+  }
+  25%, 37% {
+    transform: translateX(calc((100cqi - 12%) * 0.33));
+    background: var(--c-frd);
+    filter: drop-shadow(0 0 6px var(--c-frd)) drop-shadow(0 0 12px var(--c-frd));
+    opacity: 1;
+  }
+  50%, 62% {
+    transform: translateX(calc((100cqi - 12%) * 0.66));
+    background: var(--c-story);
+    filter: drop-shadow(0 0 6px var(--c-story)) drop-shadow(0 0 12px var(--c-story));
+    opacity: 1;
+  }
+  75%, 88% {
+    transform: translateX(calc((100cqi - 12%) * 0.98));
+    background: var(--c-test);
+    filter: drop-shadow(0 0 6px var(--c-test)) drop-shadow(0 0 12px var(--c-test));
+    opacity: 1;
+  }
+  98% {
+    transform: translateX(calc((100cqi - 12%) * 0.98));
+    background: var(--c-test);
+    filter: drop-shadow(0 0 6px var(--c-test)) drop-shadow(0 0 12px var(--c-test));
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 0;
+  }
 }
 
 /* -------------------------------------------------------------
@@ -4024,6 +4053,12 @@ p,li{text-wrap:pretty}
   border-radius: 8px;
   padding: 16px;
   margin-top: 14px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.pd-sample-box .pd-table {
+  min-width: 520px;
+  width: 100%;
 }
 .pd-sample-box h5 {
   font-size: .95rem;
@@ -5337,3 +5372,1067 @@ p,li{text-wrap:pretty}
   .role-metrics { display: block !important; }
   body { background: #ffffff !important; color: #000000 !important; }
 }
+
+/* ==========================================================================
+   20. Lightswind Research & UI/UX Audit Enhancements (v44)
+   ========================================================================== */
+
+/* D1: CTA panel padding fix */
+.cta-panel {
+  padding: clamp(28px, 4vw, 48px) !important;
+  position: relative !important;
+  isolation: isolate;
+}
+.cta-panel > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ASCII Wave & Grid Trail canvas layers */
+.ascii-wave {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+.hero-ascii-wave {
+  opacity: 0.18;
+  z-index: 0;
+}
+[data-theme="dark"] .hero-ascii-wave {
+  opacity: 0.14;
+}
+.ascii-wave canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.page-head[data-grid-trail] {
+  position: relative;
+  overflow: hidden;
+}
+.grid-trail-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+.page-head > .wrap {
+  position: relative;
+  z-index: 2;
+}
+
+/* Print hiding for decorative canvas layers */
+@media print {
+  .ascii-wave,
+  .grid-trail-canvas {
+    display: none !important;
+  }
+}
+
+/* D5: 404 Missing requirement & flow styles */
+.notfound-sec {
+  position: relative;
+  overflow: hidden;
+}
+.notfound-wave {
+  color: var(--accent-2, #38bdf8);
+  opacity: 0.22;
+}
+.notfound-wrap {
+  position: relative;
+  z-index: 2;
+}
+.notfound-badge {
+  display: inline-flex;
+  align-items: center;
+  font: 600 0.75rem var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: var(--accent-soft);
+  color: var(--accent-text, var(--accent));
+  border: 1px solid var(--accent);
+  margin-bottom: 16px;
+}
+.notfound-flow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 28px;
+  font-family: var(--mono);
+  flex-wrap: wrap;
+}
+.nf-node {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font-size: 0.85rem;
+  color: var(--ink);
+}
+.nf-node.dead {
+  border-color: rgba(239, 68, 68, 0.4);
+  background: rgba(239, 68, 68, 0.08);
+  color: #ef4444;
+}
+.nf-step {
+  font-weight: 600;
+  color: var(--muted);
+}
+.nf-node.dead .nf-step {
+  color: #ef4444;
+}
+.nf-arrow.broken {
+  color: #ef4444;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  padding-inline: 4px;
+}
+.notfound-links-card {
+  margin-top: 36px;
+  padding: 24px;
+  border-radius: 10px;
+  background: var(--card);
+  border: 1px solid var(--line);
+}
+.notfound-links-card h2 {
+  font-size: 1.15rem;
+  font-family: var(--serif);
+  margin-bottom: 14px;
+  color: var(--ink);
+}
+.notfound-links-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 12px;
+}
+.notfound-links-list li a {
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+.notfound-links-list li a b {
+  color: var(--accent);
+}
+.notfound-links-list li a:hover {
+  text-decoration: underline;
+}
+
+/* D6: Ghost button contrast on dark CTA panel */
+.cta-panel .btn-ghost {
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
+  background: rgba(255, 255, 255, 0.06);
+}
+.cta-panel .btn-ghost:hover,
+.cta-panel .btn-ghost:focus-visible {
+  color: #ffffff !important;
+  border-color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.16) !important;
+}
+
+/* D7: axe-core contrast and target size fixes */
+/* 24px slider-dot hit area */
+.s-dot {
+  position: relative;
+}
+.s-dot::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  min-height: 24px;
+}
+
+/* Light theme token adjustment for WCAG AA compliance (4.5:1+) */
+:root {
+  --status-approved: #047857;
+  --status-approved-bg: rgba(4, 120, 87, 0.12);
+}
+.status-badge.approved {
+  color: #047857;
+}
+
+/* Dark theme label contrast improvements */
+[data-theme=dark] {
+  --accent-text: #93c5fd;
+}
+[data-theme=dark] .mono-meta,
+[data-theme=dark] .crumbs,
+[data-theme=dark] .role-dates {
+  color: #93c5fd;
+}
+[data-theme=dark] .status-badge.approved {
+  color: #34d399;
+}
+[data-theme=dark] .status-badge.notrun {
+  color: #cbd5e1;
+}
+
+/* ==========================================================================
+   21. Card Dynamics & Unique Content-Tailored Background Animations
+   ========================================================================== */
+
+/* Host sections for bespoke background canvas animations */
+[data-bg-anim] {
+  position: relative !important;
+  isolation: isolate;
+  overflow: hidden;
+}
+.bg-anim-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  display: block;
+}
+[data-bg-anim] > .wrap {
+  position: relative;
+  z-index: 2;
+}
+
+/* Card Modernization: Border Beam, 3D Elevation & Cursor Spotlight */
+.card, .scard, .pcard, .step-card, .peek-card, .kit, .rbody, .tk-tile, .form-card, .feat-card, .what-card, .about-console, .proof-card, .proof > div, .impact-card, .sh-item, .contact-rail, .contact-fallback-card, .resume-side-card, .mini-stat, .hfs-item, .notfound-links-card, .faq details, .file-list li, .cta-panel {
+  position: relative !important;
+  isolation: isolate;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1), 
+              box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), 
+              filter 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+              opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+              border-color 0.25s;
+  will-change: transform, box-shadow, filter;
+}
+
+/* Cursor spotlight glow on all cards */
+.card::before, .scard::before, .pcard::before, .step-card::before, .peek-card::before, .kit::before, .rbody::before, .tk-tile::before, .form-card::before, .feat-card::before, .what-card::before, .proof-card::before, .impact-card::before, .principle-card::before, .resume-side-card::before, .notfound-links-card::before, .mini-stat::before, .hfs-item::before, .contact-fallback-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(320px circle at var(--mx, -500px) var(--my, -500px), color-mix(in srgb, var(--accent) 15%, transparent), transparent 75%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+.card:hover::before, .scard:hover::before, .pcard:hover::before, .step-card:hover::before, .peek-card:hover::before, .kit:hover::before, .rbody:hover::before, .tk-tile:hover::before, .form-card:hover::before, .feat-card:hover::before, .what-card:hover::before, .proof-card:hover::before, .impact-card:hover::before, .principle-card:hover::before, .resume-side-card:hover::before, .notfound-links-card:hover::before, .mini-stat:hover::before, .hfs-item:hover::before, .contact-fallback-card:hover::before {
+  opacity: 1;
+}
+
+/* Luminous Border Beam that sweeps smoothly around cards on hover */
+.card::after, .scard::after, .pcard::after, .step-card::after, .peek-card::after, .kit::after, .rbody::after, .tk-tile::after, .form-card::after, .feat-card::after, .what-card::after, .impact-card::after, .principle-card::after, .resume-side-card::after, .notfound-links-card::after, .mini-stat::after, .contact-fallback-card::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: conic-gradient(from 0deg at 50% 50%, transparent 60%, var(--accent) 82%, #93c5fd 95%, transparent 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 2;
+  animation: card-beam-spin 6.5s linear infinite;
+}
+.card:hover::after, .scard:hover::after, .pcard:hover::after, .step-card:hover::after, .peek-card:hover::after, .kit:hover::after, .rbody:hover::after, .tk-tile:hover::after, .form-card:hover::after, .feat-card:hover::after, .what-card:hover::after, .impact-card:hover::after, .principle-card:hover::after, .resume-side-card:hover::after, .notfound-links-card:hover::after, .mini-stat:hover::after, .contact-fallback-card:hover::after {
+  opacity: 1;
+}
+
+@keyframes card-beam-spin {
+  to { transform: rotate(1turn); }
+}
+
+/* Depth shadow & luminous rim on card hover */
+.card:hover, .scard:hover, .pcard:hover, .step-card:hover, .peek-card:hover, .kit:hover, .rbody:hover, .tk-tile:hover, .form-card:hover, .feat-card:hover, .what-card:hover, .impact-card:hover, .principle-card:hover, .resume-side-card:hover, .notfound-links-card:hover, .contact-fallback-card:hover {
+  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.22) inset, 0 16px 36px -8px rgba(37, 99, 235, 0.16), 0 0 20px -2px rgba(37, 99, 235, 0.1) !important;
+  border-color: rgba(37, 99, 235, 0.4) !important;
+}
+[data-theme=dark] .card:hover, [data-theme=dark] .scard:hover, [data-theme=dark] .pcard:hover, [data-theme=dark] .step-card:hover, [data-theme=dark] .peek-card:hover, [data-theme=dark] .kit:hover, [data-theme=dark] .rbody:hover, [data-theme=dark] .tk-tile:hover, [data-theme=dark] .form-card:hover, [data-theme=dark] .feat-card:hover, [data-theme=dark] .what-card:hover, [data-theme=dark] .impact-card:hover, [data-theme=dark] .principle-card:hover, [data-theme=dark] .resume-side-card:hover, [data-theme=dark] .notfound-links-card:hover, [data-theme=dark] .contact-fallback-card:hover {
+  box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.28) inset, 0 16px 36px -8px rgba(56, 189, 248, 0.2), 0 0 24px -2px rgba(56, 189, 248, 0.14) !important;
+  border-color: rgba(56, 189, 248, 0.45) !important;
+}
+
+/* Micro-animations inside cards */
+.card .more, .card .arr, .role .exp-arr {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s;
+}
+.card:hover .more, .card:hover .arr {
+  transform: translateX(4px);
+  color: var(--accent);
+}
+.card .thumb img {
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s;
+}
+.card:hover .thumb img {
+  transform: scale(1.03);
+}
+.tk-tile .tk-ico {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.25s;
+}
+.tk-tile:hover .tk-ico {
+  transform: rotate(6deg) scale(1.12);
+  background-color: var(--accent-soft);
+}
+.role .node {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s;
+}
+.role:hover .node {
+  transform: scale(1.35);
+  box-shadow: 0 0 14px var(--accent);
+}
+
+/* =============================================================================
+   22. CINEMATIC DEPTH-OF-FIELD FOCUS BLUR (ALL PAGES & CARD CONTAINERS)
+   When a card is hovered or touched, sibling cards & surrounding sections softly blur
+   ============================================================================= */
+
+/* Universal Card Smooth Filter & Opacity Transition */
+.step-card, .card, .pcard, .scard, .kit, .what-card, .principle-card, .peek-card, .proof > div, .proof-card, .file-list li, .roles .role, .faq details, .notfound-links-card, .impact-card, .sh-item, .contact-rail, .contact-fallback-card, .resume-side-card, .mini-stat, .hfs-item, .feature, .cta-panel {
+  transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1), 
+              box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), 
+              filter 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+              opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+              border-color 0.25s;
+  will-change: transform, filter, opacity;
+}
+
+/* 1. Sibling Cards Focus Blur (Method Steps, Projects, Services, Proof, Toolkit, Samples, Resume, FAQ, About, Contact) */
+.steps:has(.step-card:hover) .step-card:not(:hover),
+.steps:has(.step-card.is-focused-card) .step-card:not(.is-focused-card),
+.steps:has(.step-card:focus-within) .step-card:not(:focus-within),
+
+.pgrid:has(.pcard:hover) .pcard:not(:hover),
+.pgrid:has(.pcard.is-focused-card) .pcard:not(.is-focused-card),
+.pgrid:has(.pcard:focus-within) .pcard:not(:focus-within),
+
+.grid:has(.pcard:hover) .pcard:not(:hover),
+.grid:has(.pcard.is-focused-card) .pcard:not(.is-focused-card),
+.grid:has(.pcard:focus-within) .pcard:not(:focus-within),
+
+.grid:has(.scard:hover) .scard:not(:hover),
+.grid:has(.scard.is-focused-card) .scard:not(.is-focused-card),
+.service-grid:has(.scard:hover) .scard:not(:hover),
+.service-grid:has(.scard.is-focused-card) .scard:not(.is-focused-card),
+
+.grid:has(.kit:hover) .kit:not(:hover),
+.grid:has(.kit.is-focused-card) .kit:not(.is-focused-card),
+
+.grid:has(.principle-card:hover) .principle-card:not(:hover),
+.grid:has(.principle-card.is-focused-card) .principle-card:not(.is-focused-card),
+
+.grid:has(> .card:hover) > .card:not(:hover),
+.grid:has(> .card.is-focused-card) > .card:not(.is-focused-card),
+
+.what-i-do-grid:has(.what-card:hover) .what-card:not(:hover),
+.what-i-do-grid:has(.what-card.is-focused-card) .what-card:not(.is-focused-card),
+
+.peek-grid:has(.peek-card:hover) .peek-card:not(:hover),
+.peek-grid:has(.peek-card.is-focused-card) .peek-card:not(.is-focused-card),
+
+.ba-impact-grid:has(.impact-card:hover) .impact-card:not(:hover),
+.ba-impact-grid:has(.impact-card.is-focused-card) .impact-card:not(.is-focused-card),
+
+.stakeholder-list:has(.sh-item:hover) .sh-item:not(:hover),
+.stakeholder-list:has(.sh-item.is-focused-card) .sh-item:not(.is-focused-card),
+
+.proof:has(> div:hover) > div:not(:hover),
+.proof:has(> div.is-focused-card) > div:not(.is-focused-card),
+.proof:has(.proof-card:hover) .proof-card:not(:hover),
+.proof:has(.proof-card.is-focused-card) .proof-card:not(.is-focused-card),
+
+.tk-grid:has(.tk-tile:hover) .tk-tile:not(:hover),
+.tk-grid:has(.tk-tile.is-focused-card) .tk-tile:not(.is-focused-card),
+
+.file-list:has(li:hover) li:not(:hover),
+.file-list:has(li.is-focused-card) li:not(.is-focused-card),
+.file-list:has(li:focus-within) li:not(:focus-within),
+
+.roles:has(.role:hover) .role:not(:hover),
+.roles:has(.role.is-focused-card) .role:not(.is-focused-card),
+
+.faq:has(details:hover) details:not(:hover),
+.faq:has(details.is-focused-card) details:not(.is-focused-card),
+
+.mini-dash-stats:has(.mini-stat:hover) .mini-stat:not(:hover),
+.mini-dash-stats:has(.mini-stat.is-focused-card) .mini-stat:not(.is-focused-card),
+
+.hero-fact-strip:has(.hfs-item:hover) .hfs-item:not(:hover),
+.hero-fact-strip:has(.hfs-item.is-focused-card) .hfs-item:not(.is-focused-card),
+
+.contact-two-col:has(.form-card:hover) .contact-rail,
+.contact-two-col:has(.form-card.is-focused-card) .contact-rail,
+.contact-two-col:has(.contact-rail:hover) .form-card,
+.contact-two-col:has(.contact-rail.is-focused-card) .form-card,
+
+.resume-layout:has(.role:hover) .resume-sidebar,
+.resume-layout:has(.role.is-focused-card) .resume-sidebar,
+.resume-layout:has(.resume-side-card:hover) .resume-main,
+.resume-layout:has(.resume-side-card.is-focused-card) .resume-main,
+
+.about-hero-grid:has(.about-console:hover) > div:first-child,
+.about-hero-grid:has(.about-console.is-focused-card) > div:first-child,
+.about-hero-grid:has(.what-card:hover) .about-hero-card-col,
+.about-hero-grid:has(.what-card.is-focused-card) .about-hero-card-col {
+  filter: blur(4px) saturate(0.85);
+  opacity: 0.36;
+  transform: scale(0.975);
+}
+
+/* 2. Surrounding Section Ambient Elements Blur: Header, Subtitle, Crumb, and Flow Diagram */
+.sec:has(.step-card:hover) .sec-head,
+.sec:has(.step-card:hover) .bgflow,
+.sec:has(.pcard:hover) .sec-head,
+.sec:has(.pcard:hover) .bgflow,
+.sec:has(.scard:hover) .sec-head,
+.sec:has(.scard:hover) .bgflow,
+.sec:has(.kit:hover) .sec-head,
+.sec:has(.kit:hover) .bgflow,
+.sec:has(.principle-card:hover) .sec-head,
+.sec:has(.principle-card:hover) .bgflow,
+.sec:has(.what-card:hover) .sec-head,
+.sec:has(.what-card:hover) .about-lead-row,
+.sec:has(.what-card:hover) .bgflow,
+.sec:has(.about-console:hover) .sec-head,
+.sec:has(.about-console:hover) .bgflow,
+.sec:has(.impact-card:hover) .sec-head,
+.sec:has(.impact-card:hover) .bgflow,
+.sec:has(.tk-tile:hover) .sec-head,
+.sec:has(.tk-tile:hover) .bgflow,
+.sec:has(.file-list li:hover) .sec-title-with-ico,
+.sec:has(.file-list li:hover) .bgflow,
+.sec:has(.roles .role:hover) .sec-head,
+.sec:has(.roles .role:hover) .resume-header,
+.sec:has(.roles .role:hover) .bgflow,
+.sec:has(.proof-card:hover) .sec-head,
+.sec:has(.proof-card:hover) .bgflow,
+.sec:has(.proof > div:hover) .sec-head,
+.sec:has(.proof > div:hover) .bgflow,
+.sec:has(.form-card:hover) .bgflow,
+.sec:has(.feature:hover) .sec-head,
+.sec:has(.feature:hover) .bgflow,
+.sec.has-card-focused .sec-head,
+.sec.has-card-focused .bgflow,
+.sec.has-card-focused .sec-title-with-ico,
+.sec.has-card-focused .about-lead-row,
+.sec.has-card-focused .crumb {
+  filter: blur(2.5px);
+  opacity: 0.55;
+  transition: filter 0.4s ease, opacity 0.4s ease;
+}
+
+/* 3. Site-Wide Section Blur when Card is Active/Focused via Touch or Click */
+body.has-card-focused-mode main > section:not(.has-card-focused),
+body.has-card-focused-mode .site-header,
+body.has-card-focused-mode .site-footer {
+  filter: blur(3.5px) saturate(0.8);
+  opacity: 0.38;
+  pointer-events: none;
+  transition: filter 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 4. The Active/Hovered Card Retains 100% Sharp Clarity, Full Opacity, and Elevated Z-Index */
+.step-card:hover, .step-card.is-focused-card, .step-card:focus-within,
+.pcard:hover, .pcard.is-focused-card, .pcard:focus-within,
+.scard:hover, .scard.is-focused-card, .scard:focus-within,
+.kit:hover, .kit.is-focused-card, .kit:focus-within,
+.what-card:hover, .what-card.is-focused-card, .what-card:focus-within,
+.principle-card:hover, .principle-card.is-focused-card, .principle-card:focus-within,
+.peek-card:hover, .peek-card.is-focused-card, .peek-card:focus-within,
+.proof > div:hover, .proof > div.is-focused-card, .proof > div:focus-within,
+.proof-card:hover, .proof-card.is-focused-card, .proof-card:focus-within,
+.file-list li:hover, .file-list li.is-focused-card, .file-list li:focus-within,
+.roles .role:hover, .roles .role.is-focused-card, .roles .role:focus-within,
+.faq details:hover, .faq details.is-focused-card, .faq details:focus-within,
+.form-card:hover, .form-card.is-focused-card,
+.contact-rail:hover, .contact-rail.is-focused-card,
+.contact-fallback-card:hover, .contact-fallback-card.is-focused-card,
+.resume-side-card:hover, .resume-side-card.is-focused-card,
+.facts.card:hover, .facts.card.is-focused-card,
+.about-console:hover, .about-console.is-focused-card,
+.impact-card:hover, .impact-card.is-focused-card,
+.sh-item:hover, .sh-item.is-focused-card,
+.tk-tile:hover, .tk-tile.is-focused-card,
+.mini-stat:hover, .mini-stat.is-focused-card,
+.hfs-item:hover, .hfs-item.is-focused-card,
+.feature:hover, .feature.is-focused-card,
+.notfound-links-card:hover, .notfound-links-card.is-focused-card,
+.cta-panel:hover, .cta-panel.is-focused-card {
+  filter: none !important;
+  opacity: 1 !important;
+  z-index: 10 !important;
+}
+
+/* On Touch/Click Focused State: Tactile Elevation and Luminous Glow */
+.is-focused-card {
+  box-shadow: 0 0 0 2px var(--accent), 0 20px 42px -10px rgba(37, 99, 235, 0.28), 0 0 30px rgba(37, 99, 235, 0.18) !important;
+  border-color: var(--accent) !important;
+  transform: translateY(-4px) scale(1.015) !important;
+}
+[data-theme=dark] .is-focused-card {
+  box-shadow: 0 0 0 2px #38bdf8, 0 20px 42px -10px rgba(56, 189, 248, 0.35), 0 0 32px rgba(56, 189, 248, 0.25) !important;
+  border-color: #38bdf8 !important;
+}
+
+/* Ensure keyboard focus indicators remain crisp and clear */
+.step-card:focus-visible,
+.pcard:focus-visible,
+.scard:focus-visible,
+.kit:focus-visible,
+.file-list li:focus-visible,
+.form-card:focus-within {
+  filter: none !important;
+  opacity: 1 !important;
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+/* =============================================================================
+   23. UNIVERSAL 3D ICON DYNAMICS, SPECULAR DEPTH & MICRO-ANIMATIONS (ALL PAGES)
+   Adds tactile 3D perspective, volumetric bevels, and micro-interactions to all icons
+   ============================================================================= */
+
+/* 1. Header Brand Mark & Nav Tools (All Pages) */
+.brand img {
+  transform-style: preserve-3d;
+  filter: drop-shadow(0 2px 8px rgba(37, 99, 235, 0.28));
+  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.35s ease;
+  animation: brand-mark-float 6s ease-in-out infinite;
+  will-change: transform;
+}
+@keyframes brand-mark-float {
+  0%, 100% { transform: perspective(500px) translateZ(0) rotateY(0deg) translateY(0); }
+  50% { transform: perspective(500px) translateZ(6px) rotateY(10deg) translateY(-2px); }
+}
+.brand:hover img {
+  transform: perspective(500px) rotateY(20deg) rotateX(-8deg) translateY(-3px) scale(1.15) !important;
+  filter: drop-shadow(0 8px 18px rgba(37, 99, 235, 0.55)) !important;
+}
+
+.tools .icon-btn {
+  transform-style: preserve-3d;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.06), inset 0 1px 1px rgba(255, 255, 255, 0.8);
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s, background-color 0.2s;
+}
+[data-theme=dark] .tools .icon-btn {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+}
+.tools .icon-btn:hover {
+  transform: perspective(400px) translateZ(8px) translateY(-2px) scale(1.08);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.2), inset 0 1px 1.5px rgba(255, 255, 255, 0.95);
+}
+.tools .icon-btn svg {
+  transform-style: preserve-3d;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s;
+}
+#theme:hover svg {
+  transform: rotate(28deg) scale(1.16);
+  filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.6));
+}
+#animToggle:hover svg {
+  transform: scale(1.18);
+  filter: drop-shadow(0 0 6px rgba(37, 99, 235, 0.6));
+}
+#menu:hover svg {
+  transform: scale(1.15);
+}
+
+/* 2. Method Steps: 3D Badges, Spherical Number Coins & Pulsing Icons (Home & Services) */
+.step-badge {
+  transform-style: preserve-3d;
+  box-shadow: 0 3px 8px rgba(15, 20, 32, 0.06), inset 0 1px 1px rgba(255, 255, 255, 0.85);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s;
+}
+[data-theme=dark] .step-badge {
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+}
+
+/* Method Step Badges Vibrant Phase Colors */
+.step-card.step-1 .step-badge,
+.step-card.step-1 .step-num {
+  border-color: rgba(37, 99, 235, 0.4) !important;
+}
+.step-card.step-1 .step-ico svg {
+  filter: drop-shadow(0 2px 6px rgba(37, 99, 235, 0.5));
+}
+.step-card.step-2 .step-badge,
+.step-card.step-2 .step-num {
+  border-color: rgba(124, 58, 237, 0.4) !important;
+}
+.step-card.step-2 .step-ico svg {
+  filter: drop-shadow(0 2px 6px rgba(124, 58, 237, 0.5));
+}
+.step-card.step-3 .step-badge,
+.step-card.step-3 .step-num {
+  border-color: rgba(13, 148, 136, 0.4) !important;
+}
+.step-card.step-3 .step-ico svg {
+  filter: drop-shadow(0 2px 6px rgba(13, 148, 136, 0.5));
+}
+.step-card.step-4 .step-badge,
+.step-card.step-4 .step-num {
+  border-color: rgba(16, 185, 129, 0.4) !important;
+}
+.step-card.step-4 .step-ico svg {
+  filter: drop-shadow(0 2px 6px rgba(16, 185, 129, 0.5));
+}
+
+.step-num {
+  box-shadow: inset 0 2px 3px rgba(255, 255, 255, 0.45), inset 0 -2px 3px rgba(0, 0, 0, 0.25), 0 2px 6px rgba(0, 0, 0, 0.2);
+  transform-style: preserve-3d;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.step-ico {
+  display: inline-flex;
+  align-items: center;
+  transform-style: preserve-3d;
+}
+.step-ico svg {
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s;
+}
+.step-card:hover .step-badge {
+  transform: perspective(600px) translateY(-3px) translateZ(8px) scale(1.06);
+  box-shadow: 0 8px 18px -4px rgba(15, 20, 32, 0.14), inset 0 1.5px 2px rgba(255, 255, 255, 0.95);
+}
+.step-card:hover .step-num {
+  transform: scale(1.15) translateZ(4px);
+}
+.step-card:hover .step-ico svg {
+  transform: rotate(12deg) scale(1.24);
+}
+
+/* 3. About Page What-I-Do 3D Glass Tiles */
+.wid-ico {
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  flex-shrink: 0;
+  transform-style: preserve-3d;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08), inset 0 1.5px 1.5px rgba(255, 255, 255, 0.85);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s, filter 0.3s;
+}
+[data-theme=dark] .wid-ico {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+}
+.wid-ico.blue { background: linear-gradient(135deg, rgba(37, 99, 235, 0.18), rgba(59, 130, 246, 0.1)) !important; color: #2563eb !important; border: 1.5px solid rgba(37, 99, 235, 0.35) !important; }
+.wid-ico.indigo { background: linear-gradient(135deg, rgba(124, 58, 237, 0.18), rgba(99, 102, 241, 0.1)) !important; color: #7c3aed !important; border: 1.5px solid rgba(124, 58, 237, 0.35) !important; }
+.wid-ico.teal { background: linear-gradient(135deg, rgba(13, 148, 136, 0.18), rgba(6, 182, 212, 0.1)) !important; color: #0d9488 !important; border: 1.5px solid rgba(13, 148, 136, 0.35) !important; }
+.wid-ico.green { background: linear-gradient(135deg, rgba(16, 185, 129, 0.18), rgba(5, 150, 105, 0.1)) !important; color: #10b981 !important; border: 1.5px solid rgba(16, 185, 129, 0.35) !important; }
+
+[data-theme=dark] .wid-ico.blue { color: #60a5fa !important; background: linear-gradient(135deg, rgba(59, 130, 246, 0.25), rgba(37, 99, 235, 0.15)) !important; border-color: rgba(59, 130, 246, 0.45) !important; }
+[data-theme=dark] .wid-ico.indigo { color: #a78bfa !important; background: linear-gradient(135deg, rgba(139, 92, 246, 0.25), rgba(99, 102, 241, 0.15)) !important; border-color: rgba(139, 92, 246, 0.45) !important; }
+[data-theme=dark] .wid-ico.teal { color: #2dd4bf !important; background: linear-gradient(135deg, rgba(20, 184, 166, 0.25), rgba(6, 182, 212, 0.15)) !important; border-color: rgba(20, 184, 166, 0.45) !important; }
+[data-theme=dark] .wid-ico.green { color: #34d399 !important; background: linear-gradient(135deg, rgba(16, 185, 129, 0.25), rgba(5, 150, 105, 0.15)) !important; border-color: rgba(16, 185, 129, 0.45) !important; }
+
+.what-card:hover .wid-ico {
+  transform: perspective(600px) translate3d(0, -3px, 10px) rotateX(10deg) rotateY(-10deg) scale(1.18);
+}
+.what-card:hover .wid-ico.blue { box-shadow: 0 10px 20px -2px rgba(37, 99, 235, 0.4), 0 0 16px rgba(37, 99, 235, 0.3); }
+.what-card:hover .wid-ico.indigo { box-shadow: 0 10px 20px -2px rgba(124, 58, 237, 0.4), 0 0 16px rgba(124, 58, 237, 0.3); }
+.what-card:hover .wid-ico.teal { box-shadow: 0 10px 20px -2px rgba(13, 148, 136, 0.4), 0 0 16px rgba(13, 148, 136, 0.3); }
+.what-card:hover .wid-ico.green { box-shadow: 0 10px 20px -2px rgba(16, 185, 129, 0.4), 0 0 16px rgba(16, 185, 129, 0.3); }
+
+/* 4. About Page Principles 3D Tile Icons (.p-ico-tile) */
+.principle-card .p-ico-tile {
+  transform-style: preserve-3d;
+  box-shadow: 0 4px 14px -2px var(--accent-glow), inset 0 1.5px 1.5px rgba(255, 255, 255, 0.85);
+  border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s, background-color 0.25s, color 0.25s;
+}
+[data-theme=dark] .principle-card .p-ico-tile {
+  box-shadow: 0 6px 18px -4px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.12);
+}
+.principle-card:hover .p-ico-tile {
+  transform: perspective(600px) translate3d(0, -5px, 12px) rotateY(14deg) rotateX(-6deg) scale(1.15) !important;
+  box-shadow: 0 14px 28px -4px var(--accent-glow), 0 0 20px -2px var(--accent-glow), inset 0 2px 2px rgba(255, 255, 255, 0.95);
+  background: var(--accent) !important;
+  color: #ffffff !important;
+}
+.principle-card:hover .p-ico-tile svg {
+  transform: scale(1.14);
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* 5. Toolkit Colorful Brand & Skill Tiles (.tk-ico) */
+.tk-ico {
+  transform-style: preserve-3d;
+  box-shadow: 0 3px 8px rgba(15, 23, 42, 0.06), inset 0 1px 1px rgba(255, 255, 255, 0.85);
+  border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s, background-color 0.25s, color 0.25s;
+}
+[data-theme=dark] .tk-ico {
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+}
+.tk-tile:hover .tk-ico {
+  transform: perspective(600px) translate3d(0, -4px, 12px) rotateX(12deg) rotateY(-14deg) scale(1.22) !important;
+  box-shadow: 0 12px 24px -4px currentColor, inset 0 1.5px 1.5px rgba(255, 255, 255, 0.95) !important;
+}
+
+/* Individual vibrant color schemes for Toolkit items */
+.tk-ico-stakeholder-mgmt { background: rgba(37, 99, 235, 0.14) !important; color: #2563eb !important; border-color: rgba(37, 99, 235, 0.35) !important; }
+.tk-ico-requirements-elicitation { background: rgba(245, 158, 11, 0.14) !important; color: #d97706 !important; border-color: rgba(245, 158, 11, 0.35) !important; }
+.tk-ico-brd-frd-specs { background: rgba(29, 78, 216, 0.14) !important; color: #1d4ed8 !important; border-color: rgba(29, 78, 216, 0.35) !important; }
+.tk-ico-user-stories-bdd { background: rgba(13, 148, 136, 0.14) !important; color: #0d9488 !important; border-color: rgba(13, 148, 136, 0.35) !important; }
+.tk-ico-traceability-rtm { background: rgba(99, 102, 241, 0.14) !important; color: #6366f1 !important; border-color: rgba(99, 102, 241, 0.35) !important; }
+.tk-ico-scope-impact { background: rgba(245, 158, 11, 0.14) !important; color: #f59e0b !important; border-color: rgba(245, 158, 11, 0.35) !important; }
+
+.tk-ico-as-is-to-be { background: rgba(6, 182, 212, 0.14) !important; color: #06b6d4 !important; border-color: rgba(6, 182, 212, 0.35) !important; }
+.tk-ico-process-mapping-bpmn-uml { background: rgba(244, 63, 94, 0.14) !important; color: #f43f5e !important; border-color: rgba(244, 63, 94, 0.35) !important; }
+.tk-ico-root-cause-analysis { background: rgba(217, 70, 239, 0.14) !important; color: #d946ef !important; border-color: rgba(217, 70, 239, 0.35) !important; }
+.tk-ico-business-rules { background: rgba(37, 99, 235, 0.14) !important; color: #2563eb !important; border-color: rgba(37, 99, 235, 0.35) !important; }
+.tk-ico-data-mapping { background: rgba(139, 92, 246, 0.14) !important; color: #8b5cf6 !important; border-color: rgba(139, 92, 246, 0.35) !important; }
+.tk-ico-moscow-priorities { background: rgba(239, 68, 68, 0.14) !important; color: #ef4444 !important; border-color: rgba(239, 68, 68, 0.35) !important; }
+
+.tk-ico-agile-scrum { background: rgba(168, 85, 247, 0.14) !important; color: #a855f7 !important; border-color: rgba(168, 85, 247, 0.35) !important; }
+.tk-ico-sprint-planning { background: rgba(2, 132, 199, 0.14) !important; color: #0284c7 !important; border-color: rgba(2, 132, 199, 0.35) !important; }
+.tk-ico-backlog-refinement { background: rgba(245, 158, 11, 0.14) !important; color: #f59e0b !important; border-color: rgba(245, 158, 11, 0.35) !important; }
+.tk-ico-uat-coordination { background: rgba(16, 185, 129, 0.14) !important; color: #10b981 !important; border-color: rgba(16, 185, 129, 0.35) !important; }
+.tk-ico-defect-triage { background: rgba(244, 63, 94, 0.14) !important; color: #f43f5e !important; border-color: rgba(244, 63, 94, 0.35) !important; }
+.tk-ico-change-management { background: rgba(234, 88, 12, 0.14) !important; color: #ea580c !important; border-color: rgba(234, 88, 12, 0.35) !important; }
+
+.tk-ico-rest-api-specs { background: rgba(6, 182, 212, 0.14) !important; color: #06b6d4 !important; border-color: rgba(6, 182, 212, 0.35) !important; }
+.tk-ico-sql-postgres { background: rgba(51, 103, 145, 0.18) !important; color: #336791 !important; border-color: rgba(51, 103, 145, 0.45) !important; }
+.tk-ico-python-pandas { background: linear-gradient(135deg, rgba(55, 118, 171, 0.18), rgba(255, 212, 56, 0.18)) !important; border-color: rgba(55, 118, 171, 0.4) !important; }
+.tk-ico-power-bi-dax { background: rgba(242, 200, 17, 0.18) !important; color: #d97706 !important; border-color: rgba(242, 200, 17, 0.45) !important; }
+.tk-ico-jira-confluence { background: rgba(0, 82, 204, 0.16) !important; color: #0052cc !important; border-color: rgba(0, 82, 204, 0.4) !important; }
+.tk-ico-figma-postman { background: linear-gradient(135deg, rgba(242, 78, 30, 0.16), rgba(162, 89, 255, 0.16)) !important; border-color: rgba(242, 78, 30, 0.4) !important; }
+
+/* 6. BA Samples Page 3D Document Folder Tiles (.file-item-ico) */
+.file-item-ico {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--accent) 8%, var(--surface));
+  border: 1.5px solid color-mix(in srgb, var(--accent) 26%, var(--line));
+  color: var(--accent);
+  flex-shrink: 0;
+  transform-style: preserve-3d;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06), inset 0 1.5px 1.5px rgba(255, 255, 255, 0.85);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s, border-color 0.25s, color 0.25s, background-color 0.25s;
+}
+[data-theme=dark] .file-item-ico {
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.12);
+}
+.file-item:hover .file-item-ico {
+  transform: perspective(600px) translate3d(0, -4px, 12px) rotateY(-12deg) rotateX(6deg) scale(1.15);
+  box-shadow: 0 14px 28px -6px currentColor, inset 0 2px 2px rgba(255, 255, 255, 0.95);
+}
+
+/* Document item specific colorful 3D tiles */
+.file-item-ico-bundle { background: linear-gradient(135deg, rgba(79, 70, 229, 0.2), rgba(99, 102, 241, 0.12)) !important; border-color: rgba(99, 102, 241, 0.45) !important; }
+.file-item-ico-brd { background: linear-gradient(135deg, rgba(24, 90, 189, 0.2), rgba(43, 87, 154, 0.12)) !important; border-color: rgba(24, 90, 189, 0.45) !important; }
+.file-item-ico-frd { background: linear-gradient(135deg, rgba(37, 99, 235, 0.2), rgba(29, 78, 216, 0.12)) !important; border-color: rgba(37, 99, 235, 0.45) !important; }
+.file-item-ico-user-stories { background: linear-gradient(135deg, rgba(124, 58, 237, 0.2), rgba(109, 40, 217, 0.12)) !important; border-color: rgba(124, 58, 237, 0.45) !important; }
+.file-item-ico-rtm { background: linear-gradient(135deg, rgba(5, 150, 105, 0.2), rgba(4, 120, 87, 0.12)) !important; border-color: rgba(5, 150, 105, 0.45) !important; }
+.file-item-ico-discovery { background: linear-gradient(135deg, rgba(217, 119, 6, 0.2), rgba(180, 83, 9, 0.12)) !important; border-color: rgba(217, 119, 6, 0.45) !important; }
+.file-item-ico-process-flow { background: linear-gradient(135deg, rgba(225, 29, 72, 0.2), rgba(190, 18, 60, 0.12)) !important; border-color: rgba(225, 29, 72, 0.45) !important; }
+.file-item-ico-arch { background: linear-gradient(135deg, rgba(8, 145, 178, 0.2), rgba(14, 116, 144, 0.12)) !important; border-color: rgba(8, 145, 178, 0.45) !important; }
+.file-item-ico-erd { background: linear-gradient(135deg, rgba(2, 132, 199, 0.2), rgba(3, 105, 161, 0.12)) !important; border-color: rgba(2, 132, 199, 0.45) !important; }
+.file-item-ico-rest-api { background: linear-gradient(135deg, rgba(13, 148, 136, 0.2), rgba(15, 118, 110, 0.12)) !important; border-color: rgba(13, 148, 136, 0.45) !important; }
+.file-item-ico-power-bi { background: linear-gradient(135deg, rgba(217, 119, 6, 0.2), rgba(245, 158, 11, 0.12)) !important; border-color: rgba(217, 119, 6, 0.45) !important; }
+.file-item-ico-figma-mockup { background: linear-gradient(135deg, rgba(242, 78, 30, 0.2), rgba(162, 89, 255, 0.15)) !important; border-color: rgba(242, 78, 30, 0.45) !important; }
+.file-item-ico-figjam { background: linear-gradient(135deg, rgba(234, 88, 12, 0.2), rgba(249, 115, 22, 0.12)) !important; border-color: rgba(234, 88, 12, 0.45) !important; }
+.file-item-ico-rtm-matrix { background: linear-gradient(135deg, rgba(5, 150, 105, 0.2), rgba(16, 185, 129, 0.12)) !important; border-color: rgba(5, 150, 105, 0.45) !important; }
+.file-item-ico-test-cases { background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.12)) !important; border-color: rgba(16, 185, 129, 0.45) !important; }
+.file-item-ico-user-stories-export { background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(124, 58, 237, 0.12)) !important; border-color: rgba(139, 92, 246, 0.45) !important; }
+.file-item-ico-sql { background: linear-gradient(135deg, rgba(51, 103, 145, 0.22), rgba(2, 132, 199, 0.15)) !important; border-color: rgba(51, 103, 145, 0.5) !important; }
+.file-item:hover .file-item-ico svg {
+  transform: scale(1.15);
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.file-link-btn svg {
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s;
+}
+.file-link-btn:hover svg {
+  transform: translateY(-2px) scale(1.22);
+  filter: drop-shadow(0 2px 5px currentColor);
+}
+
+/* 7. Contact Page 3D Floating Badges & Volumetric Shadows */
+.contact-list span svg {
+  transform: perspective(600px) rotateX(6deg) rotateY(-8deg) translateZ(6px);
+  box-shadow: 0 3px 10px rgba(15, 23, 42, 0.08), inset 0 1px 1.5px rgba(255, 255, 255, 0.85);
+  animation: icon-float-3d 6s ease-in-out infinite;
+}
+@keyframes icon-float-3d {
+  0%, 100% { transform: perspective(600px) rotateX(6deg) rotateY(-8deg) translateZ(6px) translateY(0); }
+  50% { transform: perspective(600px) rotateX(2deg) rotateY(-4deg) translateZ(10px) translateY(-3px); }
+}
+.contact-list li:hover span svg {
+  transform: perspective(600px) rotateX(0deg) rotateY(0deg) translateZ(16px) translateY(-5px) scale(1.18) !important;
+}
+
+.tz-globe-ico {
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s;
+  filter: drop-shadow(0 2px 4px rgba(37, 99, 235, 0.25));
+  animation: tz-globe-spin 20s linear infinite;
+}
+@keyframes tz-globe-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.tz-badge:hover .tz-globe-ico {
+  transform: rotate(360deg) scale(1.3) !important;
+  filter: drop-shadow(0 4px 10px rgba(37, 99, 235, 0.45));
+}
+
+/* 8. Projects & Case Study Icons (ERD Zoom Hint, Browser Dots) */
+.feat-zoom-hint svg {
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s;
+  animation: hint-lens-pulse 3.5s ease-in-out infinite;
+}
+@keyframes hint-lens-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.14) rotate(6deg); }
+}
+.feat-img:hover .feat-zoom-hint svg {
+  transform: scale(1.32) rotate(16deg) !important;
+  filter: drop-shadow(0 0 10px #ffffff);
+}
+
+.bf-dot, .wf-dot, .cdot {
+  box-shadow: inset 0 1.5px 1.5px rgba(255, 255, 255, 0.75), 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+  transform-style: preserve-3d;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s !important;
+}
+.bf-dot:hover, .wf-dot:hover, .cdot:hover {
+  transform: scale(1.3) translateZ(6px) !important;
+  box-shadow: inset 0 2px 2px rgba(255, 255, 255, 0.95), 0 4px 10px rgba(0, 0, 0, 0.35) !important;
+}
+
+/* 9. Timeline Role Node 3D Spherical Ripple (Resume & Home) */
+.role .node {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 3px var(--bg), 0 0 12px var(--accent-glow);
+  transform-style: preserve-3d;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s;
+  position: relative;
+}
+.role:hover .node {
+  transform: scale(1.42) translateZ(8px) !important;
+  box-shadow: 0 0 0 4px var(--bg), 0 0 22px 6px var(--accent) !important;
+}
+#printResumeBtn svg {
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+#printResumeBtn:hover svg {
+  transform: translateY(-2px) scale(1.2);
+}
+
+/* 10. Live Status Dots 3D Breathing Glow */
+.reply-dot-static, .c-status-dot, .c-static-dot, .c-live-dot {
+  box-shadow: 0 0 8px currentColor;
+  animation: dot-glow-breathe 2.8s ease-in-out infinite;
+}
+@keyframes dot-glow-breathe {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.25); opacity: 0.85; box-shadow: 0 0 14px currentColor; }
+}
+
+/* 11. Interactive Arrows & Badges */
+.btn .arr, .card .more, .card .arr, .exp-arr {
+  display: inline-block;
+  transform-style: preserve-3d;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.2s;
+}
+.btn:hover .arr, .card:hover .more, .card:hover .arr {
+  transform: translateX(5px) translateZ(6px) scale(1.18);
+}
+
+.peek-badge, .status-badge, .rank-up-badge {
+  transform-style: preserve-3d;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.05), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.peek-card:hover .peek-badge, .file-item:hover .status-badge {
+  transform: translateY(-2px) scale(1.05);
+}
+
+/* 12. Interactive Slider Tab Icons (3D Pill, Floating Micro-Sway) */
+.tab-ico-pill {
+  transform-style: preserve-3d;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.85);
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s;
+  animation: tab-ico-float 5s ease-in-out infinite;
+}
+@keyframes tab-ico-float {
+  0%, 100% { transform: perspective(400px) translateY(0) translateZ(2px); }
+  50% { transform: perspective(400px) translateY(-1.5px) translateZ(5px); }
+}
+.slider-tab:hover .tab-ico-pill,
+.slider-tab.is-active .tab-ico-pill {
+  transform: perspective(400px) translate3d(0, -2px, 8px) scale(1.18) !important;
+  box-shadow: 0 6px 14px currentColor, inset 0 1.5px 1.5px rgba(255, 255, 255, 0.95) !important;
+}
+.tab-ico-pill svg {
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.slider-tab:hover .tab-ico-pill svg,
+.slider-tab.is-active .tab-ico-pill svg {
+  transform: scale(1.16) rotate(6deg);
+}
+
+/* 13. Hero Slider Arrow Controls & Pause Icons */
+.slider-arrow {
+  transform-style: preserve-3d;
+  box-shadow: 0 2px 5px rgba(15, 23, 42, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.7);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s, background-color 0.2s, color 0.2s;
+}
+.slider-arrow:hover {
+  transform: perspective(400px) translateY(-2px) translateZ(6px) scale(1.1) !important;
+  box-shadow: 0 6px 14px rgba(59, 130, 246, 0.25), inset 0 1px 1.5px rgba(255, 255, 255, 0.95) !important;
+}
+.slider-arrow:active {
+  transform: perspective(400px) translateY(0) translateZ(0) scale(0.96) !important;
+}
+
+/* 14. BA Samples Section Header 3D Badges */
+.sec-hdr-ico {
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08), inset 0 1.5px 1.5px rgba(255, 255, 255, 0.85);
+  animation: sec-hdr-float 7s ease-in-out infinite;
+}
+@keyframes sec-hdr-float {
+  0%, 100% { transform: perspective(600px) translateY(0) rotateX(0deg) rotateY(0deg); }
+  50% { transform: perspective(600px) translateY(-3px) rotateX(4deg) rotateY(-4deg); }
+}
+.sec-title-with-ico:hover .sec-hdr-ico,
+.sec-hdr-ico:hover {
+  transform: perspective(600px) translateY(-5px) translateZ(12px) rotateX(8deg) rotateY(-8deg) scale(1.12) !important;
+  box-shadow: 0 12px 24px -2px var(--accent-glow), inset 0 2px 2px rgba(255, 255, 255, 0.95) !important;
+}
+.sec-hdr-ico svg {
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.sec-title-with-ico:hover .sec-hdr-ico svg,
+.sec-hdr-ico:hover svg {
+  transform: scale(1.2) rotate(6deg);
+}
+
+/* 15. View Switcher Toggle Icons */
+.svb-btn svg, .view-btn svg {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.svb-btn:hover svg, .view-btn:hover svg {
+  transform: scale(1.22) translateY(-1px);
+}
+.svb-btn.is-active svg, .view-btn.is-active svg {
+  transform: scale(1.1);
+  filter: drop-shadow(0 1px 3px rgba(37, 99, 235, 0.3));
+}
+
+/* 16. Contact Channel Brand Specced 3D Depth & Glow */
+.ico-gmail { color: #ea4335 !important; }
+.contact-list li:hover .ico-gmail { filter: drop-shadow(0 4px 12px rgba(234, 67, 53, 0.45)); }
+.ico-li { color: #0a66c2 !important; }
+.contact-list li:hover .ico-li { filter: drop-shadow(0 4px 12px rgba(10, 102, 194, 0.45)); }
+.ico-gh { color: #8b5cf6 !important; }
+.contact-list li:hover .ico-gh { filter: drop-shadow(0 4px 12px rgba(139, 92, 246, 0.45)); }
+.ico-loc { color: #10b981 !important; }
+.contact-list li:hover .ico-loc { filter: drop-shadow(0 4px 12px rgba(16, 185, 129, 0.45)); }
+.ico-hr { color: #f59e0b !important; }
+.contact-list li:hover .ico-hr { filter: drop-shadow(0 4px 12px rgba(245, 158, 11, 0.45)); }
+.c-file-ico {
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.contact-fallback-card:hover .c-file-ico {
+  transform: scale(1.2) rotate(-8deg);
+}
+
+/* Continuous micro-animations for Method Step badges and Toolkit icons */
+.step-ico {
+  animation: step-ico-float 6s ease-in-out infinite;
+}
+@keyframes step-ico-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2.5px); }
+}
+
+.tk-ico {
+  animation: tk-ico-sway 7s ease-in-out infinite;
+}
+@keyframes tk-ico-sway {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-2px) rotate(1.5deg); }
+}
+
+.principle-card .p-ico-tile {
+  animation: p-ico-breathe 6.5s ease-in-out infinite;
+}
+@keyframes p-ico-breathe {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-2.5px) scale(1.02); }
+}
+
+/* Accessibility: prefer-reduced-motion guards */
+@media (prefers-reduced-motion: reduce) {
+  .brand img, .contact-list span svg, .feat-zoom-hint svg, .reply-dot-static, .c-status-dot, .c-static-dot,
+  .tz-globe-ico, .tab-ico-pill, .sec-hdr-ico, .step-ico, .tk-ico, .p-ico-tile {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
+/* Reduced motion & Print guards */
+@media (prefers-reduced-motion: reduce) {
+  .card::after, .scard::after, .pcard::after, .step-card::after, .peek-card::after, .rbody::after, .tk-tile::after, .form-card::after, .feat-card::after {
+    animation: none !important;
+  }
+  .card, .scard, .pcard, .step-card, .peek-card, .kit, .rbody, .tk-tile, .form-card {
+    transform: none !important;
+  }
+  .steps:has(.step-card:hover) .step-card:not(:hover),
+  .grid:has(.pcard:hover) .pcard:not(:hover),
+  .sec:has(.step-card:hover) .sec-head,
+  .file-list:has(li:hover) li:not(:hover) {
+    filter: none !important;
+    opacity: 0.65 !important;
+    transform: none !important;
+  }
+}
+
+@media print {
+  .bg-anim-canvas,
+  .ascii-wave,
+  .grid-trail-canvas {
+    display: none !important;
+  }
+}
+
+
+
