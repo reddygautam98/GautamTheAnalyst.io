@@ -2409,8 +2409,26 @@ dl.facts.card {
   .slider-nav-ctrls,
   .f3d,
   .icon-btn,
-  #copyEnquiryBtn {
+  #copyEnquiryBtn,
+  .skills-filter-wrap,
+  .sf-chips,
+  .sf-count,
+  #sfClear,
+  .btn-preview,
+  .img-zoom-btn,
+  .pd-tabs,
+  .preview-drawer,
+  .image-lightbox,
+  .filter-wrapper,
+  .pt-stepper {
     display: none !important;
+  }
+
+  .role li,
+  .role li.is-dimmed,
+  .role li.is-highlighted {
+    opacity: 1 !important;
+    background: transparent !important;
   }
 
   /* Unclip text gradients and headers for paper printing */
@@ -5949,12 +5967,14 @@ p,li{text-wrap:pretty}
 
 /* 3. Site-Wide Section Blur when Card is Active/Focused via Touch or Click */
 body.has-card-focused-mode main > section:not(.has-card-focused),
-body.has-card-focused-mode .site-header,
 body.has-card-focused-mode .site-footer {
   filter: blur(3.5px) saturate(0.8);
   opacity: 0.38;
   pointer-events: none;
   transition: filter 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+body.has-card-focused-mode .site-header {
+  pointer-events: auto;
 }
 
 /* 4. The Active/Hovered Card Retains 100% Sharp Clarity, Full Opacity, and Elevated Z-Index */
@@ -6524,10 +6544,149 @@ body.has-card-focused-mode .site-footer {
 @media print {
   .bg-anim-canvas,
   .ascii-wave,
-  .grid-trail-canvas {
+  .grid-trail-canvas,
+  .globe-card {
     display: none !important;
   }
 }
+
+/* 13. Interactive 3D Dotted Globe (Contact Page) */
+.globe-card {
+  position: relative;
+  background: var(--surface);
+  background-image: radial-gradient(color-mix(in srgb, var(--line) 85%, transparent) 1.2px, transparent 1.2px);
+  background-size: 18px 18px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 20px 22px;
+  margin-top: 20px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: border-color var(--dur-fast), box-shadow var(--dur-fast);
+}
+.globe-card:hover {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+  box-shadow: 0 12px 32px -10px color-mix(in srgb, var(--accent) 15%, transparent);
+}
+.globe-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 2;
+}
+.globe-badge-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: color-mix(in srgb, var(--surface) 85%, transparent);
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  backdrop-filter: blur(6px);
+}
+.globe-pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 10px #10b981;
+  display: inline-block;
+  animation: globePulse 2s ease-in-out infinite;
+}
+@keyframes globePulse {
+  0%, 100% { transform: scale(1); opacity: 1; box-shadow: 0 0 8px #10b981; }
+  50% { transform: scale(1.35); opacity: 0.75; box-shadow: 0 0 14px #10b981; }
+}
+.globe-badge-title {
+  font: 600 max(11px, .72rem) var(--mono);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.globe-btn-reset {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--muted);
+  cursor: pointer;
+  transition: all var(--dur-fast);
+}
+.globe-btn-reset:hover {
+  background: var(--soft);
+  color: var(--accent);
+  border-color: var(--accent);
+  transform: rotate(-90deg);
+}
+.globe-btn-reset.is-active {
+  transform: rotate(-360deg);
+  transition: transform 0.4s var(--ease);
+}
+.globe-canvas-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 340px;
+  margin: 0 auto;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  user-select: none;
+}
+.globe-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
+  cursor: grab;
+  border-radius: 50%;
+  transition: cursor var(--dur-fast);
+}
+.globe-card.is-dragging .globe-canvas {
+  cursor: grabbing;
+}
+.globe-card-foot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+  position: relative;
+  z-index: 2;
+}
+.globe-location-info {
+  font: 500 max(12px, .8rem) var(--mono);
+  color: var(--muted);
+  text-align: center;
+}
+.globe-location-info strong {
+  color: var(--ink);
+}
+[data-theme=dark] .globe-location-info strong {
+  color: #f8fafc;
+}
+.globe-hint-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--line);
+  font: 500 max(11px, .74rem) var(--sans);
+  color: var(--muted);
+}
+.globe-hint-icon {
+  font-size: 0.85rem;
+}
+
 
 
 

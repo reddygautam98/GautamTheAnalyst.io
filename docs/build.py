@@ -125,7 +125,7 @@ def page(path, title, desc, body, p="", cur="", ld="", robots="index, follow, ma
       </div>
     </div>
     <div class="pd-foot">
-      <a class="btn btn-primary btn-sm" href="docs/PayTrack_Sample_BA_Documentation_Bundle.pdf" target="_blank" rel="noopener noreferrer">Download Full Bundle PDF &rarr;</a>
+      <a class="btn btn-primary btn-sm" href="docs/PayTrack_Sample_BA_Documentation_Bundle.pdf" target="_blank" rel="noopener noreferrer">Download Full Bundle PDF <span class="sr-only">(opens in new tab)</span>&rarr;</a>
     </div>
   </div>
 </aside>'''
@@ -137,6 +137,8 @@ def page(path, title, desc, body, p="", cur="", ld="", robots="index, follow, ma
         extra_scripts_list.append(f'<script src="{p}assets/ascii-wave.js?v=44" defer></script>')
     if 'data-grid-trail' in body:
         extra_scripts_list.append(f'<script src="{p}assets/grid-trail.js?v=44" defer></script>')
+    if 'data-globe' in body:
+        extra_scripts_list.append(f'<script type="module" src="{p}assets/globe.js?v=44"></script>')
     extra_scripts = ('\n' + '\n'.join(extra_scripts_list)) if extra_scripts_list else ''
 
     return f'''<!DOCTYPE html>
@@ -175,13 +177,12 @@ def page(path, title, desc, body, p="", cur="", ld="", robots="index, follow, ma
 <a class="skip" href="#main">Skip to content</a>
 <div class="progress" aria-hidden="true"></div>
 <header class="site-header"><div class="wrap bar">
-<a class="brand" href="{home}"><img src="{p}assets/mark.svg" alt="" width="30" height="30">Gautam Reddy</a>
+<a class="brand" href="{home}"><img src="{p}assets/mark.svg" alt="" aria-hidden="true" width="30" height="30">Gautam Reddy</a>
 <nav class="nav" id="nav" aria-label="Main">{nav}<a href="{p}resume.html" class="nav-resume-btn"{res_cur}>Resume</a></nav>
 <div class="tools">
 <button class="icon-btn" id="theme" type="button" aria-label="Toggle dark theme" aria-pressed="false" title="Toggle dark theme"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
-</div>
 <button class="icon-btn menu-btn" id="menu" type="button" aria-expanded="false" aria-controls="nav" aria-label="Open navigation menu">{MENU_ICO}</button>
-</div><div class="nav-backdrop" id="navBackdrop" aria-hidden="true"></div></header>
+</div></header><div class="nav-backdrop" id="navBackdrop" aria-hidden="true"></div>
 <main id="main" tabindex="-1">
 {body}
 </main>
@@ -221,7 +222,7 @@ def page(path, title, desc, body, p="", cur="", ld="", robots="index, follow, ma
 </html>'''
 
 def cta(p="", h="Hiring a Business Analyst, or scoping a piece of work?", t="Share the role or the problem and the outcome you want. I reply with context.", wave=False):
-    cid = f"cta_{abs(hash(h)) % 997}"
+    cid = f"cta_{abs(sum((i + 1) * ord(c) for i, c in enumerate(h))) % 997}"
     wave_markup = f'\n<div class="ascii-wave" data-ascii-wave data-speed="1" aria-hidden="true"><canvas></canvas></div>' if wave else ""
     return f'''<section class="sec cta-sec has-flow" id="cta">{F.lifecycle(cid)}<div class="wrap">
 <div class="cta-panel">{wave_markup}
@@ -729,7 +730,7 @@ def about_3d_console():
     <div class="console-hero-row">
       <div class="console-avatar-wrap">
         <div class="console-avatar-ring">
-          <img src="assets/mark.svg" alt="" width="46" height="46">
+          <img src="assets/mark.svg" alt="" aria-hidden="true" width="46" height="46">
         </div>
       </div>
       <div class="console-info">
@@ -871,7 +872,7 @@ def about():
   </div>
 </div>
 </div>
-<div class="actions {rv(4)}"><a class="btn btn-primary" href="resume.html">View resume</a><a class="btn btn-ghost" href="{LI}" target="_blank" rel="noopener noreferrer">Connect on LinkedIn</a></div></div>
+<div class="actions {rv(4)}"><a class="btn btn-primary" href="resume.html">View resume</a><a class="btn btn-ghost" href="{LI}" target="_blank" rel="noopener noreferrer">Connect on LinkedIn <span class="sr-only">(opens in new tab)</span></a></div></div>
 <div class="about-hero-card-col {rv(2)}">
 {about_3d_console()}
 </div>
@@ -1077,7 +1078,7 @@ def projects():
   <div class="thumb browser-frame">
     <div class="bf-bar" aria-hidden="true"><span class="bf-dot red"></span><span class="bf-dot yellow"></span><span class="bf-dot green"></span><span class="bf-url">ops.paytrack.internal/data-model</span></div>
     <div class="bf-viewport">
-      <a class="feat-img" href="samples/diagrams/Payment_Data_Model_ERD.png" data-full="samples/diagrams/Payment_Data_Model_ERD.png" aria-label="Open the data model diagram in high-resolution lightbox" title="Click to inspect high-resolution diagram"><img src="samples/diagrams/Payment_Data_Model_ERD.svg" alt="Logical data model (ERD) diagram from the PayTrack payment reconciliation sample" width="1400" height="880" loading="eager"><span class="feat-zoom-hint" aria-hidden="true">{ZOOM_ICO} Click or tap to expand ERD</span></a>
+      <a class="feat-img" href="samples/diagrams/Payment_Data_Model_ERD.png" data-full="samples/diagrams/Payment_Data_Model_ERD.png" data-caption="Entity Relationship Diagram with foreign keys and index constraints" aria-label="Open the data model diagram in high-resolution lightbox" title="Click to inspect high-resolution diagram"><img src="samples/diagrams/Payment_Data_Model_ERD.svg" alt="Logical data model (ERD) diagram from the PayTrack payment reconciliation sample" width="1400" height="880" loading="eager"><span class="feat-zoom-hint" aria-hidden="true">{ZOOM_ICO} Click or tap to expand ERD</span></a>
     </div>
   </div>
   <ul class="feat-links">
@@ -1153,8 +1154,8 @@ def resume():
 <section class="sec sec--first" data-bg-anim="horizon"><div class="wrap">
 <div class="actions rv" style="margin:0 0 36px">
   <button type="button" class="btn btn-primary" id="printResumeBtn" title="Print ATS-friendly resume or save as PDF"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" style="display:inline-block;vertical-align:middle;margin-right:6px" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>Print / Save as PDF</button>
-  <a class="btn btn-ghost" href="{LI}" target="_blank" rel="noopener noreferrer">View LinkedIn profile</a>
-  <a class="btn btn-ghost" href="{HR}" target="_blank" rel="noopener noreferrer">HackerRank profile</a>
+  <a class="btn btn-ghost" href="{LI}" target="_blank" rel="noopener noreferrer">View LinkedIn profile <span class="sr-only">(opens in new tab)</span></a>
+  <a class="btn btn-ghost" href="{HR}" target="_blank" rel="noopener noreferrer">HackerRank profile <span class="sr-only">(opens in new tab)</span></a>
   <a class="btn btn-ghost" href="contact.html">Contact me</a>
 </div>
 <div class="proof">
@@ -1229,6 +1230,34 @@ def contact():
     <span class="tz-globe" aria-hidden="true"><svg class="tz-globe-ico" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span>
     <span><b>Time zone:</b> IST (UTC+5:30) &bull; Overlap with EMEA / US morning hours</span>
   </div>
+
+  <div class="globe-card" id="globeCard" data-globe>
+    <div class="globe-card-head">
+      <div class="globe-badge-wrap">
+        <span class="globe-pulse-dot" aria-hidden="true"></span>
+        <span class="globe-badge-title">Interactive 3D Globe</span>
+      </div>
+      <button type="button" class="globe-btn-reset" id="globeResetBtn" title="Reset view to Bengaluru (UTC+5:30)" aria-label="Reset globe to Bengaluru">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+          <path d="M3 3v5h5"/>
+        </svg>
+      </button>
+    </div>
+    <div class="globe-canvas-wrap">
+      <canvas id="globeCanvas" class="globe-canvas" role="img" aria-label="Interactive 3D globe highlighting Bengaluru, India and global remote availability"></canvas>
+    </div>
+    <div class="globe-card-foot">
+      <div class="globe-location-info">
+        <span aria-hidden="true">&#128205; </span><strong>Bengaluru, India</strong> &bull; Open to Global Remote
+      </div>
+      <div class="globe-hint-pill" aria-hidden="true">
+        <span class="globe-hint-icon">&#128161;</span>
+        <span>Scroll to zoom &bull; Drag to rotate</span>
+      </div>
+    </div>
+  </div>
+
   <ul class="contact-list" style="margin-top:20px">
     <li><span>{ICO_MAIL}Email</span><div><a href="mailto:{EMAIL}">{EMAIL}</a> <button class="chip copy" id="copyEmailBtn" type="button" data-copy="{EMAIL}" aria-label="Copy email address">Copy</button><span id="copyStatusLive" role="status" class="sr-only"></span></div></li>
     <li><span>{ICO_LI}LinkedIn</span><div>{ext(LI, "gautam-reddy-analyst")}</div></li>
@@ -1276,7 +1305,7 @@ def contact():
     <textarea class="cf-textarea" id="fallbackTextarea" readonly rows="4" aria-label="Pre-formatted enquiry text to copy"></textarea>
     <div class="cf-actions">
       <button type="button" class="btn btn-sm btn-ghost" id="copyFallbackBtn">Copy to clipboard</button>
-      <a class="btn btn-sm btn-ghost" id="openGmailBtn" href="https://mail.google.com/mail/?view=cm&fs=1&to={EMAIL}" target="_blank" rel="noopener noreferrer">Open in Gmail</a>
+      <a class="btn btn-sm btn-ghost" id="openGmailBtn" href="https://mail.google.com/mail/?view=cm&fs=1&to={EMAIL}" target="_blank" rel="noopener noreferrer">Open in Gmail <span class="sr-only">(opens in new tab)</span></a>
       <span class="muted small">Direct recipient: <code>{EMAIL}</code></span>
     </div>
   </div>

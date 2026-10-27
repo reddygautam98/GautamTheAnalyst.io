@@ -1,0 +1,127 @@
+Total pages/themes with findings: 14
+
+=== index.html (light) - 10 items ===
+  A.btn btn-primary -> 'View BA samples →': CR=1.05 (req=4.5) fg=rgb(255, 255, 255) bg=rgb(248,250,252)
+  SPAN.arr -> '→': CR=1.05 (req=4.5) fg=rgb(255, 255, 255) bg=rgb(248,250,252)
+  SPAN.wf-kpi-val -> '2': CR=3.19 (req=4.5) fg=rgb(217, 119, 6) bg=rgb(255,255,255)
+  SPAN.wf-kpi-val -> '99.8%': CR=3.77 (req=4.5) fg=rgb(5, 150, 105) bg=rgb(255,255,255)
+  A.btn btn-primary -> 'View case study artifacts →': CR=1.00 (req=4.5) fg=rgb(255, 255, 255) bg=rgb(255,255,255)
+  H2. -> 'Hiring a Business Analyst, or': CR=1.05 (req=3) fg=rgb(255, 255, 255) bg=rgb(248,250,252)
+  P.lead -> 'Share the role or the problem': CR=1.05 (req=4.5) fg=rgb(241, 245, 249) bg=rgb(248,250,252)
+  A.btn btn-primary -> 'Send an enquiry →': CR=1.05 (req=4.5) fg=rgb(255, 255, 255) bg=rgb(248,250,252)
+  SPAN.arr -> '→': CR=1.05 (req=4.5) fg=rgb(255, 255, 255) bg=rgb(248,250,252)
+  A.btn btn-ghost -> 'View BA samples': CR=1.05 (req=4.5) fg=rgb(255, 255, 255) bg=rgb(248,250,252)
+
+=== index.html (dark) - 21 items ===
+  SPAN.eyebrow -> '02 • METHOD': CR=4.41 (req=4.5) fg=rgb(59, 130, 246) bg=rgb(22,32,54)
+  SPAN.step-num -> '01': CR=2.54 (req=4.5) fg=rgb(255, 255, 255) bg=rgb(96,165,250)
+  SPAN.step-num -> '02': CR=2.98 (req=4.5) fg=rgb(255, 255, 255) bg=rgb(129,140,248)
+  SPAN.step-num -> '03': CR=2.14 (req=4.5) fg=rgb(255, 255, 255) bg=rgb(56,189,248)
+  SPAN.step-num -> '04': CR=1.92 (req=4.5) fg=rgb(255, 255, 255) bg=rgb(52,211,153)
+  SPAN.psr-lbl -> 'PROBLEM': CR=4.41 (req=4.5) fg=rgb(59, 130, 246) bg=rgb(22,32,54)
+  SPAN.psr-lbl -> 'ROLE': CR=4.41 (req=4.5) fg=rgb(59, 130, 246) bg=rgb(22,32,54)
+  SPAN.psr-lbl -> 'RESULT': CR=4.41 (req=4.5) fg=rgb(59, 130, 246) bg=rgb(22,32,54)
+  SPAN.eyebrow -> '04 • SKILLS': CR=4.41 (req=4.5) fg=rgb(59, 130, 246) bg=rgb(22,32,54)
+  BUTTON.role-expander -> 'Key accomplishments & metrics': CR=4.36 (req=4.5) fg=rgb(59, 130, 246) bg=rgb(23,33,55)
+
+=== about.html (light) - 12 items ===
+  A.btn btn-primary -> 'View resume': CR=1.05 (req=4.5) fg=rgb(255, 255, 255) bg=rgb(248,250,252)
+  BUTTON.console-tab is-active -> '01 Rules Engine': CR=3.68 (req=4.5) fg=rgb(59, 130, 246) bg=rgb(255,255,255)
+  SPAN.ct-idx -> '01': CR=3.68 (req=4.5) fg=rgb(59, 130, 246) bg=rgb(255,255,255)
+  SPAN.ba-spec-kwd -> 'DECISION TABLE': CR=3.68 (req=4.5) fg=rgb(59, 130, 246) bg=rgb(255,255,255)
+  SPAN.rule-tag tag-auto -> 'Automated': CR=3.74 (req=4.5) fg=rgb(2, 132, 199) bg=rgb(241,245,249)
+  SPAN.rule-tag tag-auto -> 'Validation': CR=3.74 (req=4.5) fg=rgb(2, 132, 199) bg=rgb(241,245,249)
+  SPAN.rule-tag tag-p1 -> 'SLA Alert': CR=4.41 (req=4.5) fg=rgb(220, 38, 38) bg=rgb(241,245,249)
+  H2. -> 'Hiring a Business Analyst, or': CR=1.05 (req=3) fg=rgb(255, 255, 255) bg=rgb(248,250,252)
+  P.lead -> 'Share the role or the problem': CR=1.05 (req=4.5) fg=rgb(241, 245, 249) bg=rgb(248,250,252)
+  A.btn btn-primary -> 'Send an enquiry →': CR=1.05 (req=4.5) fg=rgb(255, 255, 255) bg=rgb(248,250,252)
+
+=== about.html (dark) - 3 items ===
+  SPAN.eyebrow -> '01 • PRINCIPLES': CR=4.41 (req=4.5) fg=rgb(59, 130, 246) bg=rgb(22,32,54)
+  SPAN.rank-up-badge -> '⇧ Promoted early': CR=2.54 (req=4.5) fg=rgb(255, 255, 255) bg=rgb(16,185,129)
+  SPAN. -> '⇧': CR=2.54 (req=4.5) fg=rgb(255, 255, 255) bg=rgb(16,185,129)
+
+=== services.html (light) - 5 items ===
+  H2. -> 'Not sure which service fits?': CR=1.05 (req=3) fg=rgb(255, 255, 255) bg=rgb(248,250,252)
+  P.lead -> 'Describe the problem and the o': CR=1.05 (req=4.5) fg=rgb(241, 245, 249) bg=rgb(248,250,252)
+  A.btn btn-primary -> 'Send an enquiry →': CR=1.05 (req=4.5) fg=rgb(255, 255, 255) bg=rgb(248,250,252)
+  SPAN.arr -> '→': CR=1.05 (req=4.5) fg=rgb(255, 255, 255) bg=rgb(248,250,252)
+  A.btn btn-ghost -> 'View BA samples': CR=1.05 (req=4.5) fg=rgb(255, 255, 255) bg=rgb(248,250,252)
+
+=== services.html (dark) - 8 items ===
+  SPAN.eyebrow -> '02 • PROCESS': CR=4.41 (req=4.5) fg=rgb(59, 130, 246) bg=rgb(22,32,54)
+  SPAN.step-num -> '01': CR=2.54 (req=4.5) fg=rgb(255, 255, 255) bg=rgb(96,165,250)
+  SPAN.step-num -> '02': CR=2.98 (req=4.5) fg=rgb(255, 255, 255) bg=rgb(129,140,248)
+  SPAN.step-num -> '03': CR=2.14 (req=4.5) fg=rgb(255, 255, 255) bg=rgb(56,189,248)
+  SPAN.step-num -> '04': CR=1.92 (req=4.5) fg=rgb(255, 255, 255) bg=rgb(52,211,153)
+  A.btn btn-ghost btn-sm -> 'Open in samples →': CR=4.41 (req=4.5) fg=rgb(59, 130, 246) bg=rgb(22,32,54)
+  A.btn btn-ghost btn-sm -> 'Open in samples →': CR=4.41 (req=4.5) fg=rgb(59, 130, 246) bg=rgb(22,32,54)
+  A.btn btn-ghost btn-sm -> 'Open in samples →': CR=4.41 (req=4.5) fg=rgb(59, 130, 246) bg=rgb(22,32,54)
+
+=== projects.html (light) - 8 items ===
+  A.btn btn-primary -> 'Open all artifacts →': CR=1.00 (req=4.5) fg=rgb(255, 255, 255) bg=rgb(255,255,255)
+  SPAN.feat-zoom-hint -> 'Click or tap to expand ERD': CR=1.05 (req=4.5) fg=rgb(255, 255, 255) bg=rgb(247,249,252)
+  BUTTON.chip is-active -> 'All (9)': CR=1.10 (req=4.5) fg=rgb(255, 255, 255) bg=rgb(241,245,249)
+  H2. -> 'Need a similar output?': CR=1.05 (req=3) fg=rgb(255, 255, 255) bg=rgb(248,250,252)
+  P.lead -> 'Tell me the question, process': CR=1.05 (req=4.5) fg=rgb(241, 245, 249) bg=rgb(248,250,252)
+  A.btn btn-primary -> 'Send an enquiry →': CR=1.05 (req=4.5) fg=rgb(255, 255, 255) bg=rgb(248,250,252)
+  SPAN.arr -> '→': CR=1.05 (req=4.5) fg=rgb(255, 255, 255) bg=rgb(248,250,252)
+  A.btn btn-ghost -> 'View BA samples': CR=1.05 (req=4.5) fg=rgb(255, 255, 255) bg=rgb(248,250,252)
+
+=== projects.html (dark) - 6 items ===
+  SPAN.psr-lbl -> 'PROBLEM': CR=4.41 (req=4.5) fg=rgb(59, 130, 246) bg=rgb(22,32,54)
+  SPAN.psr-lbl -> 'ROLE': CR=4.41 (req=4.5) fg=rgb(59, 130, 246) bg=rgb(22,32,54)
+  SPAN.psr-lbl -> 'RESULT': CR=4.41 (req=4.5) fg=rgb(59, 130, 246) bg=rgb(22,32,54)
+  A.feat-img -> 'Click or tap to expand ERD': CR=3.49 (req=4.5) fg=rgb(59, 130, 246) bg=rgb(247,249,252)
+  SPAN.feat-zoom-hint -> 'Click or tap to expand ERD': CR=1.05 (req=4.5) fg=rgb(255, 255, 255) bg=rgb(247,249,252)
+  BUTTON.chip is-active -> 'All (9)': CR=1.18 (req=4.5) fg=rgb(11, 15, 25) bg=rgb(22,32,54)
+
+=== resume.html (light) - 6 items ===
+  BUTTON.btn btn-primary -> 'Print / Save as PDF': CR=1.05 (req=4.5) fg=rgb(255, 255, 255) bg=rgb(248,250,252)
+  H2. -> 'Need a BA who connects require': CR=1.05 (req=3) fg=rgb(255, 255, 255) bg=rgb(248,250,252)
+  P.lead -> 'Tell me about the role or scop': CR=1.05 (req=4.5) fg=rgb(241, 245, 249) bg=rgb(248,250,252)
+  A.btn btn-primary -> 'Send an enquiry →': CR=1.05 (req=4.5) fg=rgb(255, 255, 255) bg=rgb(248,250,252)
+  SPAN.arr -> '→': CR=1.05 (req=4.5) fg=rgb(255, 255, 255) bg=rgb(248,250,252)
+  A.btn btn-ghost -> 'View BA samples': CR=1.05 (req=4.5) fg=rgb(255, 255, 255) bg=rgb(248,250,252)
+
+=== resume.html (dark) - 8 items ===
+  SPAN.eyebrow -> '01 • EXPERIENCE': CR=4.41 (req=4.5) fg=rgb(59, 130, 246) bg=rgb(22,32,54)
+  SPAN.eyebrow -> '02 • EDUCATION': CR=4.41 (req=4.5) fg=rgb(59, 130, 246) bg=rgb(22,32,54)
+  SPAN. -> '4+ yrs': CR=4.41 (req=4.5) fg=rgb(59, 130, 246) bg=rgb(22,32,54)
+  SPAN. -> '4+ yrs': CR=4.41 (req=4.5) fg=rgb(59, 130, 246) bg=rgb(22,32,54)
+  SPAN. -> '3+ yrs': CR=4.41 (req=4.5) fg=rgb(59, 130, 246) bg=rgb(22,32,54)
+  SPAN. -> '3+ yrs': CR=4.41 (req=4.5) fg=rgb(59, 130, 246) bg=rgb(22,32,54)
+  SPAN. -> '4+ yrs': CR=4.41 (req=4.5) fg=rgb(59, 130, 246) bg=rgb(22,32,54)
+  SPAN. -> '3+ yrs': CR=4.41 (req=4.5) fg=rgb(59, 130, 246) bg=rgb(22,32,54)
+
+=== contact.html (light) - 5 items ===
+  SPAN.req -> '*': CR=3.76 (req=4.5) fg=rgb(239, 68, 68) bg=rgb(255,255,255)
+  SPAN.req -> '*': CR=3.76 (req=4.5) fg=rgb(239, 68, 68) bg=rgb(255,255,255)
+  SPAN.req -> '*': CR=3.76 (req=4.5) fg=rgb(239, 68, 68) bg=rgb(255,255,255)
+  SPAN.req -> '*': CR=3.76 (req=4.5) fg=rgb(239, 68, 68) bg=rgb(255,255,255)
+  BUTTON.btn btn-primary -> 'Prepare email draft': CR=1.00 (req=4.5) fg=rgb(255, 255, 255) bg=rgb(255,255,255)
+
+=== samples/index.html (light) - 12 items ===
+  SPAN.status-badge review -> 'IN REVIEW (SAMPLE)': CR=3.04 (req=4.5) fg=rgb(217, 119, 6) bg=rgb(248,250,252)
+  SPAN.fan-doc-badge pdf -> 'PDF': CR=3.95 (req=4.5) fg=rgb(220, 38, 38) bg=rgb(254,226,226)
+  SPAN.fan-doc-badge pdf -> 'PDF': CR=3.95 (req=4.5) fg=rgb(220, 38, 38) bg=rgb(254,226,226)
+  SPAN.fan-doc-badge pdf -> 'PDF': CR=3.95 (req=4.5) fg=rgb(220, 38, 38) bg=rgb(254,226,226)
+  SPAN.fan-doc-badge pdf -> 'PDF': CR=3.95 (req=4.5) fg=rgb(220, 38, 38) bg=rgb(254,226,226)
+  SPAN.fan-doc-badge pdf -> 'PDF': CR=3.95 (req=4.5) fg=rgb(220, 38, 38) bg=rgb(254,226,226)
+  SPAN.status-badge review -> 'IN REVIEW (SAMPLE)': CR=3.04 (req=4.5) fg=rgb(217, 119, 6) bg=rgb(248,250,252)
+  H2. -> 'Hiring a Business Analyst, or': CR=1.05 (req=3) fg=rgb(255, 255, 255) bg=rgb(248,250,252)
+  P.lead -> 'Share the role or the problem': CR=1.05 (req=4.5) fg=rgb(241, 245, 249) bg=rgb(248,250,252)
+  A.btn btn-primary -> 'Send an enquiry →': CR=1.05 (req=4.5) fg=rgb(255, 255, 255) bg=rgb(248,250,252)
+
+=== samples/index.html (dark) - 5 items ===
+  SPAN.pt-num -> '✶': CR=3.68 (req=4.5) fg=rgb(255, 255, 255) bg=rgb(59,130,246)
+  SPAN.pt-num -> '01': CR=4.41 (req=4.5) fg=rgb(59, 130, 246) bg=rgb(22,32,54)
+  SPAN.pt-num -> '02': CR=4.41 (req=4.5) fg=rgb(59, 130, 246) bg=rgb(22,32,54)
+  SPAN.pt-num -> '03': CR=4.41 (req=4.5) fg=rgb(59, 130, 246) bg=rgb(22,32,54)
+  SPAN.pt-num -> '04': CR=4.41 (req=4.5) fg=rgb(59, 130, 246) bg=rgb(22,32,54)
+
+=== 404.html (light) - 4 items ===
+  SPAN.nf-step -> '404': CR=3.60 (req=4.5) fg=rgb(239, 68, 68) bg=rgb(248,250,252)
+  SPAN. -> 'Unmapped Endpoint': CR=3.60 (req=4.5) fg=rgb(239, 68, 68) bg=rgb(248,250,252)
+  A.btn btn-primary -> 'Return to homepage →': CR=1.05 (req=4.5) fg=rgb(255, 255, 255) bg=rgb(248,250,252)
+  SPAN.arr -> '→': CR=1.05 (req=4.5) fg=rgb(255, 255, 255) bg=rgb(248,250,252)

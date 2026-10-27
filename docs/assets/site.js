@@ -69,7 +69,8 @@ function closeMenu(){
 }
 if(bd)bd.addEventListener('click',closeMenu);
 if(mb&&nav){
-  mb.addEventListener('click',function(){
+  mb.addEventListener('click',function(e){
+    if(e&&e.stopPropagation)e.stopPropagation();
     var o=nav.classList.toggle('open');
     d.body.classList.toggle('menu-open',o);
     mb.setAttribute('aria-expanded',String(o));
@@ -101,7 +102,8 @@ if(mb&&nav){
     if(e.target.tagName==='A')closeMenu();
   });
   d.addEventListener('click',function(e){
-    if(nav.classList.contains('open')&&!nav.contains(e.target)&&!mb.contains(e.target)&&!(tb&&tb.contains(e.target))){
+    var inMb = (mb && mb.contains(e.target)) || (e.target && e.target.closest && e.target.closest('#menu')) || (e.composedPath && e.composedPath().indexOf(mb) !== -1);
+    if(nav.classList.contains('open')&&!nav.contains(e.target)&&!inMb&&!(tb&&tb.contains(e.target))){
       closeMenu();
     }
   });
@@ -299,6 +301,9 @@ window.addEventListener('beforeprint',function(){
     var end=+b.dataset.count,suf=b.dataset.suf||'',pre=b.dataset.pre||'';
     b.dataset.done='1';
     b.textContent=pre+end+suf;
+  });
+  $$('.role li').forEach(function(b){
+    b.classList.remove('is-dimmed','is-highlighted');
   });
 });
 
@@ -1165,16 +1170,6 @@ $$('.zoomable-img, .img-zoom-btn, [data-full]').forEach(function(el){
     openImgLightbox(full,title,cap);
   });
 });
-
-var featImg=$('.bf-viewport .feat-img');
-if(featImg){
-  featImg.addEventListener('click',function(e){
-    e.preventDefault();
-    var src=featImg.getAttribute('href')||(featImg.querySelector('img')?featImg.querySelector('img').src:featImg.src);
-    var alt=(featImg.querySelector('img')?featImg.querySelector('img').alt:'PayTrack Relational Schema (ERD)');
-    openImgLightbox(src,alt,'Entity Relationship Diagram with foreign keys and index constraints');
-  });
-}
 
 /* Samples Stepper / Phase Filter with section visibility and live announcements (SM-1, SM-4) */
 var ptSteps=$$('.pt-step'),sItems=$$('.file-item'),fileSections=$$('.file-sec'),samplesLive=$('#samplesLive');
