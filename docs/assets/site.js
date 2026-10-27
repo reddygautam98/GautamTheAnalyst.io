@@ -215,26 +215,90 @@ if('IntersectionObserver' in window&&!reduce){
   });
 }
 
-/* animated counters */
+/* animated counters with smooth ease-out, scroll cascade, and hover replay */
+function animateCounter(b, delay, customDur){
+  var end=+b.dataset.count;
+  if(isNaN(end))return;
+  var suf=b.dataset.suf||'';
+  var pre=b.dataset.pre||'';
+  var dec=b.dataset.dec?parseInt(b.dataset.dec,10):0;
+  if(reduce){
+    b.textContent=pre+(dec>0?end.toFixed(dec):end)+suf;
+    return;
+  }
+  var dur=customDur||(end>100?1400:end>15?1100:850);
+  delay=delay||0;
+
+  if(b._countRaf){cancelAnimationFrame(b._countRaf);b._countRaf=null;}
+  if(b._countTimer){clearTimeout(b._countTimer);b._countTimer=null;}
+
+  // Reset to 0 when starting so user clearly witnesses the counting
+  b.textContent=pre+'0'+suf;
+
+  b._countTimer=setTimeout(function(){
+    b.classList.add('is-counting');
+    var t0=performance.now();
+
+    (function step(now){
+      var p=Math.min(1,(now-t0)/dur);
+      // Quintic ease-out deceleration
+      var ease=1-Math.pow(1-p,4);
+      var currentVal;
+      if(dec>0){
+        currentVal=(end*ease).toFixed(dec);
+      }else{
+        currentVal=Math.round(end*ease);
+      }
+      b.textContent=pre+currentVal+suf;
+
+      if(p<1){
+        b._countRaf=requestAnimationFrame(step);
+      }else{
+        b.textContent=pre+(dec>0?end.toFixed(dec):end)+suf;
+        b.classList.remove('is-counting');
+        b.classList.add('count-settled');
+        setTimeout(function(){b.classList.remove('count-settled')},500);
+        b._countRaf=null;
+      }
+    })(t0);
+  },delay);
+}
+
 function countUp(root){
-  $$('[data-count]',root).concat(root.hasAttribute&&root.hasAttribute('data-count')?[root]:[]).forEach(function(b){
+  var targets=$$('[data-count]',root).concat(root.hasAttribute&&root.hasAttribute('data-count')?[root]:[]);
+  targets.forEach(function(b,idx){
     if(b.dataset.done)return;
     b.dataset.done='1';
-    var end=+b.dataset.count,suf=b.dataset.suf||'';
-    if(reduce||!end){b.textContent=end+suf;return}
-    var t0=performance.now(),dur=1200;
-    (function step(t){
-      var p=Math.min(1,(t-t0)/dur),e=1-Math.pow(1-p,4);
-      b.textContent=Math.round(end*e)+suf;
-      if(p<1)requestAnimationFrame(step);
-    })(t0);
+    animateCounter(b, idx*100);
   });
 }
+
+// Hover and touch replay on metric cards
+if(fine&&!reduce){
+  var lastHoverMap=new WeakMap();
+  $$('.proof-card, .proof > div, .hfs-item, .step-card').forEach(function(card){
+    card.addEventListener('mouseenter',function(){
+      var now=performance.now();
+      var last=lastHoverMap.get(card)||0;
+      if(now-last<450)return; // throttle repeat triggers
+      lastHoverMap.set(card,now);
+      $$('[data-count]',card).forEach(function(b){
+        animateCounter(b,0,800);
+      });
+    });
+    card.addEventListener('touchstart',function(){
+      $$('[data-count]',card).forEach(function(b){
+        animateCounter(b,0,800);
+      });
+    },{passive:true});
+  });
+}
+
 window.addEventListener('beforeprint',function(){
   $$('[data-count]').forEach(function(b){
-    var end=+b.dataset.count,suf=b.dataset.suf||'';
+    var end=+b.dataset.count,suf=b.dataset.suf||'',pre=b.dataset.pre||'';
     b.dataset.done='1';
-    b.textContent=end+suf;
+    b.textContent=pre+end+suf;
   });
 });
 

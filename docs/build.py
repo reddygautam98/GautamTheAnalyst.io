@@ -642,11 +642,11 @@ def index():
 <p class="lead {rv(2)}">Translating business needs into testable functional and non-functional specifications (NFRs), REST API contracts, and BDD acceptance criteria &mdash; backed by SQL analysis and end-to-end UAT verification.</p>
 <div class="actions {rv(3)}"><a class="btn btn-primary" href="samples/index.html">View BA samples <span class="arr" aria-hidden="true">&rarr;</span></a><a class="btn btn-ghost" href="resume.html">View resume</a></div>
 <div class="hero-fact-strip {rv(4)}">
-  <div class="hfs-item"><b>4+ Years</b><span>BA Experience</span></div>
+  <div class="hfs-item"><b data-count="4" data-suf="+ Years">4+ Years</b><span>BA Experience</span></div>
   <div class="hfs-sep" aria-hidden="true"></div>
-  <div class="hfs-item"><b>100K+ Records</b><span>SQL &amp; API Analysis</span></div>
+  <div class="hfs-item"><b data-count="100" data-suf="K+ Records">100K+ Records</b><span>SQL &amp; API Analysis</span></div>
   <div class="hfs-sep" aria-hidden="true"></div>
-  <div class="hfs-item"><b>350+ Scenarios</b><span>Jira UAT Coordinated</span></div>
+  <div class="hfs-item"><b data-count="350" data-suf="+ Scenarios">350+ Scenarios</b><span>Jira UAT Coordinated</span></div>
 </div>
 </div>
 <div class="hero-showcase-wrap {rv(2)}">

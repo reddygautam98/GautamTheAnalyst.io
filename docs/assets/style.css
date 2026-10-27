@@ -2666,6 +2666,32 @@ p,li{text-wrap:pretty}
 /* -------------------------------------------------------------
    Home: Proof Stats (Thin sparklines/bars, success green numbers)
    ------------------------------------------------------------- */
+[data-count] {
+  display: inline-block;
+  font-variant-numeric: tabular-nums;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease, color 0.25s ease;
+  will-change: transform, filter;
+}
+[data-count].is-counting {
+  color: var(--accent) !important;
+  filter: drop-shadow(0 0 16px var(--accent-glow, rgba(56, 189, 248, 0.75))) brightness(1.2);
+  transform: scale(1.045);
+}
+[data-count].count-settled {
+  animation: counterPop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+@keyframes counterPop {
+  0% { transform: scale(1.06); filter: drop-shadow(0 0 18px var(--accent-glow, rgba(56, 189, 248, 0.6))); }
+  50% { transform: scale(0.98); }
+  100% { transform: scale(1); filter: none; }
+}
+.proof-card {
+  cursor: pointer;
+  user-select: none;
+}
+.proof-card:hover [data-count] {
+  filter: drop-shadow(0 0 12px rgba(16, 185, 129, 0.55));
+}
 .proof b, .proof-card b {
   color: var(--ok) !important;
 }
