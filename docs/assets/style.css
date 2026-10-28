@@ -1383,8 +1383,8 @@ tr.is-source{background:var(--accent-soft)!important;transition:background-color
 .wf-kpi-card.warn{border-color:color-mix(in srgb,#f59e0b 35%,var(--line));background:color-mix(in srgb,#f59e0b 7%,var(--surface))}
 .wf-kpi-card.ok{border-color:color-mix(in srgb,#10b981 35%,var(--line));background:color-mix(in srgb,#10b981 7%,var(--surface))}
 .wf-kpi-val{font-family:var(--mono);font-weight:700;font-size:.92rem;color:var(--ink)}
-.wf-kpi-card.warn .wf-kpi-val{color:#d97706}
-.wf-kpi-card.ok .wf-kpi-val{color:#059669}
+.wf-kpi-card.warn .wf-kpi-val{color:#b45309}
+.wf-kpi-card.ok .wf-kpi-val{color:#047857}
 [data-theme=dark] .wf-kpi-card.warn .wf-kpi-val{color:#fbbf24}
 [data-theme=dark] .wf-kpi-card.ok .wf-kpi-val{color:#34d399}
 .wf-kpi-lbl{font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
@@ -1571,7 +1571,8 @@ form{display:grid;gap:18px}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
 .form-group{display:flex;flex-direction:column;gap:6px}
 label{display:flex;align-items:baseline;gap:6px;font-weight:600;font-size:.92rem;color:var(--ink)}
-.req{color:#ef4444;font-weight:700}
+.req{color:#dc2626;font-weight:700}
+[data-theme=dark] .req{color:#f87171}
 .opt{color:var(--muted);font-weight:400;font-size:.82rem}
 input,select,textarea{font:inherit;color:var(--ink);background:var(--bg);border:1.5px solid var(--field-border, #475569);border-radius:10px;padding:11px 13px;width:100%;box-sizing:border-box;transition:border-color .2s,box-shadow .2s}
 input:focus,select:focus,textarea:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px var(--accent-soft)}
@@ -3435,7 +3436,7 @@ p,li{text-wrap:pretty}
 }
 .rule-tag.tag-auto {
   background: rgba(14, 165, 233, 0.12);
-  color: #0284c7;
+  color: #0369a1;
   border: 1px solid rgba(14, 165, 233, 0.28);
 }
 [data-theme=dark] .rule-tag.tag-auto {
@@ -3444,7 +3445,7 @@ p,li{text-wrap:pretty}
 }
 .rule-tag.tag-p1 {
   background: rgba(239, 68, 68, 0.12);
-  color: #dc2626;
+  color: #b91c1c;
   border: 1px solid rgba(239, 68, 68, 0.28);
 }
 [data-theme=dark] .rule-tag.tag-p1 {
@@ -6690,3 +6691,20 @@ body.has-card-focused-mode .site-header {
 
 
 
+
+
+/* Dark Theme WCAG AA Contrast Adjustments */
+[data-theme=dark] .step-num {
+  color: #0b0f19 !important;
+  font-weight: 800;
+}
+[data-theme=dark] .rank-up-badge {
+  color: #0b0f19 !important;
+  font-weight: 800;
+}
+[data-theme=dark] .eyebrow {
+  color: #60a5fa;
+}
+[data-theme=dark] .psr-lbl {
+  color: #60a5fa;
+}

@@ -112,7 +112,7 @@ import createGlobe from './cobe.js';
         state.mapBaseBrightness = colors.mapBaseBrightness;
 
         // Auto-rotation when not interacting and motion is not paused
-        if (!pointerInteracting && !motionPaused) {
+        if (!pointerInteracting && !isMotionPaused()) {
           targetPhi += 0.003;
         }
 
@@ -196,10 +196,14 @@ import createGlobe from './cobe.js';
     motionPaused = e.matches;
   });
 
+  function isMotionPaused() {
+    return motionPaused || document.documentElement.classList.contains('is-anim-paused');
+  }
+
   var animBtn = document.getElementById('animToggle');
   if (animBtn) {
     animBtn.addEventListener('click', function() {
-      motionPaused = document.documentElement.classList.contains('anim-paused');
+      motionPaused = document.documentElement.classList.contains('is-anim-paused');
     });
   }
 

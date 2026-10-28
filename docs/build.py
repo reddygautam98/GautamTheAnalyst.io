@@ -10,11 +10,11 @@ GH = "https://github.com/reddygautam98/"
 LI = "https://www.linkedin.com/in/gautam-reddy-analyst"
 HR = "https://www.hackerrank.com/profile/reddygautam98"
 EMAIL = "gautamreddy098@gmail.com"
-FONTS = "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap"
+FONTS = "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&amp;display=swap"
 NAV = [("projects.html", "Projects"), ("samples/index.html", "BA samples"), ("services.html", "Services"), ("about.html", "About"), ("contact.html", "Contact")]
 
 # Core BA & technical skills for single-row marquee
-MARQ_ITEMS = ["Requirements Gathering", "BRD / FRD / SRS", "User Stories & BDD", "Traceability Matrix (RTM)", "Process Modelling (BPMN / UML)", "Gap Analysis", "REST API Integration", "SQL (PostgreSQL)", "Python (Pandas)", "Power BI & Excel", "UAT & Defect Triage", "Agile / Scrum"]
+MARQ_ITEMS = ["Requirements Gathering", "BRD / FRD / SRS", "User Stories &amp; BDD", "Traceability Matrix (RTM)", "Process Modelling (BPMN / UML)", "Gap Analysis", "REST API Integration", "SQL (PostgreSQL)", "Python (Pandas)", "Power BI &amp; Excel", "UAT &amp; Defect Triage", "Agile / Scrum"]
 
 def ext(u, t): return f'<a href="{u}" target="_blank" rel="noopener noreferrer">{t} <span class="sr-only">(opens in new tab)</span>&rarr;</a>'
 def rv(i=0, base=0.0, step=0.07): return f'rv" style="--d:{base + i * step:.2f}s'
@@ -182,7 +182,7 @@ def page(path, title, desc, body, p="", cur="", ld="", robots="index, follow, ma
 <div class="tools">
 <button class="icon-btn" id="theme" type="button" aria-label="Toggle dark theme" aria-pressed="false" title="Toggle dark theme"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
 <button class="icon-btn menu-btn" id="menu" type="button" aria-expanded="false" aria-controls="nav" aria-label="Open navigation menu">{MENU_ICO}</button>
-</div></header><div class="nav-backdrop" id="navBackdrop" aria-hidden="true"></div>
+</div></div></header><div class="nav-backdrop" id="navBackdrop" aria-hidden="true"></div>
 <main id="main" tabindex="-1">
 {body}
 </main>
@@ -255,19 +255,19 @@ PROJECTS = [
  ("bi", "BI Dashboard Prototype", "GameZone Business Intelligence", "A business-intelligence dashboard for exploring player retention, user lifecycle and monetization metrics.", ["BI"], GH + "gamezone-business-intelligence"),
  ("data", "Data Pipeline Project", "MetaLayer", "A staged data-engineering workflow organised around structured ingestion, transformation and validation layers.", ["Pipelines"], GH + "MetaLayer"),
  ("ai", "Experimental AI Prototype", "ClinChat-style RAG App", "An experimental retrieval-augmented generation prototype with chunk reference retrieval. Not a clinical product.", ["RAG", "Prototype"], GH + "ClinChat-style-RAG-app"),
- ("writing", "Writing & BA Notes", "Daily Posts & Notes", "Knowledge-sharing notes, analysis patterns and reusable documentation templates.", ["Notes"], GH + "daily_post/blob/main/read.md"),
+ ("writing", "Writing &amp; BA Notes", "Daily Posts &amp; Notes", "Knowledge-sharing notes, analysis patterns and reusable documentation templates.", ["Notes"], GH + "daily_post/blob/main/read.md"),
 ]
 
 PROJECT_META = {
     "Sales-data-analysis": ("Regional sales and product data analysis", "PostgreSQL, Aggregate Queries", "Summary tables of top revenue drivers and regional patterns"),
     "Loan-data-analytics": ("Loan risk and repayment profiling", "SQL, Risk Analysis", "Identified risk patterns across loan grades and terms"),
     "Sales-Forecasting-Report": ("Monthly profit and sales trend analysis", "Excel, Business Reporting", "Structured quarterly metrics for operational planning"),
-    "Hr-data-analysis": ("Workforce turnover & tenure analytics", "Power BI, DAX, Data Modeling", "Interactive HR dashboard tracking retention & performance"),
-    "Business_Insights_Report": ("Executive business KPI & margin modeling", "Power BI, KPI Dashboards", "Standardized monthly profit & sales metrics across units"),
-    "gamezone-business-intelligence": ("User retention & monetization event analysis", "SQL, Business Intelligence", "Identified drop-off stages in player lifecycle"),
+    "Hr-data-analysis": ("Workforce turnover &amp; tenure analytics", "Power BI, DAX, Data Modeling", "Interactive HR dashboard tracking retention &amp; performance"),
+    "Business_Insights_Report": ("Executive business KPI &amp; margin modeling", "Power BI, KPI Dashboards", "Standardized monthly profit &amp; sales metrics across units"),
+    "gamezone-business-intelligence": ("User retention &amp; monetization event analysis", "SQL, Business Intelligence", "Identified drop-off stages in player lifecycle"),
     "MetaLayer": ("Multi-tier ETL pipeline architecture", "Python, Staged Ingestion", "Organised data transformation layers with error tracking"),
     "ClinChat-style-RAG-app": ("Experimental RAG question-answering prototype", "Python, Vector Search", "Traceable chunk reference retrieval with guardrails"),
-    "daily_post": ("Business analysis documentation templates", "Technical Writing, Markdown", "Reusable BRD, user story & acceptance criteria templates"),
+    "daily_post": ("Business analysis documentation templates", "Technical Writing, Markdown", "Reusable BRD, user story &amp; acceptance criteria templates"),
 }
 
 _n = itertools.count()
@@ -356,7 +356,7 @@ def trace():
     <div class="trace-foot">Every requirement links forward to a story and a test. <a href="samples/index.html">Open the samples &rarr;</a></div>
   </div>
 
-  <!-- Slide 2: User story & BDD -->
+  <!-- Slide 2: User story &amp; BDD -->
   <div class="slider-slide" id="slide-1" role="tabpanel" aria-labelledby="tab-1" data-index="1" hidden>
     <div class="slide-subhead"><b>US-04: Automated Exception Record Creation</b><span>User story &bull; Gherkin acceptance criteria &bull; Sprint 24</span></div>
     <div class="slide-content-wrap">
@@ -481,7 +481,7 @@ ICO_PHASE4 = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" aria-h
 METHOD_STEPS = [
     (1, "Phase 1: Discover", "Workshops turn scattered requests into one agreed problem statement with assumptions, constraints and named decision owners.", ICO_PHASE1, 20, "+", "workshops run"),
     (2, "Phase 2: Define", "BRD and FRD, business rules, user stories and acceptance criteria, linked to process, API and data flows.", ICO_PHASE2, 2, "", "payment-gateway integrations documented"),
-    (3, "Phase 3: Validate", "Traceability from requirement to test, UAT scenarios, expected results and defect triage with QA & Engineering.", ICO_PHASE3, 0, "", "critical defects reported at release"),
+    (3, "Phase 3: Validate", "Traceability from requirement to test, UAT scenarios, expected results and defect triage with QA &amp; Engineering.", ICO_PHASE3, 0, "", "critical defects reported at release"),
     (4, "Phase 4: Hand over", "Business rules, data dictionaries and field mappings are maintained in Confluence and Excel so delivery teams work from one source.", ICO_PHASE4, 100, "%", "RTM coverage maintained")
 ]
 
@@ -496,9 +496,9 @@ def make_steps(items):
     out = []
     total = len(items)
     phase_links = {
-        1: ("Discovery MoM & Decisions", "samples/index.html#discovery"),
-        2: ("BRD & FRD Specifications", "samples/index.html#brd"),
-        3: ("RTM & Test Scenarios", "samples/index.html#uat"),
+        1: ("Discovery Workshop MoM &amp; Decisions", "samples/index.html#discovery"),
+        2: ("BRD &amp; FRD Specifications", "samples/index.html#brd"),
+        3: ("RTM &amp; Test Scenarios", "samples/index.html#uat"),
         4: ("Traceability Matrix (RTM)", "samples/index.html#rtm"),
     }
     for i, (num, title, desc, icon_svg, stat_val, stat_suf, stat_lbl) in enumerate(items):
@@ -529,15 +529,15 @@ BA_WORKFLOW = [
     ("Stakeholder Mgmt", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#2563eb" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4" fill="#3b82f6" fill-opacity="0.25"/><path d="M23 21v-2a4 4 0 0 0-3-3.87" stroke="#60a5fa"/><path d="M16 3.13a4 4 0 0 1 0 7.75" stroke="#60a5fa"/></svg>', "Facilitated 20+ workshops with 13+ cross-functional stakeholders"),
     ("Requirements Elicitation", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#f59e0b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7" stroke="#d97706"/><line x1="21" y1="21" x2="16.65" y2="16.65" stroke="#f59e0b" stroke-width="2.5"/><path d="M11 8v6M8 11h6" stroke="#fbbf24"/></svg>', "Captured requirements across 4 business units"),
     ("BRD / FRD Specs", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#1d4ed8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" fill="#2563eb" fill-opacity="0.15"/><polyline points="14 2 14 8 20 8" stroke="#3b82f6"/><line x1="16" y1="13" x2="8" y2="13" stroke="#60a5fa"/><line x1="16" y1="17" x2="8" y2="17" stroke="#93c5fd"/></svg>', "Documented requirements for 2 payment gateway integrations"),
-    ("User Stories & BDD", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#0d9488" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" stroke="#0f766e"/><polyline points="9 11 12 14 22 4" stroke="#10b981" stroke-width="2.6"/></svg>', "Wrote Given/When/Then (BDD) acceptance criteria"),
+    ("User Stories &amp; BDD", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#0d9488" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" stroke="#0f766e"/><polyline points="9 11 12 14 22 4" stroke="#10b981" stroke-width="2.6"/></svg>', "Wrote Given/When/Then (BDD) acceptance criteria"),
     ("Traceability (RTM)", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#6366f1" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" stroke="#4f46e5"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" stroke="#818cf8"/></svg>', "Maintained requirements traceability (RTM) through delivery"),
-    ("Scope & Impact", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#f59e0b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" fill="#f59e0b" fill-opacity="0.3"/></svg>', "Managed 12+ change requests with formal impact assessments")
+    ("Scope &amp; Impact", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#f59e0b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" fill="#f59e0b" fill-opacity="0.3"/></svg>', "Managed 12+ change requests with formal impact assessments")
 ]
 
 PROCESS_WORKFLOW = [
     ("AS-IS / TO-BE", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#06b6d4" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8L22 12L18 16"/><path d="M2 12H22" stroke="#0891b2"/></svg>', "Saved an estimated 2 weeks per improvement cycle"),
     ("Process Mapping (BPMN / UML)", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none"><rect x="3" y="3" width="7" height="7" rx="1.5" fill="#f43f5e"/><rect x="14" y="3" width="7" height="7" rx="1.5" fill="#6366f1"/><rect x="14" y="14" width="7" height="7" rx="1.5" fill="#10b981"/><path d="M10 6.5h4M17.5 10v4" stroke="#94a3b8" stroke-width="2" stroke-linecap="round"/></svg>', "Mapped AS-IS / TO-BE business processes and UML system flows"),
-    ("Root Cause Analysis", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#d946ef" stroke-width="2.2"><circle cx="12" cy="12" r="9" stroke="#c026d3"/><circle cx="12" cy="12" r="3" fill="#d946ef"/></svg>', "Fishbone & 5-Why root cause analysis on recurring SLA shortfalls"),
+    ("Root Cause Analysis", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#d946ef" stroke-width="2.2"><circle cx="12" cy="12" r="9" stroke="#c026d3"/><circle cx="12" cy="12" r="3" fill="#d946ef"/></svg>', "Fishbone &amp; 5-Why root cause analysis on recurring SLA shortfalls"),
     ("Business Rules", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" fill="#2563eb" fill-opacity="0.2" stroke="#2563eb" stroke-width="2"/><path d="M9 15l2 2 4-4" stroke="#eab308" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>', "Maintained business rules and data dictionaries in Confluence and Excel"),
     ("Data Mapping", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#8b5cf6" stroke-width="2.2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="4" cy="6" r="1.5" fill="#a78bfa"/><circle cx="12" cy="12" r="1.5" fill="#8b5cf6"/><circle cx="20" cy="18" r="1.5" fill="#7c3aed"/></svg>', "Field and data mappings for payment gateway integrations"),
     ("MoSCoW Priorities", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none"><rect x="3" y="14" width="5" height="7" rx="1" fill="#10b981"/><rect x="10" y="8" width="5" height="13" rx="1" fill="#f59e0b"/><rect x="17" y="3" width="5" height="18" rx="1" fill="#ef4444"/></svg>', "Prioritized requirements across 4 modules and challenged 3 feature requests lacking business justification")
@@ -553,19 +553,19 @@ AGILE_WORKFLOW = [
 ]
 
 TECH_WORKFLOW = [
-    ("REST API Specs", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none"><rect x="3" y="6" width="18" height="12" rx="3" stroke="#06b6d4" stroke-width="2"/><path d="M7 12h2M11 12h6" stroke="#10b981" stroke-width="2" stroke-linecap="round"/><circle cx="17" cy="12" r="1.5" fill="#10b981"/></svg>', "OpenAPI 3.0 contracts & webhook payload specs"),
-    ("SQL (Postgres)", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z" fill="#336791"/><path d="M15 9c-.6-.7-1.5-1-2.5-1s-2.1.4-2.7 1.2C9.2 10 9 11 9 12.2c0 1.4.4 2.5 1.1 3.2.7.7 1.6 1.1 2.7 1.1 1.8 0 3.1-1.1 3.5-2.8h-1.8c-.3.7-.9 1.1-1.7 1.1-.7 0-1.2-.3-1.5-.8-.3-.6-.5-1.3-.5-2.3 0-1.1.2-1.9.5-2.4.3-.6.9-.9 1.5-.9.7 0 1.3.4 1.6 1.1H15V9z" fill="#ffffff"/></svg>', "Analysed 100,000+ records & query optimization"),
+    ("REST API Specs", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none"><rect x="3" y="6" width="18" height="12" rx="3" stroke="#06b6d4" stroke-width="2"/><path d="M7 12h2M11 12h6" stroke="#10b981" stroke-width="2" stroke-linecap="round"/><circle cx="17" cy="12" r="1.5" fill="#10b981"/></svg>', "OpenAPI 3.0 contracts &amp; webhook payload specs"),
+    ("SQL (Postgres)", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z" fill="#336791"/><path d="M15 9c-.6-.7-1.5-1-2.5-1s-2.1.4-2.7 1.2C9.2 10 9 11 9 12.2c0 1.4.4 2.5 1.1 3.2.7.7 1.6 1.1 2.7 1.1 1.8 0 3.1-1.1 3.5-2.8h-1.8c-.3.7-.9 1.1-1.7 1.1-.7 0-1.2-.3-1.5-.8-.3-.6-.5-1.3-.5-2.3 0-1.1.2-1.9.5-2.4.3-.6.9-.9 1.5-.9.7 0 1.3.4 1.6 1.1H15V9z" fill="#ffffff"/></svg>', "Analysed 100,000+ records &amp; query optimization"),
     ("Python (Pandas)", '<svg viewBox="0 0 24 24" width="16" height="16"><path d="M11.9 2C8 2 8.3 3.7 8.3 3.7l.01 1.9h3.7v.5h-5.2S4 6 4 10.2c0 4.2 1.8 4 1.8 4h1.1v-1.5s-.06-1.8 1.8-1.8h3.1s1.7.03 1.7-1.7V6.1S14.3 2 11.9 2zm-1.3 1.2a.7.7 0 1 1 0 1.4.7.7 0 0 1 0-1.4z" fill="#387eb8"/><path d="M12.1 22c3.9 0 3.6-1.7 3.6-1.7l-.01-1.9H12v-.5h5.2s2.8.1 2.8-4.1c0-4.2-1.8-4-1.8-4h-1.1v1.5s.06 1.8-1.8 1.8h-3.1s-1.7-.03-1.7 1.7v3.2s-.8 4.1 1.6 4.1zm1.3-1.2a.7.7 0 1 1 0-1.4.7.7 0 0 1 0 1.4z" fill="#ffe052"/></svg>', "Transaction data analysis (100,000+ records) with Pandas"),
-    ("Power BI & DAX", '<svg viewBox="0 0 24 24" width="16" height="16"><rect x="3" y="13" width="4.5" height="9" rx="1.2" fill="#d97706"/><rect x="9.5" y="8" width="4.5" height="14" rx="1.2" fill="#f59e0b"/><rect x="16" y="3" width="4.5" height="19" rx="1.2" fill="#fde047"/></svg>', "Power BI requirements from Finance and Operations stakeholders"),
-    ("JIRA & Confluence", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none"><path d="M11.5 2a9.5 9.5 0 0 0-9.5 9.5V2h9.5z" fill="#0052cc"/><path d="M22 12.5a9.5 9.5 0 0 1-9.5 9.5H22v-9.5z" fill="#2684ff"/><path d="M11.5 12a9.5 9.5 0 0 0-9.5 9.5v-9.5h9.5z" fill="#0052cc"/></svg>', "Requirements repository & sprint backlog boards"),
-    ("Figma & Postman", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none"><path d="M12 12a3 3 0 1 1 6 0 3 3 0 0 1-6 0z" fill="#1abcfe"/><path d="M6 18a3 3 0 0 1 3-3h3v3a3 3 0 1 1-6 0z" fill="#0acf83"/><path d="M12 3v6h3a3 3 0 1 0 0-6h-3z" fill="#ff7262"/><path d="M6 6a3 3 0 0 0 3 3h3V3H9a3 3 0 0 0-3 3z" fill="#f24e1e"/><path d="M6 12a3 3 0 0 0 3 3h3V9H9a3 3 0 0 0-3 3z" fill="#a259ff"/></svg>', "Wireframe reviews & API response verification")
+    ("Power BI &amp; DAX", '<svg viewBox="0 0 24 24" width="16" height="16"><rect x="3" y="13" width="4.5" height="9" rx="1.2" fill="#d97706"/><rect x="9.5" y="8" width="4.5" height="14" rx="1.2" fill="#f59e0b"/><rect x="16" y="3" width="4.5" height="19" rx="1.2" fill="#fde047"/></svg>', "Power BI requirements from Finance and Operations stakeholders"),
+    ("JIRA &amp; Confluence", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none"><path d="M11.5 2a9.5 9.5 0 0 0-9.5 9.5V2h9.5z" fill="#0052cc"/><path d="M22 12.5a9.5 9.5 0 0 1-9.5 9.5H22v-9.5z" fill="#2684ff"/><path d="M11.5 12a9.5 9.5 0 0 0-9.5 9.5v-9.5h9.5z" fill="#0052cc"/></svg>', "Requirements repository &amp; sprint backlog boards"),
+    ("Figma &amp; Postman", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none"><path d="M12 12a3 3 0 1 1 6 0 3 3 0 0 1-6 0z" fill="#1abcfe"/><path d="M6 18a3 3 0 0 1 3-3h3v3a3 3 0 1 1-6 0z" fill="#0acf83"/><path d="M12 3v6h3a3 3 0 1 0 0-6h-3z" fill="#ff7262"/><path d="M6 6a3 3 0 0 0 3 3h3V3H9a3 3 0 0 0-3 3z" fill="#f24e1e"/><path d="M6 12a3 3 0 0 0 3 3h3V9H9a3 3 0 0 0-3 3z" fill="#a259ff"/></svg>', "Wireframe reviews &amp; API response verification")
 ]
 
 def workflow_tiles(items):
     out = []
     sample_links = {
         "BRD / FRD Specs": "samples/index.html#brd",
-        "User Stories & BDD": "samples/index.html#user-stories",
+        "User Stories &amp; BDD": "samples/index.html#user-stories",
         "Traceability (RTM)": "samples/index.html#rtm",
         "Process Mapping (BPMN / UML)": "samples/index.html#process-flow",
         "REST API Specs": "samples/index.html#rest-api",
@@ -576,7 +576,7 @@ def workflow_tiles(items):
     }
     for i, (name, icon, context) in enumerate(items):
         slug = re.sub(r'[^a-z0-9]+', '-', name.lower()).strip('-')
-        tile_id = f"tk-ev-{abs(hash(name)) % 10000}"
+        tile_id = f"tk-ev-{slug}"
         link_target = sample_links.get(name)
         link_btn = f'<a class="tk-link-hint" href="{link_target}">View sample artifact &rarr;</a>' if link_target else ''
         out.append(f'''<div class="tk-tile tk-tile-{slug}">
@@ -630,9 +630,9 @@ def paytrack_wireframe_svg():
 def index():
     toolkit_cards = [
         ("Business Analysis", "Chronological Lifecycle: Elicitation &rarr; Analysis &rarr; Specs &rarr; Agile &rarr; Sign-off", BA_WORKFLOW),
-        ("Process Analysis & Documentation", "Process Stream: AS-IS Discovery &rarr; Root Cause &rarr; BPMN Modelling &rarr; Specs", PROCESS_WORKFLOW),
-        ("Agile, Testing & Delivery", "Delivery Sprint: SDLC &rarr; Planning &rarr; Testing &rarr; UAT &amp; Release", AGILE_WORKFLOW),
-        ("Technical Skills & Tools", "Toolchain: Design &rarr; APIs &amp; Contracts &rarr; Analysis &amp; BI", TECH_WORKFLOW)
+        ("Process Analysis &amp; Documentation", "Process Stream: AS-IS Discovery &rarr; Root Cause &rarr; BPMN Modelling &rarr; Specs", PROCESS_WORKFLOW),
+        ("Agile, Testing &amp; Delivery", "Delivery Sprint: SDLC &rarr; Planning &rarr; Testing &rarr; UAT &amp; Release", AGILE_WORKFLOW),
+        ("Technical Skills &amp; Tools", "Toolchain: Design &rarr; APIs &amp; Contracts &rarr; Analysis &amp; BI", TECH_WORKFLOW)
     ]
     tk = "".join(f'<div class="card kit {rv(i)}"><div class="kit-head"><h3>{g}</h3><span class="kit-sub">{sub}</span></div>{workflow_tiles(wf)}</div>' for i, (g, sub, wf) in enumerate(toolkit_cards))
     return f'''
@@ -902,7 +902,7 @@ SERV = [
      "Requirements Scoping",
      "Turn fragmented requests into an agreed problem statement, requirements and an actionable backlog.",
      "Engineering is stalled on contradictory stakeholder requests or legacy system gaps.",
-     ["BRD / FRD", "Non-Functional Requirements (NFRs)", "User stories & BDD", "Process maps (BPMN / UML)", "Traceability (RTM)"]),
+     ["BRD / FRD", "Non-Functional Requirements (NFRs)", "User stories &amp; BDD", "Process maps (BPMN / UML)", "Traceability (RTM)"]),
     ("Data analysis and BI reporting",
      "Data Intelligence",
      "Translate operational data and reporting needs into clear Power BI requirements and findings that support decisions.",
@@ -912,19 +912,19 @@ SERV = [
      "Data Quality",
      "Investigate recurring SLA and error patterns with SQL analysis and root cause analysis, and document the findings.",
      "Recurring reconciliation mismatches or SLA drops are costing team hours each week.",
-     ["Data quality profiling", "Root cause analysis (fishbone / 5-Why)", "Business rules & data dictionaries", "Confluence & Excel documentation", "Findings and recommendations"]),
+     ["Data quality profiling", "Root cause analysis (fishbone / 5-Why)", "Business rules &amp; data dictionaries", "Confluence &amp; Excel documentation", "Findings and recommendations"]),
     ("API and integration analysis",
      "System Integration",
      "Make integration expectations explicit for business, engineering and QA teams before implementation and testing.",
      "Connecting external payment gateways, ERPs, or internal microservices without unexpected edge cases.",
      ["REST API requirements", "Source-to-Target Mapping (STTM)", "JSON payload schemas", "API contract review", "UML system flows"]),
     ("UAT, testing and release support",
-     "Testing & Verification",
+     "Testing &amp; Verification",
      "Help teams check that a solution meets the agreed requirement and make defects, risks and decisions visible.",
      "Pre-release testing lacks traceability or business users need guidance validating acceptance criteria.",
      ["UAT coordination", "Agile / Scrum delivery", "Functional, regression and integration test cases", "RTM", "JIRA defect triage"]),
-    ("Custom BA scope & advisory",
-     "Advisory & Discovery",
+    ("Custom BA scope &amp; advisory",
+     "Advisory &amp; Discovery",
      "Tailored requirements elicitation, workflow audit, or backlog definition when your team's needs span multiple domains.",
      "You have an ambiguous problem, rapid pilot release, or need cross-functional discovery before committing to sprint delivery.",
      ["Discovery workshop MoM", "Scope definition", "Backlog refinement", "Process gap audit", "Custom deliverables"])
@@ -933,7 +933,7 @@ SERV = [
 DELIV_LINKS = {
     "BRD / FRD": "samples/index.html#brd",
     "Non-Functional Requirements (NFRs)": "samples/index.html#frd",
-    "User stories & BDD": "samples/index.html#user-stories",
+    "User stories &amp; BDD": "samples/index.html#user-stories",
     "Process maps (BPMN / UML)": "samples/index.html#process-flow",
     "Traceability (RTM)": "samples/index.html#rtm",
     "SQL data profiling": "samples/index.html#sql",
@@ -1043,8 +1043,8 @@ def services():
 # ---------------------------------------------------------------- projects
 def projects():
     cat_counts = Counter(c[0] for c in PROJECTS)
-    chips = f'<button class="chip is-active" type="button" data-f="all" aria-pressed="true">All ({len(PROJECTS)})</button>' + "".join(
-        f'<button class="chip" type="button" data-f="{k}" aria-pressed="false">{n} ({cat_counts.get(k, 0)})</button>'
+    chips = f'<button class="chip is-active" id="all" type="button" data-f="all" aria-pressed="true">All ({len(PROJECTS)})</button>' + "".join(
+        f'<button class="chip" id="{k}" type="button" data-f="{k}" aria-pressed="false">{n} ({cat_counts.get(k, 0)})</button>'
         for k, n in [
             ("analytics", "Analytics"),
             ("bi", "Business intelligence"),
@@ -1286,7 +1286,7 @@ def contact():
       <div class="form-group"><label for="enquiry-email">Email <span class="req" aria-hidden="true">*</span></label><input id="enquiry-email" name="email" type="email" autocomplete="email" inputmode="email" required aria-describedby="err-email"><span class="err" id="err-email"></span></div>
     </div>
     <div class="form-group"><label for="enquiry-company">Company <span class="opt">(optional)</span></label><input id="enquiry-company" name="company" autocomplete="organization"></div>
-    <div class="form-group"><label for="enquiry-service">What do you need help with? <span class="req" aria-hidden="true">*</span></label><select id="enquiry-service" name="service" required aria-describedby="err-service"><option value="" disabled selected>Select a service...</option>{opts(["Business analysis and requirements", "Data analysis and BI reporting", "SQL, data quality and reporting", "API and integration analysis", "UAT, testing and release support", "Custom BA scope & advisory", "A role at my company", "Not sure yet"])}</select><span class="err" id="err-service"></span></div>
+    <div class="form-group"><label for="enquiry-service">What do you need help with? <span class="req" aria-hidden="true">*</span></label><select id="enquiry-service" name="service" required aria-describedby="err-service"><option value="" disabled selected>Select a service...</option>{opts(["Business analysis and requirements", "Data analysis and BI reporting", "SQL, data quality and reporting", "API and integration analysis", "UAT, testing and release support", "Custom BA scope &amp; advisory", "A role at my company", "Not sure yet"])}</select><span class="err" id="err-service"></span></div>
     <div class="row2">
       <div class="form-group"><label for="enquiry-type">Engagement type</label><select id="enquiry-type" name="type"><option value="" disabled selected>Select engagement type...</option>{opts(["Full-time role", "Discovery or review", "Defined deliverable", "Ongoing support", "Prototype or feasibility", "Not sure yet"])}</select></div>
       <div class="form-group"><label for="enquiry-timeline">Target timeline</label><select id="enquiry-timeline" name="timeline"><option value="" disabled selected>Select timeline...</option>{opts(["Flexible", "As soon as practical", "Within 2 to 4 weeks", "Within 1 to 3 months", "Specific deadline"])}</select></div>
@@ -1305,7 +1305,7 @@ def contact():
     <textarea class="cf-textarea" id="fallbackTextarea" readonly rows="4" aria-label="Pre-formatted enquiry text to copy"></textarea>
     <div class="cf-actions">
       <button type="button" class="btn btn-sm btn-ghost" id="copyFallbackBtn">Copy to clipboard</button>
-      <a class="btn btn-sm btn-ghost" id="openGmailBtn" href="https://mail.google.com/mail/?view=cm&fs=1&to={EMAIL}" target="_blank" rel="noopener noreferrer">Open in Gmail <span class="sr-only">(opens in new tab)</span></a>
+      <a class="btn btn-sm btn-ghost" id="openGmailBtn" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to={EMAIL}" target="_blank" rel="noopener noreferrer">Open in Gmail <span class="sr-only">(opens in new tab)</span></a>
       <span class="muted small">Direct recipient: <code>{EMAIL}</code></span>
     </div>
   </div>
@@ -1434,13 +1434,13 @@ def samples():
     timeline = '''<div class="phase-timeline-bar rv" role="group" aria-label="Filter deliverables by phase">
   <button type="button" class="pt-step is-active" data-phase="all" aria-pressed="true" title="Show all deliverables"><span class="pt-num">&#10038;</span><span class="pt-name">All Deliverables</span></button>
   <div class="pt-sep" aria-hidden="true">&rarr;</div>
-  <button type="button" class="pt-step" data-phase="1" aria-pressed="false" title="Filter to Phase 1: Discovery & MoM"><span class="pt-num">01</span><span class="pt-name">Discovery &amp; MoM</span></button>
+  <button type="button" class="pt-step" data-phase="1" aria-pressed="false" title="Filter to Phase 1: Discovery &amp; MoM"><span class="pt-num">01</span><span class="pt-name">Discovery &amp; MoM</span></button>
   <div class="pt-sep" aria-hidden="true">&rarr;</div>
-  <button type="button" class="pt-step" data-phase="2" aria-pressed="false" title="Filter to Phase 2: BRD & FRD Specs"><span class="pt-num">02</span><span class="pt-name">BRD &amp; FRD Specs</span></button>
+  <button type="button" class="pt-step" data-phase="2" aria-pressed="false" title="Filter to Phase 2: BRD &amp; FRD Specs"><span class="pt-num">02</span><span class="pt-name">BRD &amp; FRD Specs</span></button>
   <div class="pt-sep" aria-hidden="true">&rarr;</div>
-  <button type="button" class="pt-step" data-phase="3" aria-pressed="false" title="Filter to Phase 3: Stories & BDD"><span class="pt-num">03</span><span class="pt-name">Stories &amp; BDD</span></button>
+  <button type="button" class="pt-step" data-phase="3" aria-pressed="false" title="Filter to Phase 3: Stories &amp; BDD"><span class="pt-num">03</span><span class="pt-name">Stories &amp; BDD</span></button>
   <div class="pt-sep" aria-hidden="true">&rarr;</div>
-  <button type="button" class="pt-step" data-phase="4" aria-pressed="false" title="Filter to Phase 4: RTM & UAT"><span class="pt-num">04</span><span class="pt-name">RTM &amp; UAT</span></button>
+  <button type="button" class="pt-step" data-phase="4" aria-pressed="false" title="Filter to Phase 4: RTM &amp; UAT"><span class="pt-num">04</span><span class="pt-name">RTM &amp; UAT</span></button>
 </div>'''
 
     legend = '''<div class="status-legend-bar" aria-label="Document status legend">
@@ -1469,7 +1469,7 @@ def samples():
   <div class="fan-doc"><span class="fan-doc-badge pdf">PDF</span><b>04 RTM</b><span>UAT &amp; Tests</span></div>
   <div class="fan-doc"><span class="fan-doc-badge pdf">PDF</span><b>05 MoM</b><span>RAID Log</span></div>
 </div>""", [flink("docs/PayTrack_Sample_BA_Documentation_Bundle.pdf", f"Download PDF Bundle ({sz_bundle} KB)", "pdf", doc_title="Complete Documentation Bundle"), f'<button class="file-link-btn link-btn-preview" type="button" data-preview="bundle">{ICO_EYE}<span>Preview Document Excerpts</span></button>'], "bundle", ICO_DOC_BUNDLE, featured=True, status="Consolidated", phase="all"),
-     sitem("Discovery Workshop MoM & Decision Log", f"Phase 1 &bull; 6 pages ({sz_mom_pdf} KB) &bull; Workshop summary, discussion themes, open decisions, action tracker and RAID log.", [flink("docs/05_Discovery_Workshop_MoM_Decision_Log_Sample.pdf", "PDF", "pdf", doc_title="Discovery Workshop MoM PDF"), flink("docs/05_Discovery_Workshop_MoM_Decision_Log_Sample.docx", "Word", "word", target_blank=False, doc_title="Discovery Workshop MoM Word")], "discovery", ICO_DOC_DISCOVERY, status="Signed Off", phase="1"),
+     sitem("Discovery Workshop MoM &amp; Decision Log", f"Phase 1 &bull; 6 pages ({sz_mom_pdf} KB) &bull; Workshop summary, discussion themes, open decisions, action tracker and RAID log.", [flink("docs/05_Discovery_Workshop_MoM_Decision_Log_Sample.pdf", "PDF", "pdf", doc_title="Discovery Workshop MoM PDF"), flink("docs/05_Discovery_Workshop_MoM_Decision_Log_Sample.docx", "Word", "word", target_blank=False, doc_title="Discovery Workshop MoM Word")], "discovery", ICO_DOC_DISCOVERY, status="Signed Off", phase="1"),
      sitem("Business Requirements Document (BRD)", f"Phase 2 &bull; 12 pages ({sz_brd_pdf} KB) &bull; Business need, objectives, scope, stakeholders, assumptions, requirements and sign-off template.", [flink("docs/01_BRD_PayTrack_Sample.pdf", "PDF", "pdf", doc_title="Business Requirements Document PDF"), flink("docs/01_BRD_PayTrack_Sample.docx", "Word", "word", target_blank=False, doc_title="Business Requirements Document Word")], "brd", ICO_DOC_BRD, status="Approved", phase="2"),
      sitem("Functional Requirements Document (FRD)", f"Phase 2 &bull; 16 pages ({sz_frd_pdf} KB) &bull; Functional behaviour, business rules, data entities, screen requirements, NFRs, error states and decisions to confirm.", [flink("docs/02_FRD_PayTrack_Sample.pdf", "PDF", "pdf", doc_title="Functional Requirements Document PDF"), flink("docs/02_FRD_PayTrack_Sample.docx", "Word", "word", target_blank=False, doc_title="Functional Requirements Document Word")], "frd", ICO_DOC_FRD, status="In Review", phase="2"),
      sitem("User Stories and Acceptance Criteria", f"Phase 3 &bull; 8 pages ({sz_stories_pdf} KB) &bull; Prioritised stories with testable Given / When / Then criteria across operational personas.", [flink("docs/03_User_Stories_Acceptance_Criteria_Sample.pdf", "PDF", "pdf", doc_title="User Stories and Acceptance Criteria PDF"), flink("docs/03_User_Stories_Acceptance_Criteria_Sample.docx", "Word", "word", target_blank=False, doc_title="User Stories and Acceptance Criteria Word")], "user-stories", ICO_DOC_STORIES, status="Sprint Ready", phase="3"),
