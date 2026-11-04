@@ -11,6 +11,7 @@ PayTrack is a fictional payment reconciliation and exception-management portal c
 - `docs/03_User_Stories_Acceptance_Criteria_Sample.pdf` / `.docx` — prioritised user stories with Given/When/Then criteria and Definition of Ready/Done.
 - `docs/04_RTM_Test_Cases_UAT_Plan_Sample.pdf` / `.docx` — requirement traceability, test cases, UAT approach, entry/exit criteria and sign-off template.
 - `docs/05_Discovery_Workshop_MoM_Decision_Log_Sample.pdf` / `.docx` — discovery workshop minutes, decision log, action tracker and RAID log.
+- `docs/BA_Document_Pack_Payment_Reconciliation.pdf` — comprehensive 35-page Business Analysis Document Pack (PRE-2026) consolidating 17 end-to-end deliverables.
 - `docs/PayTrack_Sample_BA_Documentation_Bundle.pdf` — combined PDF containing all five documents.
 
 ## Diagrams and design

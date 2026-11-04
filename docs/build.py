@@ -125,20 +125,20 @@ def page(path, title, desc, body, p="", cur="", ld="", robots="index, follow, ma
       </div>
     </div>
     <div class="pd-foot">
-      <a class="btn btn-primary btn-sm" href="docs/PayTrack_Sample_BA_Documentation_Bundle.pdf" target="_blank" rel="noopener noreferrer">Download Full Bundle PDF <span class="sr-only">(opens in new tab)</span>&rarr;</a>
+      <a class="btn btn-primary btn-sm" href="docs/BA_Document_Pack_Payment_Reconciliation.pdf" target="_blank" rel="noopener noreferrer">Download Full 35-Page BA Pack PDF <span class="sr-only">(opens in new tab)</span>&rarr;</a>
     </div>
   </div>
 </aside>'''
 
-    extra_scripts_list = [f'<script src="{p}assets/card-fx.js?v=44" defer></script>']
+    extra_scripts_list = [f'<script src="{p}assets/card-fx.js?v=45" defer></script>']
     if 'data-bg-anim' in body:
-        extra_scripts_list.append(f'<script src="{p}assets/bg-anim.js?v=44" defer></script>')
+        extra_scripts_list.append(f'<script src="{p}assets/bg-anim.js?v=45" defer></script>')
     if 'data-ascii-wave' in body:
-        extra_scripts_list.append(f'<script src="{p}assets/ascii-wave.js?v=44" defer></script>')
+        extra_scripts_list.append(f'<script src="{p}assets/ascii-wave.js?v=45" defer></script>')
     if 'data-grid-trail' in body:
-        extra_scripts_list.append(f'<script src="{p}assets/grid-trail.js?v=44" defer></script>')
+        extra_scripts_list.append(f'<script src="{p}assets/grid-trail.js?v=45" defer></script>')
     if 'data-globe' in body:
-        extra_scripts_list.append(f'<script type="module" src="{p}assets/globe.js?v=44"></script>')
+        extra_scripts_list.append(f'<script type="module" src="{p}assets/globe.js?v=45"></script>')
     extra_scripts = ('\n' + '\n'.join(extra_scripts_list)) if extra_scripts_list else ''
 
     return f'''<!DOCTYPE html>
@@ -171,7 +171,7 @@ def page(path, title, desc, body, p="", cur="", ld="", robots="index, follow, ma
 <noscript><style>.rv{{opacity:1!important;transform:none!important}}</style></noscript>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="{FONTS}">
-<link rel="stylesheet" href="{p}assets/style.css?v=44">
+<link rel="stylesheet" href="{p}assets/style.css?v=45">
 {ld}</head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -216,7 +216,7 @@ def page(path, title, desc, body, p="", cur="", ld="", robots="index, follow, ma
 <nav class="foot-social" aria-label="Social and professional profiles">{ext(GH, "GitHub")}{ext(LI, "LinkedIn")}{ext(HR, "HackerRank")}<a href="mailto:{EMAIL}">Email</a><a href="#main" class="back-to-top" title="Back to top">&uarr; Top</a></nav>
 </div></footer>
 
-<script src="{p}assets/site.js?v=44" defer></script>
+<script src="{p}assets/site.js?v=45" defer></script>
 {extra_scripts}
 </body>
 </html>'''
@@ -1424,6 +1424,7 @@ def samples():
             return round(os.path.getsize(p2) / 1024)
         return 100
 
+    sz_pack = doc_sz("BA_Document_Pack_Payment_Reconciliation.pdf")
     sz_bundle = doc_sz("PayTrack_Sample_BA_Documentation_Bundle.pdf")
     sz_brd_pdf = doc_sz("01_BRD_PayTrack_Sample.pdf")
     sz_frd_pdf = doc_sz("02_FRD_PayTrack_Sample.pdf")
@@ -1461,14 +1462,14 @@ def samples():
 </div>'''
 
     docs = "".join([
-     sitem("Complete Documentation Bundle (Featured)", f"""52 pages &bull; {sz_bundle} KB &bull; All five primary business analysis specifications consolidated in one comprehensive PDF download.
-<div class="bundle-fan" aria-hidden="true">
-  <div class="fan-doc"><span class="fan-doc-badge pdf">PDF</span><b>01 BRD</b><span>Scope &amp; RACI</span></div>
-  <div class="fan-doc"><span class="fan-doc-badge pdf">PDF</span><b>02 FRD</b><span>System Specs</span></div>
-  <div class="fan-doc"><span class="fan-doc-badge pdf">PDF</span><b>03 Stories</b><span>BDD Criteria</span></div>
-  <div class="fan-doc"><span class="fan-doc-badge pdf">PDF</span><b>04 RTM</b><span>UAT &amp; Tests</span></div>
-  <div class="fan-doc"><span class="fan-doc-badge pdf">PDF</span><b>05 MoM</b><span>RAID Log</span></div>
-</div>""", [flink("docs/PayTrack_Sample_BA_Documentation_Bundle.pdf", f"Download PDF Bundle ({sz_bundle} KB)", "pdf", doc_title="Complete Documentation Bundle"), f'<button class="file-link-btn link-btn-preview" type="button" data-preview="bundle">{ICO_EYE}<span>Preview Document Excerpts</span></button>'], "bundle", ICO_DOC_BUNDLE, featured=True, status="Consolidated", phase="all"),
+     sitem("Complete BA Document Pack — Payment Reconciliation Engine (Featured)", f"""35 pages &bull; {sz_pack} KB &bull; Comprehensive 17-deliverable Business Analysis Document Pack (PRE-2026): Problem Brief, Elicitation Plan, Gap Analysis, RACI Matrix, Scope Statement, BRD (BRD-PRE-001), FRD (FRD-PRE-001), Process Flow, System Architecture, Sequence Flow, Agile User Stories, RTM (RTM-PRE-001), Test Plan &amp; Cases (TST-PRE-001), UAT Plan (UAT-PRE-001), Cutover Checklist, and Benefits Realization.
+<div class="bundle-fan" role="group" aria-label="Key document specifications (click to preview)">
+  <button type="button" class="fan-doc" data-preview="brd" title="Preview BRD specifications"><span class="fan-doc-badge pdf">PDF</span><b>01 BRD</b><span>Scope &amp; RACI</span></button>
+  <button type="button" class="fan-doc" data-preview="frd" title="Preview FRD specifications"><span class="fan-doc-badge pdf">PDF</span><b>02 FRD</b><span>System Specs</span></button>
+  <button type="button" class="fan-doc" data-preview="stories" title="Preview User Stories &amp; Acceptance Criteria"><span class="fan-doc-badge pdf">PDF</span><b>03 Stories</b><span>BDD Criteria</span></button>
+  <button type="button" class="fan-doc" data-preview="rtm" title="Preview Requirements Traceability Matrix &amp; Test Cases"><span class="fan-doc-badge pdf">PDF</span><b>04 RTM</b><span>UAT &amp; Tests</span></button>
+  <button type="button" class="fan-doc" data-preview="mom" title="Preview Discovery Workshop MoM &amp; Decision Log"><span class="fan-doc-badge pdf">PDF</span><b>05 MoM</b><span>RAID Log</span></button>
+</div>""", [flink("docs/BA_Document_Pack_Payment_Reconciliation.pdf", f"Download BA Document Pack ({sz_pack} KB)", "pdf", doc_title="Complete BA Document Pack PDF"), f'<button class="file-link-btn link-btn-preview" type="button" data-preview="bundle">{ICO_EYE}<span>Preview Document Excerpts</span></button>'], "bundle", ICO_DOC_BUNDLE, featured=True, status="Consolidated", phase="all"),
      sitem("Discovery Workshop MoM &amp; Decision Log", f"Phase 1 &bull; 6 pages ({sz_mom_pdf} KB) &bull; Workshop summary, discussion themes, open decisions, action tracker and RAID log.", [flink("docs/05_Discovery_Workshop_MoM_Decision_Log_Sample.pdf", "PDF", "pdf", doc_title="Discovery Workshop MoM PDF"), flink("docs/05_Discovery_Workshop_MoM_Decision_Log_Sample.docx", "Word", "word", target_blank=False, doc_title="Discovery Workshop MoM Word")], "discovery", ICO_DOC_DISCOVERY, status="Signed Off", phase="1"),
      sitem("Business Requirements Document (BRD)", f"Phase 2 &bull; 12 pages ({sz_brd_pdf} KB) &bull; Business need, objectives, scope, stakeholders, assumptions, requirements and sign-off template.", [flink("docs/01_BRD_PayTrack_Sample.pdf", "PDF", "pdf", doc_title="Business Requirements Document PDF"), flink("docs/01_BRD_PayTrack_Sample.docx", "Word", "word", target_blank=False, doc_title="Business Requirements Document Word")], "brd", ICO_DOC_BRD, status="Approved", phase="2"),
      sitem("Functional Requirements Document (FRD)", f"Phase 2 &bull; 16 pages ({sz_frd_pdf} KB) &bull; Functional behaviour, business rules, data entities, screen requirements, NFRs, error states and decisions to confirm.", [flink("docs/02_FRD_PayTrack_Sample.pdf", "PDF", "pdf", doc_title="Functional Requirements Document PDF"), flink("docs/02_FRD_PayTrack_Sample.docx", "Word", "word", target_blank=False, doc_title="Functional Requirements Document Word")], "frd", ICO_DOC_FRD, status="In Review", phase="2"),
