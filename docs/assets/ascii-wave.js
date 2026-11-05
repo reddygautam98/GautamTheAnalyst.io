@@ -74,8 +74,11 @@
       return document.documentElement.classList.contains('is-anim-paused');
     }
 
-    function shouldAnimate() {
+    function shouldRun() {
       return isVisible && !document.hidden && !isReducedMotion() && !isAnimPaused();
+    }
+    function shouldAnimate() {
+      return shouldRun();
     }
 
     function resize() {
@@ -156,10 +159,14 @@
     }
 
     function tick(timestamp) {
-      if (!shouldAnimate()) {
-        rafId = null;
+      if (!shouldRun()) {
+        if (rafId) {
+          cancelAnimationFrame(rafId);
+          rafId = null;
+        }
         return;
       }
+      rafId = null;
 
       var delta = timestamp - lastTimestamp;
       if (delta >= FRAME_INTERVAL) {
@@ -167,7 +174,9 @@
         time += 0.045 * speed;
         drawFrame(time);
       }
-      rafId = requestAnimationFrame(tick);
+      if (shouldRun() && !rafId) {
+        rafId = requestAnimationFrame(tick);
+      }
     }
 
     function checkState() {
@@ -220,6 +229,12 @@
       checkState();
     }
     document.addEventListener('visibilitychange', onVisibilityChange);
+    window.addEventListener('site-motion-toggle', checkState);
+
+    var motionMQL = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (motionMQL && motionMQL.addEventListener) {
+      motionMQL.addEventListener('change', checkState);
+    }
 
     var mo = null;
     if ('MutationObserver' in window) {
@@ -235,6 +250,10 @@
       if (ro) ro.disconnect();
       if (mo) mo.disconnect();
       document.removeEventListener('visibilitychange', onVisibilityChange);
+      window.removeEventListener('site-motion-toggle', checkState);
+      if (motionMQL && motionMQL.removeEventListener) {
+        motionMQL.removeEventListener('change', checkState);
+      }
       window.removeEventListener('pagehide', cleanup);
     }
     window.addEventListener('pagehide', cleanup);

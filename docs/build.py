@@ -1,7 +1,16 @@
-"""Regenerates all 7 HTML pages. Run:  python build.py
+"""Regenerates all 8 HTML pages. Run:  python docs/build.py
 Edit copy / links here, then rebuild. Diagrams come from flows.py."""
-import html, json, urllib.parse, os, itertools, re
+import html, json, urllib.parse, os, itertools, re, hashlib
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
+def asset_hash(rel_path):
+    """Computes first 8 hex characters of SHA-256 for asset cache-busting."""
+    p = os.path.join(os.path.dirname(os.path.abspath(__file__)), rel_path)
+    if os.path.exists(p):
+        with open(p, "rb") as f:
+            return hashlib.sha256(f.read()).hexdigest()[:8]
+    return "1"
+
 from collections import Counter
 import flows as F
 
@@ -11,6 +20,22 @@ LI = "https://www.linkedin.com/in/gautam-reddy-analyst"
 HR = "https://www.hackerrank.com/profile/reddygautam98"
 EMAIL = "gautamreddy098@gmail.com"
 FONTS = "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&amp;display=swap"
+# Breakpoint standards (px)
+BP_MOBILE_SM = 320    # Compact mobile floor
+BP_MOBILE = 480       # Mobile portrait boundary
+BP_TABLET_SM = 768    # Tablet portrait / foldable
+BP_TABLET = 860       # Tablet landscape / spec rack boundary
+BP_DESKTOP_SM = 1024  # Small desktop / iPad Pro
+BP_DESKTOP = 1180     # Max content wrapper width
+BP_DESKTOP_LG = 1440  # Standard widescreen desktop
+
+class Markup(str):
+    """Explicit wrapper for safe pre-rendered HTML/SVG markup."""
+    pass
+
+def esc(s):
+    return s if isinstance(s, Markup) else html.escape(str(s), quote=True)
+
 NAV = [("projects.html", "Projects"), ("samples/index.html", "BA samples"), ("services.html", "Services"), ("about.html", "About"), ("contact.html", "Contact")]
 
 # Core BA & technical skills for single-row marquee
@@ -20,11 +45,11 @@ def ext(u, t): return f'<a href="{u}" target="_blank" rel="noopener noreferrer">
 def rv(i=0, base=0.0, step=0.07): return f'rv" style="--d:{base + i * step:.2f}s'
 
 ICO_MAIL = '<svg class="ico-gmail" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="#4285F4" d="M3.2 5.5A2.5 2.5 0 0 0 .7 8v10.5A2.5 2.5 0 0 0 3.2 21H5V11.25L3.2 9.8z"/><path fill="#34A853" d="M20.8 5.5a2.5 2.5 0 0 1 2.5 2.5V18.5a2.5 2.5 0 0 1-2.5 2.5H19V11.25l1.8-1.45z"/><path fill="#FBBC05" d="M19 11.25L12 16.5 5 11.25V21h14z"/><path fill="#EA4335" d="M3.2 5.5c-.8 0-1.5.5-1.8 1.25L12 13.5l10.6-6.75c-.3-.75-1-1.25-1.8-1.25z"/></svg>'
-ICO_LI = '<svg class="ico-li" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#0A66C2"/><path fill="#ffffff" d="M19 19h-3.14v-4.9c0-1.17-.02-2.67-1.63-2.67-1.63 0-1.88 1.27-1.88 2.58V19H9.21V9h3.01v1.37h.04c.42-.79 1.44-1.63 2.96-1.63 3.17 0 3.75 2.09 3.75 4.8V19zM5.34 7.63a1.74 1.74 0 1 1 0-3.48 1.74 1.74 0 0 1 0 3.48zM6.91 19H3.77V9h3.14v10z"/></svg>'
-ICO_GH = '<svg class="ico-gh" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><rect width="24" height="24" rx="12" fill="#24292f"/><path fill="#ffffff" fill-rule="evenodd" clip-rule="evenodd" d="M12 4C7.58 4 4 7.58 4 12c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0020 12c0-4.42-3.58-8-8-8z"/></svg>'
-ICO_HR = '<svg class="ico-hr" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#00EA64"/><path fill="#0b0f19" d="M9.95 8.002h1.805c.061 0 .111.05.111.111v7.767c0 .061-.05.111-.11.111H9.95c-.061 0-.111-.05-.111-.11v-2.87H7.894v2.87c0 .06-.05.11-.11.11H5.976a.11.11 0 01-.11-.11V8.112c0-.06.05-.11.11-.11h1.806c.061 0 .11.05.11.11v2.869H9.84v-2.87c0-.06.05-.11.11-.11zm2.999 0h5.778c.061 0 .111.05.111.11v7.767a.11.11 0 01-.11.112h-5.78a.11.11 0 01-.11-.11V8.111c0-.06.05-.11.11-.11z"/></svg>'
-ICO_LOC = '<svg class="ico-loc" viewBox="0 0 24 24" width="20" height="20" fill="#EF4444" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>'
-MENU_ICO = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>'
+ICO_LI = '<svg class="ico-li" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#0A66C2"/><circle cx="19.5" cy="4.5" r="2" fill="#38bdf8" fill-opacity="0.8"/><path fill="#ffffff" d="M19 19h-3.14v-4.9c0-1.17-.02-2.67-1.63-2.67-1.63 0-1.88 1.27-1.88 2.58V19H9.21V9h3.01v1.37h.04c.42-.79 1.44-1.63 2.96-1.63 3.17 0 3.75 2.09 3.75 4.8V19zM5.34 7.63a1.74 1.74 0 1 1 0-3.48 1.74 1.74 0 0 1 0 3.48zM6.91 19H3.77V9h3.14v10z"/></svg>'
+ICO_GH = '<svg class="ico-gh" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><rect width="24" height="24" rx="12" fill="#24292f"/><circle cx="18" cy="6" r="3" fill="#8b5cf6" fill-opacity="0.4"/><path fill="#ffffff" fill-rule="evenodd" clip-rule="evenodd" d="M12 4C7.58 4 4 7.58 4 12c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0020 12c0-4.42-3.58-8-8-8z"/></svg>'
+ICO_HR = '<svg class="ico-hr" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#00EA64"/><circle cx="19" cy="5" r="2" fill="#facc15"/><path fill="#0b0f19" d="M9.95 8.002h1.805c.061 0 .111.05.111.111v7.767c0 .061-.05.111-.11.111H9.95c-.061 0-.111-.05-.111-.11v-2.87H7.894v2.87c0 .06-.05.11-.11.11H5.976a.11.11 0 01-.11-.11V8.112c0-.06.05-.11.11-.11h1.806c.061 0 .11.05.11.11v2.869H9.84v-2.87c0-.06.05-.11.11-.11zm2.999 0h5.778c.061 0 .111.05.111.11v7.767a.11.11 0 01-.11.112h-5.78a.11.11 0 01-.11-.11V8.111c0-.06.05-.11.11-.11z"/></svg>'
+ICO_LOC = '<svg class="ico-loc" viewBox="0 0 24 24" width="20" height="20" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#ef4444" fill-opacity="0.15"/><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#ef4444"/><circle cx="12" cy="9" r="3.5" fill="#ffffff"/><circle cx="12" cy="9" r="1.8" fill="#06b6d4"/></svg>'
+MENU_ICO = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" aria-hidden="true"><rect x="3" y="5" width="18" height="2.5" rx="1.25" fill="#2563eb"/><rect x="3" y="11" width="18" height="2.5" rx="1.25" fill="#8b5cf6"/><rect x="3" y="17" width="18" height="2.5" rx="1.25" fill="#10b981"/></svg>'
 
 def page(path, title, desc, body, p="", cur="", ld="", robots="index, follow, max-image-preview:large, max-snippet:-1"):
     url = SITE if path == "index.html" else SITE + path
@@ -102,7 +127,7 @@ def page(path, title, desc, body, p="", cur="", ld="", robots="index, follow, ma
       <div class="pd-pane" id="pd-rtm" role="tabpanel" tabindex="0" aria-labelledby="pdtab-rtm" hidden>
         <div class="pd-pane-h">Requirements Traceability Matrix (RTM Extract)</div>
         <p class="muted">End-to-End Delivery Verification &bull; Status: Approved</p>
-        <div class="pd-sample-box">
+        <div class="pd-sample-box table-scroll" tabindex="0" role="region" aria-label="Requirements Traceability Matrix Table">
           <table class="pd-table">
             <thead>
               <tr><th>Req ID</th><th>Summary</th><th>Functional Spec</th><th>User Story</th><th>Test Scenario</th><th>UAT Status</th></tr>
@@ -130,15 +155,21 @@ def page(path, title, desc, body, p="", cur="", ld="", robots="index, follow, ma
   </div>
 </aside>'''
 
-    extra_scripts_list = [f'<script src="{p}assets/card-fx.js?v=45" defer></script>']
+    h_card_fx = asset_hash("assets/card-fx.js")
+    h_bg_anim = asset_hash("assets/bg-anim.js")
+    h_ascii_wave = asset_hash("assets/ascii-wave.js")
+    h_grid_trail = asset_hash("assets/grid-trail.js")
+    h_globe = asset_hash("assets/globe.js")
+
+    extra_scripts_list = [f'<script src="{p}assets/card-fx.js?v={h_card_fx}" defer></script>']
     if 'data-bg-anim' in body:
-        extra_scripts_list.append(f'<script src="{p}assets/bg-anim.js?v=45" defer></script>')
+        extra_scripts_list.append(f'<script src="{p}assets/bg-anim.js?v={h_bg_anim}" defer></script>')
     if 'data-ascii-wave' in body:
-        extra_scripts_list.append(f'<script src="{p}assets/ascii-wave.js?v=45" defer></script>')
+        extra_scripts_list.append(f'<script src="{p}assets/ascii-wave.js?v={h_ascii_wave}" defer></script>')
     if 'data-grid-trail' in body:
-        extra_scripts_list.append(f'<script src="{p}assets/grid-trail.js?v=45" defer></script>')
+        extra_scripts_list.append(f'<script src="{p}assets/grid-trail.js?v={h_grid_trail}" defer></script>')
     if 'data-globe' in body:
-        extra_scripts_list.append(f'<script type="module" src="{p}assets/globe.js?v=45"></script>')
+        extra_scripts_list.append(f'<script type="module" src="{p}assets/globe.js?v={h_globe}"></script>')
     extra_scripts = ('\n' + '\n'.join(extra_scripts_list)) if extra_scripts_list else ''
 
     return f'''<!DOCTYPE html>
@@ -146,6 +177,7 @@ def page(path, title, desc, body, p="", cur="", ld="", robots="index, follow, ma
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
 <title>{html.escape(title)}</title>
 <meta name="description" content="{html.escape(desc)}">
 <meta name="robots" content="{robots}">
@@ -170,8 +202,9 @@ def page(path, title, desc, body, p="", cur="", ld="", robots="index, follow, ma
 <script>document.documentElement.classList.add("js");try{{var t=localStorage.getItem("gr-theme")||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.dataset.theme=t}}catch(e){{}}setTimeout(function(){{document.documentElement.classList.add("rv-fallback")}},1200);</script>
 <noscript><style>.rv{{opacity:1!important;transform:none!important}}</style></noscript>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="{FONTS}">
 <link rel="stylesheet" href="{FONTS}">
-<link rel="stylesheet" href="{p}assets/style.css?v=45">
+<link rel="stylesheet" href="{p}assets/style.css?v={asset_hash('assets/style.css')}">
 {ld}</head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -180,7 +213,7 @@ def page(path, title, desc, body, p="", cur="", ld="", robots="index, follow, ma
 <a class="brand" href="{home}"><img src="{p}assets/mark.svg" alt="" aria-hidden="true" width="30" height="30">Gautam Reddy</a>
 <nav class="nav" id="nav" aria-label="Main">{nav}<a href="{p}resume.html" class="nav-resume-btn"{res_cur}>Resume</a></nav>
 <div class="tools">
-<button class="icon-btn" id="theme" type="button" aria-label="Toggle dark theme" aria-pressed="false" title="Toggle dark theme"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
+<button class="icon-btn" id="theme" type="button" aria-label="Toggle dark theme" aria-pressed="false" title="Toggle dark theme"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="#1e1b4b" fill-opacity="0.25"/><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="#3b82f6"/><circle cx="18" cy="6" r="1.5" fill="#fbbf24"/><circle cx="8" cy="7" r="1" fill="#fde047"/><circle cx="15" cy="17" r="1" fill="#a78bfa"/></svg></button>
 <button class="icon-btn menu-btn" id="menu" type="button" aria-expanded="false" aria-controls="nav" aria-label="Open navigation menu">{MENU_ICO}</button>
 </div></div></header><div class="nav-backdrop" id="navBackdrop" aria-hidden="true"></div>
 <main id="main" tabindex="-1">
@@ -216,7 +249,8 @@ def page(path, title, desc, body, p="", cur="", ld="", robots="index, follow, ma
 <nav class="foot-social" aria-label="Social and professional profiles">{ext(GH, "GitHub")}{ext(LI, "LinkedIn")}{ext(HR, "HackerRank")}<a href="mailto:{EMAIL}">Email</a><a href="#main" class="back-to-top" title="Back to top">&uarr; Top</a></nav>
 </div></footer>
 
-<script src="{p}assets/site.js?v=45" defer></script>
+<script src="{p}assets/vendor/lenis.min.js?v={asset_hash('assets/vendor/lenis.min.js')}" defer></script>
+<script src="{p}assets/site.js?v={asset_hash('assets/site.js')}" defer></script>
 {extra_scripts}
 </body>
 </html>'''
@@ -285,7 +319,7 @@ LOCAL_PROJECT_IMAGES = {
     "daily_post": "assets/projects/daily_post.png"
 }
 
-ZOOM_ICO = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>'
+ZOOM_ICO = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="#38bdf8" fill-opacity="0.25" stroke="#2563eb" stroke-width="2.2"/><line x1="16.5" y1="16.5" x2="21" y2="21" stroke="#4f46e5" stroke-width="2.5" stroke-linecap="round"/><circle cx="9" cy="9" r="1.5" fill="#fde047"/></svg>'
 
 def pcard(c, i=0, base=0.0):
     k, cat, t, d, tg, u = c
@@ -325,23 +359,23 @@ def trace():
     return (f'''<div class="trace hero-slider" id="heroSlider" data-tilt role="region" aria-label="PayTrack deliverables showcase">
 <div class="trace-top slider-top">
   <div class="slider-tabs" role="tablist" aria-label="Deliverable slides">
-    <button class="slider-tab is-active" role="tab" id="tab-0" aria-selected="true" aria-controls="slide-0" data-slide="0" tabindex="0" type="button"><span class="tab-ico-pill ico-trace"><svg class="tab-ico" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="12" r="3"/><path d="M8.5 7.5l6.5 3.5m-6.5 5.5l6.5-3.5"/></svg></span><span class="tab-txt">Traceability</span></button>
-    <button class="slider-tab" role="tab" id="tab-1" aria-selected="false" aria-controls="slide-1" data-slide="1" tabindex="-1" type="button"><span class="tab-ico-pill ico-story"><svg class="tab-ico" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span><span class="tab-txt">User story</span></button>
-    <button class="slider-tab" role="tab" id="tab-2" aria-selected="false" aria-controls="slide-2" data-slide="2" tabindex="-1" type="button"><span class="tab-ico-pill ico-api"><svg class="tab-ico" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/><line x1="12" y1="2" x2="12" y2="22"/></svg></span><span class="tab-txt">REST API</span></button>
-    <button class="slider-tab" role="tab" id="tab-3" aria-selected="false" aria-controls="slide-3" data-slide="3" tabindex="-1" type="button"><span class="tab-ico-pill ico-sql"><svg class="tab-ico" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></span><span class="tab-txt">SQL logic</span></button>
+    <button class="slider-tab is-active" role="tab" id="tab-0" aria-selected="true" aria-controls="slide-0" data-slide="0" tabindex="0" type="button"><span class="tab-ico-pill ico-trace"><svg class="tab-ico" viewBox="0 0 24 24" width="13" height="13" fill="none" aria-hidden="true"><circle cx="6" cy="6" r="3" fill="#2563eb"/><circle cx="6" cy="18" r="3" fill="#10b981"/><circle cx="18" cy="12" r="3" fill="#f59e0b"/><path d="M8.5 7.5l6.5 3.5m-6.5 5.5l6.5-3.5" stroke="#ffffff" stroke-width="1.8"/></svg></span><span class="tab-txt">Traceability</span></button>
+    <button class="slider-tab" role="tab" id="tab-1" aria-selected="false" aria-controls="slide-1" data-slide="1" tabindex="-1" type="button"><span class="tab-ico-pill ico-story"><svg class="tab-ico" viewBox="0 0 24 24" width="13" height="13" fill="none" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" fill="#7c3aed"/><polyline points="14 2 14 8 20 8" fill="#c4b5fd"/><rect x="7" y="12" width="6" height="1.8" rx="0.9" fill="#facc15"/></svg></span><span class="tab-txt">User story</span></button>
+    <button class="slider-tab" role="tab" id="tab-2" aria-selected="false" aria-controls="slide-2" data-slide="2" tabindex="-1" type="button"><span class="tab-ico-pill ico-api"><svg class="tab-ico" viewBox="0 0 24 24" width="13" height="13" fill="none" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="3" fill="#0f766e"/><polyline points="15 16 19 12 15 8" stroke="#34d399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><polyline points="9 8 5 12 9 16" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="13" y1="7" x2="11" y2="17" stroke="#facc15" stroke-width="1.8"/></svg></span><span class="tab-txt">REST API</span></button>
+    <button class="slider-tab" role="tab" id="tab-3" aria-selected="false" aria-controls="slide-3" data-slide="3" tabindex="-1" type="button"><span class="tab-ico-pill ico-sql"><svg class="tab-ico" viewBox="0 0 24 24" width="13" height="13" fill="none" aria-hidden="true"><ellipse cx="12" cy="5" rx="8" ry="2.5" fill="#38bdf8"/><path d="M20 5v6c0 1.5-3.6 2.5-8 2.5s-8-1-8-2.5V5" fill="#0284c7"/><path d="M20 11v6c0 1.5-3.6 2.5-8 2.5s-8-1-8-2.5v-6" fill="#1d4ed8"/><path d="M12 9l2 3h-4l2-3z" fill="#fde047"/></svg></span><span class="tab-txt">SQL logic</span></button>
   </div>
   <div class="slider-subbar">
     <div class="subbar-status"><span class="subbar-dot" aria-hidden="true"></span><span>PAYTRACK ARTIFACT SPEC</span></div>
     <div class="slider-nav-ctrls">
-      <button class="slider-arrow" id="slidePrev" type="button" aria-label="Previous slide"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg></button>
+      <button class="slider-arrow" id="slidePrev" type="button" aria-label="Previous slide"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#2563eb" fill-opacity="0.15"/><polyline points="14 17 9 12 14 7" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       <div class="slider-dots" role="group" aria-label="Slide indicators">
         <button class="s-dot is-active" type="button" data-slide="0" aria-label="Slide 1" aria-pressed="true"></button>
         <button class="s-dot" type="button" data-slide="1" aria-label="Slide 2" aria-pressed="false"></button>
         <button class="s-dot" type="button" data-slide="2" aria-label="Slide 3" aria-pressed="false"></button>
         <button class="s-dot" type="button" data-slide="3" aria-label="Slide 4" aria-pressed="false"></button>
       </div>
-      <button class="slider-arrow" id="slideNext" type="button" aria-label="Next slide"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></button>
-      <button class="slider-arrow" id="slidePauseBtn" type="button" aria-label="Pause slide rotation" aria-pressed="false"><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg></button>
+      <button class="slider-arrow" id="slideNext" type="button" aria-label="Next slide"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#2563eb" fill-opacity="0.15"/><polyline points="10 17 15 12 10 7" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <button class="slider-arrow" id="slidePauseBtn" type="button" aria-label="Pause slide rotation" aria-pressed="false"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" aria-hidden="true"><rect x="6" y="4" width="4" height="16" rx="1.5" fill="#f59e0b"/><rect x="14" y="4" width="4" height="16" rx="1.5" fill="#ef4444"/></svg></button>
       <span class="slider-counter" id="slideCount">1 / 4</span>
     </div>
   </div>
@@ -469,14 +503,14 @@ def trace():
 def marquee():
     items = "".join(f"<li>{i}</li>" for i in MARQ_ITEMS)
     return f'''<section class="marq-wrap rv" aria-label="Core competencies marquee">
-<button class="marq-toggle icon-only" id="marqToggle" type="button" aria-label="Toggle marquee animation" aria-pressed="false"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg></button>
+<button class="marq-toggle icon-only" id="marqToggle" type="button" aria-label="Toggle marquee animation" aria-pressed="false"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><rect x="5" y="4" width="5" height="16" rx="1.5" fill="#06b6d4"/><rect x="14" y="4" width="5" height="16" rx="1.5" fill="#8b5cf6"/></svg></button>
 <div class="marq"><ul class="marq-track">{items}</ul><ul class="marq-track" aria-hidden="true">{items}</ul></div>
 </section>'''
 
-ICO_PHASE1 = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="#3b82f6" stroke-width="2.4"/><line x1="21" y1="21" x2="16.65" y2="16.65" stroke="#60a5fa" stroke-width="2.4" stroke-linecap="round"/><circle cx="11" cy="11" r="3" fill="#3b82f6"/></svg>'
-ICO_PHASE2 = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" fill="#7c3aed" fill-opacity="0.15" stroke="#7c3aed" stroke-width="2.2" stroke-linecap="round"/><polyline points="14 2 14 8 20 8" stroke="#a78bfa" stroke-width="2"/><line x1="16" y1="13" x2="8" y2="13" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round"/><line x1="16" y1="17" x2="8" y2="17" stroke="#c4b5fd" stroke-width="2" stroke-linecap="round"/></svg>'
-ICO_PHASE3 = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="#0d9488" fill-opacity="0.15" stroke="#0d9488" stroke-width="2.2"/><polyline points="9 12 11 14 15 10" stroke="#14b8a6" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>'
-ICO_PHASE4 = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke="#059669" stroke-width="1.8"/><polyline points="20 6 9 17 4 12" stroke="#10b981" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+ICO_PHASE1 = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="#2563eb" fill-opacity="0.2" stroke="#2563eb" stroke-width="2"/><line x1="21" y1="21" x2="16" y2="16" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round"/><circle cx="11" cy="11" r="2.5" fill="#fbbf24"/></svg>'
+ICO_PHASE2 = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" fill="#7c3aed"/><polyline points="14 2 14 8 20 8" fill="#c4b5fd"/><rect x="7" y="11" width="10" height="2" rx="1" fill="#ffffff"/><rect x="7" y="15" width="6" height="2" rx="1" fill="#fde047"/></svg>'
+ICO_PHASE3 = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><path d="M12 2L4 5v6c0 5.5 3.8 10.7 8 12 4.2-1.3 8-6.5 8-12V5l-8-3z" fill="#0d9488"/><polyline points="8 12 11 15 16 9" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="5" r="1.5" fill="#fde047"/></svg>'
+ICO_PHASE4 = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#059669"/><path d="M12 6l2 4 4.5.5-3.5 3 1 4.5-4-2.5-4 2.5 1-4.5-3.5-3 4.5-.5z" fill="#fde047"/></svg>'
 
 METHOD_STEPS = [
     (1, "Phase 1: Discover", "Workshops turn scattered requests into one agreed problem statement with assumptions, constraints and named decision owners.", ICO_PHASE1, 20, "+", "workshops run"),
@@ -526,39 +560,39 @@ def make_steps(items):
     return "".join(out)
 
 BA_WORKFLOW = [
-    ("Stakeholder Mgmt", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#2563eb" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4" fill="#3b82f6" fill-opacity="0.25"/><path d="M23 21v-2a4 4 0 0 0-3-3.87" stroke="#60a5fa"/><path d="M16 3.13a4 4 0 0 1 0 7.75" stroke="#60a5fa"/></svg>', "Facilitated 20+ workshops with 13+ cross-functional stakeholders"),
-    ("Requirements Elicitation", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#f59e0b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7" stroke="#d97706"/><line x1="21" y1="21" x2="16.65" y2="16.65" stroke="#f59e0b" stroke-width="2.5"/><path d="M11 8v6M8 11h6" stroke="#fbbf24"/></svg>', "Captured requirements across 4 business units"),
-    ("BRD / FRD Specs", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#1d4ed8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" fill="#2563eb" fill-opacity="0.15"/><polyline points="14 2 14 8 20 8" stroke="#3b82f6"/><line x1="16" y1="13" x2="8" y2="13" stroke="#60a5fa"/><line x1="16" y1="17" x2="8" y2="17" stroke="#93c5fd"/></svg>', "Documented requirements for 2 payment gateway integrations"),
-    ("User Stories &amp; BDD", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#0d9488" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" stroke="#0f766e"/><polyline points="9 11 12 14 22 4" stroke="#10b981" stroke-width="2.6"/></svg>', "Wrote Given/When/Then (BDD) acceptance criteria"),
-    ("Traceability (RTM)", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#6366f1" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" stroke="#4f46e5"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" stroke="#818cf8"/></svg>', "Maintained requirements traceability (RTM) through delivery"),
-    ("Scope &amp; Impact", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#f59e0b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" fill="#f59e0b" fill-opacity="0.3"/></svg>', "Managed 12+ change requests with formal impact assessments")
+    ("Stakeholder Mgmt", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="4" fill="#2563eb"/><circle cx="16" cy="8" r="4" fill="#8b5cf6"/><circle cx="12" cy="16" r="4" fill="#f59e0b"/><path d="M8 8l4 8M16 8l-4 8M8 8h8" stroke="#ffffff" stroke-width="1.5"/></svg>', "Facilitated 20+ workshops with 13+ cross-functional stakeholders"),
+    ("Requirements Elicitation", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="6" fill="#f59e0b" fill-opacity="0.25" stroke="#d97706" stroke-width="2"/><line x1="14.5" y1="14.5" x2="20" y2="20" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round"/><circle cx="10" cy="10" r="2.5" fill="#38bdf8"/></svg>', "Captured requirements across 4 business units"),
+    ("BRD / FRD Specs", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" fill="#1d4ed8"/><polyline points="14 2 14 8 20 8" fill="#60a5fa"/><rect x="7" y="11" width="10" height="2" rx="1" fill="#ffffff"/><rect x="7" y="15" width="6" height="2" rx="1" fill="#fde047"/></svg>', "Documented requirements for 2 payment gateway integrations"),
+    ("User Stories &amp; BDD", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3" fill="#0f766e"/><path d="M7 12l3 3 7-7" stroke="#34d399" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="18" cy="18" r="2" fill="#facc15"/></svg>', "Wrote Given/When/Then (BDD) acceptance criteria"),
+    ("Traceability (RTM)", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="5" stroke="#4f46e5" stroke-width="2" fill="#818cf8" fill-opacity="0.2"/><circle cx="16" cy="16" r="5" stroke="#10b981" stroke-width="2" fill="#34d399" fill-opacity="0.2"/><line x1="11.5" y1="11.5" x2="12.5" y2="12.5" stroke="#fbbf24" stroke-width="3" stroke-linecap="round"/></svg>', "Maintained requirements traceability (RTM) through delivery"),
+    ("Scope &amp; Impact", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><polygon points="12 2 15 9 22 9 17 14 19 21 12 17 5 21 7 14 2 9 9 9" fill="#f59e0b" stroke="#d97706" stroke-width="1.2"/><circle cx="12" cy="12" r="3" fill="#ef4444"/></svg>', "Managed 12+ change requests with formal impact assessments")
 ]
 
 PROCESS_WORKFLOW = [
-    ("AS-IS / TO-BE", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#06b6d4" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8L22 12L18 16"/><path d="M2 12H22" stroke="#0891b2"/></svg>', "Saved an estimated 2 weeks per improvement cycle"),
-    ("Process Mapping (BPMN / UML)", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none"><rect x="3" y="3" width="7" height="7" rx="1.5" fill="#f43f5e"/><rect x="14" y="3" width="7" height="7" rx="1.5" fill="#6366f1"/><rect x="14" y="14" width="7" height="7" rx="1.5" fill="#10b981"/><path d="M10 6.5h4M17.5 10v4" stroke="#94a3b8" stroke-width="2" stroke-linecap="round"/></svg>', "Mapped AS-IS / TO-BE business processes and UML system flows"),
-    ("Root Cause Analysis", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#d946ef" stroke-width="2.2"><circle cx="12" cy="12" r="9" stroke="#c026d3"/><circle cx="12" cy="12" r="3" fill="#d946ef"/></svg>', "Fishbone &amp; 5-Why root cause analysis on recurring SLA shortfalls"),
-    ("Business Rules", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" fill="#2563eb" fill-opacity="0.2" stroke="#2563eb" stroke-width="2"/><path d="M9 15l2 2 4-4" stroke="#eab308" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>', "Maintained business rules and data dictionaries in Confluence and Excel"),
-    ("Data Mapping", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#8b5cf6" stroke-width="2.2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="4" cy="6" r="1.5" fill="#a78bfa"/><circle cx="12" cy="12" r="1.5" fill="#8b5cf6"/><circle cx="20" cy="18" r="1.5" fill="#7c3aed"/></svg>', "Field and data mappings for payment gateway integrations"),
-    ("MoSCoW Priorities", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none"><rect x="3" y="14" width="5" height="7" rx="1" fill="#10b981"/><rect x="10" y="8" width="5" height="13" rx="1" fill="#f59e0b"/><rect x="17" y="3" width="5" height="18" rx="1" fill="#ef4444"/></svg>', "Prioritized requirements across 4 modules and challenged 3 feature requests lacking business justification")
+    ("AS-IS / TO-BE", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><circle cx="5" cy="12" r="3" fill="#ef4444"/><path d="M9 12h8" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round"/><polygon points="16 9 20 12 16 15" fill="#10b981"/><circle cx="20" cy="12" r="1.5" fill="#ffffff"/></svg>', "Saved an estimated 2 weeks per improvement cycle"),
+    ("Process Mapping (BPMN / UML)", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><circle cx="5" cy="5" r="3" fill="#f43f5e"/><polygon points="14 2 17 5 14 8 11 5" fill="#f59e0b"/><rect x="12" y="12" width="7" height="6" rx="1.5" fill="#10b981"/><path d="M8 5h3M14 8v4" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round"/></svg>', "Mapped AS-IS / TO-BE business processes and UML system flows"),
+    ("Root Cause Analysis", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="#c026d3" fill-opacity="0.15" stroke="#c026d3" stroke-width="2"/><line x1="6" y1="12" x2="18" y2="12" stroke="#d946ef" stroke-width="2"/><polyline points="10 7 12 12 10 17" stroke="#f59e0b" stroke-width="2"/><circle cx="12" cy="12" r="2.5" fill="#facc15"/></svg>', "Fishbone &amp; 5-Why root cause analysis on recurring SLA shortfalls"),
+    ("Business Rules", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" fill="#2563eb"/><polyline points="14 2 14 8 20 8" fill="#93c5fd"/><path d="M8 14l2.5 2.5 5.5-5.5" stroke="#facc15" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>', "Maintained business rules and data dictionaries in Confluence and Excel"),
+    ("Data Mapping", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><rect x="3" y="4" width="5" height="16" rx="1.5" fill="#8b5cf6"/><rect x="16" y="4" width="5" height="16" rx="1.5" fill="#06b6d4"/><path d="M8 8l8 4M8 16l8-4" stroke="#f97316" stroke-width="1.8" stroke-linecap="round"/><circle cx="8" cy="8" r="1.5" fill="#facc15"/><circle cx="16" cy="12" r="1.5" fill="#facc15"/></svg>', "Field and data mappings for payment gateway integrations"),
+    ("MoSCoW Priorities", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><rect x="2" y="14" width="4.5" height="7" rx="1" fill="#ef4444"/><rect x="7.5" y="9" width="4.5" height="12" rx="1" fill="#f59e0b"/><rect x="13" y="5" width="4.5" height="16" rx="1" fill="#0ea5e9"/><rect x="18.5" y="2" width="4.5" height="19" rx="1" fill="#64748b"/></svg>', "Prioritized requirements across 4 modules and challenged 3 feature requests lacking business justification")
 ]
 
 AGILE_WORKFLOW = [
-    ("Agile / Scrum", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#a855f7" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/></svg>', "Agile / Scrum delivery across 2 Agile releases"),
-    ("Sprint Planning", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#0284c7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><circle cx="12" cy="15" r="2.5" fill="#38bdf8"/></svg>', "Three Amigos sessions and sprint planning"),
-    ("Backlog Refinement", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#f59e0b" stroke-width="2.2" stroke-linecap="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="4" cy="6" r="1.5" fill="#f59e0b"/><circle cx="4" cy="12" r="1.5" fill="#f59e0b"/><circle cx="4" cy="18" r="1.5" fill="#f59e0b"/></svg>', "Backlog refinement and MoSCoW prioritization across 4 modules"),
-    ("UAT Coordination", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#059669" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3" stroke="#10b981"/><polyline points="8 12 11 15 16 9" stroke="#10b981" stroke-width="2.5"/></svg>', "Coordinated UAT across 350+ UAT test scenarios (Marolix) and 50+ (Infocomm)"),
-    ("Defect Triage", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#f43f5e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" stroke="#e11d48"/><line x1="12" y1="8" x2="12" y2="12" stroke="#f43f5e"/><circle cx="12" cy="16" r="1" fill="#f43f5e"/></svg>', "Supported JIRA defect triage with QA and Engineering; zero critical defects reported"),
-    ("Change Management", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#ea580c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>', "Assessed requirement impacts for 12+ change requests across 2 Agile releases")
+    ("Agile / Scrum", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="#a855f7" stroke-width="2.5" stroke-dasharray="8 4"/><polygon points="12 4 16 8 12 12" fill="#06b6d4"/><polygon points="12 20 8 16 12 12" fill="#10b981"/><circle cx="12" cy="12" r="2.5" fill="#facc15"/></svg>', "Agile / Scrum delivery across 2 Agile releases"),
+    ("Sprint Planning", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="2.5" fill="#0284c7"/><rect x="3" y="4" width="18" height="5" rx="2" fill="#0369a1"/><circle cx="7" cy="6.5" r="1" fill="#ffffff"/><circle cx="17" cy="6.5" r="1" fill="#ffffff"/><circle cx="12" cy="14" r="3" fill="#fde047"/><path d="M12 12.5v1.5l1 1" stroke="#0284c7" stroke-width="1.5"/></svg>', "Three Amigos sessions and sprint planning"),
+    ("Backlog Refinement", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><rect x="3" y="4" width="18" height="4" rx="1.5" fill="#f59e0b"/><rect x="3" y="10" width="14" height="4" rx="1.5" fill="#8b5cf6"/><rect x="3" y="16" width="10" height="4" rx="1.5" fill="#3b82f6"/><circle cx="19" cy="12" r="2" fill="#10b981"/></svg>', "Backlog refinement and MoSCoW prioritization across 4 modules"),
+    ("UAT Coordination", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="2" fill="#059669"/><rect x="7" y="2" width="10" height="4" rx="1" fill="#34d399"/><polyline points="8 13 11 16 16 10" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>', "Coordinated UAT across 350+ UAT test scenarios (Marolix) and 50+ (Infocomm)"),
+    ("Defect Triage", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9.5" fill="#f43f5e" fill-opacity="0.15" stroke="#f43f5e" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="#e11d48"/><path d="M7 8l3 2M17 8l-3 2M7 16l3-2M17 16l-3-2M5 12h3M16 12h3" stroke="#f59e0b" stroke-width="1.8" stroke-linecap="round"/></svg>', "Supported JIRA defect triage with QA and Engineering; zero critical defects reported"),
+    ("Change Management", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><circle cx="9" cy="10" r="6" fill="#ea580c" fill-opacity="0.25" stroke="#ea580c" stroke-width="2"/><circle cx="15" cy="14" r="5" fill="#8b5cf6" fill-opacity="0.25" stroke="#8b5cf6" stroke-width="2"/><circle cx="9" cy="10" r="2" fill="#facc15"/><circle cx="15" cy="14" r="1.5" fill="#06b6d4"/></svg>', "Assessed requirement impacts for 12+ change requests across 2 Agile releases")
 ]
 
 TECH_WORKFLOW = [
-    ("REST API Specs", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none"><rect x="3" y="6" width="18" height="12" rx="3" stroke="#06b6d4" stroke-width="2"/><path d="M7 12h2M11 12h6" stroke="#10b981" stroke-width="2" stroke-linecap="round"/><circle cx="17" cy="12" r="1.5" fill="#10b981"/></svg>', "OpenAPI 3.0 contracts &amp; webhook payload specs"),
-    ("SQL (Postgres)", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z" fill="#336791"/><path d="M15 9c-.6-.7-1.5-1-2.5-1s-2.1.4-2.7 1.2C9.2 10 9 11 9 12.2c0 1.4.4 2.5 1.1 3.2.7.7 1.6 1.1 2.7 1.1 1.8 0 3.1-1.1 3.5-2.8h-1.8c-.3.7-.9 1.1-1.7 1.1-.7 0-1.2-.3-1.5-.8-.3-.6-.5-1.3-.5-2.3 0-1.1.2-1.9.5-2.4.3-.6.9-.9 1.5-.9.7 0 1.3.4 1.6 1.1H15V9z" fill="#ffffff"/></svg>', "Analysed 100,000+ records &amp; query optimization"),
-    ("Python (Pandas)", '<svg viewBox="0 0 24 24" width="16" height="16"><path d="M11.9 2C8 2 8.3 3.7 8.3 3.7l.01 1.9h3.7v.5h-5.2S4 6 4 10.2c0 4.2 1.8 4 1.8 4h1.1v-1.5s-.06-1.8 1.8-1.8h3.1s1.7.03 1.7-1.7V6.1S14.3 2 11.9 2zm-1.3 1.2a.7.7 0 1 1 0 1.4.7.7 0 0 1 0-1.4z" fill="#387eb8"/><path d="M12.1 22c3.9 0 3.6-1.7 3.6-1.7l-.01-1.9H12v-.5h5.2s2.8.1 2.8-4.1c0-4.2-1.8-4-1.8-4h-1.1v1.5s.06 1.8-1.8 1.8h-3.1s-1.7-.03-1.7 1.7v3.2s-.8 4.1 1.6 4.1zm1.3-1.2a.7.7 0 1 1 0-1.4.7.7 0 0 1 0 1.4z" fill="#ffe052"/></svg>', "Transaction data analysis (100,000+ records) with Pandas"),
-    ("Power BI &amp; DAX", '<svg viewBox="0 0 24 24" width="16" height="16"><rect x="3" y="13" width="4.5" height="9" rx="1.2" fill="#d97706"/><rect x="9.5" y="8" width="4.5" height="14" rx="1.2" fill="#f59e0b"/><rect x="16" y="3" width="4.5" height="19" rx="1.2" fill="#fde047"/></svg>', "Power BI requirements from Finance and Operations stakeholders"),
-    ("JIRA &amp; Confluence", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none"><path d="M11.5 2a9.5 9.5 0 0 0-9.5 9.5V2h9.5z" fill="#0052cc"/><path d="M22 12.5a9.5 9.5 0 0 1-9.5 9.5H22v-9.5z" fill="#2684ff"/><path d="M11.5 12a9.5 9.5 0 0 0-9.5 9.5v-9.5h9.5z" fill="#0052cc"/></svg>', "Requirements repository &amp; sprint backlog boards"),
-    ("Figma &amp; Postman", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none"><path d="M12 12a3 3 0 1 1 6 0 3 3 0 0 1-6 0z" fill="#1abcfe"/><path d="M6 18a3 3 0 0 1 3-3h3v3a3 3 0 1 1-6 0z" fill="#0acf83"/><path d="M12 3v6h3a3 3 0 1 0 0-6h-3z" fill="#ff7262"/><path d="M6 6a3 3 0 0 0 3 3h3V3H9a3 3 0 0 0-3 3z" fill="#f24e1e"/><path d="M6 12a3 3 0 0 0 3 3h3V9H9a3 3 0 0 0-3 3z" fill="#a259ff"/></svg>', "Wireframe reviews &amp; API response verification")
+    ("REST API Specs", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="3" fill="#0f172a"/><rect x="4" y="7" width="5" height="3" rx="0.8" fill="#10b981"/><rect x="10" y="7" width="7" height="3" rx="0.8" fill="#3b82f6"/><circle cx="6" cy="15" r="1.5" fill="#f97316"/><circle cx="11" cy="15" r="1.5" fill="#facc15"/><circle cx="16" cy="15" r="1.5" fill="#a855f7"/></svg>', "OpenAPI 3.0 contracts &amp; webhook payload specs"),
+    ("SQL (Postgres)", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><rect width="24" height="24" rx="4" fill="#336791"/><ellipse cx="12" cy="7" rx="6" ry="2" fill="#60a5fa"/><path d="M6 7v6c0 1.2 2.7 2 6 2s6-.8 6-2V7" stroke="#ffffff" stroke-width="1.2"/><polygon points="12 13 14 16 10 16" fill="#facc15"/></svg>', "Analysed 100,000+ records &amp; query optimization"),
+    ("Python (Pandas)", '<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M11.9 2C8 2 8.3 3.7 8.3 3.7l.01 1.9h3.7v.5h-5.2S4 6 4 10.2c0 4.2 1.8 4 1.8 4h1.1v-1.5s-.06-1.8 1.8-1.8h3.1s1.7.03 1.7-1.7V6.1S14.3 2 11.9 2zm-1.3 1.2a.7.7 0 1 1 0 1.4.7.7 0 0 1 0-1.4z" fill="#387eb8"/><path d="M12.1 22c3.9 0 3.6-1.7 3.6-1.7l-.01-1.9H12v-.5h5.2s2.8.1 2.8-4.1c0-4.2-1.8-4-1.8-4h-1.1v1.5s.06 1.8-1.8 1.8h-3.1s-1.7-.03-1.7 1.7v3.2s-.8 4.1 1.6 4.1zm1.3-1.2a.7.7 0 1 1 0-1.4.7.7 0 0 1 0 1.4z" fill="#ffe052"/><rect x="8" y="9" width="8" height="6" rx="1" fill="#00c853" fill-opacity="0.8"/></svg>', "Transaction data analysis (100,000+ records) with Pandas"),
+    ("Power BI &amp; DAX", '<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><rect x="3" y="13" width="4.5" height="9" rx="1.2" fill="#d97706"/><rect x="9.5" y="8" width="4.5" height="14" rx="1.2" fill="#f59e0b"/><rect x="16" y="3" width="4.5" height="19" rx="1.2" fill="#fde047"/><path d="M4 11l6-4 6-2" stroke="#06b6d4" stroke-width="1.5" stroke-linecap="round"/></svg>', "Power BI requirements from Finance and Operations stakeholders"),
+    ("JIRA &amp; Confluence", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><path d="M11.5 2a9.5 9.5 0 0 0-9.5 9.5V2h9.5z" fill="#0052cc"/><path d="M22 12.5a9.5 9.5 0 0 1-9.5 9.5H22v-9.5z" fill="#2684ff"/><path d="M11.5 12a9.5 9.5 0 0 0-9.5 9.5v-9.5h9.5z" fill="#0052cc"/><circle cx="17" cy="7" r="2.5" fill="#38bdf8"/></svg>', "Requirements repository &amp; sprint backlog boards"),
+    ("Figma &amp; Postman", '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><path d="M12 12a3 3 0 1 1 6 0 3 3 0 0 1-6 0z" fill="#1abcfe"/><path d="M6 18a3 3 0 0 1 3-3h3v3a3 3 0 1 1-6 0z" fill="#0acf83"/><path d="M12 3v6h3a3 3 0 1 0 0-6h-3z" fill="#ff7262"/><path d="M6 6a3 3 0 0 0 3 3h3V3H9a3 3 0 0 0-3 3z" fill="#f24e1e"/><path d="M6 12a3 3 0 0 0 3 3h3V9H9a3 3 0 0 0-3 3z" fill="#a259ff"/><circle cx="18" cy="18" r="3" fill="#ff6c37"/></svg>', "Wireframe reviews &amp; API response verification")
 ]
 
 def workflow_tiles(items):
@@ -571,7 +605,7 @@ def workflow_tiles(items):
         "REST API Specs": "samples/index.html#rest-api",
         "UAT Coordination": "samples/index.html#uat",
         "SQL (Postgres)": "samples/index.html#sql",
-        "Power BI & DAX": "samples/index.html#power-bi",
+        "Power BI &amp; DAX": "samples/index.html#power-bi",
         "Stakeholder Mgmt": "samples/index.html#discovery",
     }
     for i, (name, icon, context) in enumerate(items):
@@ -721,7 +755,7 @@ def about_3d_console():
         <span class="cdot green"></span>
       </div>
       <div class="console-addr">
-        <svg class="c-file-ico" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        <svg class="c-file-ico" viewBox="0 0 24 24" width="13" height="13" fill="none" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" fill="#2563eb"/><polyline points="14 2 14 8 20 8" fill="#93c5fd"/><rect x="7" y="12" width="6" height="1.8" rx="0.9" fill="#fde047"/></svg>
         <span>spec // requirements-spec.yml</span>
       </div>
       <div class="console-live-badge"><span class="c-static-dot" aria-hidden="true"></span> ILLUSTRATIVE SAMPLE</div>
@@ -881,9 +915,9 @@ def about():
 <section class="sec band has-flow">{F.pipeline("ab")}<div class="wrap">
 {sh(1, "Principles", "Working principles", "The habits behind the documents.")}
 <div class="grid g3">
-<div class="card principle-card magic-card {rv(0)}"><div class="p-ico-tile" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="m9 15 2 2 4-4"/></svg></div><h3>Evidence before opinion</h3><p>Findings, assumptions and limitations are kept separate, so guesses are never presented as facts.</p><div class="principle-link-foot"><a class="principle-link" href="samples/index.html#discovery">View Discovery MoM sample &rarr;</a></div></div>
-<div class="card principle-card magic-card {rv(1)}"><div class="p-ico-tile" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><h3>Scope you can point at</h3><p>Agreed deliverables and acceptance criteria define what &ldquo;done&rdquo; means before work begins.</p><div class="principle-link-foot"><a class="principle-link" href="samples/index.html#brd">View BRD specification &rarr;</a></div></div>
-<div class="card principle-card magic-card {rv(2)}"><div class="p-ico-tile" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></div><h3>Traceable by design</h3><p>Requirements connect to stories, tests and decisions, so any change shows its impact.</p><div class="principle-link-foot"><a class="principle-link" href="samples/index.html#rtm">View Requirements Traceability Matrix &rarr;</a></div></div>
+<div class="card principle-card magic-card {rv(0)}"><div class="p-ico-tile" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#2563eb" fill-opacity="0.12"/><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" fill="#2563eb"/><polyline points="14 2 14 8 20 8" fill="#93c5fd"/><circle cx="15" cy="15" r="5" fill="#ffffff" stroke="#f59e0b" stroke-width="2"/><polyline points="13.5 15 14.5 16 16.5 14" stroke="#10b981" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3>Evidence before opinion</h3><p>Findings, assumptions and limitations are kept separate, so guesses are never presented as facts.</p><div class="principle-link-foot"><a class="principle-link" href="samples/index.html#discovery">View Discovery MoM sample &rarr;</a></div></div>
+<div class="card principle-card magic-card {rv(1)}"><div class="p-ico-tile" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#ef4444" fill-opacity="0.12"/><circle cx="12" cy="12" r="9" stroke="#ef4444" stroke-width="2" fill="#fee2e2"/><circle cx="12" cy="12" r="5" fill="#ef4444"/><circle cx="12" cy="12" r="2" fill="#ffffff"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"/></svg></div><h3>Scope you can point at</h3><p>Agreed deliverables and acceptance criteria define what &ldquo;done&rdquo; means before work begins.</p><div class="principle-link-foot"><a class="principle-link" href="samples/index.html#brd">View BRD specification &rarr;</a></div></div>
+<div class="card principle-card magic-card {rv(2)}"><div class="p-ico-tile" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#8b5cf6" fill-opacity="0.12"/><circle cx="6" cy="18" r="3.5" fill="#8b5cf6"/><circle cx="18" cy="18" r="3.5" fill="#10b981"/><circle cx="12" cy="6" r="3.5" fill="#3b82f6"/><line x1="8" y1="15.5" x2="10.5" y2="9" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"/><line x1="16" y1="15.5" x2="13.5" y2="9" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"/><line x1="9.5" y1="18" x2="14.5" y2="18" stroke="#38bdf8" stroke-width="2" stroke-linecap="round"/></svg></div><h3>Traceable by design</h3><p>Requirements connect to stories, tests and decisions, so any change shows its impact.</p><div class="principle-link-foot"><a class="principle-link" href="samples/index.html#rtm">View Requirements Traceability Matrix &rarr;</a></div></div>
 </div></div></section>
 
 <section class="sec has-flow">{F.swim("ab2")}<div class="wrap">
@@ -1153,7 +1187,7 @@ def resume():
     return head("Resume", "Business Analyst resume: experience, skills, delivery.", "Business Analyst focused on requirements, API and system integration, SQL and Python analysis, Agile delivery and UAT coordination.", "") + f'''
 <section class="sec sec--first" data-bg-anim="horizon"><div class="wrap">
 <div class="actions rv" style="margin:0 0 36px">
-  <button type="button" class="btn btn-primary" id="printResumeBtn" title="Print ATS-friendly resume or save as PDF"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" style="display:inline-block;vertical-align:middle;margin-right:6px" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>Print / Save as PDF</button>
+  <button type="button" class="btn btn-primary" id="printResumeBtn" title="Print ATS-friendly resume or save as PDF"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" style="display:inline-block;vertical-align:middle;margin-right:6px" aria-hidden="true"><rect x="4" y="9" width="16" height="8" rx="2" fill="#1d4ed8"/><rect x="6" y="3" width="12" height="6" rx="1" fill="#ffffff" stroke="#93c5fd" stroke-width="1.2"/><rect x="6" y="13" width="12" height="8" rx="1" fill="#ffffff" stroke="#93c5fd" stroke-width="1.2"/><circle cx="17" cy="11.5" r="1.2" fill="#10b981"/></svg>Print / Save as PDF</button>
   <a class="btn btn-ghost" href="{LI}" target="_blank" rel="noopener noreferrer">View LinkedIn profile <span class="sr-only">(opens in new tab)</span></a>
   <a class="btn btn-ghost" href="{HR}" target="_blank" rel="noopener noreferrer">HackerRank profile <span class="sr-only">(opens in new tab)</span></a>
   <a class="btn btn-ghost" href="contact.html">Contact me</a>
@@ -1227,7 +1261,7 @@ def contact():
   <h2>Reach me directly</h2>
   <div class="reply-status"><span class="reply-dot-static" aria-hidden="true"></span> Direct email enquiry &bull; Typically replies within 1&ndash;2 business days</div>
   <div class="tz-badge" style="margin-top:14px">
-    <span class="tz-globe" aria-hidden="true"><svg class="tz-globe-ico" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span>
+    <span class="tz-globe" aria-hidden="true"><svg class="tz-globe-ico" viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#0284c7"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" fill="#10b981"/><circle cx="12" cy="12" r="10" stroke="#fbbf24" stroke-width="1.5"/><line x1="2" y1="12" x2="22" y2="12" stroke="#fde047" stroke-width="1.5"/></svg></span>
     <span><b>Time zone:</b> IST (UTC+5:30) &bull; Overlap with EMEA / US morning hours</span>
   </div>
 
@@ -1238,9 +1272,10 @@ def contact():
         <span class="globe-badge-title">Interactive 3D Globe</span>
       </div>
       <button type="button" class="globe-btn-reset" id="globeResetBtn" title="Reset view to Bengaluru (UTC+5:30)" aria-label="Reset globe to Bengaluru">
-        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
-          <path d="M3 3v5h5"/>
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" aria-hidden="true">
+          <circle cx="12" cy="12" r="10" fill="#2563eb" fill-opacity="0.15"/>
+          <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" stroke="#2563eb" stroke-width="2.2" stroke-linecap="round"/>
+          <polygon points="3 3 8 8 3 8" fill="#f59e0b"/>
         </svg>
       </button>
     </div>
@@ -1314,30 +1349,30 @@ def contact():
 '''
 
 # ---------------------------------------------------------------- sample item icons
-ICO_SEC_DOCS = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#2563eb" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" fill="#3b82f6" fill-opacity="0.18"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>'
-ICO_SEC_DIAG = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5" fill="#f43f5e"/><rect x="14" y="3" width="7" height="7" rx="1.5" fill="#8b5cf6"/><rect x="14" y="14" width="7" height="7" rx="1.5" fill="#06b6d4"/><path d="M10 6.5h4M17.5 10v4" stroke="#94a3b8" stroke-width="2.2" stroke-linecap="round"/></svg>'
-ICO_SEC_DATA = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#10b981" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3" fill="#10b981" fill-opacity="0.18"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>'
+ICO_SEC_DOCS = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" fill="#2563eb"/><polyline points="14 2 14 8 20 8" fill="#93c5fd"/><rect x="7" y="12" width="10" height="2" rx="1" fill="#ffffff"/><rect x="7" y="16" width="6" height="2" rx="1" fill="#fbbf24"/></svg>'
+ICO_SEC_DIAG = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5" fill="#f43f5e"/><rect x="14" y="3" width="7" height="7" rx="1.5" fill="#8b5cf6"/><rect x="14" y="14" width="7" height="7" rx="1.5" fill="#06b6d4"/><path d="M10 6.5h4M17.5 10v4" stroke="#fbbf24" stroke-width="2.2" stroke-linecap="round"/></svg>'
+ICO_SEC_DATA = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3" fill="#10b981"/><path d="M21 5v7c0 1.66-4 3-9 3s-9-1.34-9-3V5" fill="#059669"/><path d="M21 12v7c0 1.66-4 3-9 3s-9-1.34-9-3v-7" fill="#047857"/><circle cx="12" cy="12" r="1.5" fill="#fde047"/></svg>'
 
-ICO_DOC_BRD = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#185abd"/><path d="M7 6h10a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1z" fill="#2b579a"/><path d="M8 8.5h8M8 12h8M8 15.5h5" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"/><circle cx="16" cy="15.5" r="1.5" fill="#60a5fa"/></svg>'
-ICO_DOC_FRD = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#2563eb"/><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z" fill="#1d4ed8"/><polyline points="14 3 14 9 20 9" fill="#93c5fd"/><path d="m9 14-2 2 2 2M15 14l2 2-2 2" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>'
-ICO_DOC_STORIES = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#7c3aed"/><path d="M7 6h10a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1z" fill="#6d28d9"/><path d="m8.5 12 2.5 2.5 5-5" stroke="#34d399" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
-ICO_DOC_RTM = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#059669"/><path d="M12 4s6 2.5 6 7.5c0 5-6 8.5-6 8.5s-6-3.5-6-8.5C6 6.5 12 4 12 4z" fill="#047857"/><polyline points="9 11.5 11 13.5 15 9.5" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
-ICO_DOC_DISCOVERY = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#d97706"/><circle cx="12" cy="12" r="6" stroke="#ffffff" stroke-width="2"/><path d="m16.5 16.5 3 3" stroke="#fde047" stroke-width="2.5" stroke-linecap="round"/></svg>'
-ICO_DOC_BUNDLE = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#4f46e5"/><polygon points="12 4 19 8 12 12 5 8" fill="#818cf8"/><polygon points="12 12 19 16 12 20 5 16" fill="#6366f1"/></svg>'
+ICO_DOC_BRD = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#185abd"/><path d="M6 4h8l5 5v11a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z" fill="#2b579a"/><polyline points="14 4 14 9 19 9" fill="#93c5fd"/><rect x="8" y="13" width="8" height="1.8" rx="0.9" fill="#ffffff"/><rect x="8" y="16.5" width="5" height="1.8" rx="0.9" fill="#facc15"/></svg>'
+ICO_DOC_FRD = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#2563eb"/><path d="M6 4h8l5 5v11a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z" fill="#1d4ed8"/><polyline points="14 4 14 9 19 9" fill="#60a5fa"/><path d="m9 15-2 2 2 2M15 15l2 2-2 2" stroke="#fde047" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+ICO_DOC_STORIES = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#7c3aed"/><rect x="5" y="5" width="14" height="14" rx="2" fill="#6d28d9"/><path d="m8.5 12 2.5 2.5 5-5" stroke="#34d399" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="16" cy="7" r="1.5" fill="#facc15"/></svg>'
+ICO_DOC_RTM = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#059669"/><rect x="4" y="4" width="16" height="16" rx="2" fill="#047857" stroke="#34d399" stroke-width="1.5"/><path d="M4 10h16M4 15h16M10 4v16M15 4v16" stroke="#10b981" stroke-width="1.2"/><circle cx="7" cy="7" r="1.5" fill="#fde047"/><circle cx="12.5" cy="12.5" r="1.5" fill="#38bdf8"/></svg>'
+ICO_DOC_DISCOVERY = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#d97706"/><circle cx="11" cy="11" r="5" stroke="#ffffff" stroke-width="2" fill="#f59e0b"/><path d="m15 15 4 4" stroke="#fde047" stroke-width="2.5" stroke-linecap="round"/><circle cx="11" cy="11" r="2" fill="#ffffff"/></svg>'
+ICO_DOC_BUNDLE = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#4f46e5"/><polygon points="12 4 20 8 12 12 4 8" fill="#818cf8"/><polygon points="12 9 20 13 12 17 4 13" fill="#6366f1"/><polygon points="12 14 20 18 12 22 4 18" fill="#4338ca"/></svg>'
 
-ICO_DIAG_PROCESS = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#e11d48"/><rect x="4" y="4" width="5.5" height="5.5" rx="1.5" fill="#ffffff"/><rect x="14.5" y="14.5" width="5.5" height="5.5" rx="1.5" fill="#fecdd3"/><path d="M7 9.5v3a2.5 2.5 0 0 0 2.5 2.5h5" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/></svg>'
-ICO_DIAG_ARCH = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#0891b2"/><rect x="4" y="4" width="16" height="6" rx="2" fill="#22d3ee"/><rect x="4" y="14" width="16" height="6" rx="2" fill="#06b6d4"/><path d="M12 10v4" stroke="#ffffff" stroke-width="2.5"/></svg>'
-ICO_DIAG_ERD = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#0284c7"/><ellipse cx="12" cy="7" rx="6.5" ry="2.5" fill="#38bdf8"/><path d="M5.5 7v5c0 1.4 2.9 2.5 6.5 2.5s6.5-1.1 6.5-2.5V7M5.5 12v5c0 1.4 2.9 2.5 6.5 2.5s6.5-1.1 6.5-2.5v-5" stroke="#ffffff" stroke-width="1.8"/></svg>'
-ICO_DIAG_API = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#0d9488"/><rect x="4" y="7" width="16" height="10" rx="2.5" stroke="#2dd4bf" stroke-width="1.8"/><path d="M8 12h2M12 12h4" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/></svg>'
-ICO_DIAG_BI = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#d97706"/><rect x="5" y="13" width="3.5" height="7" rx="1" fill="#fde047"/><rect x="10.2" y="9" width="3.5" height="11" rx="1" fill="#fbbf24"/><rect x="15.5" y="4" width="3.5" height="16" rx="1" fill="#ffffff"/></svg>'
+ICO_DIAG_PROCESS = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#e11d48"/><circle cx="7" cy="7" r="3" fill="#ffffff"/><polygon points="17 4 21 7 17 10 13 7" fill="#facc15"/><rect x="13" y="13" width="7" height="6" rx="1.5" fill="#34d399"/><path d="M7 10v4a2 2 0 0 0 2 2h4" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"/></svg>'
+ICO_DIAG_ARCH = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#0891b2"/><rect x="4" y="4" width="16" height="5" rx="1.5" fill="#22d3ee"/><rect x="4" y="15" width="16" height="5" rx="1.5" fill="#06b6d4"/><path d="M12 9v6" stroke="#ffffff" stroke-width="2.5"/><circle cx="12" cy="12" r="2" fill="#facc15"/></svg>'
+ICO_DIAG_ERD = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#0284c7"/><ellipse cx="12" cy="7" rx="6.5" ry="2.5" fill="#38bdf8"/><path d="M5.5 7v5c0 1.4 2.9 2.5 6.5 2.5s6.5-1.1 6.5-2.5V7M5.5 12v5c0 1.4 2.9 2.5 6.5 2.5s6.5-1.1 6.5-2.5v-5" stroke="#ffffff" stroke-width="1.8"/><circle cx="17" cy="12" r="1.5" fill="#fde047"/></svg>'
+ICO_DIAG_API = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#0d9488"/><rect x="4" y="6" width="16" height="12" rx="2" fill="#115e59" stroke="#2dd4bf" stroke-width="1.5"/><rect x="6" y="9" width="4" height="2.5" rx="0.8" fill="#10b981"/><rect x="11" y="9" width="6" height="2.5" rx="0.8" fill="#38bdf8"/><circle cx="16" cy="14" r="1.5" fill="#facc15"/></svg>'
+ICO_DIAG_BI = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#d97706"/><rect x="5" y="13" width="3.5" height="7" rx="1" fill="#fde047"/><rect x="10.2" y="9" width="3.5" height="11" rx="1" fill="#fbbf24"/><rect x="15.5" y="4" width="3.5" height="16" rx="1" fill="#ffffff"/><circle cx="17" cy="4" r="1.5" fill="#22c55e"/></svg>'
 ICO_DIAG_FIGMA = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#18181b"/><path d="M12 12a3 3 0 1 1 6 0 3 3 0 0 1-6 0z" fill="#1abcfe"/><path d="M6 18a3 3 0 0 1 3-3h3v3a3 3 0 1 1-6 0z" fill="#0acf83"/><path d="M12 3v6h3a3 3 0 1 0 0-6h-3z" fill="#ff7262"/><path d="M6 6a3 3 0 0 0 3 3h3V3H9a3 3 0 0 0-3 3z" fill="#f24e1e"/><path d="M6 12a3 3 0 0 0 3 3h3V9H9a3 3 0 0 0-3 3z" fill="#a259ff"/></svg>'
-ICO_DIAG_FIGJAM = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#ea580c"/><circle cx="12" cy="12" r="6" stroke="#ffffff" stroke-width="2"/><path d="M9 12a3 3 0 0 1 6 0M12 9v6" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"/></svg>'
+ICO_DIAG_FIGJAM = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#ea580c"/><rect x="5" y="5" width="6" height="6" rx="1.5" fill="#f43f5e"/><rect x="13" y="5" width="6" height="6" rx="1.5" fill="#facc15"/><rect x="5" y="13" width="6" height="6" rx="1.5" fill="#06b6d4"/><rect x="13" y="13" width="6" height="6" rx="1.5" fill="#a855f7"/></svg>'
 
-ICO_DATA_RTM = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#059669"/><rect x="4" y="4" width="16" height="16" rx="2" stroke="#ffffff" stroke-width="1.8"/><path d="M4 10h16M4 15h16M10 4v16M15 4v16" stroke="#34d399" stroke-width="1.5"/></svg>'
-ICO_DATA_TESTS = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#10b981"/><path d="m7 12 3.5 3.5 6.5-6.5" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>'
-ICO_DATA_STORIES = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#8b5cf6"/><rect x="5" y="4" width="14" height="16" rx="2" fill="#7c3aed"/><path d="M8 8h8M8 12h8M8 16h5" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"/></svg>'
-ICO_DATA_SQL = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#336791"/><ellipse cx="12" cy="7" rx="6" ry="2.2" fill="#60a5fa"/><path d="M6 7v5c0 1.2 2.7 2.2 6 2.2s6-1 6-2.2V7M6 12v5c0 1.2 2.7 2.2 6 2.2s6-1 6-2.2v-5" stroke="#ffffff" stroke-width="1.8"/></svg>'
-ICO_EYE = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>'
+ICO_DATA_RTM = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#059669"/><rect x="4" y="4" width="16" height="16" rx="2" fill="#047857" stroke="#ffffff" stroke-width="1.5"/><path d="M4 10h16M4 15h16M10 4v16M15 4v16" stroke="#34d399" stroke-width="1.5"/><circle cx="7" cy="7" r="1.5" fill="#fde047"/></svg>'
+ICO_DATA_TESTS = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#10b981"/><path d="m7 12 3.5 3.5 6.5-6.5" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="18" cy="6" r="2" fill="#facc15"/></svg>'
+ICO_DATA_STORIES = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#8b5cf6"/><rect x="5" y="4" width="14" height="16" rx="2" fill="#7c3aed"/><path d="M8 8h8M8 12h8M8 16h5" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"/><circle cx="15" cy="16" r="1.5" fill="#facc15"/></svg>'
+ICO_DATA_SQL = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true"><rect width="24" height="24" rx="5" fill="#336791"/><ellipse cx="12" cy="7" rx="6" ry="2.2" fill="#60a5fa"/><path d="M6 7v5c0 1.2 2.7 2.2 6 2.2s6-1 6-2.2V7M6 12v5c0 1.2 2.7 2.2 6 2.2s6-1 6-2.2v-5" stroke="#ffffff" stroke-width="1.8"/><polygon points="12 14 15 17 9 17" fill="#fde047"/></svg>'
+ICO_EYE = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3" fill="#38bdf8" stroke="#1d4ed8"/></svg>'
 
 def flink(href, text, ico_type="", download=False, target_blank=True, doc_title=""):
     dl = " download" if download else ""
@@ -1350,34 +1385,34 @@ def flink(href, text, ico_type="", download=False, target_blank=True, doc_title=
 
     if ico_type == "pdf":
         cls_extra = " link-btn-pdf"
-        ico_svg = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#dc2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 13v4M9 15h2a1 1 0 0 0 0-2H9"/></svg>'
+        ico_svg = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" aria-hidden="true"><rect width="24" height="24" rx="4" fill="#dc2626"/><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z" fill="#ef4444"/><polyline points="14 3 14 9 20 9" fill="#fca5a5"/><path d="M9 13v4M9 15h2a1 1 0 0 0 0-2H9" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"/></svg>'
     elif ico_type == "word":
         cls_extra = " link-btn-word"
-        ico_svg = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#185abd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="m8 13 1.5 5 1.5-5 1.5 5 1.5-5"/></svg>'
+        ico_svg = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" aria-hidden="true"><rect width="24" height="24" rx="4" fill="#185abd"/><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z" fill="#2b579a"/><polyline points="14 3 14 9 20 9" fill="#93c5fd"/><path d="m8 13 1.5 5 1.5-5 1.5 5 1.5-5" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>'
     elif ico_type == "csv":
         cls_extra = " link-btn-csv"
-        ico_svg = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#107c41" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg>'
+        ico_svg = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" aria-hidden="true"><rect width="24" height="24" rx="4" fill="#107c41"/><rect x="4" y="4" width="16" height="16" rx="2" fill="#0e6b37"/><path d="M4 10h16M4 15h16M10 4v16M15 4v16" stroke="#34d399" stroke-width="1.2"/><path d="m7.5 12 2 3-2 3M9.5 12l-2 3 2 3" stroke="#ffffff" stroke-width="1.5"/></svg>'
     elif ico_type == "sql":
         cls_extra = " link-btn-sql"
-        ico_svg = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#0284c7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>'
+        ico_svg = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" aria-hidden="true"><rect width="24" height="24" rx="4" fill="#0284c7"/><ellipse cx="12" cy="6" rx="7" ry="2.2" fill="#38bdf8"/><path d="M5 6v6c0 1.2 3.1 2.2 7 2.2s7-1 7-2.2V6" stroke="#ffffff" stroke-width="1.5"/><polygon points="12 11 15 14 9 14" fill="#fde047"/></svg>'
     elif ico_type == "img":
         cls_extra = " link-btn-img"
-        ico_svg = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>'
+        ico_svg = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" aria-hidden="true"><rect width="24" height="24" rx="4" fill="#8b5cf6"/><circle cx="8" cy="8" r="2.5" fill="#fde047"/><polygon points="4 20 10 13 14 17 20 10 20 20" fill="#34d399"/></svg>'
     elif ico_type == "mmd":
         cls_extra = " link-btn-mmd"
-        ico_svg = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#06b6d4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/></svg>'
+        ico_svg = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" aria-hidden="true"><rect width="24" height="24" rx="4" fill="#06b6d4"/><polygon points="12 4 4 8 12 12 20 8" fill="#22d3ee"/><polygon points="4 14 12 18 20 14" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/></svg>'
     elif ico_type == "figma":
         cls_extra = " link-btn-figma"
-        ico_svg = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" aria-hidden="true"><path d="M12 12a3 3 0 1 1 6 0 3 3 0 0 1-6 0z" fill="#1abcfe"/><path d="M6 18a3 3 0 0 1 3-3h3v3a3 3 0 1 1-6 0z" fill="#0acf83"/><path d="M12 3v6h3a3 3 0 1 0 0-6h-3z" fill="#ff7262"/><path d="M6 6a3 3 0 0 0 3 3h3V3H9a3 3 0 0 0-3 3z" fill="#f24e1e"/><path d="M6 12a3 3 0 0 0 3 3h3V9H9a3 3 0 0 0-3 3z" fill="#a259ff"/></svg>'
+        ico_svg = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" aria-hidden="true"><rect width="24" height="24" rx="4" fill="#18181b"/><path d="M12 12a3 3 0 1 1 6 0 3 3 0 0 1-6 0z" fill="#1abcfe"/><path d="M6 18a3 3 0 0 1 3-3h3v3a3 3 0 1 1-6 0z" fill="#0acf83"/><path d="M12 3v6h3a3 3 0 1 0 0-6h-3z" fill="#ff7262"/><path d="M6 6a3 3 0 0 0 3 3h3V3H9a3 3 0 0 0-3 3z" fill="#f24e1e"/><path d="M6 12a3 3 0 0 0 3 3h3V9H9a3 3 0 0 0-3 3z" fill="#a259ff"/></svg>'
     elif ico_type == "figjam":
         cls_extra = " link-btn-figjam"
-        ico_svg = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#ea580c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8 12a4 4 0 0 1 8 0M12 8v8"/></svg>'
+        ico_svg = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" aria-hidden="true"><rect width="24" height="24" rx="4" fill="#ea580c"/><rect x="5" y="5" width="6" height="6" rx="1.5" fill="#f43f5e"/><rect x="13" y="5" width="6" height="6" rx="1.5" fill="#facc15"/><rect x="5" y="13" width="6" height="6" rx="1.5" fill="#06b6d4"/><rect x="13" y="13" width="6" height="6" rx="1.5" fill="#a855f7"/></svg>'
     elif ico_type == "gh":
         cls_extra = " link-btn-gh"
-        ico_svg = '<svg viewBox="0 0 24 24" width="14" height="14" fill="#a855f7" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>'
+        ico_svg = '<svg viewBox="0 0 24 24" width="14" height="14" fill="#ffffff" aria-hidden="true"><rect width="24" height="24" rx="12" fill="#24292f"/><circle cx="18" cy="6" r="2.5" fill="#a855f7"/><path d="M12 4C7.58 4 4 7.58 4 12c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0020 12c0-4.42-3.58-8-8-8z"/></svg>'
     elif ico_type == "bi":
         cls_extra = " link-btn-bi"
-        ico_svg = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="13" width="4" height="8" rx="1"/><rect x="10" y="8" width="4" height="13" rx="1"/><rect x="17" y="3" width="4" height="18" rx="1"/></svg>'
+        ico_svg = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" aria-hidden="true"><rect width="24" height="24" rx="4" fill="#d97706"/><rect x="5" y="13" width="3.5" height="7" rx="1" fill="#fde047"/><rect x="10.2" y="9" width="3.5" height="11" rx="1" fill="#fbbf24"/><rect x="15.5" y="4" width="3.5" height="16" rx="1" fill="#ffffff"/></svg>'
     return f'<a href="{href}"{tgt}{dl}{hint_title} class="file-link-btn{cls_extra}">{ico_svg}<span>{text}</span>{sr_title}{sr_newtab}</a>'
 
 # ---------------------------------------------------------------- samples
@@ -1456,8 +1491,8 @@ def samples():
     view_toggle = '''<div class="samples-view-bar">
   <span class="svb-label">Layout:</span>
   <div class="svb-toggles" role="group" aria-label="Choose layout view">
-    <button type="button" class="svb-btn is-active" id="viewList" aria-pressed="true" title="List View"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg> List</button>
-    <button type="button" class="svb-btn" id="viewGrid" aria-pressed="false" title="Grid View"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> Grid</button>
+    <button type="button" class="svb-btn is-active" id="viewList" aria-pressed="true" title="List View"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" aria-hidden="true"><rect x="7" y="5" width="14" height="2.5" rx="1.25" fill="#3b82f6"/><rect x="7" y="11" width="14" height="2.5" rx="1.25" fill="#8b5cf6"/><rect x="7" y="17" width="14" height="2.5" rx="1.25" fill="#10b981"/><circle cx="4" cy="6.25" r="1.5" fill="#ef4444"/><circle cx="4" cy="12.25" r="1.5" fill="#f59e0b"/><circle cx="4" cy="18.25" r="1.5" fill="#10b981"/></svg> List</button>
+    <button type="button" class="svb-btn" id="viewGrid" aria-pressed="false" title="Grid View"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5" fill="#3b82f6"/><rect x="14" y="3" width="7" height="7" rx="1.5" fill="#10b981"/><rect x="3" y="14" width="7" height="7" rx="1.5" fill="#f59e0b"/><rect x="14" y="14" width="7" height="7" rx="1.5" fill="#8b5cf6"/></svg> Grid</button>
   </div>
 </div>'''
 
@@ -1551,11 +1586,11 @@ LD_SAMPLES = ldscript({"@type": "CollectionPage", "url": SITE + "samples/index.h
 pages = [
 ("index.html", "Gautam Reddy | Business Analyst: Requirements, APIs, SQL, UAT", DESC, index(), "", "", LD_HOME),
 ("about.html", "About Gautam Reddy | Business Analyst", "About Gautam Reddy, a Bengaluru Business Analyst with 4+ years of experience in requirements engineering, NFRs, REST APIs, STTM, SQL analysis and UAT.", about(), "", "about.html", LD_ABOUT),
-("services.html", "BA Services: BRD, APIs, SQL & UAT | Gautam Reddy", "Business analysis services: BRD/FRD, NFRs, SQL and Python data analysis, STTM, Power BI dashboards, REST API specs and Agile UAT coordination.", services(), "", "services.html", LD_SERVICES),
-("projects.html", "BA Projects: SQL, Power BI & Case Studies | Gautam Reddy", "Portfolio projects by Business Analyst Gautam Reddy: SQL and Power BI analytics, data pipelines, RAG prototypes, and the PayTrack case study.", projects(), "", "projects.html", LD_PROJECTS),
+("services.html", "BA Services: BRD, APIs, SQL &amp; UAT | Gautam Reddy", "Business analysis services: BRD/FRD, NFRs, SQL and Python data analysis, STTM, Power BI dashboards, REST API specs and Agile UAT coordination.", services(), "", "services.html", LD_SERVICES),
+("projects.html", "BA Projects: SQL, Power BI &amp; Case Studies | Gautam Reddy", "Portfolio projects by Business Analyst Gautam Reddy: SQL and Power BI analytics, data pipelines, RAG prototypes, and the PayTrack case study.", projects(), "", "projects.html", LD_PROJECTS),
 ("resume.html", "Resume | Gautam Reddy, Business Analyst", "Resume of Gautam Reddy, Business Analyst with 4+ years of experience: 2 payment gateway integrations, STTM, NFRs, 100,000+ transactions analysed, 350+ UAT test scenarios.", resume(), "", "resume.html", LD_RESUME),
 ("contact.html", "Contact Gautam Reddy | Hire a Business Analyst, Bengaluru", "Contact Gautam Reddy, a Business Analyst in Bengaluru, about full-time, hybrid or remote roles, or requirements, systems integration, and reporting projects.", contact(), "", "contact.html", LD_CONTACT),
-("samples/index.html", "BA Sample Documents: BRD, FRD, Stories & RTM | Gautam Reddy", "Business Analyst case study artifacts: BRD, FRD, NFRs, user stories, STTM, RTM, UAT plan, BPMN and UML diagrams, SQL queries and CSV templates.", samples(), "../", "samples/index.html", LD_SAMPLES),
+("samples/index.html", "BA Sample Documents: BRD, FRD, Stories &amp; RTM | Gautam Reddy", "Business Analyst case study artifacts: BRD, FRD, NFRs, user stories, STTM, RTM, UAT plan, BPMN and UML diagrams, SQL queries and CSV templates.", samples(), "../", "samples/index.html", LD_SAMPLES),
 ]
 for path, t, d, b, p, cur, ld in pages:
     open(path, "w", encoding="utf-8").write(page(path, t, d, b, p, cur, ld))
@@ -1572,7 +1607,7 @@ NOT_FOUND = '''<section class="sec notfound-sec"><div class="ascii-wave notfound
 </div>
 
 <div class="actions" style="margin-top:28px">
-<a class="btn btn-primary" href="index.html">Return to homepage <span class="arr" aria-hidden="true">&rarr;</span></a>
+<a class="btn btn-primary" href="index.html"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true" style="vertical-align:text-bottom;margin-right:4px"><path d="M3 10.5L12 3l9 7.5" stroke="#fde047" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 9v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9" fill="#1d4ed8" stroke="#60a5fa" stroke-width="1.8"/><rect x="9.5" y="13" width="5" height="8" rx="1" fill="#34d399"/></svg>Return to homepage <span class="arr" aria-hidden="true">&rarr;</span></a>
 <a class="btn btn-ghost" href="samples/index.html">View BA samples</a>
 <a class="btn btn-ghost" href="projects.html">Browse projects</a>
 </div>
@@ -1594,4 +1629,4 @@ today = datetime.date.today().isoformat()
 urls = [SITE if p_ == "index.html" else SITE + p_ for p_, *_ in pages]
 open("sitemap.xml", "w", encoding="utf-8").write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "".join(f"  <url><loc>{u}</loc><lastmod>{today}</lastmod></url>\n" for u in urls) + "</urlset>\n")
 open("robots.txt", "w", encoding="utf-8").write(f"User-agent: *\nAllow: /\n\nSitemap: {SITE}sitemap.xml\n")
-print("built", len(pages))
+print("built", len(pages) + 1)

@@ -94,8 +94,8 @@
             // Subtle 3D tilt angles (max ~5 degrees for professional stability)
             var px = (x / rect.width) - 0.5;
             var py = (y / rect.height) - 0.5;
-            var tiltX = (-py * 7).toFixed(2);
-            var tiltY = (px * 7).toFixed(2);
+            var tiltX = Math.max(-8, Math.min(8, -py * 7)).toFixed(2);
+            var tiltY = Math.max(-8, Math.min(8, px * 7)).toFixed(2);
 
             card.style.transform = 'perspective(900px) rotateX(' + tiltX + 'deg) rotateY(' + tiltY + 'deg) translateY(-4px)';
           });

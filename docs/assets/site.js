@@ -60,6 +60,7 @@ function closeMenu(){
   if(nav&&nav.classList.contains('open')){
     nav.classList.remove('open');
     d.body.classList.remove('menu-open');
+    if(typeof lenis !== 'undefined' && lenis) lenis.start();
     if(mb){
       mb.setAttribute('aria-expanded','false');
       mb.setAttribute('aria-label','Open navigation menu');
@@ -73,6 +74,7 @@ if(mb&&nav){
     if(e&&e.stopPropagation)e.stopPropagation();
     var o=nav.classList.toggle('open');
     d.body.classList.toggle('menu-open',o);
+    if(typeof lenis !== 'undefined' && lenis){ if(o) lenis.stop(); else lenis.start(); }
     mb.setAttribute('aria-expanded',String(o));
     mb.setAttribute('aria-label',o?'Close navigation menu':'Open navigation menu');
     mb.innerHTML=o?CLOSE_ICO:MENU_ICO;
@@ -156,6 +158,29 @@ addEventListener('scroll',throttledScroll,{passive:true});
 addEventListener('resize',throttledScroll);
 onScroll();
 
+/* Lenis Smooth Scroll Management (GL-Lenis) */
+var lenis = null;
+function initLenis(){
+  if(reduce || lenis || typeof Lenis === 'undefined') return;
+  try{
+    lenis = new Lenis({
+      lerp: 0.1,
+      smoothWheel: true,
+      autoRaf: true,
+      anchors: false
+    });
+  }catch(_){ lenis = null; }
+}
+function destroyLenis(){
+  if(lenis){
+    try{ lenis.destroy(); }catch(_){}
+    lenis = null;
+  }
+}
+if(!reduce){
+  initLenis();
+}
+
 /* in-page anchors with keyboard focus management (GL-5) */
 d.addEventListener('click',function(e){
   if(e.defaultPrevented||e.button!==0||e.altKey||e.ctrlKey||e.metaKey||e.shiftKey)return;
@@ -171,9 +196,13 @@ d.addEventListener('click',function(e){
     t.focus({preventScroll:true});
     try{history.pushState(null,'',hash)}catch(_){}
   };
-  var targetY = t.getBoundingClientRect().top + (window.pageYOffset || r.scrollTop) + SCROLL_OFFSET;
-  window.scrollTo({ top: targetY, behavior: reduce ? 'auto' : 'smooth' });
-  focusTarget();
+  if(typeof lenis !== 'undefined' && lenis){
+    lenis.scrollTo(t, { offset: SCROLL_OFFSET, onComplete: focusTarget });
+  }else{
+    var targetY = t.getBoundingClientRect().top + (window.pageYOffset || r.scrollTop) + SCROLL_OFFSET;
+    window.scrollTo({ top: targetY, behavior: reduce ? 'auto' : 'smooth' });
+    focusTarget();
+  }
 });
 
 /* deep-link hash scroll and glow (GL-5) */
@@ -357,6 +386,7 @@ function setMotionPaused(paused){
     }catch(_){}
   });
   try{localStorage.setItem('gr-motion',paused?'paused':'running')}catch(_){}
+  try{window.dispatchEvent(new CustomEvent('site-motion-toggle',{detail:{paused:paused}}))}catch(_){}
 }
 if(animToggle)animToggle.addEventListener('click',function(){
   setMotionPaused(!r.classList.contains('is-anim-paused'));
@@ -378,6 +408,7 @@ try{
   motionMQL.addEventListener('change',function(e){
     reduce=e.matches;
     setMotionPaused(e.matches);
+    if(reduce){ destroyLenis(); }else{ initLenis(); }
   });
   if(reduce)setMotionPaused(true);
   else{
@@ -999,6 +1030,7 @@ function openDrawer(tabName){
   lastActiveElement=d.activeElement;
   pdDrawer.hidden=false;
   d.body.style.overflow='hidden';
+  if(typeof lenis !== 'undefined' && lenis) lenis.stop();
   if(mainEl)mainEl.inert=true;
   if(hdrEl)hdrEl.inert=true;
   if(ftrEl)ftrEl.inert=true;
@@ -1014,6 +1046,7 @@ function closeDrawer(){
   if(!pdDrawer)return;
   pdDrawer.hidden=true;
   d.body.style.overflow='';
+  if(typeof lenis !== 'undefined' && lenis) lenis.start();
   if(mainEl)mainEl.inert=false;
   if(hdrEl)hdrEl.inert=false;
   if(ftrEl)ftrEl.inert=false;

@@ -74,21 +74,33 @@
       }
     }
 
+    function shouldRun() {
+      return isVisible && !document.hidden && !isReduced() && !isPaused();
+    }
+
     function loop(t) {
-      if (!isVisible || document.hidden || isReduced() || isPaused()) {
-        rafId = null;
+      if (!shouldRun()) {
+        if (rafId) {
+          cancelAnimationFrame(rafId);
+          rafId = null;
+        }
         return;
       }
+      rafId = null;
       ctx.save();
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       renderFn(ctx, cssW, cssH, t, mouse, getThemeColors());
       ctx.restore();
-      rafId = requestAnimationFrame(loop);
+      if (shouldRun() && !rafId) {
+        rafId = requestAnimationFrame(loop);
+      }
     }
 
     function checkState() {
-      if (isVisible && !document.hidden && !isReduced() && !isPaused()) {
-        if (!rafId) rafId = requestAnimationFrame(loop);
+      if (shouldRun()) {
+        if (!rafId) {
+          rafId = requestAnimationFrame(loop);
+        }
       } else {
         if (rafId) {
           cancelAnimationFrame(rafId);
@@ -139,12 +151,23 @@
     var mo = new MutationObserver(checkState);
     mo.observe(document.documentElement, { attributes: true, attributeFilter: ['class', 'data-theme'] });
     document.addEventListener('visibilitychange', checkState);
+    window.addEventListener('site-motion-toggle', checkState);
+
+    var motionMQL = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (motionMQL && motionMQL.addEventListener) {
+      motionMQL.addEventListener('change', checkState);
+    }
 
     window.addEventListener('pagehide', function() {
       if (rafId) cancelAnimationFrame(rafId);
       if (ro) ro.disconnect();
       if (io) io.disconnect();
       if (mo) mo.disconnect();
+      document.removeEventListener('visibilitychange', checkState);
+      window.removeEventListener('site-motion-toggle', checkState);
+      if (motionMQL && motionMQL.removeEventListener) {
+        motionMQL.removeEventListener('change', checkState);
+      }
     });
 
     resize();

@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gautam-the-analyst"
+version = "1.0.0"
+description = "Gautam Reddy — Business Analyst Portfolio & Interactive Showcase"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+test = [
+    "playwright>=1.40.0",
+    "axe-playwright-python>=0.1.0",
+    "pytest>=7.4.0",
+    "pytest-playwright>=0.4.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests", "scratch"]
+python_files = ["test_*.py"]
+

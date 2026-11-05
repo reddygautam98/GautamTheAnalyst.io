@@ -1,0 +1,10 @@
+# GautamTheAnalyst.io - Dependencies
+# Core site compilation (docs/build.py, docs/flows.py) and local server (serve.py)
+# require only Python 3.10+ standard library modules.
+
+# Automated Testing & CI Tooling:
+playwright>=1.40.0
+axe-playwright-python>=0.1.0
+pytest>=7.4.0
+pytest-playwright>=0.4.0
+

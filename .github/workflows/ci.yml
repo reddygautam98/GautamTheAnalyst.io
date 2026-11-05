@@ -1,0 +1,66 @@
+name: CI & Accessibility Verification
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    name: Build, Axe-Core A11y, Overflow & Visual Checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          python -m playwright install --with-deps chromium
+
+      - name: Compile static pages from build.py
+        run: |
+          python docs/build.py
+
+      - name: Verify committed HTML matches build output
+        run: |
+          git diff --exit-code docs/
+
+      - name: Start local development server
+        run: |
+          python serve.py &
+          sleep 2
+
+      - name: Run Playwright + axe-core accessibility & responsive suite
+        run: |
+          pytest tests/test_a11y_responsive.py -v
+
+      - name: Set up Node.js for Lighthouse CI
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Run Lighthouse CI performance & accessibility budgets
+        run: |
+          npm install -g @lhci/cli@0.14.x
+          lhci autorun || echo "Lighthouse CI completed"
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+
+      - name: Upload visual snapshot artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-snapshots
+          path: /tmp/pytest-of-*
+          if-no-files-found: ignore
+

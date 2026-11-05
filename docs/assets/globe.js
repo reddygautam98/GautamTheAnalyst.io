@@ -2,13 +2,15 @@
  * Interactive 3D Dotted Globe (Cobe WebGL Implementation)
  * Features:
  * - Dotted 3D orthographic projection of continents & location beacons
- * - Pointer / mouse / touch drag-to-rotate with inertia damping
+ * - Pointer / mouse / touch drag-to-rotate with frame-rate independent inertia damping
  * - Scroll-wheel zoom in / out with clamping
- * - Bengaluru, India location marker (12.97° N, 77.59° E) & global remote hubs
- * - Reset view button (⟲) centering back to Bengaluru focus
- * - Dynamic Light / Dark mode theme synchronization
- * - Pauses rendering when scrolled off-screen (IntersectionObserver)
- * - Respects prefers-reduced-motion and site-wide animation toggle
+ * - Bengaluru, India location marker (12.97° N, 77.59° E) centered on load (cobe convention: phi = 3.358 rad, theta = 0.23 rad)
+ * - Reset view button centering back to Bengaluru focus
+ * - Dynamic Light / Dark mode theme token synchronization (via getComputedStyle)
+ * - Seamless dark base matching --bg (#0b0f19) to eliminate canvas boundary artifacts
+ * - Single shouldRun() gating loop for offscreen, document.hidden, prefers-reduced-motion, and site-motion-toggle
+ * - Guaranteed single rafId tracking, cancellation on pause, and resume without duplicate scheduling
+ * - WebGL context lost & restored handlers and static fallback resilience
  */
 import createGlobe from './cobe.js';
 
@@ -29,9 +31,11 @@ import createGlobe from './cobe.js';
   canvas.height = height * dpr;
 
   // Bengaluru coordinates: 12.9716° N, 77.5946° E
-  // In radians: 77.5946° ≈ 1.354 rad
-  var BENGALURU_PHI = 1.35;
-  var BENGALURU_THETA = 0.25;
+  // In cobe convention:
+  // phi = atan2(-cos(lon), -sin(lon)) = -lon_rad - pi/2 ≈ -2.925 rad or +3.358 rad
+  // theta = lat_rad ≈ 0.23 rad
+  var BENGALURU_PHI = 3.358;
+  var BENGALURU_THETA = 0.23;
 
   var phi = BENGALURU_PHI;
   var theta = BENGALURU_THETA;
@@ -46,8 +50,9 @@ import createGlobe from './cobe.js';
   var phiStart = 0;
   var thetaStart = 0;
   var isVisible = true;
-  var motionPaused = false;
   var globeInstance = null;
+  var rafId = null;
+  var lastTime = 0;
 
   // Markers: Bengaluru primary beacon + key global remote collaboration hubs
   var MARKERS = [
@@ -58,14 +63,37 @@ import createGlobe from './cobe.js';
     { location: [1.3521, 103.8198], size: 0.05 }   // Singapore / APAC
   ];
 
+  function parseRgb01(str) {
+    if (!str) return null;
+    str = str.trim();
+    if (str.indexOf('#') === 0) {
+      var hex = str.slice(1);
+      if (hex.length === 3) hex = hex.split('').map(function(c) { return c + c; }).join('');
+      if (hex.length === 6) {
+        var num = parseInt(hex, 16);
+        return [((num >> 16) & 255) / 255, ((num >> 8) & 255) / 255, (num & 255) / 255];
+      }
+    }
+    var m = str.match(/rgba?\((\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i);
+    if (m) {
+      return [parseInt(m[1], 10) / 255, parseInt(m[2], 10) / 255, parseInt(m[3], 10) / 255];
+    }
+    return null;
+  }
+
   function getThemeColors() {
     var isDark = document.documentElement.dataset.theme === 'dark';
+    var cs = window.getComputedStyle(document.documentElement);
+    var bgCol = parseRgb01(cs.getPropertyValue('--bg')) || (isDark ? [11/255, 15/255, 25/255] : [248/255, 250/255, 252/255]);
+    var accentCol = parseRgb01(cs.getPropertyValue('--accent')) || (isDark ? [59/255, 130/255, 246/255] : [37/255, 99/255, 235/255]);
+    var accent2Col = parseRgb01(cs.getPropertyValue('--accent-2')) || (isDark ? [56/255, 189/255, 248/255] : [3/255, 105/255, 161/255]);
+
     if (isDark) {
       return {
         dark: 1,
-        baseColor: [0.35, 0.45, 0.6],
-        markerColor: [0.1, 0.8, 1],
-        glowColor: [0.25, 0.45, 0.85],
+        baseColor: bgCol, // Seamless dark base matching --bg (#0b0f19)
+        markerColor: accent2Col, // Sky 400 (#38bdf8)
+        glowColor: accentCol, // Blue 500 (#3b82f6)
         mapBaseBrightness: 0.05,
         mapBrightness: 6
       };
@@ -73,7 +101,7 @@ import createGlobe from './cobe.js';
       return {
         dark: 0,
         baseColor: [0.85, 0.9, 0.96],
-        markerColor: [0.08, 0.45, 0.95],
+        markerColor: accentCol, // Blue 600 (#2563eb)
         glowColor: [0.92, 0.94, 0.98],
         mapBaseBrightness: 0.08,
         mapBrightness: 8
@@ -81,53 +109,132 @@ import createGlobe from './cobe.js';
     }
   }
 
+  function isReducedMotion() {
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }
+
+  function isAnimPaused() {
+    return document.documentElement.classList.contains('is-anim-paused');
+  }
+
+  function shouldRun() {
+    return isVisible && !document.hidden && !isReducedMotion() && !isAnimPaused();
+  }
+
+  function showFallback() {
+    var wrap = globeCard.querySelector('.globe-canvas-wrap');
+    if (wrap && !wrap.querySelector('.globe-fallback')) {
+      canvas.style.display = 'none';
+      var fb = document.createElement('div');
+      fb.className = 'globe-fallback';
+      fb.setAttribute('role', 'img');
+      fb.setAttribute('aria-label', 'Static globe map highlighting Bengaluru, India (UTC+5:30)');
+      fb.innerHTML = '<div class="globe-fallback-art"></div>';
+      wrap.appendChild(fb);
+    }
+  }
+
   function initGlobe() {
-    var colors = getThemeColors();
+    try {
+      var colors = getThemeColors();
 
-    globeInstance = createGlobe(canvas, {
-      devicePixelRatio: dpr,
-      width: canvas.width,
-      height: canvas.height,
-      phi: phi,
-      theta: theta,
-      dark: colors.dark,
-      diffuse: 1.2,
-      mapSamples: 16000,
-      mapBrightness: colors.mapBrightness,
-      mapBaseBrightness: colors.mapBaseBrightness,
-      baseColor: colors.baseColor,
-      markerColor: colors.markerColor,
-      glowColor: colors.glowColor,
-      markers: MARKERS,
-      scale: scale,
-      onRender: function(state) {
-        if (!isVisible) return;
-
-        var colors = getThemeColors();
-        state.dark = colors.dark;
-        state.baseColor = colors.baseColor;
-        state.markerColor = colors.markerColor;
-        state.glowColor = colors.glowColor;
-        state.mapBrightness = colors.mapBrightness;
-        state.mapBaseBrightness = colors.mapBaseBrightness;
-
-        // Auto-rotation when not interacting and motion is not paused
-        if (!pointerInteracting && !isMotionPaused()) {
-          targetPhi += 0.003;
+      globeInstance = createGlobe(canvas, {
+        devicePixelRatio: dpr,
+        width: canvas.width,
+        height: canvas.height,
+        phi: phi,
+        theta: theta,
+        dark: colors.dark,
+        diffuse: 1.2,
+        mapSamples: 16000,
+        mapBrightness: colors.mapBrightness,
+        mapBaseBrightness: colors.mapBaseBrightness,
+        baseColor: colors.baseColor,
+        markerColor: colors.markerColor,
+        glowColor: colors.glowColor,
+        markers: MARKERS,
+        scale: scale,
+        onRender: function(state) {
+          var c = getThemeColors();
+          state.dark = c.dark;
+          state.baseColor = c.baseColor;
+          state.markerColor = c.markerColor;
+          state.glowColor = c.glowColor;
+          state.mapBrightness = c.mapBrightness;
+          state.mapBaseBrightness = c.mapBaseBrightness;
+          state.phi = phi;
+          state.theta = theta;
+          state.scale = scale;
+          state.width = canvas.width;
+          state.height = canvas.height;
         }
+      });
 
-        // Smooth damping towards target coordinates & zoom scale
-        phi += (targetPhi - phi) * 0.08;
-        theta += (targetTheta - theta) * 0.08;
-        scale += (targetScale - scale) * 0.1;
-
-        state.phi = phi;
-        state.theta = theta;
-        state.scale = scale;
-        state.width = canvas.width;
-        state.height = canvas.height;
+      // Stop cobe internal infinite loop so globe.js controls every frame
+      if (globeInstance && typeof globeInstance.toggle === 'function') {
+        globeInstance.toggle(false);
       }
-    });
+    } catch (err) {
+      console.warn('Globe WebGL initialization failed; showing fallback.', err);
+      showFallback();
+    }
+  }
+
+  function renderFrame(dt) {
+    if (!globeInstance) return;
+
+    if (!pointerInteracting && !isReducedMotion() && !isAnimPaused()) {
+      targetPhi += 0.003;
+    }
+
+    // Frame-rate-independent damping: k ≈ 5.0 matches 0.08 damping at 60 Hz
+    var factor = 1 - Math.exp(-5.0 * dt);
+    phi += (targetPhi - phi) * factor;
+    theta += (targetTheta - theta) * factor;
+    scale += (targetScale - scale) * (1 - Math.exp(-6.5 * dt));
+
+    try {
+      globeInstance.render();
+    } catch (_) {}
+  }
+
+  function loop(timestamp) {
+    if (!shouldRun()) {
+      if (rafId) {
+        cancelAnimationFrame(rafId);
+        rafId = null;
+      }
+      return;
+    }
+    rafId = null;
+
+    var now = timestamp || performance.now();
+    var dt = lastTime ? Math.min((now - lastTime) / 1000, 0.05) : 1 / 60;
+    lastTime = now;
+
+    renderFrame(dt);
+
+    if (shouldRun() && !rafId) {
+      rafId = requestAnimationFrame(loop);
+    }
+  }
+
+  function checkState() {
+    if (shouldRun()) {
+      if (!rafId) {
+        lastTime = performance.now();
+        rafId = requestAnimationFrame(loop);
+      }
+    } else {
+      if (rafId) {
+        cancelAnimationFrame(rafId);
+        rafId = null;
+      }
+      // When paused or reduced motion, render one static frame
+      if (isVisible && globeInstance) {
+        renderFrame(1 / 60);
+      }
+    }
   }
 
   // Pointer interactions (mouse and touch drag)
@@ -137,7 +244,7 @@ import createGlobe from './cobe.js';
     pointerStartY = e.clientY;
     phiStart = targetPhi;
     thetaStart = targetTheta;
-    canvas.setPointerCapture(e.pointerId);
+    try { canvas.setPointerCapture(e.pointerId); } catch (_) {}
     globeCard.classList.add('is-dragging');
   });
 
@@ -151,14 +258,16 @@ import createGlobe from './cobe.js';
 
     // Vertical drag controls tilt (theta) clamped to reasonable bounds
     targetTheta = Math.max(-0.4, Math.min(0.6, thetaStart - deltaY * 0.004));
+
+    if (!rafId && isVisible) {
+      renderFrame(1 / 60);
+    }
   });
 
   function stopPointer(e) {
     if (pointerInteracting) {
       pointerInteracting = false;
-      try {
-        canvas.releasePointerCapture(e.pointerId);
-      } catch (err) {}
+      try { canvas.releasePointerCapture(e.pointerId); } catch (_) {}
       globeCard.classList.remove('is-dragging');
     }
   }
@@ -168,11 +277,13 @@ import createGlobe from './cobe.js';
 
   // Wheel zoom with clamping
   globeCard.addEventListener('wheel', function(e) {
-    // Only capture zoom if hovering canvas directly
     if (e.target === canvas) {
       e.preventDefault();
       var zoomDelta = e.deltaY * -0.0015;
       targetScale = Math.max(0.85, Math.min(1.35, targetScale + zoomDelta));
+      if (!rafId && isVisible) {
+        renderFrame(1 / 60);
+      }
     }
   }, { passive: false });
 
@@ -186,38 +297,56 @@ import createGlobe from './cobe.js';
       setTimeout(function() {
         resetBtn.classList.remove('is-active');
       }, 400);
+      checkState();
     });
   }
 
-  // Reduced motion preference & manual pause toggle
+  // Reduced motion preference & dynamic OS updates
   var mql = window.matchMedia('(prefers-reduced-motion: reduce)');
-  motionPaused = mql.matches;
-  mql.addEventListener('change', function(e) {
-    motionPaused = e.matches;
+  if (mql && mql.addEventListener) {
+    mql.addEventListener('change', checkState);
+  }
+
+  // Listen for global site-motion-toggle event
+  window.addEventListener('site-motion-toggle', checkState);
+  document.addEventListener('visibilitychange', checkState);
+
+  // Sync theme changes with MutationObserver on data-theme
+  var themeObserver = new MutationObserver(function() {
+    if (globeInstance) {
+      renderFrame(1 / 60);
+    }
   });
+  themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'class'] });
 
-  function isMotionPaused() {
-    return motionPaused || document.documentElement.classList.contains('is-anim-paused');
-  }
-
-  var animBtn = document.getElementById('animToggle');
-  if (animBtn) {
-    animBtn.addEventListener('click', function() {
-      motionPaused = document.documentElement.classList.contains('is-anim-paused');
-    });
-  }
+  // WebGL context lost & restored resilience
+  canvas.addEventListener('webglcontextlost', function(e) {
+    e.preventDefault();
+    if (rafId) {
+      cancelAnimationFrame(rafId);
+      rafId = null;
+    }
+  });
+  canvas.addEventListener('webglcontextrestored', function() {
+    initGlobe();
+    checkState();
+  });
 
   // IntersectionObserver: pause rendering offscreen
   if ('IntersectionObserver' in window) {
     var observer = new IntersectionObserver(function(entries) {
       entries.forEach(function(entry) {
         isVisible = entry.isIntersecting;
+        checkState();
       });
     }, { threshold: 0.05 });
     observer.observe(globeCard);
+  } else {
+    isVisible = true;
+    checkState();
   }
 
-  // Handle window resizing
+  // Window resize handler
   var resizeTimer;
   window.addEventListener('resize', function() {
     clearTimeout(resizeTimer);
@@ -228,14 +357,26 @@ import createGlobe from './cobe.js';
         canvas.width = newW * dpr;
         canvas.height = newH * dpr;
         if (typeof globeInstance.resize === 'function') {
-          try {
-            globeInstance.resize();
-          } catch (e) {}
+          try { globeInstance.resize(); } catch (_) {}
         }
+        renderFrame(1 / 60);
       }
     }, 150);
   });
 
+  window.addEventListener('pagehide', function() {
+    if (rafId) {
+      cancelAnimationFrame(rafId);
+      rafId = null;
+    }
+    if (themeObserver) themeObserver.disconnect();
+    if (observer) observer.disconnect();
+  });
+
+  // Expose rafId state checker for verification/tests
+  window._getGlobeRafId = function() { return rafId; };
+
   // Initialize
   initGlobe();
+  checkState();
 })();
