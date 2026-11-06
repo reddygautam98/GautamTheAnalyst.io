@@ -1327,6 +1327,13 @@ if(fine&&!reduce){
       wrap.style.position='relative';
       wrap.appendChild(glass);
     }
+    var hud=wrap.querySelector('.cad-hud');
+    if(!hud){
+      hud=d.createElement('div');
+      hud.className='cad-hud';
+      hud.setAttribute('aria-hidden','true');
+      wrap.appendChild(hud);
+    }
     var fullSrc=wrap.dataset.full||img.src;
     glass.style.backgroundImage='url('+fullSrc+')';
     glass.style.backgroundRepeat='no-repeat';
@@ -1344,6 +1351,9 @@ if(fine&&!reduce){
         var bgW=rRect.width*z,bgH=rRect.height*z;
         glass.style.backgroundSize=bgW+'px '+bgH+'px';
         glass.style.backgroundPosition=(-(x*z-glassW/2))+'px '+(-(y*z-glassH/2))+'px';
+        if(hud){
+          hud.textContent='CAD SPEC // X:'+Math.round(x)+' Y:'+Math.round(y)+' // 1:1';
+        }
       });
     });
   });
@@ -1359,6 +1369,16 @@ if(firstTraceRow&&!reduce){
     },1800);
   },800);
 }
+
+/* Interactive RTM Traceability Pulse and Highlighting */
+$$('.pd-table tbody tr, .trace tbody tr').forEach(function(row){
+  row.addEventListener('pointerenter', function(){
+    row.classList.add('is-active-trace', 'trace-pulse');
+  });
+  row.addEventListener('pointerleave', function(){
+    row.classList.remove('is-active-trace', 'trace-pulse');
+  });
+});
 
 /* Resume clear filter helper */
 var sfClear=$('#sfClear');
@@ -1384,5 +1404,29 @@ $$('.peek-card').forEach(function(card){
   });
 });
 
+/* Contact Form Dynamic Scoping Feedback HUD */
+var sSelect=$('#enquiry-service');
+if(sSelect){
+  var hudPill=d.createElement('div');
+  hudPill.className='scoping-hud-pill';
+  hudPill.setAttribute('aria-live','polite');
+  hudPill.hidden=true;
+  if(sSelect.parentNode)sSelect.parentNode.appendChild(hudPill);
+
+  var updateScopingHud=function(){
+    var val=sSelect.value;
+    if(!val){
+      hudPill.hidden=true;
+      return;
+    }
+    hudPill.hidden=false;
+    var cadence="2-3 weeks";
+    if(val.indexOf("Data")!==-1||val.indexOf("SQL")!==-1)cadence="1-2 weeks";
+    else if(val.indexOf("role")!==-1)cadence="Immediate / Notice period";
+    hudPill.innerHTML='<strong>Scope Focus:</strong> '+val+' &bull; <span>Cadence: '+cadence+'</span> &bull; <span>NDA Aligned</span>';
+  };
+  sSelect.addEventListener('change',updateScopingHud);
+  if(sSelect.value)updateScopingHud();
+}
 
 })();

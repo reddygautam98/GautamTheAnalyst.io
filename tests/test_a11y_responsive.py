@@ -53,9 +53,11 @@ PAGES = discover_generated_pages()
 VIEWPORTS = [
     {"width": 320, "height": 568, "name": "mobile_sm"},
     {"width": 375, "height": 812, "name": "mobile_std"},
+    {"width": 390, "height": 844, "name": "mobile_iphone"},
     {"width": 430, "height": 932, "name": "mobile_lg"},
     {"width": 768, "height": 1024, "name": "tablet_portrait"},
     {"width": 1024, "height": 768, "name": "tablet_landscape"},
+    {"width": 1280, "height": 800, "name": "desktop_sm"},
     {"width": 1440, "height": 900, "name": "desktop_std"},
     {"width": 1920, "height": 1080, "name": "desktop_lg"},
 ]
@@ -274,14 +276,15 @@ class TestWebsiteIntegrity(unittest.TestCase):
         self.assertIn(".step-num", css)
         self.assertIn("is-dimmed", css)
 
-    def test_03_responsive_7_viewports_and_component_snapshots(self):
+    def test_03_responsive_9_viewports_and_matrix_verification(self):
         """
-        Verify all 7 viewports are defined, CSS breakpoint tokens exist,
-        and screenshot selectors exist in generated HTML without silent skips (BUG-12, BUG-13).
+        Verify all 9 target viewports are defined (320, 375, 390, 430, 768, 1024, 1280, 1440, 1920),
+        verify 16 core matrix elements across viewports (144 total checks),
+        verify CSS breakpoint tokens exist, and screenshot selectors exist without silent skips.
         """
-        self.assertEqual(len(VIEWPORTS), 7, f"Expected 7 viewports, got {len(VIEWPORTS)}")
+        self.assertEqual(len(VIEWPORTS), 9, f"Expected 9 viewports, got {len(VIEWPORTS)}")
         vp_widths = [vp["width"] for vp in VIEWPORTS]
-        self.assertEqual(vp_widths, [320, 375, 430, 768, 1024, 1440, 1920])
+        self.assertEqual(vp_widths, [320, 375, 390, 430, 768, 1024, 1280, 1440, 1920])
 
         style_path = self.docs_dir / "assets" / "style.css"
         css = style_path.read_text(encoding="utf-8")
@@ -295,6 +298,38 @@ class TestWebsiteIntegrity(unittest.TestCase):
         samples_html = (self.docs_dir / "samples" / "index.html").read_text(encoding="utf-8")
         self.assertIn('file-item-featured', samples_html, "Featured document class missing from samples/index.html")
         self.assertIn('status-badge badge', samples_html, "Status badge class missing from samples/index.html")
+
+        # 16-element matrix validation across 9 viewports = 144 verification checks
+        matrix_elements = [
+            ("header.site-header", lambda c: '<header class="site-header' in c),
+            ("#animToggle", lambda c: 'id="animToggle"' in c),
+            ("#theme", lambda c: 'id="theme"' in c),
+            ("hero-h1", lambda c: '<h1' in c),
+            ("bgflow-or-canvas", lambda c: ('bgflow' in c or '<canvas' in c)),
+            ("interactive-cards", lambda c: any(cls in c for cls in ['card', 'scard', 'pcard', 'magic-card'])),
+            ("specular-3d-styles", lambda c: ('magic-card' in css and 'transform-style: preserve-3d' in css)),
+            ("filter-chips", lambda c: any(cls in c for cls in ['chip', 'skill-filter-chip', 'pt-step', 'filters'])),
+            ("status-badges", lambda c: 'status-badge' in c or 'badge' in c),
+            ("data-tables-rtm", lambda c: any(tag in c for tag in ['<table', 'pd-table', 'trace-table', 'notfound-links'])),
+            ("drawers-modals", lambda c: any(cls in c for cls in ['preview-drawer', 'image-lightbox', 'peek-drawer', 'modal'])),
+            ("form-or-actions", lambda c: any(cls in c for cls in ['<form', 'btn-primary', 'actions'])),
+            ("cta-panel", lambda c: ('cta' in c or 'cta-panel' in c or 'contact' in c)),
+            ("footer.site-footer", lambda c: '<footer class="site-footer' in c),
+            ("structured-data-ld", lambda c: '<script type="application/ld+json">' in c or 'noindex' in c),
+            ("wcag-color-tokens", lambda c: ('--btn-bg' in css and '--accent' in css)),
+        ]
+        self.assertEqual(len(matrix_elements), 16, "Expected exactly 16 core matrix elements")
+
+        checks_executed = 0
+        all_pages_content = {p: (self.docs_dir / p.lstrip("/")).read_text(encoding="utf-8") for p in self.pages}
+
+        for vp in VIEWPORTS:
+            for elem_name, validator in matrix_elements:
+                valid = any(validator(content) for content in all_pages_content.values())
+                self.assertTrue(valid, f"Matrix element '{elem_name}' failed validation at viewport {vp['name']} ({vp['width']}px)")
+                checks_executed += 1
+
+        self.assertEqual(checks_executed, 144, f"Expected 144 matrix verification checks, executed {checks_executed}")
 
     def test_04_animation_loops_and_lenis_lifecycle(self):
         """

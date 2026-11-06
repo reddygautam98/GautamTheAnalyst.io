@@ -6993,3 +6993,374 @@ body.has-card-focused-mode .site-header {
 [data-theme=dark] .wf-browser-badge, [data-theme=dark] .wf-td-code { color: var(--accent); }
 [data-theme=dark] .kwd-bdd { color: #34d399; }
 [data-theme=dark] .kwd-api { color: #38bdf8; }
+
+/* ==========================================================================
+   21. Architectural Executive Precision: UML 2.5 Sequence Diagrams & Primitives
+   ========================================================================== */
+.sd-outer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+.bgflow.sd-flow, .bgflow.sd-outer {
+  opacity: 0.14;
+}
+[data-theme=dark] .bgflow.sd-flow, [data-theme=dark] .bgflow.sd-outer {
+  opacity: 0.18;
+}
+.bgflow.sd-flow:hover, .has-flow:hover .bgflow.sd-flow {
+  opacity: 0.24;
+  transition: opacity 0.4s ease;
+}
+[data-theme=dark] .has-flow:hover .bgflow.sd-flow {
+  opacity: 0.28;
+}
+
+/* UML 2.5 Frame */
+.sd-frame-rect {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.2;
+  opacity: 0.45;
+}
+.sd-tag {
+  fill: var(--accent);
+  fill-opacity: 0.18;
+  stroke: var(--accent);
+  stroke-width: 1.2;
+}
+.sd-title {
+  fill: var(--ink);
+  font: 600 11px var(--mono);
+  letter-spacing: 0.04em;
+  opacity: 0.85;
+}
+[data-theme=dark] .sd-title {
+  fill: #f1f5f9;
+}
+
+/* Participants & Lifelines */
+.sd-actor-box {
+  fill: var(--surface);
+  stroke: var(--accent);
+  stroke-width: 1.4;
+  opacity: 0.85;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.06));
+}
+[data-theme=dark] .sd-actor-box {
+  fill: #1e293b;
+  stroke: var(--accent);
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+}
+.sd-stereo {
+  fill: var(--muted);
+  font: 500 8.5px var(--mono);
+  letter-spacing: 0.05em;
+  opacity: 0.8;
+}
+.sd-actor-lbl {
+  fill: var(--ink);
+  font: 600 10.5px var(--mono);
+  letter-spacing: 0.02em;
+}
+[data-theme=dark] .sd-actor-lbl {
+  fill: #f8fafc;
+}
+.sd-lifeline {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.2;
+  stroke-dasharray: 4 4;
+  opacity: 0.4;
+}
+.sd-term {
+  stroke: currentColor;
+  stroke-width: 1.6;
+  opacity: 0.5;
+}
+
+/* Activation Blocks */
+.sd-act {
+  fill: var(--accent);
+  fill-opacity: 0.16;
+  stroke: var(--accent);
+  stroke-width: 1.2;
+  opacity: 0.9;
+}
+.sd-act.act-alt {
+  fill: #10b981;
+  fill-opacity: 0.16;
+  stroke: #10b981;
+}
+.sd-act.act-err {
+  fill: #ef4444;
+  fill-opacity: 0.16;
+  stroke: #ef4444;
+}
+
+/* Messages & Returns */
+.sd-msg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.3;
+  opacity: 0.75;
+}
+.sd-msg.dash, .sd-msg.return {
+  stroke-dasharray: 4 4;
+  stroke-width: 1.1;
+  opacity: 0.65;
+}
+.sd-msg.async {
+  stroke-dasharray: 6 3;
+}
+.sd-msg.err {
+  stroke: #ef4444;
+  opacity: 0.85;
+}
+.sd-msg-lbl, .sd-self-lbl {
+  fill: var(--ink);
+  font: 500 9.5px var(--mono);
+  opacity: 0.85;
+}
+[data-theme=dark] .sd-msg-lbl, [data-theme=dark] .sd-self-lbl {
+  fill: #e2e8f0;
+}
+.sd-self-msg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.2;
+  opacity: 0.75;
+}
+
+/* Combined Interaction Fragments (alt / opt / loop / par) */
+.sd-frag-rect {
+  fill: var(--surface);
+  fill-opacity: 0.35;
+  stroke: currentColor;
+  stroke-width: 1.2;
+  opacity: 0.45;
+}
+.sd-frag-op-tag {
+  fill: var(--accent);
+  fill-opacity: 0.22;
+  stroke: var(--accent);
+  stroke-width: 1.1;
+}
+.sd-frag-op-lbl {
+  fill: var(--ink);
+  font: 700 9px var(--mono);
+  letter-spacing: 0.05em;
+  opacity: 0.9;
+}
+[data-theme=dark] .sd-frag-op-lbl {
+  fill: #f8fafc;
+}
+.sd-frag-guard {
+  fill: var(--accent);
+  font: italic 500 9px var(--mono);
+  opacity: 0.85;
+}
+.sd-frag-div {
+  stroke: currentColor;
+  stroke-width: 1;
+  stroke-dasharray: 5 4;
+  opacity: 0.4;
+}
+
+/* Annotations & Notes */
+.sd-note {
+  fill: var(--surface);
+  fill-opacity: 0.85;
+  stroke: #f59e0b;
+  stroke-width: 1.1;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.06));
+}
+[data-theme=dark] .sd-note {
+  fill: #1e293b;
+  stroke: #f59e0b;
+}
+.sd-note-fold {
+  fill: #f59e0b;
+  fill-opacity: 0.25;
+  stroke: #f59e0b;
+  stroke-width: 1;
+}
+.sd-note-lbl {
+  fill: var(--ink);
+  font: 500 8.5px var(--mono);
+  opacity: 0.9;
+}
+[data-theme=dark] .sd-note-lbl {
+  fill: #f1f5f9;
+}
+
+/* ==========================================================================
+   22. 3-Tier Glassmorphic Elevation & Multi-Stop Specular Card Borders
+   ========================================================================== */
+.magic-card, .scard, .pcard, .step-card, .peek-card, .file-item-featured, .what-card, .principle-card, .about-console, .form-card, .resume-side-card {
+  box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.06), inset 0 1px 0 0 rgba(255, 255, 255, 0.75);
+}
+[data-theme=dark] .magic-card,
+[data-theme=dark] .scard,
+[data-theme=dark] .pcard,
+[data-theme=dark] .step-card,
+[data-theme=dark] .peek-card,
+[data-theme=dark] .file-item-featured,
+[data-theme=dark] .what-card,
+[data-theme=dark] .principle-card,
+[data-theme=dark] .about-console,
+[data-theme=dark] .form-card,
+[data-theme=dark] .resume-side-card {
+  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.45), inset 0 1px 0 0 rgba(148, 163, 184, 0.16);
+}
+
+/* Layer 3: Floating HUD Panels & Drawers */
+.us-story-card, .schema-preview, .wf-browser, .peek-drawer, .rule-inspector-callout, .preview-drawer-content {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(226, 232, 240, 0.85);
+}
+[data-theme=dark] .us-story-card,
+[data-theme=dark] .schema-preview,
+[data-theme=dark] .wf-browser,
+[data-theme=dark] .peek-drawer,
+[data-theme=dark] .rule-inspector-callout,
+[data-theme=dark] .preview-drawer-content {
+  background: rgba(15, 23, 42, 0.88);
+  border: 1px solid rgba(51, 65, 85, 0.85);
+}
+
+/* Z-Depth Layering for Preserved 3D Context */
+.magic-card, .scard, .pcard, .file-item, .what-card, .about-console, .peek-card, .step-card {
+  transform-style: preserve-3d;
+}
+.magic-card .scard-head, .magic-card .pcard-title-row, .what-card .what-head {
+  transform: translateZ(14px);
+}
+.magic-card .scard-cat-badge, .magic-card .cat, .peek-card .peek-badge {
+  transform: translateZ(22px);
+}
+.magic-card .actions, .scard .actions, .pcard .links {
+  transform: translateZ(16px);
+}
+.about-console {
+  transform-style: preserve-3d;
+}
+.about-console .console-head {
+  transform: translateZ(12px);
+}
+.about-console .console-info {
+  transform: translateZ(18px);
+}
+.about-console .console-hero-row {
+  transform: translateZ(24px);
+}
+
+/* Resting 3D Perspective Tilt on #heroSlider */
+#heroSlider {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  transform: perspective(1000px) rotateX(2deg) rotateY(-3deg);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+}
+#heroSlider:hover {
+  transform: perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(-4px);
+}
+@media (prefers-reduced-motion: reduce) {
+  #heroSlider {
+    transform: none !important;
+  }
+}
+
+/* Fanned Document Deck Interactive 3D Rotation */
+@media (hover: hover) and (pointer: fine) and (min-width: 768px) {
+  .bundle-fan {
+    perspective: 1000px;
+  }
+  .fan-doc {
+    transform-style: preserve-3d;
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s, border-color 0.25s, background-color 0.25s;
+  }
+  .fan-doc:nth-child(1) { transform: rotate(-2.5deg) translateY(2px); }
+  .fan-doc:nth-child(2) { transform: rotate(-1deg) translateY(0px); }
+  .fan-doc:nth-child(3) { transform: rotate(0deg) translateY(-2px); }
+  .fan-doc:nth-child(4) { transform: rotate(1deg) translateY(0px); }
+  .fan-doc:nth-child(5) { transform: rotate(2.5deg) translateY(2px); }
+  .bundle-fan:hover .fan-doc:nth-child(1) { transform: rotate(-4deg) translateY(4px); }
+  .bundle-fan:hover .fan-doc:nth-child(2) { transform: rotate(-1.5deg) translateY(1px); }
+  .bundle-fan:hover .fan-doc:nth-child(3) { transform: rotate(0deg) translateY(-4px); }
+  .bundle-fan:hover .fan-doc:nth-child(4) { transform: rotate(1.5deg) translateY(1px); }
+  .bundle-fan:hover .fan-doc:nth-child(5) { transform: rotate(4deg) translateY(4px); }
+  .fan-doc:hover {
+    transform: perspective(600px) translateZ(22px) translateY(-8px) scale(1.06) rotate(0deg) !important;
+    z-index: 5;
+    box-shadow: 0 16px 32px -6px rgba(15, 23, 42, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+    border-color: var(--accent) !important;
+  }
+}
+
+/* CAD Coordinates HUD Overlay */
+.cad-hud {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  background: rgba(15, 23, 42, 0.78);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #38bdf8;
+  font: 600 9.5px var(--mono);
+  padding: 3px 8px;
+  border-radius: 4px;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  z-index: 4;
+}
+.feat-img:hover .cad-hud, .has-lens:hover .cad-hud {
+  opacity: 1;
+}
+
+/* Traceability Pulse Animation */
+@keyframes tracePulseGlow {
+  0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+  50% { box-shadow: 0 0 0 6px rgba(59, 130, 246, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+}
+.trace-pulse {
+  animation: tracePulseGlow 1.8s infinite ease-in-out;
+}
+.pd-table tbody tr:hover, .pd-table tbody tr.is-active-trace {
+  background: #f1f5f9;
+  background: color-mix(in srgb, var(--accent) 12%, var(--surface));
+  outline: 1.5px solid var(--accent);
+  outline-offset: -1px;
+}
+[data-theme=dark] .pd-table tbody tr:hover, [data-theme=dark] .pd-table tbody tr.is-active-trace {
+  background: #1e293b;
+  background: color-mix(in srgb, var(--accent) 18%, var(--surface));
+}
+
+/* Scoping HUD pill in contact form */
+.scoping-hud-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  margin-top: 8px;
+  border-radius: 6px;
+  font: 500 11px var(--mono);
+  background: #eff6ff;
+  background: color-mix(in srgb, var(--accent) 10%, var(--surface));
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  animation: fadeIn 0.3s ease;
+}
+[data-theme=dark] .scoping-hud-pill {
+  background: #1e293b;
+  background: color-mix(in srgb, var(--accent) 16%, var(--surface));
+}
