@@ -8,7 +8,10 @@ def asset_hash(rel_path):
     p = os.path.join(os.path.dirname(os.path.abspath(__file__)), rel_path)
     if os.path.exists(p):
         with open(p, "rb") as f:
-            return hashlib.sha256(f.read()).hexdigest()[:8]
+            data = f.read()
+            if rel_path.endswith((".css", ".js", ".svg", ".html", ".mmd", ".csv", ".sql")):
+                data = data.replace(b"\r\n", b"\n")
+            return hashlib.sha256(data).hexdigest()[:8]
     return "1"
 
 from collections import Counter
@@ -338,7 +341,7 @@ def pcard(c, i=0, base=0.0):
 <div class="pcard-meta-row"><span class="pcard-meta-label">Tools:</span><span>{tls}</span></div>
 <div class="pcard-meta-row"><span class="pcard-meta-label">Outcome:</span><span>{outc}</span></div>
 </div>'''
-    return f'''<article class="card pcard magic-card {rv(i, base)}" data-cat="{k}"><div class="thumb browser-frame"><div class="bf-bar" aria-hidden="true"><span class="bf-dot red"></span><span class="bf-dot yellow"></span><span class="bf-dot green"></span><span class="bf-url">{repo}</span></div><div class="bf-viewport"><span class="ph">{F.mini("m" + str(next(_n)))}<em>{html.escape(t)}</em></span>{img}</div></div><div class="pbody"><span class="project-transparency-badge">Repository Sample</span><span class="cat">{cat}</span><h3>{t}</h3><p>{d}</p>{meta_html}{tags(tg)}<a class="more" href="{u}" target="_blank" rel="noopener noreferrer" aria-label="{lbl}">{txt} <span class="sr-only">(opens in new tab)</span>&#8599;</a></div></article>'''
+    return f'''<article class="card pcard magic-card {rv(i, base)}" data-cat="{k}"><div class="thumb browser-frame"><div class="bf-bar" aria-hidden="true"><span class="bf-dot red"></span><span class="bf-dot yellow"></span><span class="bf-dot green"></span><span class="bf-url">{repo}</span></div><div class="bf-viewport"><span class="ph">{F.mini("m" + str(next(_n)))}<em>{esc(t)}</em></span>{img}</div></div><div class="pbody"><span class="project-transparency-badge">Repository Sample</span><span class="cat">{esc(cat)}</span><h3>{esc(t)}</h3><p>{d}</p>{meta_html}{tags(tg)}<a class="more" href="{u}" target="_blank" rel="noopener noreferrer" aria-label="{lbl}">{txt} <span class="sr-only">(opens in new tab)</span>&#8599;</a></div></article>'''
 
 TRACE = [
     ("BR-01", "Single operational view", ["FR-002", "FR-004"], ["US-01", "US-03"], ["TC-001", "TC-002"]),
@@ -1255,7 +1258,7 @@ def resume():
 
 # ---------------------------------------------------------------- contact
 def contact():
-    opts = lambda l: "".join(f"<option>{o}</option>" for o in l)
+    opts = lambda l: "".join(f"<option>{esc(o)}</option>" for o in l)
     return head("Contact", "Contact a Business Analyst: tell me what you&rsquo;re trying to solve.", "For a full-time, hybrid or remote role, reach out directly. For systems analysis or technical specifications, describe the problem and the outcome.", F.seq("ct")) + f'''
 <section class="sec sec--first" data-bg-anim="radar"><div class="wrap contact-two-col">
 <div class="rv contact-rail">
@@ -1597,7 +1600,7 @@ pages = [
 ("samples/index.html", "BA Sample Documents: BRD, FRD, Stories & RTM | Gautam Reddy", "Business Analyst case study artifacts: BRD, FRD, NFRs, user stories, STTM, RTM, UAT plan, BPMN and UML diagrams, SQL queries and CSV templates.", samples(), "../", "samples/index.html", LD_SAMPLES),
 ]
 for path, t, d, b, p, cur, ld in pages:
-    open(path, "w", encoding="utf-8").write(page(path, t, d, b, p, cur, ld))
+    open(path, "w", encoding="utf-8", newline="\n").write(page(path, t, d, b, p, cur, ld))
 
 NOT_FOUND = '''<section class="sec notfound-sec"><div class="ascii-wave notfound-wave" data-ascii-wave data-speed="0.8" aria-hidden="true"><canvas aria-hidden="true"></canvas></div><div class="wrap notfound-wrap">
 <div class="notfound-badge">404 &bull; MISSING REQUIREMENT</div>
@@ -1626,11 +1629,11 @@ NOT_FOUND = '''<section class="sec notfound-sec"><div class="ascii-wave notfound
   </ul>
 </div>
 </div></section>'''
-open("404.html", "w", encoding="utf-8").write(page("404.html", "Page not found | Gautam Reddy, Business Analyst", "This page could not be found.", NOT_FOUND, "", "", "", "noindex, follow"))
+open("404.html", "w", encoding="utf-8", newline="\n").write(page("404.html", "Page not found | Gautam Reddy, Business Analyst", "This page could not be found.", NOT_FOUND, "", "", "", "noindex, follow"))
 
 import datetime
 today = datetime.date.today().isoformat()
 urls = [SITE if p_ == "index.html" else SITE + p_ for p_, *_ in pages]
-open("sitemap.xml", "w", encoding="utf-8").write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "".join(f"  <url><loc>{u}</loc><lastmod>{today}</lastmod></url>\n" for u in urls) + "</urlset>\n")
-open("robots.txt", "w", encoding="utf-8").write(f"User-agent: *\nAllow: /\n\nSitemap: {SITE}sitemap.xml\n")
+open("sitemap.xml", "w", encoding="utf-8", newline="\n").write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "".join(f"  <url><loc>{u}</loc><lastmod>{today}</lastmod></url>\n" for u in urls) + "</urlset>\n")
+open("robots.txt", "w", encoding="utf-8", newline="\n").write(f"User-agent: *\nAllow: /\n\nSitemap: {SITE}sitemap.xml\n")
 print("built", len(pages) + 1)
