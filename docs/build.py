@@ -34,7 +34,7 @@ class Markup(str):
     pass
 
 def esc(s):
-    return s if isinstance(s, Markup) else html.escape(str(s), quote=True)
+    return s if isinstance(s, Markup) else html.escape(html.unescape(str(s)), quote=True)
 
 NAV = [("projects.html", "Projects"), ("samples/index.html", "BA samples"), ("services.html", "Services"), ("about.html", "About"), ("contact.html", "Contact")]
 
@@ -199,7 +199,7 @@ def page(path, title, desc, body, p="", cur="", ld="", robots="index, follow, ma
 <meta name="theme-color" content="#0b0f19" media="(prefers-color-scheme: dark)">
 {url_tags}<link rel="icon" href="{p}assets/mark.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="{p}assets/apple-touch-icon.png">
-<script>document.documentElement.classList.add("js");try{{var t=localStorage.getItem("gr-theme")||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.dataset.theme=t}}catch(e){{}}setTimeout(function(){{document.documentElement.classList.add("rv-fallback")}},1200);</script>
+<script>document.documentElement.classList.add("js");try{{var t=localStorage.getItem("gr-theme")||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.dataset.theme=t}}catch(e){{}}try{{var m=localStorage.getItem("gr-motion")||(matchMedia("(prefers-reduced-motion: reduce)").matches?"paused":"running");if(m==="paused")document.documentElement.classList.add("is-anim-paused")}}catch(e){{}}setTimeout(function(){{document.documentElement.classList.add("rv-fallback")}},1200);</script>
 <noscript><style>.rv{{opacity:1!important;transform:none!important}}</style></noscript>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="{FONTS}">
@@ -213,6 +213,7 @@ def page(path, title, desc, body, p="", cur="", ld="", robots="index, follow, ma
 <a class="brand" href="{home}"><img src="{p}assets/mark.svg" alt="" aria-hidden="true" width="30" height="30">Gautam Reddy</a>
 <nav class="nav" id="nav" aria-label="Main">{nav}<a href="{p}resume.html" class="nav-resume-btn"{res_cur}>Resume</a></nav>
 <div class="tools">
+<button class="icon-btn" id="animToggle" type="button" aria-label="Pause motion" aria-pressed="false" title="Pause motion"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg></button>
 <button class="icon-btn" id="theme" type="button" aria-label="Toggle dark theme" aria-pressed="false" title="Toggle dark theme"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="#1e1b4b" fill-opacity="0.25"/><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="#3b82f6"/><circle cx="18" cy="6" r="1.5" fill="#fbbf24"/><circle cx="8" cy="7" r="1" fill="#fde047"/><circle cx="15" cy="17" r="1" fill="#a78bfa"/></svg></button>
 <button class="icon-btn menu-btn" id="menu" type="button" aria-expanded="false" aria-controls="nav" aria-label="Open navigation menu">{MENU_ICO}</button>
 </div></div></header><div class="nav-backdrop" id="navBackdrop" aria-hidden="true"></div>
@@ -289,7 +290,7 @@ PROJECTS = [
  ("bi", "BI Dashboard Prototype", "GameZone Business Intelligence", "A business-intelligence dashboard for exploring player retention, user lifecycle and monetization metrics.", ["BI"], GH + "gamezone-business-intelligence"),
  ("data", "Data Pipeline Project", "MetaLayer", "A staged data-engineering workflow organised around structured ingestion, transformation and validation layers.", ["Pipelines"], GH + "MetaLayer"),
  ("ai", "Experimental AI Prototype", "ClinChat-style RAG App", "An experimental retrieval-augmented generation prototype with chunk reference retrieval. Not a clinical product.", ["RAG", "Prototype"], GH + "ClinChat-style-RAG-app"),
- ("writing", "Writing &amp; BA Notes", "Daily Posts &amp; Notes", "Knowledge-sharing notes, analysis patterns and reusable documentation templates.", ["Notes"], GH + "daily_post/blob/main/read.md"),
+ ("writing", "Writing & BA Notes", "Daily Posts & Notes", "Knowledge-sharing notes, analysis patterns and reusable documentation templates.", ["Notes"], GH + "daily_post/blob/main/read.md"),
 ]
 
 PROJECT_META = {
@@ -936,7 +937,7 @@ SERV = [
      "Requirements Scoping",
      "Turn fragmented requests into an agreed problem statement, requirements and an actionable backlog.",
      "Engineering is stalled on contradictory stakeholder requests or legacy system gaps.",
-     ["BRD / FRD", "Non-Functional Requirements (NFRs)", "User stories &amp; BDD", "Process maps (BPMN / UML)", "Traceability (RTM)"]),
+     ["BRD / FRD", "Non-Functional Requirements (NFRs)", "User stories & BDD", "Process maps (BPMN / UML)", "Traceability (RTM)"]),
     ("Data analysis and BI reporting",
      "Data Intelligence",
      "Translate operational data and reporting needs into clear Power BI requirements and findings that support decisions.",
@@ -946,19 +947,19 @@ SERV = [
      "Data Quality",
      "Investigate recurring SLA and error patterns with SQL analysis and root cause analysis, and document the findings.",
      "Recurring reconciliation mismatches or SLA drops are costing team hours each week.",
-     ["Data quality profiling", "Root cause analysis (fishbone / 5-Why)", "Business rules &amp; data dictionaries", "Confluence &amp; Excel documentation", "Findings and recommendations"]),
+     ["Data quality profiling", "Root cause analysis (fishbone / 5-Why)", "Business rules & data dictionaries", "Confluence & Excel documentation", "Findings and recommendations"]),
     ("API and integration analysis",
      "System Integration",
      "Make integration expectations explicit for business, engineering and QA teams before implementation and testing.",
      "Connecting external payment gateways, ERPs, or internal microservices without unexpected edge cases.",
      ["REST API requirements", "Source-to-Target Mapping (STTM)", "JSON payload schemas", "API contract review", "UML system flows"]),
     ("UAT, testing and release support",
-     "Testing &amp; Verification",
+     "Testing & Verification",
      "Help teams check that a solution meets the agreed requirement and make defects, risks and decisions visible.",
      "Pre-release testing lacks traceability or business users need guidance validating acceptance criteria.",
      ["UAT coordination", "Agile / Scrum delivery", "Functional, regression and integration test cases", "RTM", "JIRA defect triage"]),
-    ("Custom BA scope &amp; advisory",
-     "Advisory &amp; Discovery",
+    ("Custom BA scope & advisory",
+     "Advisory & Discovery",
      "Tailored requirements elicitation, workflow audit, or backlog definition when your team's needs span multiple domains.",
      "You have an ambiguous problem, rapid pilot release, or need cross-functional discovery before committing to sprint delivery.",
      ["Discovery workshop MoM", "Scope definition", "Backlog refinement", "Process gap audit", "Custom deliverables"])
@@ -967,7 +968,7 @@ SERV = [
 DELIV_LINKS = {
     "BRD / FRD": "samples/index.html#brd",
     "Non-Functional Requirements (NFRs)": "samples/index.html#frd",
-    "User stories &amp; BDD": "samples/index.html#user-stories",
+    "User stories & BDD": "samples/index.html#user-stories",
     "Process maps (BPMN / UML)": "samples/index.html#process-flow",
     "Traceability (RTM)": "samples/index.html#rtm",
     "SQL data profiling": "samples/index.html#sql",
@@ -996,13 +997,13 @@ def services():
         def make_deliv_li(x):
             link = DELIV_LINKS.get(x)
             if link:
-                return f'<li><a class="deliv-link" href="{link}">{x} &rarr;</a></li>'
-            return f'<li>{x}</li>'
+                return f'<li><a class="deliv-link" href="{link}">{esc(x)} &rarr;</a></li>'
+            return f'<li>{esc(x)}</li>'
         cards += f'''<div class="card scard magic-card rv" style="--d:{(i % 3) * 0.07:.2f}s;--cat-c:{c}">
 <div class="scard-top-bar" aria-hidden="true"></div>
 <div class="scard-head">
-<span class="scard-cat-badge">{cat_name}</span>
-<h3>{t}</h3>
+<span class="scard-cat-badge">{esc(cat_name)}</span>
+<h3>{esc(t)}</h3>
 </div>
 <p class="scard-ideal"><strong>Ideal when:</strong> {ideal}</p>
 <p class="scard-outcome"><strong>Outcome:</strong> {d}</p>
@@ -1321,7 +1322,7 @@ def contact():
       <div class="form-group"><label for="enquiry-email">Email <span class="req" aria-hidden="true">*</span></label><input id="enquiry-email" name="email" type="email" autocomplete="email" inputmode="email" required aria-describedby="err-email"><span class="err" id="err-email"></span></div>
     </div>
     <div class="form-group"><label for="enquiry-company">Company <span class="opt">(optional)</span></label><input id="enquiry-company" name="company" autocomplete="organization"></div>
-    <div class="form-group"><label for="enquiry-service">What do you need help with? <span class="req" aria-hidden="true">*</span></label><select id="enquiry-service" name="service" required aria-describedby="err-service"><option value="" disabled selected>Select a service...</option>{opts(["Business analysis and requirements", "Data analysis and BI reporting", "SQL, data quality and reporting", "API and integration analysis", "UAT, testing and release support", "Custom BA scope &amp; advisory", "A role at my company", "Not sure yet"])}</select><span class="err" id="err-service"></span></div>
+    <div class="form-group"><label for="enquiry-service">What do you need help with? <span class="req" aria-hidden="true">*</span></label><select id="enquiry-service" name="service" required aria-describedby="err-service"><option value="" disabled selected>Select a service...</option>{opts(["Business analysis and requirements", "Data analysis and BI reporting", "SQL, data quality and reporting", "API and integration analysis", "UAT, testing and release support", "Custom BA scope & advisory", "A role at my company", "Not sure yet"])}</select><span class="err" id="err-service"></span></div>
     <div class="row2">
       <div class="form-group"><label for="enquiry-type">Engagement type</label><select id="enquiry-type" name="type"><option value="" disabled selected>Select engagement type...</option>{opts(["Full-time role", "Discovery or review", "Defined deliverable", "Ongoing support", "Prototype or feasibility", "Not sure yet"])}</select></div>
       <div class="form-group"><label for="enquiry-timeline">Target timeline</label><select id="enquiry-timeline" name="timeline"><option value="" disabled selected>Select timeline...</option>{opts(["Flexible", "As soon as practical", "Within 2 to 4 weeks", "Within 1 to 3 months", "Specific deadline"])}</select></div>
@@ -1433,10 +1434,13 @@ def sitem(t, d, links, item_id="", ico="", featured=False, status="", phase="all
     elif status in ["Not Run"]:
         status_cls = "notrun"
         display_status = "Not Run (Mock)"
+    elif status in ["Sample"]:
+        status_cls = "draft"
+        display_status = "Sample Reference"
     else:
         status_cls = "draft"
         display_status = "Draft / Sample"
-    status_badge = f'<span class="status-badge {status_cls}">{display_status}</span>' if status else ''
+    status_badge = f'<span class="status-badge badge {status_cls}">{display_status}</span>' if status else ''
     return f'''<li class="rv file-item{feat_cls}"{id_attr} data-phase="{phase}">
   <div class="file-item-main">
     {ico_box}
@@ -1481,11 +1485,11 @@ def samples():
 
     legend = '''<div class="status-legend-bar" aria-label="Document status legend">
   <span class="legend-title">Status Legend (Illustrative):</span>
-  <span class="status-badge approved">Approved (Sample)</span>
-  <span class="status-badge review">In Review (Sample)</span>
-  <span class="status-badge sprint">Sprint Ready (Sample)</span>
-  <span class="status-badge draft">Draft / Sample</span>
-  <span class="status-badge notrun">Not Run (Mock)</span>
+  <span class="status-badge badge approved">Approved (Sample)</span>
+  <span class="status-badge badge review">In Review (Sample)</span>
+  <span class="status-badge badge sprint">Sprint Ready (Sample)</span>
+  <span class="status-badge badge draft">Draft / Sample</span>
+  <span class="status-badge badge notrun">Not Run (Mock)</span>
 </div>'''
 
     view_toggle = '''<div class="samples-view-bar">
@@ -1586,16 +1590,16 @@ LD_SAMPLES = ldscript({"@type": "CollectionPage", "url": SITE + "samples/index.h
 pages = [
 ("index.html", "Gautam Reddy | Business Analyst: Requirements, APIs, SQL, UAT", DESC, index(), "", "", LD_HOME),
 ("about.html", "About Gautam Reddy | Business Analyst", "About Gautam Reddy, a Bengaluru Business Analyst with 4+ years of experience in requirements engineering, NFRs, REST APIs, STTM, SQL analysis and UAT.", about(), "", "about.html", LD_ABOUT),
-("services.html", "BA Services: BRD, APIs, SQL &amp; UAT | Gautam Reddy", "Business analysis services: BRD/FRD, NFRs, SQL and Python data analysis, STTM, Power BI dashboards, REST API specs and Agile UAT coordination.", services(), "", "services.html", LD_SERVICES),
-("projects.html", "BA Projects: SQL, Power BI &amp; Case Studies | Gautam Reddy", "Portfolio projects by Business Analyst Gautam Reddy: SQL and Power BI analytics, data pipelines, RAG prototypes, and the PayTrack case study.", projects(), "", "projects.html", LD_PROJECTS),
+("services.html", "BA Services: BRD, APIs, SQL & UAT | Gautam Reddy", "Business analysis services: BRD/FRD, NFRs, SQL and Python data analysis, STTM, Power BI dashboards, REST API specs and Agile UAT coordination.", services(), "", "services.html", LD_SERVICES),
+("projects.html", "BA Projects: SQL, Power BI & Case Studies | Gautam Reddy", "Portfolio projects by Business Analyst Gautam Reddy: SQL and Power BI analytics, data pipelines, RAG prototypes, and the PayTrack case study.", projects(), "", "projects.html", LD_PROJECTS),
 ("resume.html", "Resume | Gautam Reddy, Business Analyst", "Resume of Gautam Reddy, Business Analyst with 4+ years of experience: 2 payment gateway integrations, STTM, NFRs, 100,000+ transactions analysed, 350+ UAT test scenarios.", resume(), "", "resume.html", LD_RESUME),
 ("contact.html", "Contact Gautam Reddy | Hire a Business Analyst, Bengaluru", "Contact Gautam Reddy, a Business Analyst in Bengaluru, about full-time, hybrid or remote roles, or requirements, systems integration, and reporting projects.", contact(), "", "contact.html", LD_CONTACT),
-("samples/index.html", "BA Sample Documents: BRD, FRD, Stories &amp; RTM | Gautam Reddy", "Business Analyst case study artifacts: BRD, FRD, NFRs, user stories, STTM, RTM, UAT plan, BPMN and UML diagrams, SQL queries and CSV templates.", samples(), "../", "samples/index.html", LD_SAMPLES),
+("samples/index.html", "BA Sample Documents: BRD, FRD, Stories & RTM | Gautam Reddy", "Business Analyst case study artifacts: BRD, FRD, NFRs, user stories, STTM, RTM, UAT plan, BPMN and UML diagrams, SQL queries and CSV templates.", samples(), "../", "samples/index.html", LD_SAMPLES),
 ]
 for path, t, d, b, p, cur, ld in pages:
     open(path, "w", encoding="utf-8").write(page(path, t, d, b, p, cur, ld))
 
-NOT_FOUND = '''<section class="sec notfound-sec"><div class="ascii-wave notfound-wave" data-ascii-wave data-speed="0.8" aria-hidden="true"><canvas></canvas></div><div class="wrap notfound-wrap">
+NOT_FOUND = '''<section class="sec notfound-sec"><div class="ascii-wave notfound-wave" data-ascii-wave data-speed="0.8" aria-hidden="true"><canvas aria-hidden="true"></canvas></div><div class="wrap notfound-wrap">
 <div class="notfound-badge">404 &bull; MISSING REQUIREMENT</div>
 <h1>Path not found in specification</h1>
 <p class="lead" style="margin-top:16px">Page not found. The requested URL does not match any route or documented artifact in this portfolio.</p>

@@ -12,6 +12,7 @@ PUBLISHED PAGES & ASSETS
 - `docs/resume.html` — professional experience, skills, education, and certifications.
 - `docs/contact.html` — direct contact details and project enquiry form.
 - `docs/samples/index.html` — BA sample artifacts gallery (PayTrack case study, documents, diagrams, CSV specs).
+- `docs/404.html` — custom 404 error page with interactive ASCII wave canvas.
 - `docs/assets/style.css` — responsive visual system, light/dark themes, and diagram styling.
 - `docs/assets/site.js` — persisted theme, mobile navigation, project filters, smooth scroll, and form handler.
 - `docs/assets/vendor/lenis.min.js` — bundled smooth-scrolling library.
@@ -23,8 +24,8 @@ CONTACT FORM
 The static enquiry form prepares an email draft addressed to `gautamreddy098@gmail.com`. It does not store enquiries or auto-send; the visitor reviews and sends the draft via their email client.
 
 BUILDING & LOCAL DEVELOPMENT
-- Rebuild all pages: from `docs/`, run `python build.py`
-- Local preview: run `npx live-server docs` or `python -m http.server 8080 --directory docs`
+- Rebuild all 8 pages: run `python docs/build.py` (or `python3 docs/build.py` / `py -3 docs/build.py`)
+- Local preview: run `python -m http.server 8080 --directory docs` (or `npx live-server docs`)
 
 DEPLOYMENT
 GitHub Pages source is configured to publish from `main /docs`. The `docs/.nojekyll` marker is included to ensure static publishing directly without Jekyll conversion.

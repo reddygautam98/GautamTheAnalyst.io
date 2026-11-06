@@ -122,7 +122,7 @@
         mouse.y = e.clientY - r.top;
         mouse.active = true;
         if (mouseMoveFn) mouseMoveFn(mouse, cssW, cssH);
-        if (!rafId && isVisible && !isReduced() && !isPaused()) {
+        if (!rafId && shouldRun()) {
           rafId = requestAnimationFrame(loop);
         }
       }, { passive: true });

@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "gautam-the-analyst"
 version = "1.0.0"
 description = "Gautam Reddy — Business Analyst Portfolio & Interactive Showcase"
-readme = "README.md"
+readme = "README.txt"
 requires-python = ">=3.10"
 dependencies = []
 
@@ -19,6 +19,6 @@ test = [
 ]
 
 [tool.pytest.ini_options]
-testpaths = ["tests", "scratch"]
+testpaths = ["tests"]
 python_files = ["test_*.py"]
 

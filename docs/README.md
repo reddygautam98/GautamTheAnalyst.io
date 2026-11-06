@@ -19,5 +19,5 @@ Static site. No external runtime frameworks, no build step needed to deploy.
 - **Performance & Asset Footprint**: SVG SMIL animations paused offscreen; SMIL dots eliminated from project mini thumbnails; isolated drawer markup.
 
 ## Editing
-`python build.py` regenerates all 7 HTML pages from `build.py` (copy, links, keywords) and `flows.py` (diagrams).
+`python docs/build.py` (or `python3 docs/build.py` / `py -3 docs/build.py`) regenerates all 8 HTML pages from `build.py` (copy, links, keywords) and `flows.py` (diagrams).
 The keyword lists are `MARQ_ITEMS` and `ROLES_ROT` at the top of `build.py`. `build.py` also writes `sitemap.xml`, `robots.txt` and `404.html`; page titles, descriptions and JSON-LD are set at the bottom of the file.

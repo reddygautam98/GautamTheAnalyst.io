@@ -88,6 +88,9 @@ import createGlobe from './cobe.js';
     var accentCol = parseRgb01(cs.getPropertyValue('--accent')) || (isDark ? [59/255, 130/255, 246/255] : [37/255, 99/255, 235/255]);
     var accent2Col = parseRgb01(cs.getPropertyValue('--accent-2')) || (isDark ? [56/255, 189/255, 248/255] : [3/255, 105/255, 161/255]);
 
+    var softCol = parseRgb01(cs.getPropertyValue('--soft')) || (isDark ? [22/255, 32/255, 54/255] : [241/255, 245/255, 249/255]);
+    var lineCol = parseRgb01(cs.getPropertyValue('--line')) || (isDark ? [30/255, 41/255, 59/255] : [226/255, 232/255, 240/255]);
+
     if (isDark) {
       return {
         dark: 1,
@@ -100,9 +103,17 @@ import createGlobe from './cobe.js';
     } else {
       return {
         dark: 0,
-        baseColor: [0.85, 0.9, 0.96],
+        baseColor: [
+          bgCol[0] * 0.85 + softCol[0] * 0.15,
+          bgCol[1] * 0.88 + softCol[1] * 0.12,
+          bgCol[2] * 0.95 + softCol[2] * 0.05
+        ],
         markerColor: accentCol, // Blue 600 (#2563eb)
-        glowColor: [0.92, 0.94, 0.98],
+        glowColor: [
+          bgCol[0] * 0.95 + softCol[0] * 0.05,
+          bgCol[1] * 0.95 + softCol[1] * 0.05,
+          bgCol[2] * 0.98 + softCol[2] * 0.02
+        ],
         mapBaseBrightness: 0.08,
         mapBrightness: 8
       };
@@ -191,7 +202,7 @@ import createGlobe from './cobe.js';
     var factor = 1 - Math.exp(-5.0 * dt);
     phi += (targetPhi - phi) * factor;
     theta += (targetTheta - theta) * factor;
-    scale += (targetScale - scale) * (1 - Math.exp(-6.5 * dt));
+    scale += (targetScale - scale) * factor;
 
     try {
       globeInstance.render();

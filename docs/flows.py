@@ -6,7 +6,7 @@ class Flow:
     def __init__(s, uid, vb=(1200, 640)):
         s.uid, s.vb, s.parts, s.dots = uid, vb, [], []
     def _t(s, x, y, txt, cls="lb", anchor="middle"):
-        return f'<text class="{cls}" x="{x}" y="{y}" text-anchor="{anchor}">{html.escape(txt)}</text>'
+        return f'<text class="{cls}" x="{x}" y="{y}" text-anchor="{anchor}">{html.escape(html.unescape(str(txt)))}</text>'
     def ev(s, x, y, label, end=False, r=15):
         s.parts.append(f'<g class="nd"><circle cx="{x}" cy="{y}" r="{r}" stroke-width="{4 if end else 1.6}"/>{s._t(x, y + r + 18, label)}</g>')
     def task(s, x, y, w, h, label, sub=None):
@@ -30,7 +30,7 @@ class Flow:
     def life(s, x, y, h, label):
         s.parts.append(f'<g class="nd"><rect x="{x-52}" y="{y}" width="104" height="34" rx="7"/>{s._t(x, y + 22, label)}<path d="M{x},{y+34} v{h}" class="ln"/></g>')
     def lane(s, y, h, label):
-        s.parts.append(f'<g class="lane"><rect x="20" y="{y}" width="{s.vb[0]-40}" height="{h}" rx="4"/><path d="M62,{y} v{h}"/><text class="sb" transform="translate(42,{y+h/2}) rotate(-90)" text-anchor="middle">{html.escape(label)}</text></g>')
+        s.parts.append(f'<g class="lane"><rect x="20" y="{y}" width="{s.vb[0]-40}" height="{h}" rx="4"/><path d="M62,{y} v{h}"/><text class="sb" transform="translate(42,{y+h/2}) rotate(-90)" text-anchor="middle">{html.escape(html.unescape(str(label)))}</text></g>')
     def edge(s, pts, dash=True, label=None, dot=None):
         d = "M" + " L".join(f"{x},{y}" for x, y in pts)
         s.parts.append(f'<path class="ln{"" if dash else " solid"}" d="{d}" marker-end="url(#a{s.uid})"/>')

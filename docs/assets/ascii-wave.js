@@ -38,7 +38,10 @@
     var canvas = host.querySelector('canvas');
     if (!canvas) {
       canvas = document.createElement('canvas');
+      canvas.setAttribute('aria-hidden', 'true');
       host.appendChild(canvas);
+    } else if (!canvas.hasAttribute('aria-hidden')) {
+      canvas.setAttribute('aria-hidden', 'true');
     }
     var ctx = canvas.getContext('2d');
     if (!ctx) return;
@@ -76,9 +79,6 @@
 
     function shouldRun() {
       return isVisible && !document.hidden && !isReducedMotion() && !isAnimPaused();
-    }
-    function shouldAnimate() {
-      return shouldRun();
     }
 
     function resize() {
@@ -180,7 +180,7 @@
     }
 
     function checkState() {
-      if (shouldAnimate()) {
+      if (shouldRun()) {
         if (!rafId) {
           lastTimestamp = performance.now();
           rafId = requestAnimationFrame(tick);

@@ -105,7 +105,9 @@ if(mb&&nav){
   });
   d.addEventListener('click',function(e){
     var inMb = (mb && mb.contains(e.target)) || (e.target && e.target.closest && e.target.closest('#menu')) || (e.composedPath && e.composedPath().indexOf(mb) !== -1);
-    if(nav.classList.contains('open')&&!nav.contains(e.target)&&!inMb&&!(tb&&tb.contains(e.target))){
+    var animBtn = $('#animToggle');
+    var inAnim = (animBtn && animBtn.contains(e.target)) || (e.target && e.target.closest && e.target.closest('#animToggle'));
+    if(nav.classList.contains('open')&&!nav.contains(e.target)&&!inMb&&!(tb&&tb.contains(e.target))&&!inAnim){
       closeMenu();
     }
   });
@@ -161,13 +163,20 @@ onScroll();
 /* Lenis Smooth Scroll Management (GL-Lenis) */
 var lenis = null;
 function initLenis(){
-  if(reduce || lenis || typeof Lenis === 'undefined') return;
+  if(reduce || lenis || typeof Lenis === 'undefined' || r.classList.contains('is-anim-paused')) return;
   try{
     lenis = new Lenis({
       lerp: 0.1,
       smoothWheel: true,
       autoRaf: true,
-      anchors: false
+      anchors: false,
+      allowNestedScroll: true,
+      prevent: function(node) {
+        return !!(node && (
+          node.hasAttribute('data-lenis-prevent') ||
+          (node.closest && node.closest('[data-lenis-prevent], .pd-body, .pd-tabs, .table-scroll, .tbl-wrap, pre'))
+        ));
+      }
     });
   }catch(_){ lenis = null; }
 }
@@ -177,7 +186,7 @@ function destroyLenis(){
     lenis = null;
   }
 }
-if(!reduce){
+if(!reduce && !r.classList.contains('is-anim-paused')){
   initLenis();
 }
 
@@ -215,8 +224,12 @@ function checkHash(){
       var rect=target.getBoundingClientRect();
       if(Math.abs(rect.top - 84) < 16) return;
       setTimeout(function(){
-        var targetY = target.getBoundingClientRect().top + (window.pageYOffset || r.scrollTop) + SCROLL_OFFSET;
-        window.scrollTo({ top: targetY, behavior: reduce ? 'auto' : 'smooth' });
+        if(typeof lenis !== 'undefined' && lenis){
+          lenis.scrollTo(target, { offset: SCROLL_OFFSET });
+        }else{
+          var targetY = target.getBoundingClientRect().top + (window.pageYOffset || r.scrollTop) + SCROLL_OFFSET;
+          window.scrollTo({ top: targetY, behavior: reduce ? 'auto' : 'smooth' });
+        }
         target.classList.add('target-glow');
         setTimeout(function(){target.classList.remove('target-glow')},2800);
       },250);
@@ -378,6 +391,11 @@ function setMotionPaused(paused){
     animToggle.setAttribute('title',paused?'Resume animations':'Pause motion');
     animToggle.innerHTML=paused?PLAY_ICO:PAUSE_ICO;
   }
+  if(paused){
+    destroyLenis();
+  }else if(!reduce){
+    initLenis();
+  }
   /* only unpause SVGs that are currently onscreen (GL-1) */
   $$('svg.bgflow').forEach(function(s){
     try{
@@ -513,8 +531,12 @@ if(chips.length){
       var pgrid=$('#pgrid')||$('.filters');
       if(pgrid){
         setTimeout(function(){
-          var pgridY = pgrid.getBoundingClientRect().top + (window.pageYOffset || r.scrollTop) + SCROLL_OFFSET;
-          window.scrollTo({ top: pgridY, behavior: reduce ? 'auto' : 'smooth' });
+          if(typeof lenis !== 'undefined' && lenis){
+            lenis.scrollTo(pgrid, { offset: SCROLL_OFFSET });
+          }else{
+            var pgridY = pgrid.getBoundingClientRect().top + (window.pageYOffset || r.scrollTop) + SCROLL_OFFSET;
+            window.scrollTo({ top: pgridY, behavior: reduce ? 'auto' : 'smooth' });
+          }
         },100);
       }
     }
@@ -555,10 +577,12 @@ if(f){
     var q=new URLSearchParams(location.search).get('service');
     var sField=$('#enquiry-service')||f.elements['service'];
     if(q&&sField){
-      var cleanQ=q.trim().toLowerCase();
+      var cleanQ=q.trim().toLowerCase().replace(/&amp;/g, '&');
       var matched=false;
       [].some.call(sField.options,function(o){
-        if(o.text.trim().toLowerCase()===cleanQ||o.value.trim().toLowerCase()===cleanQ){
+        var optText=o.text.trim().toLowerCase().replace(/&amp;/g, '&');
+        var optVal=(o.value||'').trim().toLowerCase().replace(/&amp;/g, '&');
+        if(optText===cleanQ||optVal===cleanQ){
           sField.value=o.value||o.text;
           sField.classList.add('has-val');
           matched=true;
