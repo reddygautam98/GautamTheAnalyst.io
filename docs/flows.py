@@ -1,6 +1,7 @@
 """Decorative business-analysis diagrams (BPMN-style flows, swimlanes, ERD, sequence, data pipeline).
 Rendered as inline SVG that sits behind page sections. Purely decorative: aria-hidden."""
 import html
+esc = html.escape
 
 class Flow:
     def __init__(s, uid, vb=(1200, 640)):
@@ -53,94 +54,73 @@ class Flow:
         s.parts.append(f'<path class="ln" d="{d}" marker-end="url(#a{s.uid})"/>')
         if dot: s.dots.append((d, dot))
 
-    # --- Reusable UML 2.5 Sequence Diagram Primitives ---
-    def sd_frame(s, x, y, w, h, title):
-        """UML sequence diagram frame with pentagon-style corner header."""
-        tw = min(w - 30, max(120, len(title) * 8 + 36))
+    # --- Rich UML 2.5 Sequence Diagram Primitives ---
+    def sd_frame(s, title, meta="UML 2.5 • BA Specification"):
+        w, h = s.vb
+        tag_w = min(440, max(220, len(title) * 7 + 54))
         s.parts.append(
             f'<g class="sd-frame">'
-            f'<rect class="sd-frame-rect" x="{x}" y="{y}" width="{w}" height="{h}" rx="6"/>'
-            f'<polygon class="sd-tag" points="{x},{y} {x+tw},{y} {x+tw+12},{y+13} {x+tw},{y+26} {x},{y+26}"/>'
-            f'<text class="sd-title" x="{x+10}" y="{y+18}">sd {html.escape(title)}</text>'
+            f'<rect x="16" y="12" width="{w-32}" height="{h-24}" rx="10" class="sd-outer"/>'
+            f'<polygon points="16,12 {16+tag_w},12 {16+tag_w},28 {16+tag_w-12},38 16,38" class="sd-tag"/>'
+            f'{s._t(28, 29, "sd  " + title, "lb", "start")}'
+            f'{s._t(w - 32, 29, meta, "sb", "end")}'
             f'</g>'
         )
 
-    def actor(s, x, y, h, label, stereotype="Actor", w=116):
-        """Participant lifeline with UML stereotype, label, dashed lifeline, and termination marker."""
-        box_w = max(w, len(label) * 8 + 16)
-        s.parts.append(
-            f'<g class="sd-participant">'
-            f'<rect class="sd-actor-box" x="{x - box_w/2}" y="{y}" width="{box_w}" height="42" rx="6"/>'
-            f'<text class="sd-stereo" x="{x}" y="{y+15}" text-anchor="middle">&#171;{html.escape(stereotype)}&#187;</text>'
-            f'<text class="sd-actor-lbl" x="{x}" y="{y+32}" text-anchor="middle">{html.escape(label)}</text>'
-            f'<path class="sd-lifeline ln" d="M{x},{y+42} v{h}" stroke-dasharray="4 4"/>'
-            f'<line class="sd-term" x1="{x-14}" y1="{y+42+h}" x2="{x+14}" y2="{y+42+h}"/>'
-            f'</g>'
-        )
+    def actor(s, x, y, h, label, stereo="", w=136):
+        hw = w // 2
+        top = f'<g class="nd sd-actor"><rect x="{x-hw}" y="{y}" width="{w}" height="44" rx="7"/>'
+        if stereo:
+            top += s._t(x, y + 16, f"«{stereo}»", "sb") + s._t(x, y + 33, label, "lb")
+        else:
+            top += s._t(x, y + 26, label, "lb")
+        bot_y = y + 44 + h
+        top += f'<path d="M{x},{y+44} v{h}" class="ln sd-lifeline"/>'
+        top += f'<rect x="{x-hw//2}" y="{bot_y}" width="{hw}" height="20" rx="4" class="sd-foot"/>'
+        top += s._t(x, bot_y + 14, label.split()[0], "sb") + '</g>'
+        s.parts.append(top)
 
-    def activate(s, x, y, h, cls=""):
-        """Execution specification vertical activation bar on a lifeline."""
-        s.parts.append(f'<rect class="sd-act {cls}" x="{x-7}" y="{y}" width="14" height="{h}" rx="3"/>')
+    def activate(s, x, y, h):
+        s.parts.append(f'<rect x="{x-5}" y="{y}" width="10" height="{h}" rx="2" class="sd-act"/>')
 
-    def msg(s, x1, y1, x2, y2, label, sync=True, dash=False, dot=None, num=None):
-        """UML synchronous/asynchronous or dashed reply message between lifelines."""
-        num_prefix = f"{num}. " if num is not None else ""
-        d = f"M{x1},{y1} L{x2},{y2}"
-        lbl_x = (x1 + x2) / 2
-        lbl_y = min(y1, y2) - 6
-        anchor = "middle"
-        cls_extra = " dashed" if dash else (" solid" if not sync else "")
-        s.parts.append(
-            f'<g class="sd-msg-group">'
-            f'<path class="sd-msg ln{cls_extra}" d="{d}" marker-end="url(#a{s.uid})"/>'
-            f'<text class="sd-msg-lbl sb" x="{lbl_x}" y="{lbl_y}" text-anchor="{anchor}">{html.escape(num_prefix + label)}</text>'
-            f'</g>'
-        )
+    def msg(s, x1, x2, y, label, reply=False, dot=6):
+        dx = 6 if x2 > x1 else -6
+        sx = x1 + dx
+        ex = x2 - dx
+        d = f"M{sx},{y} L{ex},{y}"
+        cls = "ln sd-msg reply" if reply else "ln solid sd-msg"
+        s.parts.append(f'<path class="{cls}" d="{esc(d)}" marker-end="url(#a{s.uid})"/>')
+        mid = (sx + ex) / 2
+        s.parts.append(s._t(mid, y - 7, label, "sb", "middle"))
         if dot:
             s.dots.append((d, dot))
 
-    def self_msg(s, x, y, w, h, label, num=None, dot=None):
-        """Internal processing / validation loop self-call on a lifeline."""
-        num_prefix = f"{num}. " if num is not None else ""
-        d = f"M{x},{y} h{w} v{h} h-{w}"
-        s.parts.append(
-            f'<g class="sd-self-msg-group">'
-            f'<path class="sd-self-msg ln" d="{d}" marker-end="url(#a{s.uid})"/>'
-            f'<text class="sd-self-lbl sb" x="{x+w+8}" y="{y+h/2+4}" text-anchor="start">{html.escape(num_prefix + label)}</text>'
-            f'</g>'
-        )
+    def self_msg(s, x, y, label, w=46, h=26, dot=6):
+        d = f"M{x+5},{y} L{x+w},{y} L{x+w},{y+h} L{x+6},{y+h}"
+        s.parts.append(f'<path class="ln solid sd-msg" d="{esc(d)}" marker-end="url(#a{s.uid})"/>')
+        s.parts.append(s._t(x + w + 8, y + h / 2 + 3, label, "sb", "start"))
         if dot:
             s.dots.append((d, dot))
 
-    def frag(s, x, y, w, h, op, condition="", operands=None):
-        """UML interaction fragment frame (alt, loop, par) with guard conditions and operand dividers."""
-        tag_w = max(42, len(op) * 9 + 14)
-        dividers = ""
-        if operands:
-            for div_y, op_cond in operands:
-                dividers += (
-                    f'<line class="sd-frag-div" x1="{x}" y1="{div_y}" x2="{x+w}" y2="{div_y}" stroke-dasharray="6 4"/>'
-                )
-                if op_cond:
-                    dividers += f'<text class="sd-frag-guard" x="{x+10}" y="{div_y+16}">[{html.escape(op_cond)}]</text>'
-        cond_text = f'<text class="sd-frag-guard" x="{x+tag_w+14}" y="{y+16}">[{html.escape(condition)}]</text>' if condition else ""
+    def frag(s, x, y, w, h, op="alt", guard=""):
+        tw = max(48, len(op) * 8 + 22)
         s.parts.append(
             f'<g class="sd-frag">'
-            f'<rect class="sd-frag-rect" x="{x}" y="{y}" width="{w}" height="{h}" rx="4"/>'
-            f'<polygon class="sd-frag-op-tag" points="{x},{y} {x+tag_w},{y} {x+tag_w+8},{y+10} {x+tag_w},{y+20} {x},{y+20}"/>'
-            f'<text class="sd-frag-op-lbl" x="{x+6}" y="{y+14}">{html.escape(op)}</text>'
-            f'{cond_text}'
-            f'{dividers}'
+            f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="6" class="sd-frag-box"/>'
+            f'<polygon points="{x},{y} {x+tw},{y} {x+tw},{y+14} {x+tw-8},{y+22} {x},{y+22}" class="sd-frag-tag"/>'
+            f'{s._t(x + 8, y + 15, op, "sb", "start")}'
+            f'{s._t(x + tw + 10, y + 15, guard, "sb", "start") if guard else ""}'
             f'</g>'
         )
 
-    def note(s, x, y, w, h, text, anchor="start"):
-        """Dog-eared UML annotation note."""
+    def note(s, x, y, w, h, title, sub=""):
+        fold = 10
         s.parts.append(
-            f'<g class="sd-note-group">'
-            f'<path class="sd-note" d="M{x},{y} h{w-12} l12,12 v{h-12} h-{w} z"/>'
-            f'<path class="sd-note-fold" d="M{x+w-12},{y} v12 h12 z"/>'
-            f'<text class="sd-note-lbl" x="{x+10}" y="{y+h/2+4}" text-anchor="{anchor}">{html.escape(text)}</text>'
+            f'<g class="nd sd-note">'
+            f'<path d="M{x},{y} h{w-fold} l{fold},{fold} v{h-fold} h-{w} z"/>'
+            f'<path d="M{x+w-fold},{y} v{fold} h{fold}" class="fine"/>'
+            f'{s._t(x + w/2, y + (18 if sub else h/2 + 4), title, "sb")}'
+            f'{s._t(x + w/2, y + 33, sub, "sb") if sub else ""}'
             f'</g>'
         )
 
@@ -214,258 +194,277 @@ def mini(uid):
     return f.render("mini", aspect="xMidYMid meet")
 
 
+def seq(uid="q"):
+    f = Flow(uid, (1200, 520))
+    f.sd_frame("Payment Submission & Settlement Verification", "OpenAPI 3.0 • Sequence")
+    xs = [150, 410, 690, 970]
+    stereos = ["Actor", "REST API", "Service", "External"]
+    names = ["Client Portal", "PayTrack API", "Recon Engine", "Payment Gateway"]
+    for x, st, n in zip(xs, stereos, names):
+        f.actor(x, 52, 390, n, st)
+    f.activate(150, 115, 290); f.activate(410, 125, 270); f.activate(690, 170, 190); f.activate(970, 215, 85)
+    f.msg(150, 410, 130, "1: POST /v1/payments {amount, currency}", dot=6)
+    f.msg(410, 690, 180, "2: validateSchema() + enqueueTx()", dot=7)
+    f.msg(690, 970, 230, "3: fetchSettlementFeed(batch_window)", dot=8)
+    f.msg(970, 690, 290, "4: 200 OK {gateway_ref, settled_at}", reply=True, dot=7)
+    f.self_msg(690, 310, "5: matchTransaction(tolerance=0.00)", h=24, dot=6)
+    f.msg(690, 410, 350, "6: ReconResult {status: RECONCILED}", reply=True, dot=6)
+    f.msg(410, 150, 390, "7: 200 OK {match_rate: 99.8%, sla: OK}", reply=True, dot=7)
+    return f.render()
+
+
 # ==============================================================================
-# PAGE-SPECIFIC UML 2.5 SEQUENCE DIAGRAMS (12 DIAGRAM SUITE)
+# Page-Specific Bespoke Sequence Diagrams (Unique Per Page & Section)
 # ==============================================================================
 
-# 1. PAGE 1 — HOME: Payment Submission & Settlement Verification
-def seq(uid="e"):
+def seq_about(uid="ab_seq"):
+    """About Page Header: Stakeholder Elicitation & Three Amigos Alignment Sequence."""
+    f = Flow(uid, (1200, 540))
+    f.sd_frame("Stakeholder Triangulation & Three Amigos Specification Flow", "About • Governance")
+    xs = [135, 390, 650, 910, 1090]
+    actors = [
+        ("Stakeholders", "Finance / Ops"),
+        ("Gautam Reddy", "Lead BA"),
+        ("Architecture", "Eng / API"),
+        ("QA & Testing", "UAT Lead"),
+        ("Confluence", "RTM Repo")
+    ]
+    for x, (name, st) in zip(xs, actors):
+        f.actor(x, 52, 410, name, st, w=132)
+    f.activate(390, 110, 330); f.activate(650, 185, 140); f.activate(910, 260, 140)
+    f.frag(70, 108, 640, 92, "loop", "[20+ Elicitation Workshops • 13+ Stakeholders]")
+    f.msg(135, 390, 145, "1: raiseBusinessNeed(pain_points, KPI_targets)", dot=6)
+    f.self_msg(390, 162, "2: separateEvidenceFromAssumptions()", h=22, dot=6)
+    f.msg(390, 650, 215, "3: defineContracts(BRD, FRD, NFRs, OpenAPI_3.0, STTM)", dot=7)
+    f.msg(650, 390, 255, "4: confirmFeasibility(idempotency, schema_validation)", reply=True, dot=6)
+    f.msg(390, 910, 295, "5: conductThreeAmigos(BDD_Given_When_Then_Criteria)", dot=7)
+    f.msg(910, 1090, 340, "6: linkTraceability(BR_ID -> FR_ID -> US_ID -> TC_ID)", dot=6)
+    f.msg(1090, 390, 385, "7: baselineApproved(100% RTM Coverage)", reply=True, dot=7)
+    f.msg(390, 135, 425, "8: signOffScope(agreed_deliverables, release_plan)", reply=True, dot=6)
+    return f.render()
+
+
+def seq_bre(uid="ab_bre"):
+    """About Page Section 1: Business Rules Engine (BRE-204) & Change Impact Sequence."""
+    f = Flow(uid, (1200, 560))
+    f.sd_frame("SPEC-BRE-204 • Payment Idempotency, Validation & SLA Breach Triage", "Decision Engine • Sequence")
+    xs = [140, 395, 665, 940]
+    for x, (name, st) in zip(xs, [
+        ("Gateway Webhook", "Inbound Event"),
+        ("API Validator", "FR-006 / FR-007"),
+        ("Rules Engine", "SPEC-BRE-204"),
+        ("Ops Triage Queue", "FR-005 SLA")
+    ]):
+        f.actor(x, 54, 420, name, st, w=144)
+    f.activate(395, 115, 330); f.activate(665, 165, 260); f.activate(940, 320, 110)
+    f.msg(140, 395, 125, "1: POST /webhooks/settlement (HMAC-SHA256, idempotency_key)", dot=6)
+    f.msg(395, 665, 170, "2: evaluateRule(FR-007: checkIdempotencyWindow(24h))", dot=6)
+    f.frag(80, 195, 1040, 235, "alt", "[Idempotency Key Exists < 24h] vs [Schema Invalid] vs [SLA > 4h]")
+    f.msg(665, 140, 235, "3a: 200 OK {cached_status: DUPLICATE_IGNORED}", reply=True, dot=7)
+    f.msg(395, 140, 285, "3b: 422 Unprocessable Entity {error_schema: FR-006}", reply=True, dot=7)
+    f.msg(665, 940, 340, "3c: flagException(severity=HIGH, sla_timer=4h)", dot=6)
+    f.msg(940, 665, 395, "4: ackCaseCreated(case_id, assigned_tier=TIER_2)", reply=True, dot=6)
+    return f.render()
+
+
+def seq_services(uid="sv_seq"):
+    """Services Page Section 1: End-to-End BA Service Engagement Sequence."""
+    f = Flow(uid, (1200, 560))
+    f.sd_frame("BA Service Engagement: Discovery -> Specification -> API/SQL -> UAT Handover", "Services • Delivery")
+    xs = [135, 385, 645, 905, 1085]
+    for x, (name, st) in zip(xs, [
+        ("Client Lead", "Product / Ops"),
+        ("Gautam Reddy", "BA Advisory"),
+        ("Specs & Models", "BRD / BPMN / STTM"),
+        ("Data & BI", "SQL / Power BI"),
+        ("QA & Release", "RTM & UAT")
+    ]):
+        f.actor(x, 52, 420, name, st, w=132)
+    f.activate(385, 115, 340); f.activate(645, 175, 140); f.activate(905, 240, 120); f.activate(1085, 345, 100)
+    f.msg(135, 385, 130, "1: Phase 1 Understand(problem, users, constraints, SLA)", dot=6)
+    f.msg(385, 645, 180, "2: Phase 2 Scope(BRD, FRD, NFRs, BPMN/UML, REST STTM)", dot=7)
+    f.frag(330, 205, 640, 125, "par", "[Parallel Specification & Data Quality Profiling]")
+    f.msg(385, 905, 250, "3a: profileDataQuality(100K+ SQL rows, 5-Why RCA, DAX KPIs)", dot=7)
+    f.msg(645, 385, 300, "3b: reviewCheckpoint(BDD User Stories + JSON Schemas)", reply=True, dot=6)
+    f.msg(385, 1085, 360, "4: Phase 3 Validate(RTM Matrix, UAT Test Plan, Defect Triage)", dot=7)
+    f.msg(1085, 135, 415, "5: Phase 4 Handover(Signed-Off Specs + Confluence Data Dict)", reply=True, dot=8)
+    return f.render()
+
+
+def seq_faq(uid="sv_faq"):
+    """Services Page FAQ Section: Scope Clarification & NDA Onboarding Sequence."""
+    f = Flow(uid, (1200, 500))
+    f.sd_frame("Enquiry Scoping, Confidentiality (NDA) & Checkpoint Cadence", "Onboarding • Sequence")
+    xs = [170, 460, 750, 1030]
+    for x, (name, st) in zip(xs, [
+        ("Hiring / Ops Team", "Client"),
+        ("BA Scoping", "Gautam Reddy"),
+        ("Governance", "NDA & Access"),
+        ("Sprint Cadence", "Checkpoints")
+    ]):
+        f.actor(x, 52, 365, name, st, w=144)
+    f.activate(460, 115, 280)
+    f.msg(170, 460, 130, "1: shareProblemAndDesiredOutcome(scope, timeline)", dot=6)
+    f.msg(460, 750, 185, "2: establishNDA(secure_handling, no_raw_credentials)", dot=6)
+    f.msg(750, 460, 235, "3: confirmRepoAndConfluenceAccess()", reply=True, dot=6)
+    f.msg(460, 1030, 290, "4: agreeDeliverableMilestones(pilot_or_full_scope)", dot=7)
+    f.msg(1030, 170, 350, "5: deliverReviewableArtifacts(BRD, SQL, RTM, Handover)", reply=True, dot=7)
+    return f.render()
+
+
+def seq_projects(uid="pj_seq"):
+    """Projects Page Section 1: PayTrack Multi-Gateway Reconciliation & Portfolio Sequence."""
+    f = Flow(uid, (1200, 580))
+    f.sd_frame("PayTrack Case Study & Analytics Portfolio • End-to-End Execution Sequence", "Projects • Architecture")
+    xs = [130, 365, 605, 845, 1075]
+    for x, (name, st) in zip(xs, [
+        ("Ops Analyst", "PayTrack UI"),
+        ("Recon Service", "FR-002..FR-007"),
+        ("Gateway Feeds", "Stripe / Razorpay"),
+        ("Analytics DB", "PostgreSQL / BI"),
+        ("Exception Case", "FR-008..FR-011")
+    ]):
+        f.actor(x, 52, 440, name, st, w=134)
+    f.activate(365, 115, 360); f.activate(605, 155, 95); f.activate(845, 240, 130); f.activate(1075, 330, 130)
+    f.msg(130, 365, 125, "1: triggerDailyBatchRecon(window='23:00 IST')", dot=6)
+    f.msg(365, 605, 170, "2: ingestWebhookAndSettlementEvents(USD, INR)", dot=7)
+    f.msg(605, 365, 220, "3: streamNormalizedPayloads(100,000+ records)", reply=True, dot=7)
+    f.msg(365, 845, 265, "4: executeReconciliationSQL(join_payment_tx_gateway_ev)", dot=6)
+    f.frag(310, 295, 820, 165, "alt", "[99.8% Straight-Through Match] vs [Amount Mismatch / Orphan Event]")
+    f.msg(845, 365, 335, "5a: markReconciled(audit_trail=100%,kpi_refresh=True)", reply=True, dot=6)
+    f.msg(365, 1075, 385, "5b: createExceptionCase(alert_within='5 min', sla='4h')", dot=7)
+    f.msg(1075, 130, 435, "6: notifyOpsDashboard(owner_assigned, audit_event_logged)", reply=True, dot=7)
+    return f.render()
+
+
+def seq_resume(uid="rs_seq"):
+    """Resume Page Header: Career Progression & Enterprise BA Delivery Sequence."""
     f = Flow(uid, (1200, 520))
-    f.sd_frame(40, 20, 1120, 480, "Payment Submission & Settlement Verification")
-    x_c, x_api, x_rec, x_gw = 150, 430, 730, 1030
-    f.actor(x_c, 60, 390, "Client Portal", "Actor")
-    f.actor(x_api, 60, 390, "PayTrack API", "REST API")
-    f.actor(x_rec, 60, 390, "Recon Engine", "Service")
-    f.actor(x_gw, 60, 390, "Payment Gateway", "External")
-
-    f.activate(x_api, 130, 270)
-    f.activate(x_rec, 180, 190)
-    f.activate(x_gw, 230, 60)
-
-    f.msg(x_c, 140, x_api, 140, "POST /v1/payments", num=1, dot=6)
-    f.msg(x_api, 190, x_rec, 190, "validateSchema() + enqueueTx()", num=2, dot=7)
-    f.msg(x_rec, 240, x_gw, 240, "fetchSettlementFeed()", num=3, dot=8)
-    f.msg(x_gw, 280, x_rec, 280, "settlementFeed[1.4K tx]", dash=True, dot=7)
-    f.self_msg(x_rec, 310, 50, 35, "matchTransaction(tolerance=0.00)", num=4)
-    f.msg(x_rec, 360, x_api, 360, "matchResult(99.8% reconciled)", dash=True, dot=6)
-    f.msg(x_api, 390, x_c, 390, "200 OK {match_rate: 99.8%}", dash=True, num=5, dot=7)
-    f.note(790, 410, 240, 44, "Auto-reconciles within SLA (< 4h)")
-    return f.render("sd-outer")
+    f.sd_frame("4+ Years BA Delivery: Elicitation -> API/STTM -> SQL (100K+) -> UAT (350+ Scenarios)", "Resume • Track Record")
+    xs = [135, 380, 635, 885, 1085]
+    for x, (name, st) in zip(xs, [
+        ("Stakeholders", "13+ Business Leads"),
+        ("Gautam Reddy", "Business Analyst"),
+        ("Integrations", "2 Payment Gateways"),
+        ("SQL & Python", "100K+ Txn Logs"),
+        ("QA & UAT", "350+ Scenarios")
+    ]):
+        f.actor(x, 52, 390, name, st, w=134)
+    f.activate(380, 110, 315)
+    f.msg(135, 380, 125, "1: facilitateWorkshops(20+ sessions across 4 business units)", dot=6)
+    f.msg(380, 635, 175, "2: authorSpecs(BRD, FRD, NFRs, REST APIs, STTM, JSON Schemas)", dot=7)
+    f.msg(380, 885, 230, "3: analyzeTransactionLogs(100,000+ rows -> isolate 3 SLA breaches)", dot=7)
+    f.msg(885, 380, 280, "4: formalizeReconciliationRules(save ~2 wks/cycle, 3+ hrs/wk)", reply=True, dot=6)
+    f.msg(380, 1085, 335, "5: coordinateUATAndTriage(350+ Marolix + 50+ Infocomm cases)", dot=7)
+    f.msg(1085, 135, 390, "6: productionRelease(12+ CRs managed • 0 critical defects)", reply=True, dot=8)
+    return f.render()
 
 
-# 2. PAGE 2 — ABOUT: Diagram A: Stakeholder Triangulation & Three Amigos Specification Flow
-def seq_about(uid="a"):
-    f = Flow(uid, (1200, 520))
-    f.sd_frame(40, 20, 1120, 480, "Stakeholder Triangulation & Three Amigos Specification Flow")
-    x_sh, x_ba, x_eng, x_rep = 150, 440, 750, 1030
-    f.actor(x_sh, 60, 390, "Business Stakeholders", "Actor")
-    f.actor(x_ba, 60, 390, "Gautam (Lead BA)", "Business Analyst")
-    f.actor(x_eng, 60, 390, "Dev & QA Leads", "Engineering")
-    f.actor(x_rep, 60, 390, "Specification Repo", "Artifacts")
-
-    f.frag(60, 120, 1080, 280, "loop", "20+ Elicitation Workshops • 13+ Stakeholders")
-    f.activate(x_ba, 140, 240)
-    f.activate(x_eng, 230, 80)
-
-    f.msg(x_sh, 150, x_ba, 150, "elicitOperationalGoals()", num=1, dot=6)
-    f.self_msg(x_ba, 180, 60, 35, "separateEvidenceFromAssumptions()", num=2)
-    f.msg(x_ba, 240, x_eng, 240, "conductThreeAmigos(BDD)", num=3, dot=7)
-    f.msg(x_eng, 290, x_ba, 290, "refineAcceptanceCriteria(Given/When/Then)", dash=True, dot=6)
-    f.msg(x_ba, 340, x_rep, 340, "commitVerifiedSpec(BRD + FRD + User Stories)", num=4, dot=7)
-    f.note(780, 420, 270, 44, "100% Traceability across Jira & RTM")
-    return f.render("sd-outer")
+def seq_resume_sql(uid="rs_sql"):
+    """Resume Page Section 1: Metrics & SQL Root Cause Analysis Sequence."""
+    f = Flow(uid, (1200, 480))
+    f.sd_frame("Quantitative Impact Verification • SQL Profiling, MoSCoW Scope & Power BI Automation", "Metrics • Sequence")
+    xs = [160, 450, 740, 1030]
+    for x, (name, st) in zip(xs, [
+        ("Operational Data", "100K+ Records"),
+        ("SQL & Python RCA", "Fishbone / 5-Why"),
+        ("Process Redesign", "AS-IS -> TO-BE BPMN"),
+        ("Business Impact", "Verified Outcome")
+    ]):
+        f.actor(x, 52, 350, name, st, w=144)
+    f.activate(450, 110, 260); f.activate(740, 180, 170)
+    f.msg(160, 450, 130, "1: extractSettlementAndSlaLogs(PostgreSQL, Pandas)", dot=6)
+    f.self_msg(450, 155, "2: detect3RecurringSlaBreachPatterns()", h=24, dot=6)
+    f.msg(450, 740, 215, "3: mapToBeWorkflowAndPowerBiSpecs(15+ stakeholders)", dot=7)
+    f.msg(740, 1030, 275, "4: filterUnjustifiedScope(MoSCoW across 4 modules)", dot=6)
+    f.msg(1030, 160, 335, "5: achieveZeroCriticalDefectsAnd2WeekCycleReduction()", reply=True, dot=7)
+    return f.render()
 
 
-# 3. PAGE 2 — ABOUT: Diagram B: SPEC-BRE-204 • Payment Idempotency, Validation & SLA Breach Triage
-def seq_bre(uid="ab0"):
-    f = Flow(uid, (1200, 520))
-    f.sd_frame(40, 20, 1120, 480, "SPEC-BRE-204 • Payment Idempotency, Validation & SLA Breach Triage")
-    x_in, x_idm, x_rul, x_esc = 150, 430, 730, 1030
-    f.actor(x_in, 60, 390, "Inbound Payment", "Client")
-    f.actor(x_idm, 60, 390, "Idempotency Filter", "Middleware")
-    f.actor(x_rul, 60, 390, "Rules Engine", "Service")
-    f.actor(x_esc, 60, 390, "Escalation Dispatcher", "Alerts")
-
-    f.msg(x_in, 130, x_idm, 130, "POST /v1/payments {idem_key}", dot=6)
-    f.frag(60, 160, 1080, 260, "alt", "Idempotency Key < 24h", operands=[
-        (250, "HTTP 422 FR-006"),
-        (340, "SLA > 4h Alert")
-    ])
-
-    f.msg(x_idm, 190, x_in, 190, "returnCachedResponse(status='CONFIRMED')", dash=True, dot=7)
-    f.msg(x_idm, 280, x_in, 280, "422 Unprocessable Entity {code: 'PAYMENT_EXISTS'}", dash=True, dot=6)
-    f.msg(x_rul, 360, x_esc, 360, "dispatchExceptionAlert(triage_sla='4h', alert='5 min')", dot=8)
-    f.note(770, 430, 270, 40, "Guarantees zero duplicate ledger debits")
-    return f.render("sd-outer")
-
-
-# 4. PAGE 3 — SERVICES: Diagram A: BA Service Engagement
-def seq_services(uid="sv1"):
-    f = Flow(uid, (1200, 520))
-    f.sd_frame(40, 20, 1120, 480, "BA Service Engagement: Discovery -> Specification -> API/SQL -> UAT Handover")
-    x_sp, x_ba, x_da, x_eng = 150, 430, 730, 1030
-    f.actor(x_sp, 60, 390, "Client Leadership", "Sponsor")
-    f.actor(x_ba, 60, 390, "BA Analysis & Scope", "Lead BA")
-    f.actor(x_da, 60, 390, "Data Architecture", "Systems")
-    f.actor(x_eng, 60, 390, "Engineering Delivery", "QA & Dev")
-
-    f.msg(x_sp, 130, x_ba, 130, "defineBusinessOutcome()", num=1, dot=6)
-    f.frag(60, 160, 1080, 170, "par", "Parallel Specification & Data Quality Profiling", operands=[
-        (245, "Stream 2: Data Lineage")
-    ])
-
-    f.msg(x_ba, 190, x_eng, 190, "modelProcessSwimlanesAndSTTM()", dot=7)
-    f.self_msg(x_ba, 275, 60, 35, "profileSourceData(100K+ rows SQL)")
-    f.msg(x_ba, 350, x_eng, 350, "handoverUATScenarios(350+ cases)", num=2, dot=7)
-    f.msg(x_eng, 390, x_sp, 390, "productionSignOff(Zero Defect Threshold)", dash=True, num=3, dot=6)
-    f.note(770, 430, 270, 40, "Phases: Understand -> Specify -> Validate -> Handover")
-    return f.render("sd-outer")
+def seq_resume_uat(uid="rs_uat"):
+    """Resume Page Section 2: Multi-Company Career Timeline & Promotion Sequence."""
+    f = Flow(uid, (1200, 560))
+    f.sd_frame("Career Progression Sequence: Infocomm (ASE -> Early Promotion to BA) -> V Moksha -> Marolix", "Career • Sequence")
+    xs = [150, 420, 695, 985]
+    for x, (name, st) in zip(xs, [
+        ("Infocomm (ASE->BA)", "Early Promotion"),
+        ("Infocomm (BA)", "3 Modules • 4 Units"),
+        ("V Moksha (BA)", "RCA & BPMN"),
+        ("Marolix (BA)", "Payment Gateways")
+    ]):
+        f.actor(x, 52, 425, name, st, w=146)
+    f.activate(150, 110, 90); f.activate(420, 185, 100); f.activate(695, 270, 95); f.activate(985, 345, 110)
+    f.msg(150, 420, 135, "1: deliver3ReportingFeatures(15+ stakeholders -> +3h/wk saved)", dot=6)
+    f.note(60, 155, 210, 36, "Promoted Early to BA", "Ahead of schedule")
+    f.msg(420, 695, 225, "2: runThreeAmigosAnd50JiraTests(0 post-launch incidents)", dot=7)
+    f.msg(695, 985, 310, "3: resolveSlaShortfallsViaSqlAndBpmn(-2 wks cycle time)", dot=7)
+    f.self_msg(985, 365, "4: lead2GatewayIntegrations + 100K_SQL + 350_UAT()", h=26, dot=6)
+    f.msg(985, 150, 435, "5: continuousTraceabilityAndCBAPTarget(2026/2027)", reply=True, dot=8)
+    return f.render()
 
 
-# 5. PAGE 3 — SERVICES: Diagram B: Enquiry Scoping, Confidentiality & Checkpoint Cadence
-def seq_faq(uid="sv4"):
-    f = Flow(uid, (1200, 520))
-    f.sd_frame(40, 20, 1120, 480, "Enquiry Scoping, Confidentiality (NDA) & Checkpoint Cadence")
-    x_cl, x_ba, x_ws = 200, 600, 1000
-    f.actor(x_cl, 60, 390, "Client Sponsor", "Client")
-    f.actor(x_ba, 60, 390, "Gautam Reddy (BA)", "Consultant")
-    f.actor(x_ws, 60, 390, "Secure Workspace", "Platform")
-
-    f.msg(x_cl, 140, x_ba, 140, "submitProjectBrief()", num=1, dot=6)
-    f.msg(x_ba, 190, x_cl, 190, "establishNDA()", num=2, dot=6)
-    f.msg(x_ba, 250, x_ws, 250, "setupEncryptedWorkspace()", num=3, dot=7)
-    f.self_msg(x_ba, 300, 65, 35, "alignCheckpointCadence(Weekly)")
-    f.msg(x_ba, 360, x_ws, 360, "deliverReviewableArtifacts()", num=4, dot=7)
-    f.msg(x_ws, 400, x_cl, 400, "reviewSpecificationPack(BRD/FRD/RTM)", dash=True, dot=6)
-    return f.render("sd-outer")
-
-
-# 6. PAGE 4 — PROJECTS: PayTrack Case Study & Analytics Portfolio Execution Sequence
-def seq_projects(uid="pj1"):
-    f = Flow(uid, (1200, 520))
-    f.sd_frame(40, 20, 1120, 480, "PayTrack Case Study & Analytics Portfolio • End-to-End Execution Sequence")
-    x_ops, x_rec, x_gw, x_db, x_exc = 120, 360, 600, 840, 1060
-    f.actor(x_ops, 60, 390, "Ops Analyst", "Actor")
-    f.actor(x_rec, 60, 390, "Recon Service", "Service")
-    f.actor(x_gw, 60, 390, "Gateway Feeds", "External")
-    f.actor(x_db, 60, 390, "Analytics DB", "Database")
-    f.actor(x_exc, 60, 390, "Exception Case", "Workflow")
-
-    f.msg(x_ops, 130, x_rec, 130, "triggerDailyBatchRecon(window='23:00 IST')", num=1, dot=6)
-    f.msg(x_rec, 175, x_gw, 175, "streamNormalizedPayloads(100,000+ records)", num=2, dot=8)
-    f.frag(60, 205, 1080, 215, "alt", "99.8% Straight-Through Match", operands=[
-        (310, "createExceptionCase(alert_within='5 min', sla='4h')")
-    ])
-
-    f.msg(x_rec, 245, x_db, 245, "commitReconciledTxns(1,420 matched)", dot=7)
-    f.msg(x_db, 280, x_ops, 280, "publishPowerBIDashboard(SLA: 99.8%)", dash=True, dot=6)
-    f.msg(x_rec, 345, x_exc, 345, "raiseException(unmatched=3 txns)", dot=7)
-    f.msg(x_exc, 385, x_ops, 385, "triageQueueAssigned(owner='Ops', sla='4h')", dash=True, dot=6)
-    f.note(770, 435, 270, 38, "Zero unaccounted payment anomalies")
-    return f.render("sd-outer")
+def seq_contact(uid="ct_seq"):
+    """Contact Page Section 1: Global Remote Collaboration & Enquiry Sequence."""
+    f = Flow(uid, (1200, 560))
+    f.sd_frame("Project & Role Enquiry Sequence • Bengaluru (IST / UTC+5:30) <-> EMEA & US Overlap", "Contact • Sequence")
+    xs = [145, 415, 695, 985]
+    for x, (name, st) in zip(xs, [
+        ("Hiring / Project Lead", "Global Client"),
+        ("Enquiry Builder", "Zero-Storage Form"),
+        ("Gautam Reddy (BA)", "Bengaluru UTC+5:30"),
+        ("Discovery & Scope", "Agreed Kickoff")
+    ]):
+        f.actor(x, 52, 425, name, st, w=148)
+    f.activate(415, 115, 150); f.activate(695, 235, 215); f.activate(985, 340, 110)
+    f.msg(145, 415, 130, "1: selectServiceAndTimeline(?service=prefill, problem_brief)", dot=6)
+    f.self_msg(415, 165, "2: validateFieldsAndPrepareDraft(mailto + clipboard)", h=24, dot=6)
+    f.msg(415, 695, 240, "3: sendEnquiryEmail(gautamreddy098@gmail.com)", dot=7)
+    f.msg(695, 145, 295, "4: replyWithContextWithin1To2BusinessDays(IST/EMEA/US sync)", reply=True, dot=7)
+    f.msg(145, 985, 355, "5: alignOnProblemUsersSystemsAndAcceptanceCriteria()", dot=6)
+    f.msg(985, 145, 420, "6: commenceDeliverables(BRD / FRD / SQL / API / UAT)", reply=True, dot=7)
+    return f.render()
 
 
-# 7. PAGE 5 — RESUME: Diagram A: 4+ Years BA Delivery
-def seq_resume(uid="rs"):
-    f = Flow(uid, (1200, 520))
-    f.sd_frame(40, 20, 1120, 480, "4+ Years BA Delivery")
-    x_po, x_ba, x_dev, x_sc = 150, 430, 730, 1030
-    f.actor(x_po, 60, 390, "Product Owners", "Stakeholders")
-    f.actor(x_ba, 60, 390, "Gautam Reddy (BA)", "Core BA")
-    f.actor(x_dev, 60, 390, "Engineering & QA", "Delivery")
-    f.actor(x_sc, 60, 390, "Steering Committee", "Executive")
-
-    f.msg(x_po, 130, x_ba, 130, "facilitateWorkshops(20+ sessions)", num=1, dot=6)
-    f.self_msg(x_ba, 180, 60, 35, "authorBRD_FRD_STTM()")
-    f.msg(x_ba, 250, x_dev, 250, "manageBacklogJira(User Stories + AC)", num=2, dot=7)
-    f.msg(x_dev, 310, x_ba, 310, "sprintDemoVerification()", dash=True, dot=6)
-    f.msg(x_ba, 370, x_sc, 370, "presentExecutiveStatus(100% Milestone Acceptance)", num=3, dot=7)
-    f.note(770, 420, 270, 40, "Cross-functional BA leadership across 4+ years")
-    return f.render("sd-outer")
-
-
-# 8. PAGE 5 — RESUME: Diagram B: Quantitative Impact Verification (SQL & RCA)
-def seq_resume_sql(uid="rs1"):
-    f = Flow(uid, (1200, 520))
-    f.sd_frame(40, 20, 1120, 480, "Quantitative Impact Verification (SQL & RCA)")
-    x_dw, x_sql, x_ba, x_ops = 160, 460, 760, 1040
-    f.actor(x_dw, 60, 390, "Data Warehouse", "Database")
-    f.actor(x_sql, 60, 390, "SQL Analysis Pipeline", "Engine")
-    f.actor(x_ba, 60, 390, "Gautam Reddy (BA)", "Analyst")
-    f.actor(x_ops, 60, 390, "Operations Team", "Stakeholders")
-
-    f.msg(x_ba, 140, x_sql, 140, "queryTransactionDatasets(SELECT...JOIN)", num=1, dot=6)
-    f.msg(x_sql, 190, x_dw, 190, "executeTelemetryQuery(100K+ records)", dot=7)
-    f.msg(x_dw, 240, x_sql, 240, "returnBatchRecords()", dash=True, dot=6)
-    f.msg(x_sql, 290, x_ba, 290, "analyzeTransactionLogs(100,000+ rows -> isolate 3 SLA breaches)", num=2, dot=8)
-    f.self_msg(x_ba, 335, 60, 35, "rootCauseAnalysis(Fishbone + 5-Whys)")
-    f.msg(x_ba, 390, x_ops, 390, "publishRootCauseActionPlan(SLA Breach Remediation)", num=3, dot=7)
-    f.note(770, 435, 270, 38, "Reduced settlement exceptions by 18%")
-    return f.render("sd-outer")
+def seq_samples(uid="sm_seq"):
+    """Samples Page Section 1: PayTrack 17-Deliverable End-to-End Traceability Sequence."""
+    f = Flow(uid, (1200, 580))
+    f.sd_frame("PayTrack Case Study • End-to-End Artifact Traceability Sequence (Phases 01 -> 04)", "Samples • RTM Flow")
+    xs = [130, 365, 605, 845, 1075]
+    for x, (name, st) in zip(xs, [
+        ("01 Discovery MoM", "RAID & Decisions"),
+        ("02 BRD & FRD", "BR-01..03 / FR-001..11"),
+        ("BPMN / ERD / API", "Models & Schemas"),
+        ("03 User Stories", "US-01..10 + SQL"),
+        ("04 RTM & UAT Plan", "TC-001..15 Matrix")
+    ]):
+        f.actor(x, 52, 440, name, st, w=136)
+    f.activate(130, 110, 90); f.activate(365, 165, 150); f.activate(605, 235, 130); f.activate(845, 305, 120); f.activate(1075, 370, 100)
+    f.msg(130, 365, 130, "1: baselineScopeAndRACI(23:00 IST cutoff, 4h SLA target)", dot=6)
+    f.msg(365, 605, 195, "2: modelProcessSwimlanesAndERD(5 tables, OpenAPI 3.0)", dot=7)
+    f.msg(605, 845, 265, "3: derivePrioritizedBacklog(MoSCoW + Given/When/Then BDD)", dot=7)
+    f.msg(845, 1075, 335, "4: mapRequirementsToTestCatalogue(8 BRs -> 15 Test Cases)", dot=7)
+    f.self_msg(1075, 380, "5: verify100PercentForwardAndBackwardTraceability()", h=24, dot=6)
+    f.msg(1075, 365, 445, "6: consolidate35PageDocumentPack(PRE-2026 Sign-Off Ready)", reply=True, dot=8)
+    return f.render()
 
 
-# 9. PAGE 5 — RESUME: Diagram C: Career Progression Sequence
-def seq_resume_uat(uid="rs2"):
-    f = Flow(uid, (1200, 520))
-    f.sd_frame(40, 20, 1120, 480, "Career Progression Sequence (Infocomm ASE -> BA -> V Moksha -> Marolix)")
-    x_ase, x_iba, x_vm, x_mar = 150, 430, 730, 1030
-    f.actor(x_ase, 60, 390, "Infocomm (ASE)", "Engineering")
-    f.actor(x_iba, 60, 390, "Infocomm (BA)", "BA Transition")
-    f.actor(x_vm, 60, 390, "V Moksha (BA)", "Integrations")
-    f.actor(x_mar, 60, 390, "Marolix (Lead BA)", "Enterprise")
-
-    f.note(180, 130, 190, 38, "Promoted Early to BA")
-    f.msg(x_ase, 180, x_iba, 180, "transitionFromASE(Systems Analysis)", num=1, dot=6)
-    f.msg(x_iba, 250, x_vm, 250, "leadPaymentGatewayIntegrations(2 APIs)", num=2, dot=7)
-    f.msg(x_vm, 330, x_mar, 330, "coordinateUATAndTriage(350+ Marolix + 50+ Infocomm cases)", num=3, dot=8)
-    f.self_msg(x_mar, 380, 55, 35, "executiveArchitectureLeadership()")
-    f.note(770, 435, 270, 38, "400+ Total verified UAT test cases")
-    return f.render("sd-outer")
-
-
-# 10. PAGE 6 — CONTACT: Project & Role Enquiry Sequence
-def seq_contact(uid="ct1"):
-    f = Flow(uid, (1200, 520))
-    f.sd_frame(40, 20, 1120, 480, "Project & Role Enquiry Sequence • Bengaluru (IST / UTC+5:30) <-> EMEA & US Overlap")
-    x_ld, x_eb, x_ba, x_ds = 150, 430, 730, 1030
-    f.actor(x_ld, 60, 390, "Hiring / Project Lead", "Actor")
-    f.actor(x_eb, 60, 390, "Enquiry Builder", "UI Form")
-    f.actor(x_ba, 60, 390, "Gautam Reddy (BA)", "Lead BA")
-    f.actor(x_ds, 60, 390, "Discovery & Scope", "Engagement")
-
-    f.msg(x_ld, 140, x_eb, 140, "selectServiceAndTimeline(?service=prefill)", num=1, dot=6)
-    f.self_msg(x_eb, 190, 60, 35, "validateFieldsAndPrepareDraft(mailto + clipboard)", num=2)
-    f.msg(x_ld, 270, x_ba, 270, "reviewAndSendEmailDraft()", dot=7)
-    f.msg(x_ba, 340, x_ld, 340, "replyWithContextWithin1To2BusinessDays()", dash=True, num=3, dot=7)
-    f.msg(x_ba, 390, x_ds, 390, "commenceDeliverables(Scope & RACI Defined)", num=4, dot=6)
-    f.note(770, 435, 270, 38, "IST / UTC+5:30 • Overlap with EMEA & US morning")
-    return f.render("sd-outer")
-
-
-# 11. PAGE 7 — BA SAMPLES: PayTrack Case Study Traceability Sequence
-def seq_samples(uid="sm1"):
-    f = Flow(uid, (1200, 520))
-    f.sd_frame(40, 20, 1120, 480, "PayTrack Case Study • End-to-End Artifact Traceability Sequence (Phases 01 -> 04)")
-    x_1, x_2, x_3, x_4, x_5 = 120, 360, 600, 840, 1060
-    f.actor(x_1, 60, 390, "01 Discovery MoM", "Phase 01")
-    f.actor(x_2, 60, 390, "02 BRD & FRD", "Phase 02")
-    f.actor(x_3, 60, 390, "03 BPMN/ERD/API", "Phase 03")
-    f.actor(x_4, 60, 390, "04 User Stories", "Phase 04")
-    f.actor(x_5, 60, 390, "05 RTM & UAT Plan", "Sign-Off")
-
-    f.msg(x_1, 140, x_2, 140, "baselineScopeAndRACI()", num=1, dot=6)
-    f.msg(x_2, 200, x_3, 200, "modelProcessSwimlanesAndERD()", num=2, dot=7)
-    f.msg(x_3, 260, x_4, 260, "derivePrioritizedBacklog(MoSCoW + BDD)", num=3, dot=7)
-    f.msg(x_4, 320, x_5, 320, "mapRequirementsToTestCatalogue(8 BRs -> 15 Test Cases)", num=4, dot=8)
-    f.self_msg(x_5, 365, 50, 35, "consolidate35PageDocumentPack()")
-    f.note(770, 435, 270, 38, "100% Traceability across all phases")
-    return f.render("sd-outer")
-
-
-# 12. PAGE 8 — 404: HTTP 404 Unmapped Endpoint Recovery Sequence
-def seq_404(uid="nf"):
-    f = Flow(uid, (1200, 520))
-    f.sd_frame(40, 20, 1120, 480, "HTTP 404 • Unmapped Endpoint Detection & Specification Recovery Sequence")
-    x_br, x_rt, x_fh, x_hub = 150, 450, 750, 1050
-    f.actor(x_br, 60, 390, "Visitor Browser", "Client")
-    f.actor(x_rt, 60, 390, "Route Specification", "Sitemap")
-    f.actor(x_fh, 60, 390, "404 Fault Handler", "Router")
-    f.actor(x_hub, 60, 390, "Portfolio Hub", "Index")
-
-    f.msg(x_br, 130, x_rt, 130, "GET /unmapped-uri", num=1, dot=6)
-    f.frag(60, 160, 1080, 240, "alt", "Route Missing from Sitemap Specification -> HTTP 404")
-    f.msg(x_rt, 200, x_fh, 200, "dispatchUnmappedError(404)", dot=6)
-    f.msg(x_fh, 260, x_br, 260, "renderDiagnosticRecoveryView()", dash=True, dot=7)
-    f.msg(x_br, 330, x_hub, 330, "navigateToVerifiedArtifact()", num=2, dot=7)
-    f.note(770, 430, 270, 38, "Zero dead-end navigation loops")
-    return f.render("sd-outer")
+def seq_404(uid="nf_seq"):
+    """404 Page: Route Specification Lookup & Fallback Recovery Sequence."""
+    f = Flow(uid, (1200, 500))
+    f.sd_frame("HTTP 404 • Unmapped Endpoint Detection & Specification Recovery Sequence", "404 • Diagnostic")
+    xs = [165, 455, 745, 1035]
+    for x, (name, st) in zip(xs, [
+        ("Visitor Browser", "GET Request"),
+        ("Route Specification", "Sitemap & Docs"),
+        ("404 Fault Handler", "Exception Guard"),
+        ("Portfolio Hub", "Verified Routes")
+    ]):
+        f.actor(x, 52, 365, name, st, w=144)
+    f.activate(455, 115, 130); f.activate(745, 210, 140); f.activate(1035, 310, 85)
+    f.msg(165, 455, 130, "1: GET /unmapped-uri (lookup route in specification)", dot=6)
+    f.frag(110, 165, 980, 225, "alt", "[Route Missing from Sitemap Specification -> HTTP 404]")
+    f.msg(455, 745, 215, "2: raiseRouteNotFoundException(status=404_MISSING_REQ)", dot=6)
+    f.msg(745, 165, 275, "3: renderDiagnosticRecoveryView(popular_destinations)", reply=True, dot=7)
+    f.msg(165, 1035, 335, "4: navigateToVerifiedArtifact(index.html | samples | resume)", dot=7)
+    f.msg(1035, 165, 375, "5: 200 OK (Specification Loaded)", reply=True, dot=6)
+    return f.render()

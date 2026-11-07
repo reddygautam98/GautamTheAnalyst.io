@@ -883,7 +883,7 @@ def about_3d_console():
 
 def about():
     return head("About", "Business Analyst: requirements teams can build and validate.", "I connect stakeholder needs, requirements, data, systems and delivery teams, so ambiguous business problems become clear, testable work.", F.seq_about("a"), trail=True) + f'''
-<section class="sec sec--first" data-bg-anim="blueprint"><div class="wrap about-hero-grid">
+<section class="sec sec--first has-flow" data-bg-anim="blueprint">{F.seq_bre("ab0")}<div class="wrap about-hero-grid">
 <div><h2 class="h2-lg {rv(0)}">Who I am</h2>
 <div class="about-lead-row {rv(1)}">
   <div class="about-monogram-ring" aria-hidden="true"><div class="about-monogram-inner"><span class="monogram-txt">GR</span></div></div>
@@ -916,7 +916,7 @@ def about():
 </div>
 </div></section>
 
-<section class="sec band has-flow">{F.seq_bre("ab0")}{F.pipeline("ab")}<div class="wrap">
+<section class="sec band has-flow">{F.pipeline("ab")}<div class="wrap">
 {sh(1, "Principles", "Working principles", "The habits behind the documents.")}
 <div class="grid g3">
 <div class="card principle-card magic-card {rv(0)}"><div class="p-ico-tile" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#2563eb" fill-opacity="0.12"/><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" fill="#2563eb"/><polyline points="14 2 14 8 20 8" fill="#93c5fd"/><circle cx="15" cy="15" r="5" fill="#ffffff" stroke="#f59e0b" stroke-width="2"/><polyline points="13.5 15 14.5 16 16.5 14" stroke="#10b981" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3>Evidence before opinion</h3><p>Findings, assumptions and limitations are kept separate, so guesses are never presented as facts.</p><div class="principle-link-foot"><a class="principle-link" href="samples/index.html#discovery">View Discovery MoM sample &rarr;</a></div></div>
@@ -1017,8 +1017,8 @@ def services():
 <div class="actions"><a class="btn btn-ghost" href="contact.html?service={urllib.parse.quote_plus(t)}">Enquire about this &rarr;</a></div>
 </div>'''
     faq = "".join(f'<details class="faq-item {rv(i, 0.0)}"><summary><span>{q}</span></summary><div class="faq-ans"><p>{a}</p></div></details>' for i, (q, a) in enumerate(FAQ))
-    return head("Services", "Business analysis services with clear scope and useful deliverables.", "Business analysis, data and technology support shaped around the problem, the people who need the answer and the output your team can use.", F.seq_services("sv1")) + f'''
-<section class="sec sec--first" data-bg-anim="pipeline"><div class="wrap">
+    return head("Services", "Business analysis services with clear scope and useful deliverables.", "Business analysis, data and technology support shaped around the problem, the people who need the answer and the output your team can use.", F.seq("sv")) + f'''
+<section class="sec sec--first has-flow" data-bg-anim="pipeline">{F.seq_services("sv1")}<div class="wrap">
 {sh(1, "Services", "Business analysis services I offer")}
 <div class="grid g3">{cards}</div>
 </div></section>
@@ -1092,8 +1092,8 @@ def projects():
         ]
     )
     cards = "".join(pcard(c, i % 3, 0.0) for i, c in enumerate(PROJECTS))
-    return head("Projects", "Business analyst projects: practical analysis, visible work.", "Nine technical portfolio projects across SQL analytics, business intelligence, data pipelines, and the PayTrack case study demonstrating BRD, FRD, NFRs, STTM, and RTM traceability.", F.seq_projects("pj1")) + f'''
-<section class="sec sec--first" data-bg-anim="dotmatrix"><div class="wrap">
+    return head("Projects", "Business analyst projects: practical analysis, visible work.", "Nine technical portfolio projects across SQL analytics, business intelligence, data pipelines, and the PayTrack case study demonstrating BRD, FRD, NFRs, STTM, and RTM traceability.", F.seq("pj")) + f'''
+<section class="sec sec--first has-flow" data-bg-anim="dotmatrix">{F.seq_projects("pj1")}<div class="wrap">
 <div class="sec-head {rv(0)}"><span class="eyebrow">01 &bull; Case Study</span><h2>Featured case study</h2></div>
 <div class="feature featured-paytrack rv" data-tilt>
 <div>
@@ -1259,8 +1259,8 @@ def resume():
 # ---------------------------------------------------------------- contact
 def contact():
     opts = lambda l: "".join(f"<option>{esc(o)}</option>" for o in l)
-    return head("Contact", "Contact a Business Analyst: tell me what you&rsquo;re trying to solve.", "For a full-time, hybrid or remote role, reach out directly. For systems analysis or technical specifications, describe the problem and the outcome.", F.seq_contact("ct1")) + f'''
-<section class="sec sec--first" data-bg-anim="radar"><div class="wrap contact-two-col">
+    return head("Contact", "Contact a Business Analyst: tell me what you&rsquo;re trying to solve.", "For a full-time, hybrid or remote role, reach out directly. For systems analysis or technical specifications, describe the problem and the outcome.", F.seq("ct")) + f'''
+<section class="sec sec--first has-flow" data-bg-anim="radar">{F.seq_contact("ct1")}<div class="wrap contact-two-col">
 <div class="rv contact-rail">
   <h2>Reach me directly</h2>
   <div class="reply-status"><span class="reply-dot-static" aria-hidden="true"></span> Direct email enquiry &bull; Typically replies within 1&ndash;2 business days</div>
@@ -1533,8 +1533,8 @@ def samples():
      sitem("Sample user stories", "Phase 3 &bull; JIRA and Confluence backlog starter with Agile / Scrum priority, acceptance criteria and traceability.", [flink("specs/sample_user_stories.csv", "CSV", "csv", download=True, target_blank=False, doc_title="User Stories CSV")], "user-stories-csv", ICO_DATA_STORIES, status="Sprint Ready", phase="3"),
      sitem("SQL reconciliation and data validation queries", "Phase 3 &bull; Analytical SQL queries to detect amount mismatches, orphan gateway events and 4-hour SLA breach exceptions.", [flink("specs/sample_reconciliation_queries.sql", "SQL", "sql", download=True, target_blank=False, doc_title="Reconciliation Queries SQL"), flink("../projects.html#analytics", "SQL Projects &#8599;", "sql", target_blank=False, doc_title="SQL Projects Portfolio")], "sql", ICO_DATA_SQL, status="Validated", phase="3")])
 
-    return head("BA samples", "Business analyst sample documents: requirements, models and test evidence.", "One connected, fictional case study that shows how a business problem becomes functional requirements, NFRs, Source-to-Target Mappings (STTM), prioritised Agile stories, test coverage (RTM), and process models.", F.seq_samples("sm1"), "../") + f'''
-<section class="sec sec--first" data-bg-anim="rtm"><div class="wrap">
+    return head("BA samples", "Business analyst sample documents: requirements, models and test evidence.", "One connected, fictional case study that shows how a business problem becomes functional requirements, NFRs, Source-to-Target Mappings (STTM), prioritised Agile stories, test coverage (RTM), and process models.", F.seq("sm"), "../") + f'''
+<section class="sec sec--first has-flow" data-bg-anim="rtm">{F.seq_samples("sm1")}<div class="wrap">
 <div class="disclaimer rv" style="margin:0 0 28px"><b>Sample only, fictional case study.</b> PayTrack is an invented payment reconciliation and exception-management portal. Names, IDs, amounts, targets and scenarios are illustrative. Test cases have not been executed and no client outcome is claimed.</div>
 {timeline}
 <div class="samples-ctrl-row rv">{legend}{view_toggle}</div>
