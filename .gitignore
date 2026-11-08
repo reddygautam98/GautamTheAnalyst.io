@@ -7,6 +7,9 @@ __pycache__/
 env/
 venv/
 .venv/
+.pytest_cache/
+.coverage
+htmlcov/
 
 # Node / npm
 node_modules/
@@ -22,5 +25,6 @@ Thumbs.db
 .vscode/
 .idea/
 
-# Scratch scripts
+# Scratch & logs
 scratch/
+*.log

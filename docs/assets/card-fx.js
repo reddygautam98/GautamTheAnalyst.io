@@ -6,16 +6,25 @@
 (function() {
   'use strict';
 
-  var fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduce) return;
+  function isFine() {
+    return window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  }
+
+  function isReduced() {
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }
 
   function isPaused() {
     return document.documentElement.classList.contains('is-anim-paused');
   }
 
+  function canAnimate() {
+    return isFine() && !isReduced() && !isPaused();
+  }
+
   var selector = [
     '.card',
+    '.card-3d',
     '.scard',
     '.pcard',
     '.step-card',
@@ -53,6 +62,8 @@
     '.magic-card'
   ].join(', ');
 
+  var IGNORE_FOCUS_CLICK = 'a[href], button, input, textarea, select, summary, label, tr[data-links], .tk-tile, .peek-card, .form-group, pre, code, #globeCanvas, canvas';
+
   function clearAllActiveCards() {
     document.querySelectorAll('.is-focused-card').forEach(function(el) {
       el.classList.remove('is-focused-card');
@@ -70,56 +81,57 @@
       var raf = null;
       var rect = null;
 
-      // Desktop 3D Tilt & Specular Spotlight
-      if (fine) {
-        function onPointerEnter() {
-          if (isPaused()) return;
-          rect = card.getBoundingClientRect();
-        }
-
-        function onPointerMove(e) {
-          if (isPaused()) return;
-          if (raf) return;
-
-          raf = requestAnimationFrame(function() {
-            raf = null;
-            if (!rect) rect = card.getBoundingClientRect();
-            var x = e.clientX - rect.left;
-            var y = e.clientY - rect.top;
-
-            // Spotlight coordinates
-            card.style.setProperty('--mx', x + 'px');
-            card.style.setProperty('--my', y + 'px');
-
-            // Subtle 3D tilt angles (max ~5 degrees for professional stability)
-            var px = (x / rect.width) - 0.5;
-            var py = (y / rect.height) - 0.5;
-            var tiltX = Math.max(-8, Math.min(8, -py * 7)).toFixed(2);
-            var tiltY = Math.max(-8, Math.min(8, px * 7)).toFixed(2);
-
-            card.style.transform = 'perspective(900px) rotateX(' + tiltX + 'deg) rotateY(' + tiltY + 'deg) translateY(-4px)';
-          });
-        }
-
-        function onPointerLeave() {
-          if (raf) {
-            cancelAnimationFrame(raf);
-            raf = null;
-          }
-          rect = null;
-          card.style.transform = '';
-        }
-
-        card.addEventListener('pointerenter', onPointerEnter, { passive: true });
-        card.addEventListener('pointermove', onPointerMove, { passive: true });
-        card.addEventListener('pointerleave', onPointerLeave, { passive: true });
+      function onPointerEnter(e) {
+        if (!canAnimate()) return;
+        if (e.target.closest(selector) !== card) return;
+        rect = card.getBoundingClientRect();
       }
+
+      function onPointerMove(e) {
+        if (!canAnimate()) return;
+        if (e.target.closest(selector) !== card) return;
+        if (raf) return;
+
+        raf = requestAnimationFrame(function() {
+          raf = null;
+          if (!rect) rect = card.getBoundingClientRect();
+          var x = e.clientX - rect.left;
+          var y = e.clientY - rect.top;
+
+          // Spotlight coordinates
+          card.style.setProperty('--mx', x + 'px');
+          card.style.setProperty('--my', y + 'px');
+
+          // Subtle 3D tilt angles (max ~5-7 degrees for professional stability)
+          var px = (x / rect.width) - 0.5;
+          var py = (y / rect.height) - 0.5;
+          var tiltX = Math.max(-8, Math.min(8, -py * 7)).toFixed(2);
+          var tiltY = Math.max(-8, Math.min(8, px * 7)).toFixed(2);
+
+          card.style.transform = 'perspective(900px) rotateX(' + tiltX + 'deg) rotateY(' + tiltY + 'deg) translateY(-4px)';
+        });
+      }
+
+      function onPointerLeave() {
+        if (raf) {
+          cancelAnimationFrame(raf);
+          raf = null;
+        }
+        rect = null;
+        card.style.transform = '';
+      }
+
+      card.addEventListener('pointerenter', onPointerEnter, { passive: true });
+      card.addEventListener('pointermove', onPointerMove, { passive: true });
+      card.addEventListener('pointerleave', onPointerLeave, { passive: true });
 
       // Touch & Click Focus Interaction ("when I touch a card it blurs other sections")
       card.addEventListener('click', function(e) {
         if (isPaused()) return;
-        // If clicking a direct interactive button, link, input, select, textarea, summary, allow navigation/toggle without blocking
-        if (e.target.closest('a[href], button, input, textarea, select, summary')) return;
+        // If clicking a direct interactive button, link, input, select, textarea, summary, label, etc., allow navigation/toggle without blocking
+        if (e.target.closest(IGNORE_FOCUS_CLICK)) return;
+        // Strictly restrict to innermost matching card to prevent bubbling focus traps
+        if (e.target.closest(selector) !== card) return;
 
         var isAlreadyFocused = card.classList.contains('is-focused-card');
         clearAllActiveCards();
@@ -145,6 +157,21 @@
         clearAllActiveCards();
       }
     });
+
+    // Motion state change listener
+    function onMotionStateChange() {
+      if (!canAnimate()) {
+        clearAllActiveCards();
+        document.querySelectorAll(selector).forEach(function(c) {
+          c.style.transform = '';
+        });
+      }
+    }
+    window.addEventListener('site-motion-toggle', onMotionStateChange);
+    try {
+      window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', onMotionStateChange);
+      window.matchMedia('(hover: hover) and (pointer: fine)').addEventListener('change', onMotionStateChange);
+    } catch (_) {}
   }
 
   if (document.readyState === 'loading') {

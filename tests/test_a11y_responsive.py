@@ -393,6 +393,32 @@ class TestWebsiteIntegrity(unittest.TestCase):
         self.assertIn("Sample Reference", samples_html)
         self.assertIn("file-item-ico-power-bi", samples_html)
 
+        # AUDIT-01 to AUDIT-13 Regression Assertions
+        style_css = (self.docs_dir / "assets" / "style.css").read_text(encoding="utf-8")
+        card_fx_js = (self.docs_dir / "assets" / "card-fx.js").read_text(encoding="utf-8")
+        grid_trail_js = (self.docs_dir / "assets" / "grid-trail.js").read_text(encoding="utf-8")
+
+        # AUDIT-08: Scoped SVG outer sequence diagram frame
+        self.assertIn("svg.sd-outer", style_css)
+
+        # AUDIT-03: Innermost card targeting and ignore selector in card-fx.js
+        self.assertIn(".card-3d", card_fx_js)
+        self.assertIn("IGNORE_FOCUS_CLICK", card_fx_js)
+
+        # AUDIT-11: Dynamic lifecycle in grid-trail.js and XSS escaping in site.js
+        self.assertIn("shouldRun()", grid_trail_js)
+        self.assertIn("escHtml(", site_js)
+
+        # AUDIT-04: Wireframe row cycle restart helper in site.js
+        self.assertIn("startWfTimer()", site_js)
+
+        # AUDIT-10: Removal of invalid aria-expanded on div.card.peek-card
+        self.assertNotIn("card.setAttribute('aria-expanded'", site_js)
+
+        # AUDIT-07: Peek file name style and break words
+        self.assertIn(".peek-file-name", style_css)
+        self.assertIn("overflow-wrap: anywhere", style_css)
+
 
 if __name__ == "__main__":
     unittest.main()

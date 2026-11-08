@@ -52,7 +52,7 @@ if('IntersectionObserver' in window&&!reduce){
 }
 
 /* mobile menu with backdrop, scroll-lock & focus trap (GL-7) */
-var mb=$('#menu'),nav=$('#nav'),bd=$('#navBackdrop'),header=$('.site-header');
+var mb=$('#menu'),nav=$('#nav'),bd=$('#navBackdrop'),header=$('.site-header'),mainEl=$('main'),ftrEl=$('footer');
 var MENU_ICO='<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>';
 var CLOSE_ICO='<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
 
@@ -60,6 +60,8 @@ function closeMenu(){
   if(nav&&nav.classList.contains('open')){
     nav.classList.remove('open');
     d.body.classList.remove('menu-open');
+    if(mainEl)mainEl.inert=false;
+    if(ftrEl)ftrEl.inert=false;
     if(typeof lenis !== 'undefined' && lenis) lenis.start();
     if(mb){
       mb.setAttribute('aria-expanded','false');
@@ -74,6 +76,8 @@ if(mb&&nav){
     if(e&&e.stopPropagation)e.stopPropagation();
     var o=nav.classList.toggle('open');
     d.body.classList.toggle('menu-open',o);
+    if(mainEl)mainEl.inert=o;
+    if(ftrEl)ftrEl.inert=o;
     if(typeof lenis !== 'undefined' && lenis){ if(o) lenis.stop(); else lenis.start(); }
     mb.setAttribute('aria-expanded',String(o));
     mb.setAttribute('aria-label',o?'Close navigation menu':'Open navigation menu');
@@ -174,7 +178,7 @@ function initLenis(){
       prevent: function(node) {
         return !!(node && (
           node.hasAttribute('data-lenis-prevent') ||
-          (node.closest && node.closest('[data-lenis-prevent], .pd-body, .pd-tabs, .table-scroll, .tbl-wrap, pre'))
+          (node.closest && node.closest('[data-lenis-prevent], .pd-body, .pd-tabs, .table-scroll, .tbl-wrap, pre, .slider-tabs, .console-tabs, .phase-timeline-bar'))
         ));
       }
     });
@@ -979,50 +983,64 @@ if(abConsole){
 /* Selected Work: PayTrack Wireframe Row Cycling with IntersectionObserver & Pause/Loop Controls (HM-16, WCAG 2.2.2) */
 var wfRows=$$('.wf-row-cycle'),wfTable=$('#wireframeTable'),wfPauseBtn=$('#wfPauseBtn');
 if(wfRows.length&&!reduce){
-  var wfIdx=0,wfPaused=false,wfOffscreen=false,wfCycles=0,MAX_CYCLES=wfRows.length*3;
+  var wfIdx=0,wfPaused=false,wfOffscreen=false,wfCycles=0,wfTimer=null,wfFinished=false,MAX_CYCLES=wfRows.length*3;
   if('IntersectionObserver' in window&&wfTable){
     new IntersectionObserver(function(entries){
       entries.forEach(function(en){wfOffscreen=!en.isIntersecting});
     }).observe(wfTable);
   }
   if(wfTable){
-    wfTable.addEventListener('pointerenter',function(){wfPaused=true});
-    wfTable.addEventListener('pointerleave',function(){if(!wfPauseBtn||wfPauseBtn.getAttribute('aria-pressed')!=='true')wfPaused=false});
-    wfTable.addEventListener('focusin',function(){wfPaused=true});
-    wfTable.addEventListener('focusout',function(){if(!wfPauseBtn||wfPauseBtn.getAttribute('aria-pressed')!=='true')wfPaused=false});
+    wfTable.addEventListener('pointerenter',function(){if(!wfFinished)wfPaused=true});
+    wfTable.addEventListener('pointerleave',function(){if(!wfFinished&&(!wfPauseBtn||wfPauseBtn.getAttribute('aria-pressed')!=='true'))wfPaused=false});
+    wfTable.addEventListener('focusin',function(){if(!wfFinished)wfPaused=true});
+    wfTable.addEventListener('focusout',function(){if(!wfFinished&&(!wfPauseBtn||wfPauseBtn.getAttribute('aria-pressed')!=='true'))wfPaused=false});
   }
-  if(wfPauseBtn){
-    wfPauseBtn.addEventListener('click',function(){
-      wfPaused=!wfPaused;
-      wfPauseBtn.setAttribute('aria-pressed',String(wfPaused));
-      wfPauseBtn.textContent=wfPaused?'Resume cycle':'Pause cycle';
-    });
-  }
-  var wfTimer=setInterval(function(){
+
+  function stepWfRow(){
     if(d.hidden||r.classList.contains('is-anim-paused')||wfPaused||wfOffscreen)return;
-    /* Clear all rows, then activate only the current index */
     wfRows.forEach(function(rw,i){
       rw.classList.toggle('is-active-row',i===wfIdx);
     });
     wfIdx=(wfIdx+1)%wfRows.length;
     wfCycles++;
     if(wfCycles>=MAX_CYCLES){
-      clearInterval(wfTimer);
-      /* Ensure clean state at end */
+      stopWfTimer();
+      wfFinished=true;
       wfRows.forEach(function(rw){rw.classList.remove('is-active-row')});
       if(wfPauseBtn){
         wfPauseBtn.textContent='Restart cycle';
         wfPauseBtn.setAttribute('aria-pressed','true');
-        wfPauseBtn.onclick=function(){
-          wfCycles=0;
-          wfIdx=0;
-          wfPaused=false;
-          wfPauseBtn.textContent='Pause cycle';
-          wfPauseBtn.setAttribute('aria-pressed','false');
-        };
       }
     }
-  },2400);
+  }
+
+  function startWfTimer(){
+    if(wfTimer)clearInterval(wfTimer);
+    wfTimer=setInterval(stepWfRow,2400);
+  }
+  function stopWfTimer(){
+    if(wfTimer){clearInterval(wfTimer);wfTimer=null;}
+  }
+
+  if(wfPauseBtn){
+    wfPauseBtn.addEventListener('click',function(){
+      if(wfFinished){
+        wfCycles=0;
+        wfIdx=0;
+        wfFinished=false;
+        wfPaused=false;
+        wfPauseBtn.textContent='Pause cycle';
+        wfPauseBtn.setAttribute('aria-pressed','false');
+        stepWfRow();
+        startWfTimer();
+        return;
+      }
+      wfPaused=!wfPaused;
+      wfPauseBtn.setAttribute('aria-pressed',String(wfPaused));
+      wfPauseBtn.textContent=wfPaused?'Resume cycle':'Pause cycle';
+    });
+  }
+  startWfTimer();
 }
 
 /* Experience: Collapsible Role Metrics Tray (HM-8) */
@@ -1399,8 +1417,7 @@ if(sfClear){
 $$('.peek-card').forEach(function(card){
   card.addEventListener('click', function(e){
     if(e.target.closest('a')) return;
-    var expanded = card.classList.toggle('is-expanded');
-    card.setAttribute('aria-expanded', String(expanded));
+    card.classList.toggle('is-expanded');
   });
 });
 
@@ -1413,6 +1430,10 @@ if(sSelect){
   hudPill.hidden=true;
   if(sSelect.parentNode)sSelect.parentNode.appendChild(hudPill);
 
+  function escHtml(str){
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
   var updateScopingHud=function(){
     var val=sSelect.value;
     if(!val){
@@ -1423,7 +1444,7 @@ if(sSelect){
     var cadence="2-3 weeks";
     if(val.indexOf("Data")!==-1||val.indexOf("SQL")!==-1)cadence="1-2 weeks";
     else if(val.indexOf("role")!==-1)cadence="Immediate / Notice period";
-    hudPill.innerHTML='<strong>Scope Focus:</strong> '+val+' &bull; <span>Cadence: '+cadence+'</span> &bull; <span>NDA Aligned</span>';
+    hudPill.innerHTML='<strong>Scope Focus:</strong> '+escHtml(val)+' &bull; <span>Cadence: '+cadence+'</span> &bull; <span>NDA Aligned</span>';
   };
   sSelect.addEventListener('change',updateScopingHud);
   if(sSelect.value)updateScopingHud();

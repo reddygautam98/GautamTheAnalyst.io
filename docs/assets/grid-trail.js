@@ -40,13 +40,6 @@
       host.insertBefore(canvas, host.firstChild);
     }
 
-    // Only enable for fine mouse pointers (not touch) and when motion is allowed
-    var finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-    var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (!finePointer || reducedMotion) {
-      return; // Leave empty canvas element untouched
-    }
-
     var ctx = canvas.getContext('2d');
     if (!ctx) return;
 
@@ -58,6 +51,22 @@
     var rafId = null;
     var themeColor = { r: 37, g: 99, b: 235 };
 
+    function isFinePointer() {
+      return window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    }
+
+    function isReducedMotion() {
+      return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    }
+
+    function isAnimPaused() {
+      return document.documentElement.classList.contains('is-anim-paused');
+    }
+
+    function shouldRun() {
+      return isFinePointer() && !isReducedMotion() && !isAnimPaused() && !document.hidden;
+    }
+
     function resolveThemeColor() {
       try {
         var isDark = document.documentElement.dataset.theme === 'dark';
@@ -67,10 +76,6 @@
           themeColor = { r: 37, g: 99, b: 235 }; // --accent cobalt in light
         }
       } catch (_) {}
-    }
-
-    function isAnimPaused() {
-      return document.documentElement.classList.contains('is-anim-paused');
     }
 
     function resize() {
@@ -94,12 +99,19 @@
       resolveThemeColor();
     }
 
-    function render(now) {
-      if (isAnimPaused()) {
-        ctx.clearRect(0, 0, cssW, cssH);
-        trail = [];
-        animating = false;
+    function stopAndClear() {
+      if (rafId) {
+        cancelAnimationFrame(rafId);
         rafId = null;
+      }
+      ctx.clearRect(0, 0, cssW, cssH);
+      trail = [];
+      animating = false;
+    }
+
+    function render(now) {
+      if (!shouldRun()) {
+        stopAndClear();
         return;
       }
 
@@ -144,14 +156,14 @@
     }
 
     function startAnimation() {
-      if (!animating) {
+      if (!animating && shouldRun()) {
         animating = true;
         rafId = requestAnimationFrame(render);
       }
     }
 
     function onMouseMove(e) {
-      if (isAnimPaused()) return;
+      if (!shouldRun()) return;
       var rect = host.getBoundingClientRect();
       if (e.clientX < rect.left || e.clientX > rect.right || e.clientY < rect.top || e.clientY > rect.bottom) {
         return;
@@ -189,8 +201,21 @@
       // Allow current trail to naturally fade out to 0
     }
 
+    function checkState() {
+      resolveThemeColor();
+      if (!shouldRun()) {
+        stopAndClear();
+      }
+    }
+
     host.addEventListener('mousemove', onMouseMove, { passive: true });
     host.addEventListener('mouseleave', onMouseLeave, { passive: true });
+    window.addEventListener('site-motion-toggle', checkState);
+    document.addEventListener('visibilitychange', checkState);
+    try {
+      window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', checkState);
+      window.matchMedia('(hover: hover) and (pointer: fine)').addEventListener('change', checkState);
+    } catch (_) {}
 
     var ro = null;
     if ('ResizeObserver' in window) {
@@ -202,24 +227,18 @@
 
     var mo = null;
     if ('MutationObserver' in window) {
-      mo = new MutationObserver(function() {
-        resolveThemeColor();
-        if (isAnimPaused() && animating) {
-          ctx.clearRect(0, 0, cssW, cssH);
-          trail = [];
-          animating = false;
-          if (rafId) cancelAnimationFrame(rafId);
-        }
-      });
+      mo = new MutationObserver(checkState);
       mo.observe(document.documentElement, { attributes: true, attributeFilter: ['class', 'data-theme'] });
     }
 
     function cleanup() {
-      if (rafId) cancelAnimationFrame(rafId);
+      stopAndClear();
       if (ro) ro.disconnect();
       if (mo) mo.disconnect();
       host.removeEventListener('mousemove', onMouseMove);
       host.removeEventListener('mouseleave', onMouseLeave);
+      window.removeEventListener('site-motion-toggle', checkState);
+      document.removeEventListener('visibilitychange', checkState);
       window.removeEventListener('pagehide', cleanup);
     }
     window.addEventListener('pagehide', cleanup);

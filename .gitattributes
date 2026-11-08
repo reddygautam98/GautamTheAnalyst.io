@@ -1,0 +1,12 @@
+# Git line endings and file attributes
+* text=auto eol=lf
+
+# Explicit binary assets
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.pdf binary
+*.docx binary
+*.ico binary
+*.pyc binary
+

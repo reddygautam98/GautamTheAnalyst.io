@@ -1631,8 +1631,11 @@ NOT_FOUND = f'''<section class="sec notfound-sec has-flow">{F.seq_404("nf")}<div
 </div></section>'''
 open("404.html", "w", encoding="utf-8", newline="\n").write(page("404.html", "Page not found | Gautam Reddy, Business Analyst", "This page could not be found.", NOT_FOUND, "", "", "", "noindex, follow"))
 
-import datetime
-today = datetime.date.today().isoformat()
+today = "2026-11-07"
+if os.path.exists("sitemap.xml"):
+    m = re.search(r"<lastmod>([^<]+)</lastmod>", open("sitemap.xml", "r", encoding="utf-8").read())
+    if m:
+        today = m.group(1)
 urls = [SITE if p_ == "index.html" else SITE + p_ for p_, *_ in pages]
 open("sitemap.xml", "w", encoding="utf-8", newline="\n").write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "".join(f"  <url><loc>{u}</loc><lastmod>{today}</lastmod></url>\n" for u in urls) + "</urlset>\n")
 open("robots.txt", "w", encoding="utf-8", newline="\n").write(f"User-agent: *\nAllow: /\n\nSitemap: {SITE}sitemap.xml\n")
