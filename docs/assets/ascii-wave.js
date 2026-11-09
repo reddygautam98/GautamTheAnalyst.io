@@ -86,9 +86,9 @@
       var rawW = rect.width || 300;
       var rawH = rect.height || 200;
 
-      cssW = Math.min(Math.max(rawW, 60), MAX_WIDTH);
-      cssH = Math.min(Math.max(rawH, 40), MAX_HEIGHT);
-      dpr = Math.min(window.devicePixelRatio || 1, MAX_DPR);
+      cssW = Math.max(rawW, 60);
+      cssH = Math.max(rawH, 40);
+      dpr = Math.min(window.devicePixelRatio || 1, MAX_DPR, (MAX_WIDTH * MAX_DPR) / cssW, (MAX_HEIGHT * MAX_DPR) / cssH);
 
       var pixelW = Math.round(cssW * dpr);
       var pixelH = Math.round(cssH * dpr);

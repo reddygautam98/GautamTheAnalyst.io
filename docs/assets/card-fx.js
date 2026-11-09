@@ -94,7 +94,7 @@
 
         raf = requestAnimationFrame(function() {
           raf = null;
-          if (!rect) rect = card.getBoundingClientRect();
+          rect = card.getBoundingClientRect();
           var x = e.clientX - rect.left;
           var y = e.clientY - rect.top;
 

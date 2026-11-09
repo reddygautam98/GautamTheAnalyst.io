@@ -2722,7 +2722,7 @@ dl.facts.card {
 }
 
 .is-offscreen, .is-offscreen *{animation-play-state:paused!important}
-html.is-anim-paused, html.is-anim-paused *{animation-play-state:paused!important}
+html.is-anim-paused, html.is-anim-paused *, html.is-anim-paused *::before, html.is-anim-paused *::after{animation-play-state:paused!important}
 @media (prefers-reduced-motion:reduce){@view-transition{navigation:none}}
 
 /* mobile menu: backdrop and scroll lock */
@@ -3465,7 +3465,7 @@ p,li{text-wrap:pretty}
 .ct-idx {
   font-family: var(--mono);
   font-size: .72rem;
-  opacity: .75;
+  opacity: 1;
 }
 
 /* Console Body & Panels */
@@ -4293,6 +4293,8 @@ p,li{text-wrap:pretty}
   position: relative;
   width: min(640px, 100vw);
   height: 100%;
+  max-height: 100%;
+  box-sizing: border-box !important;
   background: var(--surface);
   box-shadow: -10px 0 30px rgba(0, 0, 0, 0.3);
   display: flex;

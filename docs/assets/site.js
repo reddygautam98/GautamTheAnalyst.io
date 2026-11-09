@@ -1147,7 +1147,7 @@ if(pdTablist){
 }
 
 /* Resume skills match filter by data-skills attribute with live announcement (RS-5) */
-var skillChips=$$('.skill-filter-chip');
+var skillChips=$$('.skill-filter-chip:not(.sf-clear)');
 if(skillChips.length){
   var roleBullets=$$('.role li');
   var sfLive=$('#skillFilterLive');
@@ -1270,7 +1270,7 @@ if(ptSteps.length&&sItems.length){
         sec.hidden=(visibleChildren.length===0);
       });
       if(samplesLive){
-        samplesLive.textContent='Showing '+matchCount+' deliverables for '+(btn.textContent.trim());
+        samplesLive.textContent='Showing '+matchCount+' deliverables for '+((btn.querySelector('.pt-name')||btn).textContent.trim());
       }
     });
   });
@@ -1406,7 +1406,7 @@ if(sfClear){
     if(allBtn)allBtn.click();
     sfClear.hidden=true;
   });
-  $$('.skill-filter-chip').forEach(function(chip){
+  $$('.skill-filter-chip:not(.sf-clear)').forEach(function(chip){
     chip.addEventListener('click',function(){
       if(sfClear)sfClear.hidden=(chip.dataset.skill==='all');
     });

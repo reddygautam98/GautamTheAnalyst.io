@@ -57,6 +57,8 @@
     var isVisible = false;
     var rafId = null;
     var mouse = { x: -9999, y: -9999, active: false };
+    var lastT = 0;
+    var FRAME_INTERVAL = 1000 / 60;
 
     function resize() {
       var rect = host.getBoundingClientRect();
@@ -87,10 +89,16 @@
         return;
       }
       rafId = null;
-      ctx.save();
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      renderFn(ctx, cssW, cssH, t, mouse, getThemeColors());
-      ctx.restore();
+
+      var delta = t - lastT;
+      if (delta >= FRAME_INTERVAL) {
+        lastT = t - (delta % FRAME_INTERVAL);
+        ctx.save();
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        renderFn(ctx, cssW, cssH, t, mouse, getThemeColors());
+        ctx.restore();
+      }
+
       if (shouldRun() && !rafId) {
         rafId = requestAnimationFrame(loop);
       }

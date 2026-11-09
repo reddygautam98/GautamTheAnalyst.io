@@ -198,14 +198,17 @@ import createGlobe from './cobe.js';
       targetPhi += 0.003;
     }
 
-    // Frame-rate-independent damping: k ≈ 5.0 matches 0.08 damping at 60 Hz
-    var factor = 1 - Math.exp(-5.0 * dt);
+    // Frame-rate-independent damping: k ≈ 5.0 matches 0.08 damping at 60 Hz; snap if paused
+    var factor = shouldRun() ? (1 - Math.exp(-5.0 * dt)) : 1;
     phi += (targetPhi - phi) * factor;
     theta += (targetTheta - theta) * factor;
     scale += (targetScale - scale) * factor;
 
     try {
       globeInstance.render();
+      if (!shouldRun()) {
+        globeInstance.render();
+      }
     } catch (_) {}
   }
 

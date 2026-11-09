@@ -175,11 +175,15 @@ def page(path, title, desc, body, p="", cur="", ld="", robots="index, follow, ma
         extra_scripts_list.append(f'<script type="module" src="{p}assets/globe.js?v={h_globe}"></script>')
     extra_scripts = ('\n' + '\n'.join(extra_scripts_list)) if extra_scripts_list else ''
 
+    base_tag = ''
+    if path == "404.html":
+        base_tag = '\n<script>(function(){var p=location.pathname;var b=p.indexOf("/GautamTheAnalyst.io/")===0?"/GautamTheAnalyst.io/":"/";document.write(\'<base href="\'+b+\'">\');})();</script>'
+
     return f'''<!DOCTYPE html>
 <html lang="en-IN">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">{base_tag}
 <meta name="color-scheme" content="light dark">
 <title>{html.escape(title)}</title>
 <meta name="description" content="{html.escape(desc)}">
@@ -1333,7 +1337,7 @@ def contact():
     <div class="form-group"><label for="enquiry-msg">Describe the problem and the outcome you want <span class="req" aria-hidden="true">*</span></label><textarea id="enquiry-msg" name="msg" required aria-describedby="err-msg"></textarea><span class="err" id="err-msg"></span></div>
     <div class="form-group"><label for="enquiry-ref">Reference link <span class="opt">(optional)</span></label><input id="enquiry-ref" name="ref" type="url" aria-describedby="err-ref"><span class="err" id="err-ref"></span></div>
     <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap"><button class="btn btn-primary" type="submit">Prepare email draft</button><button class="btn btn-ghost" type="button" id="copyEnquiryBtn">Copy message</button><span class="muted small">Or email directly: <a href="mailto:{EMAIL}">{EMAIL}</a></span></div>
-    <p id="sent" class="muted small" hidden role="status">Preparing your email draft. If your email application does not open automatically, please send your enquiry directly to <a href="mailto:{EMAIL}">{EMAIL}</a>.</p>
+    <p id="sent" class="muted small" hidden role="status" tabindex="-1">Preparing your email draft. If your email application does not open automatically, please send your enquiry directly to <a href="mailto:{EMAIL}">{EMAIL}</a>.</p>
   </form>
 
   <div class="contact-fallback-card" id="fallbackCard" hidden style="margin-top:24px">

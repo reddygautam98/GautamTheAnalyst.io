@@ -83,9 +83,9 @@
       var rawW = rect.width || window.innerWidth;
       var rawH = rect.height || 400;
 
-      cssW = Math.min(Math.max(rawW, 60), MAX_WIDTH);
-      cssH = Math.min(Math.max(rawH, 40), MAX_HEIGHT);
-      dpr = Math.min(window.devicePixelRatio || 1, MAX_DPR);
+      cssW = Math.max(rawW, 60);
+      cssH = Math.max(rawH, 40);
+      dpr = Math.min(window.devicePixelRatio || 1, MAX_DPR, (MAX_WIDTH * MAX_DPR) / cssW, (MAX_HEIGHT * MAX_DPR) / cssH);
 
       var pixelW = Math.round(cssW * dpr);
       var pixelH = Math.round(cssH * dpr);
@@ -104,7 +104,10 @@
         cancelAnimationFrame(rafId);
         rafId = null;
       }
-      ctx.clearRect(0, 0, cssW, cssH);
+      ctx.save();
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.restore();
       trail = [];
       animating = false;
     }

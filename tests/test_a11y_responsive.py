@@ -419,6 +419,40 @@ class TestWebsiteIntegrity(unittest.TestCase):
         self.assertIn(".peek-file-name", style_css)
         self.assertIn("overflow-wrap: anywhere", style_css)
 
+        # BUG-001 to BUG-009 Regression Assertions
+        page_404 = (self.docs_dir / "404.html").read_text(encoding="utf-8")
+        contact_html = (self.docs_dir / "contact.html").read_text(encoding="utf-8")
+        globe_js = (self.docs_dir / "assets" / "globe.js").read_text(encoding="utf-8")
+        ascii_wave_js = (self.docs_dir / "assets" / "ascii-wave.js").read_text(encoding="utf-8")
+
+        # BUG-001: 404 dynamic base href script
+        self.assertIn('<base href="', page_404)
+
+        # BUG-002: html.is-anim-paused pseudo-elements
+        self.assertIn("html.is-anim-paused *::before, html.is-anim-paused *::after", style_css)
+
+        # BUG-003: Globe snap factor & second render when idle
+        self.assertIn("shouldRun() ? (1 - Math.exp(-5.0 * dt)) : 1", globe_js)
+
+        # BUG-004: Resume skill-filter excludes .sf-clear
+        self.assertIn(".skill-filter-chip:not(.sf-clear)", site_js)
+
+        # BUG-005 & BUG-006: Grid trail DPR transform reset and pixel budget
+        self.assertIn("ctx.setTransform(1, 0, 0, 1, 0, 0)", grid_trail_js)
+
+        # BUG-007: ASCII wave logical size calculation
+        self.assertIn("(MAX_WIDTH * MAX_DPR) / cssW", ascii_wave_js)
+
+        # BUG-008: Contact form confirmation message focusable
+        self.assertIn('id="sent" class="muted small" hidden role="status" tabindex="-1"', contact_html)
+
+        # BUG-009: Samples filter announcement uses .pt-name
+        self.assertIn("(btn.querySelector('.pt-name')||btn).textContent.trim()", site_js)
+
+        # Contrast & Layout Integrity: .ct-idx and .pd-panel
+        self.assertIn("opacity: 1;", style_css)
+        self.assertIn(".pd-panel {", style_css)
+
 
 if __name__ == "__main__":
     unittest.main()
