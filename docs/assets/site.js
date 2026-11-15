@@ -122,6 +122,26 @@ if(mb&&nav){
   }catch(_){}
 }
 
+/* Apple-style scroll-linked 3D stage leveling */
+var stageEls = $$('#heroSlider, .about-console, .featured-paytrack');
+function updateScrollStages() {
+  if (reduce || r.classList.contains('is-anim-paused') || !fine) return;
+  var vh = window.innerHeight || 800;
+  for (var k = 0; k < stageEls.length; k++) {
+    var el = stageEls[k];
+    var rect = el.getBoundingClientRect();
+    if (rect.bottom < 0 || rect.top > vh) continue;
+    var centerDist = (rect.top + rect.height * 0.5 - vh * 0.5) / (vh * 0.6);
+    var clamped = Math.max(-1, Math.min(1, centerDist));
+    var rx = (clamped * 5.0).toFixed(2) + 'deg';
+    var ry = (clamped * -3.5).toFixed(2) + 'deg';
+    var sc = (1 - Math.min(0.025, Math.abs(clamped) * 0.02)).toFixed(4);
+    el.style.setProperty('--scroll-rx', rx);
+    el.style.setProperty('--scroll-ry', ry);
+    el.style.setProperty('--scroll-scale', sc);
+  }
+}
+
 /* scroll progress & parallax tracking */
 var bar=$('.progress');
 function onScroll(){
@@ -155,6 +175,7 @@ function onScroll(){
   }
 
   if(header)header.classList.toggle('scrolled',y>8);
+  updateScrollStages();
 }
 var flows=$$('.has-flow').map(function(s){var el=$(':scope > .bgflow',s);return el&&!s.classList.contains('cta')?{s:s,el:el}:null}).filter(Boolean);
 var tl=reduce?[]:$$('.roles');
@@ -397,8 +418,14 @@ function setMotionPaused(paused){
   }
   if(paused){
     destroyLenis();
+    stageEls.forEach(function(el){
+      el.style.removeProperty('--scroll-rx');
+      el.style.removeProperty('--scroll-ry');
+      el.style.removeProperty('--scroll-scale');
+    });
   }else if(!reduce){
     initLenis();
+    updateScrollStages();
   }
   /* only unpause SVGs that are currently onscreen (GL-1) */
   $$('svg.bgflow').forEach(function(s){

@@ -102,6 +102,11 @@
           card.style.setProperty('--mx', x + 'px');
           card.style.setProperty('--my', y + 'px');
 
+          // Stage elements (#heroSlider, .about-console, .featured-paytrack) own their 3D transform via CSS scroll leveling
+          if (card.matches && card.matches('#heroSlider, .about-console, .featured-paytrack')) {
+            return;
+          }
+
           // Subtle 3D tilt angles (max ~5-7 degrees for professional stability)
           var px = (x / rect.width) - 0.5;
           var py = (y / rect.height) - 0.5;
