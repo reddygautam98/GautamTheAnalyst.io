@@ -221,6 +221,8 @@
 @keyframes vt-fade-out{to{opacity:0}}
 @keyframes vt-fade-in{from{opacity:0;transform:translateY(8px)}}
 html{-webkit-text-size-adjust:100%;scroll-padding-top:84px;scrollbar-gutter:stable}
+:target{scroll-margin-top:var(--header-h,84px)}
+:focus-visible:not(html,body){scroll-margin-top:var(--header-h,84px)}
 [hidden]{display:none!important}
 body{margin:0;background:radial-gradient(1000px 500px at 50% -120px,var(--accent-soft),transparent 70%),var(--bg);color:var(--ink);font:400 1.0625rem/1.62 var(--sans);overflow-x:hidden}
 /* blueprint grid behind everything */
