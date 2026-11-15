@@ -6249,6 +6249,28 @@ body.has-card-focused-mode .site-footer {
 body.has-card-focused-mode .site-header {
   pointer-events: auto;
 }
+@media (prefers-reduced-motion: reduce) {
+  body.has-card-focused-mode main > section,
+  body.has-card-focused-mode .site-footer {
+    filter: none !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transition: none !important;
+  }
+  .is-focused-card {
+    transform: none !important;
+  }
+}
+html.is-anim-paused body.has-card-focused-mode main > section,
+html.is-anim-paused body.has-card-focused-mode .site-footer {
+  filter: none !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  transition: none !important;
+}
+html.is-anim-paused .is-focused-card {
+  transform: none !important;
+}
 
 /* 4. The Active/Hovered Card Retains 100% Sharp Clarity, Full Opacity, and Elevated Z-Index */
 .step-card:hover, .step-card.is-focused-card, .step-card:focus-within,

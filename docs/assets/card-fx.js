@@ -132,7 +132,7 @@
 
       // Touch & Click Focus Interaction ("when I touch a card it blurs other sections")
       card.addEventListener('click', function(e) {
-        if (isPaused()) return;
+        if (isPaused() || isReduced()) return;
         // If clicking a direct interactive button, link, input, select, textarea, summary, label, etc., allow navigation/toggle without blocking
         if (e.target.closest(IGNORE_FOCUS_CLICK)) return;
         // Strictly restrict to innermost matching card to prevent bubbling focus traps
