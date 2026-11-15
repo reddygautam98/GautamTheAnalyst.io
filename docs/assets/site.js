@@ -624,6 +624,7 @@ if(f){
         sField.value='Custom BA scope & advisory';
         sField.classList.add('has-val');
       }
+      try{sField.dispatchEvent(new Event('change',{bubbles:true}))}catch(_){}
     }
   }catch(_){}
 
