@@ -1074,7 +1074,8 @@ if(wfRows.length&&!reduce){
 /* Experience: Collapsible Role Metrics Tray (HM-8) */
 $$('.role-expander').forEach(function(btn){
   btn.addEventListener('click',function(){
-    var metrics=btn.nextElementSibling;
+    var targetId=btn.getAttribute('aria-controls');
+    var metrics=(targetId&&d.getElementById(targetId))||btn.nextElementSibling;
     if(!metrics)return;
     var isHidden=metrics.hidden;
     metrics.hidden=!isHidden;
