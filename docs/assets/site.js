@@ -1383,11 +1383,12 @@ if(fine&&!reduce){
     glass.style.backgroundImage='url('+fullSrc+')';
     glass.style.backgroundRepeat='no-repeat';
     
-    var glassW=120,glassH=120,lensRaf=null;
+    var lensRaf=null;
     wrap.addEventListener('pointermove',function(e){
       if(lensRaf)return;
       lensRaf=requestAnimationFrame(function(){
         lensRaf=null;
+        var glassW=glass.offsetWidth||140,glassH=glass.offsetHeight||140;
         var rRect=wrap.getBoundingClientRect();
         var x=e.clientX-rRect.left,y=e.clientY-rRect.top;
         glass.style.left=x+'px';
