@@ -235,7 +235,7 @@ def seq_about(uid="ab_seq"):
     f.frag(70, 108, 640, 92, "loop", "[20+ Elicitation Workshops • 13+ Stakeholders]")
     f.msg(135, 390, 145, "1: raiseBusinessNeed(pain_points, KPI_targets)", dot=6)
     f.self_msg(390, 162, "2: separateEvidenceFromAssumptions()", h=22, dot=6)
-    f.msg(390, 650, 215, "3: defineContracts(BRD, FRD, NFRs, OpenAPI_3.0, STTM)", dot=7)
+    f.msg(390, 650, 215, "3: defineContracts(BRD, FRD, NFRs, Swagger/OpenAPI, Data Mapping)", dot=7)
     f.msg(650, 390, 255, "4: confirmFeasibility(idempotency, schema_validation)", reply=True, dot=6)
     f.msg(390, 910, 295, "5: conductThreeAmigos(BDD_Given_When_Then_Criteria)", dot=7)
     f.msg(910, 1090, 340, "6: linkTraceability(BR_ID -> FR_ID -> US_ID -> TC_ID)", dot=6)
@@ -275,14 +275,14 @@ def seq_services(uid="sv_seq"):
     for x, (name, st) in zip(xs, [
         ("Client Lead", "Product / Ops"),
         ("Gautam Reddy", "BA Advisory"),
-        ("Specs & Models", "BRD / BPMN / STTM"),
+        ("Specs & Models", "BRD / SRS / BPMN"),
         ("Data & BI", "SQL / Power BI"),
         ("QA & Release", "RTM & UAT")
     ]):
         f.actor(x, 52, 420, name, st, w=132)
     f.activate(385, 115, 340); f.activate(645, 175, 140); f.activate(905, 240, 120); f.activate(1085, 345, 100)
     f.msg(135, 385, 130, "1: Phase 1 Understand(problem, users, constraints, SLA)", dot=6)
-    f.msg(385, 645, 180, "2: Phase 2 Scope(BRD, FRD, NFRs, BPMN/UML, REST STTM)", dot=7)
+    f.msg(385, 645, 180, "2: Phase 2 Scope(BRD, FRD, SRS, BPMN/UML, Data Mapping)", dot=7)
     f.frag(330, 205, 640, 125, "par", "[Parallel Specification & Data Quality Profiling]")
     f.msg(385, 905, 250, "3a: profileDataQuality(100K+ SQL rows, 5-Why RCA, DAX KPIs)", dot=7)
     f.msg(645, 385, 300, "3b: reviewCheckpoint(BDD User Stories + JSON Schemas)", reply=True, dot=6)
@@ -340,7 +340,7 @@ def seq_projects(uid="pj_seq"):
 def seq_resume(uid="rs_seq"):
     """Resume Page Header: Career Progression & Enterprise BA Delivery Sequence."""
     f = Flow(uid, (1200, 520))
-    f.sd_frame("4+ Years BA Delivery: Elicitation -> API/STTM -> SQL (100K+) -> UAT (350+ Scenarios)", "Resume • Track Record")
+    f.sd_frame("4+ Years BA Delivery: Elicitation -> REST API/OpenAPI -> SQL (100K+) -> SIT/UAT (350+ Cases)", "Resume • Track Record")
     xs = [135, 380, 635, 885, 1085]
     for x, (name, st) in zip(xs, [
         ("Stakeholders", "13+ Business Leads"),
@@ -352,10 +352,10 @@ def seq_resume(uid="rs_seq"):
         f.actor(x, 52, 390, name, st, w=134)
     f.activate(380, 110, 315)
     f.msg(135, 380, 125, "1: facilitateWorkshops(20+ sessions across 4 business units)", dot=6)
-    f.msg(380, 635, 175, "2: authorSpecs(BRD, FRD, NFRs, REST APIs, STTM, JSON Schemas)", dot=7)
+    f.msg(380, 635, 175, "2: authorSpecs(BRD, FRD, SRS, Swagger/OpenAPI, JSON/XML Mappings)", dot=7)
     f.msg(380, 885, 230, "3: analyzeTransactionLogs(100,000+ rows -> isolate 3 SLA breaches)", dot=7)
     f.msg(885, 380, 280, "4: formalizeReconciliationRules(save ~2 wks/cycle, 3+ hrs/wk)", reply=True, dot=6)
-    f.msg(380, 1085, 335, "5: coordinateUATAndTriage(350+ Marolix + 50+ Infocomm cases)", dot=7)
+    f.msg(380, 1085, 335, "5: coordinateUATAndTriage(350+ Marolix + 50+ Iinfocomm cases)", dot=7)
     f.msg(1085, 135, 390, "6: productionRelease(12+ CRs managed • 0 critical defects)", reply=True, dot=8)
     return f.render()
 
@@ -384,11 +384,11 @@ def seq_resume_sql(uid="rs_sql"):
 def seq_resume_uat(uid="rs_uat"):
     """Resume Page Section 2: Multi-Company Career Timeline & Promotion Sequence."""
     f = Flow(uid, (1200, 560))
-    f.sd_frame("Career Progression Sequence: Infocomm (ASE -> Early Promotion to BA) -> V Moksha -> Marolix", "Career • Sequence")
+    f.sd_frame("Career Progression Sequence: Iinfocomm (ASE -> Early Promotion to BA) -> V Moksha -> Marolix", "Career • Sequence")
     xs = [150, 420, 695, 985]
     for x, (name, st) in zip(xs, [
-        ("Infocomm (ASE->BA)", "Early Promotion"),
-        ("Infocomm (BA)", "3 Modules • 4 Units"),
+        ("Iinfocomm (ASE->BA)", "Early Promotion"),
+        ("Iinfocomm (BA)", "3 Modules • 4 Units"),
         ("V Moksha (BA)", "RCA & BPMN"),
         ("Marolix (BA)", "Payment Gateways")
     ]):
@@ -399,7 +399,7 @@ def seq_resume_uat(uid="rs_uat"):
     f.msg(420, 695, 225, "2: runThreeAmigosAnd50JiraTests(0 post-launch incidents)", dot=7)
     f.msg(695, 985, 310, "3: resolveSlaShortfallsViaSqlAndBpmn(-2 wks cycle time)", dot=7)
     f.self_msg(985, 365, "4: lead2GatewayIntegrations + 100K_SQL + 350_UAT()", h=26, dot=6)
-    f.msg(985, 150, 435, "5: continuousTraceabilityAndCBAPTarget(2026/2027)", reply=True, dot=8)
+    f.msg(985, 150, 435, "5: continuousTraceabilityAndCBAPInProgress()", reply=True, dot=8)
     return f.render()
 
 
