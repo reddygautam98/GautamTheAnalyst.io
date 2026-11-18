@@ -399,7 +399,7 @@ def seq_resume_uat(uid="rs_uat"):
     f.msg(420, 695, 225, "2: runThreeAmigosAnd50JiraTests(0 post-launch incidents)", dot=7)
     f.msg(695, 985, 310, "3: resolveSlaShortfallsViaSqlAndBpmn(-2 wks cycle time)", dot=7)
     f.self_msg(985, 365, "4: lead2GatewayIntegrations + 100K_SQL + 350_UAT()", h=26, dot=6)
-    f.msg(985, 150, 435, "5: continuousTraceabilityAndCBAPInProgress()", reply=True, dot=8)
+    f.msg(985, 150, 435, "5: continuousTraceabilityAndGovernance()", reply=True, dot=8)
     return f.render()
 
 

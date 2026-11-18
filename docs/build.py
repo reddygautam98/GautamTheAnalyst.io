@@ -1215,8 +1215,7 @@ def resume():
     <div style="margin-top:56px">
       {sh(2, "Education", "Education &amp; certifications")}
       <dl class="facts card rv"><dt>Education</dt><dd><strong>B.Tech, Mechanical Engineering (Minor: Computer Science)</strong>, Biju Patnaik University of Technology &bull; 2016 to 2020.</dd>
-      <dt>Certification</dt><dd><strong>Google Data Analytics Professional Certificate</strong> (Coursera), 2023.</dd>
-      <dt>In progress</dt><dd><span class="in-prog-dot" aria-hidden="true">&#9675;</span> <strong>CBAP (IIBA)</strong>, in progress.</dd></dl>
+      <dt>Certification</dt><dd><strong>Google Data Analytics Professional Certificate</strong> (Coursera), 2023.</dd></dl>
     </div>
   </div>
   <aside class="resume-sidebar" aria-label="Skills &amp; Expertise sidebar">

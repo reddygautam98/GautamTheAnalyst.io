@@ -15,7 +15,7 @@
 | **Role Date Ranges** | Dates omitted on role headers | Added exact tenure dates: `Oct 2023 to Nov 2024` (Marolix), `Feb 2023 to Mar 2023` (V Moksha), `Apr 2022 to Dec 2022` (Iinfocomm BA), `Nov 2020 to Apr 2022` (Iinfocomm ASE) | `docs/index.html`, `docs/about.html`, `docs/resume.html`, `docs/build.py` |
 | **Experience Bullets (`resume.html`)** | 15 older summary bullets | **13 verbatim resume bullets** (7 for Marolix, 1 for V Moksha, 3 for Iinfocomm BA, 2 for Iinfocomm ASE) and updated `#sfCount` to `Showing 13 of 13 bullets` | `docs/resume.html`, `docs/build.py` |
 | **Core Competencies & Tools** | 6 older skill meter groups and 8 tool tags | **4 exact resume competency groups** (`Requirements & Documentation`, `API & Integration`, `Data & Reporting`, `Delivery & Testing`) + **13 tool tags** (`JIRA`, `Confluence`, `Azure DevOps`, `Visio`, `Lucidchart`, `Figma`, `Postman`, `SQL`, `Python (Pandas)`, `Power BI`, `Excel`, `Azure`, `AI-assisted documentation`) | `docs/resume.html`, `docs/index.html`, `docs/build.py` |
-| **Education & Certifications** | Included `Target completion: 2026/2027` on CBAP | **B.Tech, Mechanical Engineering (Minor: Computer Science)**, Biju Patnaik University of Technology • `2016 to 2020`; **Google Data Analytics Professional Certificate** (Coursera), 2023; **CBAP (IIBA)**, in progress | `docs/resume.html`, `docs/build.py`, `docs/flows.py` |
+| **Education & Certifications** | Included `Target completion: 2026/2027` on CBAP | **B.Tech, Mechanical Engineering (Minor: Computer Science)**, Biju Patnaik University of Technology • `2016 to 2020`; **Google Data Analytics Professional Certificate** (Coursera), 2023; CBAP removed per instruction | `docs/resume.html`, `docs/build.py`, `docs/flows.py` |
 
 ## 2. File-by-File & Page-by-Page Detailed Diff Breakdown
 
@@ -63,7 +63,6 @@
 #### Education & Certifications (`dl.facts`)
 - **Education:** **B.Tech, Mechanical Engineering (Minor: Computer Science)**, Biju Patnaik University of Technology • 2016 to 2020.
 - **Certification:** **Google Data Analytics Professional Certificate** (Coursera), 2023.
-- **In progress:** **CBAP (IIBA)**, in progress.
 
 ### 2.2 `docs/index.html` (Homepage)
 
