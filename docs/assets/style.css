@@ -5561,16 +5561,25 @@ p,li{text-wrap:pretty}
   display: flex;
   flex-direction: column;
   gap: 2px;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: visible;
+  padding: 0;
+  margin: 0;
 }
 .hfs-item b {
   font: 700 1.05rem var(--sans);
   color: var(--ink);
+  line-height: 1.25;
 }
 .hfs-item span {
   font: 500 .76rem var(--mono);
   color: var(--muted);
   text-transform: uppercase;
   letter-spacing: .05em;
+  line-height: 1.25;
+  white-space: nowrap;
 }
 [data-theme=dark] .hfs-item span {
   color: var(--ink-secondary);
@@ -5998,7 +6007,7 @@ p,li{text-wrap:pretty}
 }
 
 /* Card Modernization: Border Beam, 3D Elevation & Cursor Spotlight */
-.card, .scard, .pcard, .step-card, .peek-card, .kit, .rbody, .tk-tile, .form-card, .feat-card, .what-card, .about-console, .proof-card, .proof > div, .impact-card, .sh-item, .contact-rail, .contact-fallback-card, .resume-side-card, .mini-stat, .hfs-item, .notfound-links-card, .faq details, .file-list li, .cta-panel {
+.card, .scard, .pcard, .step-card, .peek-card, .kit, .rbody, .tk-tile, .form-card, .feat-card, .what-card, .about-console, .proof-card, .proof > div, .impact-card, .sh-item, .contact-rail, .contact-fallback-card, .resume-side-card, .mini-stat, .notfound-links-card, .faq details, .file-list li, .cta-panel {
   position: relative !important;
   isolation: isolate;
   overflow: hidden;
@@ -6014,7 +6023,7 @@ p,li{text-wrap:pretty}
 }
 
 /* Cursor spotlight glow on all cards (Apple Specular Surface Glare) */
-.card::before, .scard::before, .pcard::before, .step-card::before, .peek-card::before, .kit::before, .rbody::before, .tk-tile::before, .form-card::before, .feat-card::before, .what-card::before, .proof-card::before, .impact-card::before, .principle-card::before, .resume-side-card::before, .notfound-links-card::before, .mini-stat::before, .hfs-item::before, .contact-fallback-card::before {
+.card::before, .scard::before, .pcard::before, .step-card::before, .peek-card::before, .kit::before, .rbody::before, .tk-tile::before, .form-card::before, .feat-card::before, .what-card::before, .proof-card::before, .impact-card::before, .principle-card::before, .resume-side-card::before, .notfound-links-card::before, .mini-stat::before, .contact-fallback-card::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -6027,12 +6036,12 @@ p,li{text-wrap:pretty}
   pointer-events: none;
   z-index: 1;
 }
-[data-theme=dark] .card::before, [data-theme=dark] .scard::before, [data-theme=dark] .pcard::before, [data-theme=dark] .step-card::before, [data-theme=dark] .peek-card::before, [data-theme=dark] .kit::before, [data-theme=dark] .rbody::before, [data-theme=dark] .tk-tile::before, [data-theme=dark] .form-card::before, [data-theme=dark] .feat-card::before, [data-theme=dark] .what-card::before, [data-theme=dark] .proof-card::before, [data-theme=dark] .impact-card::before, [data-theme=dark] .principle-card::before, [data-theme=dark] .resume-side-card::before, [data-theme=dark] .notfound-links-card::before, [data-theme=dark] .mini-stat::before, [data-theme=dark] .hfs-item::before, [data-theme=dark] .contact-fallback-card::before {
+[data-theme=dark] .card::before, [data-theme=dark] .scard::before, [data-theme=dark] .pcard::before, [data-theme=dark] .step-card::before, [data-theme=dark] .peek-card::before, [data-theme=dark] .kit::before, [data-theme=dark] .rbody::before, [data-theme=dark] .tk-tile::before, [data-theme=dark] .form-card::before, [data-theme=dark] .feat-card::before, [data-theme=dark] .what-card::before, [data-theme=dark] .proof-card::before, [data-theme=dark] .impact-card::before, [data-theme=dark] .principle-card::before, [data-theme=dark] .resume-side-card::before, [data-theme=dark] .notfound-links-card::before, [data-theme=dark] .mini-stat::before, [data-theme=dark] .contact-fallback-card::before {
   background: transparent;
   background: radial-gradient(420px circle at var(--mx, -500px) var(--my, -500px), rgba(255, 255, 255, 0.08), rgba(96, 165, 250, 0.16) 42%, transparent 75%);
   background: radial-gradient(420px circle at var(--mx, -500px) var(--my, -500px), rgba(255, 255, 255, 0.08), color-mix(in srgb, var(--accent) 16%, transparent) 42%, transparent 75%);
 }
-.card:hover::before, .scard:hover::before, .pcard:hover::before, .step-card:hover::before, .peek-card:hover::before, .kit:hover::before, .rbody:hover::before, .tk-tile:hover::before, .form-card:hover::before, .feat-card:hover::before, .what-card:hover::before, .proof-card:hover::before, .impact-card:hover::before, .principle-card:hover::before, .resume-side-card:hover::before, .notfound-links-card:hover::before, .mini-stat:hover::before, .hfs-item:hover::before, .contact-fallback-card:hover::before {
+.card:hover::before, .scard:hover::before, .pcard:hover::before, .step-card:hover::before, .peek-card:hover::before, .kit:hover::before, .rbody:hover::before, .tk-tile:hover::before, .form-card:hover::before, .feat-card:hover::before, .what-card:hover::before, .proof-card:hover::before, .impact-card:hover::before, .principle-card:hover::before, .resume-side-card:hover::before, .notfound-links-card:hover::before, .mini-stat:hover::before, .contact-fallback-card:hover::before {
   opacity: 1;
 }
 
@@ -6107,7 +6116,7 @@ p,li{text-wrap:pretty}
    ============================================================================= */
 
 /* Universal Card Smooth Filter & Opacity Transition */
-.step-card, .card, .pcard, .scard, .kit, .what-card, .principle-card, .peek-card, .proof > div, .proof-card, .file-list li, .roles .role, .faq details, .notfound-links-card, .impact-card, .sh-item, .contact-rail, .contact-fallback-card, .resume-side-card, .mini-stat, .hfs-item, .feature, .cta-panel {
+.step-card, .card, .pcard, .scard, .kit, .what-card, .principle-card, .peek-card, .proof > div, .proof-card, .file-list li, .roles .role, .faq details, .notfound-links-card, .impact-card, .sh-item, .contact-rail, .contact-fallback-card, .resume-side-card, .mini-stat, .feature, .cta-panel {
   transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1), 
               box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), 
               filter 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
@@ -6175,9 +6184,6 @@ p,li{text-wrap:pretty}
 
 .mini-dash-stats:has(.mini-stat:hover) .mini-stat:not(:hover),
 .mini-dash-stats:has(.mini-stat.is-focused-card) .mini-stat:not(.is-focused-card),
-
-.hero-fact-strip:has(.hfs-item:hover) .hfs-item:not(:hover),
-.hero-fact-strip:has(.hfs-item.is-focused-card) .hfs-item:not(.is-focused-card),
 
 .contact-two-col:has(.form-card:hover) .contact-rail,
 .contact-two-col:has(.form-card.is-focused-card) .contact-rail,
@@ -6297,7 +6303,6 @@ html.is-anim-paused .is-focused-card {
 .sh-item:hover, .sh-item.is-focused-card,
 .tk-tile:hover, .tk-tile.is-focused-card,
 .mini-stat:hover, .mini-stat.is-focused-card,
-.hfs-item:hover, .hfs-item.is-focused-card,
 .feature:hover, .feature.is-focused-card,
 .notfound-links-card:hover, .notfound-links-card.is-focused-card,
 .cta-panel:hover, .cta-panel.is-focused-card {

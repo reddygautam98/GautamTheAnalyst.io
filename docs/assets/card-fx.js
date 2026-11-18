@@ -57,7 +57,6 @@
     '.faq details',
     '.faq-item',
     '.mini-stat',
-    '.hfs-item',
     '.cta-panel',
     '.magic-card'
   ].join(', ');
