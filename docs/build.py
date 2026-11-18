@@ -681,8 +681,8 @@ def index():
 <section class="hero has-flow" data-bg-anim="telemetry"><div class="ascii-wave hero-ascii-wave" data-ascii-wave data-speed="0.8" aria-hidden="true"><canvas></canvas></div>{F.lifecycle("h")}<div class="wrap hero-grid">
 <div>
 <div class="status rv"><i></i><span>Open to full-time, hybrid &amp; remote BA roles</span></div>
-<h1 class="{rv(1)}">Technical Business Analyst in Bengaluru who turns requirements into <span class="grad shiny-text">testable specs.</span></h1>
-<p class="lead {rv(2)}">Technical Business Analyst with 4+ years of experience, strongest in payment gateway and REST API integrations. Writing the BRDs, FRDs, SRS documents, Swagger/OpenAPI contract reviews, JSON/XML data mappings and reconciliation rules that Engineering and QA build from, then carrying them through SIT, UAT and go-live.</p>
+<h1 class="{rv(1)}">Business Analyst in Bengaluru who turns requirements into <span class="grad shiny-text">testable specs.</span></h1>
+<p class="lead {rv(2)}">Business Analyst with 4+ years of experience, strongest in payment gateway and REST API integrations. Writing the BRDs, FRDs, SRS documents, Swagger/OpenAPI contract reviews, JSON/XML data mappings and reconciliation rules that Engineering and QA build from, then carrying them through SIT, UAT and go-live.</p>
 <div class="actions {rv(3)}"><a class="btn btn-primary" href="samples/index.html">View BA samples <span class="arr" aria-hidden="true">&rarr;</span></a><a class="btn btn-ghost" href="resume.html">View resume</a></div>
 <div class="hero-fact-strip {rv(4)}">
   <div class="hfs-item"><b data-count="4" data-suf="+ Years">4+ Years</b><span>BA Experience</span></div>
@@ -777,7 +777,7 @@ def about_3d_console():
       </div>
       <div class="console-info">
         <h3 class="console-name">Gautam Reddy</h3>
-        <p class="console-sub">Technical Business Analyst &bull; REST APIs, Swagger/OpenAPI, SQL &amp; SIT/UAT</p>
+        <p class="console-sub">Business Analyst &bull; REST APIs, Swagger/OpenAPI, SQL &amp; SIT/UAT</p>
         <div class="console-status-pill"><span class="c-status-dot"></span> Traceability &amp; Governance Ready</div>
       </div>
     </div>
@@ -891,7 +891,7 @@ def about():
 <div><h2 class="h2-lg {rv(0)}">Who I am</h2>
 <div class="about-lead-row {rv(1)}">
   <div class="about-monogram-ring" aria-hidden="true"><div class="about-monogram-inner"><span class="monogram-txt">GR</span></div></div>
-  <p class="about-lead">I&rsquo;m Gautam Reddy, a Technical Business Analyst with 4+ years of experience, strongest in payment gateway and REST API integrations &mdash; writing the BRDs, FRDs, SRS documents, Swagger/OpenAPI contract reviews, JSON/XML data mappings and reconciliation rules that Engineering and QA build from, then carrying them through SIT, UAT and go-live.</p>
+  <p class="about-lead">I&rsquo;m Gautam Reddy, a Business Analyst with 4+ years of experience, strongest in payment gateway and REST API integrations &mdash; writing the BRDs, FRDs, SRS documents, Swagger/OpenAPI contract reviews, JSON/XML data mappings and reconciliation rules that Engineering and QA build from, then carrying them through SIT, UAT and go-live.</p>
 </div>
 <div class="{rv(2)}">
 <h3 class="about-subhead">What I do</h3>
@@ -1190,7 +1190,7 @@ def resume():
   <div id="skillFilterLive" class="sr-only" role="status"></div>
 </div>'''
 
-    return head("Resume", "Gautam Reddy &mdash; Technical Business Analyst", "Technical Business Analyst with 4+ years of experience, strongest in payment gateway and REST API integrations. Writes the BRDs, FRDs, SRS documents, Swagger/OpenAPI contract reviews, JSON/XML data mappings and reconciliation rules that Engineering and QA build from, then carries them through SIT, UAT and go-live.", F.seq_resume("rs")) + f'''
+    return head("Resume", "Gautam Reddy &mdash; Business Analyst", "Business Analyst with 4+ years of experience, strongest in payment gateway and REST API integrations. Writes the BRDs, FRDs, SRS documents, Swagger/OpenAPI contract reviews, JSON/XML data mappings and reconciliation rules that Engineering and QA build from, then carries them through SIT, UAT and go-live.", F.seq_resume("rs")) + f'''
 <section class="sec sec--first has-flow" data-bg-anim="horizon">{F.seq_resume_sql("rs1")}<div class="wrap">
 <div class="actions rv" style="margin:0 0 36px">
   <a class="btn btn-primary" href="{LI}" target="_blank" rel="noopener noreferrer">View LinkedIn profile <span class="sr-only">(opens in new tab)</span></a>
@@ -1221,7 +1221,7 @@ def resume():
   <aside class="resume-sidebar" aria-label="Skills &amp; Expertise sidebar">
     <div class="card resume-side-card rv">
       <h3>Core Competencies &amp; Technical Skills</h3>
-      <p class="small muted">Aligned with Technical Business Analyst specialization:</p>
+      <p class="small muted">Domain depth and practical tools across past roles:</p>
       <div class="skill-meter-list">
         <div class="skill-meter-row">
           <div class="sm-head"><b>Requirements &amp; Documentation</b><span>4+ yrs</span></div>
@@ -1551,9 +1551,9 @@ def samples():
 </div></section>
 ''' + cta("../")
 
-DESC = "Technical Business Analyst in Bengaluru with 4+ years of experience: REST API & payment gateway integrations, BRD/FRD/SRS, Swagger/OpenAPI, SQL, Python (Pandas), Power BI and SIT/UAT."
+DESC = "Business Analyst in Bengaluru with 4+ years of experience: REST API & payment gateway integrations, BRD/FRD/SRS, Swagger/OpenAPI, SQL, Python (Pandas), Power BI and SIT/UAT."
 PERSON_ID = SITE + "#person"
-PERSON = {"@type": "Person", "@id": PERSON_ID, "name": "Gautam Reddy", "jobTitle": "Technical Business Analyst",
+PERSON = {"@type": "Person", "@id": PERSON_ID, "name": "Gautam Reddy", "jobTitle": "Business Analyst",
     "description": DESC, "url": SITE, "sameAs": [LI, GH, HR],
     "address": {"@type": "PostalAddress", "addressLocality": "Bengaluru", "addressCountry": "IN"},
     "alumniOf": {"@type": "CollegeOrUniversity", "name": "Biju Patnaik University of Technology"},
@@ -1587,7 +1587,7 @@ pages = [
 ("about.html", "About Gautam Reddy | Business Analyst", "About Gautam Reddy, a Bengaluru Business Analyst with 4+ years of experience in requirements engineering, NFRs, REST APIs, STTM, SQL analysis and UAT.", about(), "", "about.html", LD_ABOUT),
 ("services.html", "BA Services: BRD, APIs, SQL & UAT | Gautam Reddy", "Business analysis services: BRD/FRD, NFRs, SQL and Python data analysis, STTM, Power BI dashboards, REST API specs and Agile UAT coordination.", services(), "", "services.html", LD_SERVICES),
 ("projects.html", "BA Projects: SQL, Power BI & Case Studies | Gautam Reddy", "Portfolio projects by Business Analyst Gautam Reddy: SQL and Power BI analytics, data pipelines, RAG prototypes, and the PayTrack case study.", projects(), "", "projects.html", LD_PROJECTS),
-("resume.html", "Resume | Gautam Reddy, Technical Business Analyst", "Resume of Gautam Reddy, Technical Business Analyst with 4+ years of experience: 2 payment gateway integrations, REST APIs, Swagger/OpenAPI, SQL, 100,000+ transactions validated, and 350+ SIT/UAT test cases.", resume(), "", "resume.html", LD_RESUME),
+("resume.html", "Resume | Gautam Reddy, Business Analyst", "Resume of Gautam Reddy, Business Analyst with 4+ years of experience: 2 payment gateway integrations, REST APIs, Swagger/OpenAPI, SQL, 100,000+ transactions validated, and 350+ SIT/UAT test cases.", resume(), "", "resume.html", LD_RESUME),
 ("contact.html", "Contact Gautam Reddy | Hire a Business Analyst, Bengaluru", "Contact Gautam Reddy, a Business Analyst in Bengaluru, about full-time, hybrid or remote roles, or requirements, systems integration, and reporting projects.", contact(), "", "contact.html", LD_CONTACT),
 ("samples/index.html", "BA Sample Documents: BRD, FRD, Stories & RTM | Gautam Reddy", "Business Analyst case study artifacts: BRD, FRD, NFRs, user stories, STTM, RTM, UAT plan, BPMN and UML diagrams, SQL queries and CSV templates.", samples(), "../", "samples/index.html", LD_SAMPLES),
 ]
@@ -1615,7 +1615,7 @@ NOT_FOUND = f'''<section class="sec notfound-sec has-flow">{F.seq_404("nf")}<div
   <h2>Popular destinations</h2>
   <ul class="notfound-links-list">
     <li><a href="samples/index.html#brd"><b>Business Requirements Document (BRD)</b> &bull; PayTrack payment reconciliation sample</a></li>
-    <li><a href="resume.html"><b>Resume &amp; Experience</b> &bull; 4+ years Technical BA experience, REST APIs, Swagger/OpenAPI, SQL, SIT/UAT</a></li>
+    <li><a href="resume.html"><b>Resume &amp; Experience</b> &bull; 4+ years BA experience, REST APIs, Swagger/OpenAPI, SQL, SIT/UAT</a></li>
     <li><a href="services.html"><b>BA Services &amp; Deliverables</b> &bull; Scoping, process mapping, test planning</a></li>
     <li><a href="contact.html"><b>Contact Gautam Reddy</b> &bull; Role enquiries &amp; direct email</a></li>
   </ul>

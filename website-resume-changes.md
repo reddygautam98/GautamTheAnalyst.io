@@ -9,7 +9,7 @@
 | Category | Previous Website Content | Updated Website Content (from `Gautam_Reddy_Technical_BA_Resume.tex`) | Affected Files / Pages |
 | :--- | :--- | :--- | :--- |
 | **Email & Contact Number** | `gautamreddy098@gmail.com` (no phone number) | **Unchanged (`gautamreddy098@gmail.com`, no phone number)** — skipped resume email/phone update per instruction | All 8 pages, `docs/build.py`, `docs/flows.py`, `docs/assets/site.js` |
-| **Candidate Name & Primary Title** | `Gautam Reddy` — `Business Analyst` | `Gautam Reddy` — `Technical Business Analyst` (`REST API & Payment Gateway Integrations \| Swagger/OpenAPI \| SQL \| SIT/UAT`) | `docs/index.html`, `docs/about.html`, `docs/resume.html`, `docs/build.py` (JSON-LD `Person`) |
+| **Candidate Name & Primary Title** | `Gautam Reddy` — `Business Analyst` | `Gautam Reddy` — `Business Analyst` (`REST API & Payment Gateway Integrations \| Swagger/OpenAPI \| SQL \| SIT/UAT`) | `docs/index.html`, `docs/about.html`, `docs/resume.html`, `docs/build.py` (JSON-LD `Person`) |
 | **Professional Summary & Hero Lead** | Generic BA summary mentioning NFRs and STTM | Technical Business Analyst with 4+ years of experience, strongest in payment gateway and REST API integrations. Writes the BRDs, FRDs, SRS documents, Swagger/OpenAPI contract reviews, JSON/XML data mappings and reconciliation rules that Engineering and QA build from, then carries them through SIT, UAT and go-live. Latest project: 2 payment gateway integrations and 350+ test cases with zero critical defects. | `docs/index.html`, `docs/about.html`, `docs/resume.html`, `docs/build.py` |
 | **Company Name Spelling (Roles 3 & 4)** | `Infocomm IT Services Pvt Ltd` | `Iinfocomm IT Services Pvt Ltd` | `docs/index.html`, `docs/about.html`, `docs/resume.html`, `docs/build.py`, `docs/flows.py` |
 | **Role Date Ranges** | Dates omitted on role headers | Added exact tenure dates: `Oct 2023 to Nov 2024` (Marolix), `Feb 2023 to Mar 2023` (V Moksha), `Apr 2022 to Dec 2022` (Iinfocomm BA), `Nov 2020 to Apr 2022` (Iinfocomm ASE) | `docs/index.html`, `docs/about.html`, `docs/resume.html`, `docs/build.py` |
@@ -22,10 +22,10 @@
 ### 2.1 `docs/resume.html` (Generated via `docs/build.py` `resume()`)
 
 #### Page Header & Meta Tags
-- **`<title>`:** Updated from `Resume | Gautam Reddy, Business Analyst` to `Resume | Gautam Reddy, Technical Business Analyst`.
-- **`<h1>`:** Updated from `Business Analyst resume: experience, skills, delivery.` to `Gautam Reddy — Technical Business Analyst`.
+- **`<title>`:** Updated to `Resume | Gautam Reddy, Business Analyst`.
+- **`<h1>`:** Updated to `Gautam Reddy — Business Analyst`.
 - **Lead Paragraph (`.lead`):**
-  > Technical Business Analyst with 4+ years of experience, strongest in payment gateway and REST API integrations. Writes the BRDs, FRDs, SRS documents, Swagger/OpenAPI contract reviews, JSON/XML data mappings and reconciliation rules that Engineering and QA build from, then carries them through SIT, UAT and go-live.
+  > Business Analyst with 4+ years of experience, strongest in payment gateway and REST API integrations. Writes the BRDs, FRDs, SRS documents, Swagger/OpenAPI contract reviews, JSON/XML data mappings and reconciliation rules that Engineering and QA build from, then carries them through SIT, UAT and go-live.
 
 #### Proof Strip Cards (`.proof`)
 - **Card 1 (`100K+`):** `Marolix • SQL & Azure` — `transaction records validated`
@@ -76,8 +76,8 @@
 
 ### 2.3 `docs/about.html` (About Page)
 
-- **3D BA Console Header:** Updated name to `Gautam Reddy` and subtitle to `Technical Business Analyst • REST APIs, Swagger/OpenAPI, SQL & SIT/UAT`.
-- **About Lead (`.about-lead`):** Updated to match the Technical Business Analyst summary from the resume.
+- **3D BA Console Header:** Updated name to `Gautam Reddy` and subtitle to `Business Analyst • REST APIs, Swagger/OpenAPI, SQL & SIT/UAT`.
+- **About Lead (`.about-lead`):** Updated to match the Business Analyst summary from the resume.
 - **What I Do Grid (`.what-i-do-grid`):**
   - *Elicitation & Scoping:* `Facilitating stakeholder workshops (20+ sessions across 13+ stakeholders), managing backlogs in JIRA and Azure DevOps, and prioritizing scope with MoSCoW.`
   - *Requirements & Specs:* `Writing BRDs, FRDs, SRS documents, use cases, BDD/Gherkin acceptance criteria, Swagger/OpenAPI contract reviews, and JSON/XML data mappings.`
